@@ -16,5 +16,5 @@ export const meta: EffectMeta = {
   browser_min: "SVG filter (universal)",
   mobile_fallback_strategy: "css-only",
   reduced_motion_strategy: "static-fallback",
-  status: "stub",
+  status: "complete",
 };

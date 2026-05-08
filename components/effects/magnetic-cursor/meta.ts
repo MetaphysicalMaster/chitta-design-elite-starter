@@ -16,5 +16,5 @@ export const meta: EffectMeta = {
   browser_min: "universal (desktop only — no cursor on mobile)",
   mobile_fallback_strategy: "disabled",
   reduced_motion_strategy: "disabled",
-  status: "stub",
+  status: "complete",
 };

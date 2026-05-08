@@ -16,5 +16,5 @@ export const meta: EffectMeta = {
   browser_min: "WebGL2",
   mobile_fallback_strategy: "css-only",
   reduced_motion_strategy: "disabled",
-  status: "stub",
+  status: "complete",
 };

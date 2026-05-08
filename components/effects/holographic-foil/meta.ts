@@ -16,5 +16,5 @@ export const meta: EffectMeta = {
   browser_min: "CSS conic-gradient (universal modern)",
   mobile_fallback_strategy: "css-only",
   reduced_motion_strategy: "static-fallback",
-  status: "stub",
+  status: "complete",
 };
