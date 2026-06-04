@@ -24,18 +24,19 @@ import {
 } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { KernelSize } from "postprocessing";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { shaftFragmentShader, shaftVertexShader } from "./light-shafts-shaders";
 
-/* Brand palette as linear-ish THREE colors (kept in JS to match brand.css). */
+/* Brand palette as linear-ish THREE colors (kept in JS to match brand.css).
+   Tuned to Encore's authentic aqua-teal + champagne identity. */
 const PALETTE = {
-  void0: "#1b2230",
-  void1: "#262f42",
-  beam: "#f3e6c8",
-  beamCool: "#cfe4f1",
-  crystal: "#eef3fb",
-  attenuation: "#bcd2e6",
+  void0: "#161f2b",
+  void1: "#222d3e",
+  beam: "#f4e7c6", // warm champagne shaft
+  beamCool: "#c6e6ef", // cool clinical-aqua refracted light
+  crystal: "#eef5fb",
+  attenuation: "#aed2dd", // aqua-leaning interior absorption (on-brand)
 };
 
 /* ---- Volumetric light-shaft backdrop (orthographic, full-bleed) ---- */
@@ -130,21 +131,21 @@ function Crystal({
           {/* An octahedron reads as a faceted gem/prism. */}
           <octahedronGeometry args={[1.18, 0]} />
           <MeshTransmissionMaterial
-            samples={8}
+            samples={10}
             resolution={512}
-            thickness={1.4}
-            roughness={0.02}
-            ior={1.42}
-            chromaticAberration={0.9}
-            anisotropy={0.35}
-            distortion={0.18}
-            distortionScale={0.45}
-            temporalDistortion={0.08}
+            thickness={1.55}
+            roughness={0.015}
+            ior={1.46}
+            chromaticAberration={1.05}
+            anisotropy={0.4}
+            distortion={0.2}
+            distortionScale={0.5}
+            temporalDistortion={0.06}
             clearcoat={1}
-            clearcoatRoughness={0.05}
+            clearcoatRoughness={0.04}
             color="#ffffff"
             attenuationColor={PALETTE.attenuation}
-            attenuationDistance={2.4}
+            attenuationDistance={2.1}
             background={new THREE.Color(PALETTE.void0)}
           />
         </mesh>
@@ -159,20 +160,20 @@ function StudioLights() {
     <>
       <ambientLight intensity={0.32} />
       <Environment resolution={256} frames={1}>
-        {/* Warm key shaft from upper-left */}
+        {/* Warm champagne key shaft from upper-left */}
         <Lightformer
           form="rect"
-          intensity={3.2}
+          intensity={3.5}
           color="#fbeccb"
           position={[-3.2, 3.4, 2]}
           rotation={[-Math.PI / 5, 0, 0]}
           scale={[5, 9, 1]}
         />
-        {/* Cool clinical fill from the right */}
+        {/* Cool clinical-aqua fill from the right */}
         <Lightformer
           form="rect"
-          intensity={2.2}
-          color="#cfe4f1"
+          intensity={2.3}
+          color="#c6e6ef"
           position={[4, 1.5, 1]}
           rotation={[0, -Math.PI / 2.4, 0]}
           scale={[6, 6, 1]}
@@ -187,8 +188,8 @@ function StudioLights() {
         />
         <Lightformer
           form="ring"
-          intensity={1.4}
-          color="#f3e6c8"
+          intensity={1.5}
+          color="#f4e7c6"
           position={[1.5, 2.5, -2]}
           scale={[3, 3, 1]}
         />
@@ -208,6 +209,28 @@ export default function RenewalLightScene({
   lite = false,
 }: RenewalLightSceneProps) {
   const pointer = useRef({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Pause both render loops when the hero scrolls offscreen (perf + battery).
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "120px" },
+    );
+    io.observe(el);
+
+    // Also pause when the tab is hidden.
+    const onVis = () =>
+      setVisible(document.visibilityState === "visible" && true);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
 
   const handlePointer = (e: React.PointerEvent) => {
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -215,8 +238,11 @@ export default function RenewalLightScene({
     pointer.current.y = -(((e.clientY - r.top) / r.height) * 2 - 1);
   };
 
+  const frameloop = visible ? "always" : "never";
+
   return (
     <div
+      ref={wrapRef}
       className="absolute inset-0"
       onPointerMove={handlePointer}
       onPointerLeave={() => {
@@ -227,6 +253,7 @@ export default function RenewalLightScene({
       {/* Orthographic full-bleed volumetric light shafts */}
       <Canvas
         orthographic
+        frameloop={frameloop}
         camera={{ zoom: 1, position: [0, 0, 1] }}
         dpr={[1, 2]}
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
@@ -237,6 +264,7 @@ export default function RenewalLightScene({
 
       {/* Perspective crystal layer (transparent canvas over the shafts) */}
       <Canvas
+        frameloop={frameloop}
         camera={{ position: [0, 0, 5.2], fov: 38 }}
         dpr={[1, 2]}
         gl={{
@@ -261,13 +289,13 @@ export default function RenewalLightScene({
         )}
         <EffectComposer enableNormalPass={false}>
           <Bloom
-            intensity={lite ? 0.9 : 1.35}
-            luminanceThreshold={0.62}
-            luminanceSmoothing={0.18}
+            intensity={lite ? 0.95 : 1.45}
+            luminanceThreshold={0.6}
+            luminanceSmoothing={0.2}
             mipmapBlur
             kernelSize={KernelSize.LARGE}
           />
-          <Vignette eskil={false} offset={0.32} darkness={0.78} />
+          <Vignette eskil={false} offset={0.3} darkness={0.82} />
         </EffectComposer>
       </Canvas>
     </div>

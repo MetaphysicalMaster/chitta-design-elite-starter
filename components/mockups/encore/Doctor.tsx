@@ -11,9 +11,16 @@ import { Section, Reveal } from "./primitives";
 import { motion, useReducedMotion } from "motion/react";
 
 const CREDS = [
-  { v: "MD", k: "Doctor of Medicine, board-certified" },
-  { v: "OSU", k: "Associate Professor of Dermatology" },
-  { v: "2010", k: "Founded Encore Dermatology" },
+  { v: "OSU", k: "Associate Professor of Dermatology, College of Medicine" },
+  { v: "2001", k: "Board-certified in Dermatology (Internal Medicine, 1998)" },
+  { v: "2010", k: "Founded Encore Dermatology in Columbus" },
+];
+
+const TRAINING = [
+  "B.A., The Ohio State University",
+  "M.D., OSU College of Medicine",
+  "Internal Medicine — Riverside Methodist",
+  "Dermatology residency — OSU Hospitals",
 ];
 
 export function Doctor() {
@@ -34,6 +41,12 @@ export function Doctor() {
               transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
               className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[var(--gold)]/30"
             />
+            <motion.div
+              aria-hidden
+              animate={prefersReduced ? {} : { rotate: -360 }}
+              transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+              className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--clinical)]/20"
+            />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
               <span className="font-display text-7xl text-[var(--gold)]">GL</span>
               <span className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg-subtle)]">
@@ -45,7 +58,7 @@ export function Doctor() {
                 Dr. Gwyn Londeree, MD
               </p>
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-fg-subtle)]">
-                Founder · Board-Certified Dermatologist
+                Founder · OSU Associate Professor of Dermatology
               </p>
             </div>
           </div>
@@ -68,20 +81,25 @@ export function Doctor() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <p className="mt-6 max-w-[52ch] text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
-              Dr. Gwyn Londeree isn&rsquo;t only a board-certified
-              dermatologist — she&rsquo;s an{" "}
-              <span className="font-medium text-[var(--color-fg)]">
-                Associate Professor of Dermatology at the Ohio State University
-                College of Medicine
+            <p className="mt-6 max-w-[54ch] text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
+              A native of the Columbus area, Dr. Londeree earned her medical
+              degree and completed her dermatology residency at{" "}
+              <span className="text-[var(--color-fg)]">
+                The Ohio State University
               </span>
-              , training the next generation of skin specialists. When you sit in
-              her chair, you receive the same standard she sets for the
+              . Board-certified in Internal Medicine in 1998 and in Dermatology
+              since 2001, she founded Encore in 2010 — and today she is an{" "}
+              <span className="font-medium text-[var(--color-fg)]">
+                Associate Professor of Dermatology at the OSU College of
+                Medicine
+              </span>
+              , training the next generation of skin specialists. When you sit
+              in her chair, you receive the same standard she sets for the
               physicians she teaches.
             </p>
           </Reveal>
 
-          <Reveal delay={0.14}>
+          <Reveal delay={0.12}>
             <dl className="mt-9 grid grid-cols-3 gap-4">
               {CREDS.map((c) => (
                 <div
@@ -97,6 +115,19 @@ export function Doctor() {
                 </div>
               ))}
             </dl>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <ul className="mt-7 flex flex-wrap gap-2">
+              {TRAINING.map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)]/50 px-3.5 py-1.5 text-xs font-medium text-[var(--color-fg-muted)]"
+                >
+                  {t}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </div>

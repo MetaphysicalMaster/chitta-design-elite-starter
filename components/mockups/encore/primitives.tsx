@@ -12,6 +12,55 @@ import { cn } from "@/lib/utils";
 
 export const EASE = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * EncoreCrest — a brand-faithful, recreated mark (NOT the practice's real
+ * logo). A serifed "E" set in a champagne ring over a rising clinical-light
+ * arc — nodding to academic crests + the "renewal light" without copying any
+ * copyrighted asset. Pure inline SVG (currentColor-aware, crisp at any size).
+ */
+export function EncoreCrest({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      role="img"
+      aria-label="Encore Dermatology crest"
+      className={className}
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="encore-crest-ring" x1="6" y1="6" x2="42" y2="42">
+          <stop offset="0" stopColor="var(--gold-deep)" />
+          <stop offset="0.5" stopColor="var(--gold-soft)" />
+          <stop offset="1" stopColor="var(--gold-deep)" />
+        </linearGradient>
+      </defs>
+      {/* Champagne ring */}
+      <circle
+        cx="24"
+        cy="24"
+        r="21"
+        stroke="url(#encore-crest-ring)"
+        strokeWidth="1.4"
+      />
+      {/* Rising clinical-light arc through the lower third */}
+      <path
+        d="M9 31 A19 19 0 0 0 39 31"
+        stroke="var(--clinical)"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.85"
+      />
+      {/* Serifed E */}
+      <g fill="var(--gold)">
+        <rect x="19" y="15" width="2.4" height="18" rx="0.6" />
+        <rect x="19" y="15" width="11" height="2.4" rx="0.6" />
+        <rect x="19" y="22.8" width="8.5" height="2.2" rx="0.6" />
+        <rect x="19" y="30.6" width="11" height="2.4" rx="0.6" />
+      </g>
+    </svg>
+  );
+}
+
 /** Staggered container — children use `revealItem`. */
 export function useStagger(stagger = 0.08, delay = 0.04): Variants {
   return {

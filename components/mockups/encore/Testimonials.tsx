@@ -12,25 +12,25 @@ import { Section, SectionHeading } from "./primitives";
 const QUOTES = [
   {
     quote:
-      "Dr. Londeree caught a melanoma early that two other doctors had dismissed. I genuinely believe she saved my life.",
+      "She did a thorough full-body check and caught a spot the others had waved off. I trust her completely — and the early catch made all the difference.",
     name: "Patient, Upper Arlington",
     tag: "Medical",
   },
   {
     quote:
-      "My Halo results are unreal — my skin hasn't looked this good since my twenties. The whole spa feels like a five-star hotel.",
+      "My Halo results are unreal — my skin hasn't looked this good in years. The spa side feels calm and genuinely luxurious.",
     name: "Patient, Dublin",
     tag: "The Spa",
   },
   {
     quote:
-      "You can tell she actually teaches this. Thorough, calm, and never rushes you. Easily the best derm in Columbus.",
+      "You can tell she actually teaches this. Thorough, calm, and never rushes you. Easily the best dermatologist in Columbus.",
     name: "Patient, Worthington",
     tag: "Medical",
   },
   {
     quote:
-      "Natural Botox, zero pressure, and they explained financing without me even asking. I finally feel like myself.",
+      "Natural-looking Botox and zero pressure. They walked me through everything and even explained membership pricing. I finally feel like myself.",
     name: "Patient, Bexley",
     tag: "The Spa",
   },

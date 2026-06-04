@@ -25,8 +25,8 @@ const CASES = [
     afterTint: "from-[oklch(80%_0.025_65)] to-[oklch(74%_0.03_52)]",
   },
   {
-    id: "ipl",
-    label: "IPL — sun damage",
+    id: "microneedling",
+    label: "RF Microneedling — texture",
     beforeTint: "from-[oklch(58%_0.05_45)] to-[oklch(50%_0.06_35)]",
     afterTint: "from-[oklch(83%_0.02_72)] to-[oklch(77%_0.025_58)]",
   },

@@ -13,24 +13,24 @@ import { cn } from "@/lib/utils";
 type Service = { name: string; desc: string };
 
 const MEDICAL: Service[] = [
-  { name: "Skin Cancer Care", desc: "Full-body screening, biopsy and surgical excision with academic rigor." },
+  { name: "Skin Cancer Care", desc: "Routine exams, biopsy and surgical removal of skin cancers — with academic rigor." },
+  { name: "Atypical Moles & Lesions", desc: "Assessment and removal of atypical moles and precancerous lesions." },
   { name: "Acne", desc: "Personalized medical regimens for teens and adults — including resistant cases." },
   { name: "Eczema & Dermatitis", desc: "Targeted relief and long-term management of inflammatory skin disease." },
   { name: "Psoriasis", desc: "Advanced topical, light and biologic therapies tailored to severity." },
   { name: "Rosacea", desc: "Calming chronic redness and flares with evidence-based protocols." },
-  { name: "Surgical Dermatology", desc: "In-office removal of cysts, lesions and suspicious growths." },
-  { name: "Mole & Lesion Checks", desc: "Dermoscopic evaluation and mapping for early detection." },
-  { name: "Pediatric Dermatology", desc: "Gentle, specialized care for the youngest patients." },
+  { name: "Surgical Dermatology", desc: "In-office excision of cysts, lesions and suspicious growths." },
+  { name: "Full-Body Skin Exams", desc: "Dermoscopic evaluation and mapping for early, confident detection." },
 ];
 
 const SPA: Service[] = [
-  { name: "Botox & Dysport", desc: "Expert neuromodulator artistry for a natural, refreshed look." },
-  { name: "Dermal Fillers", desc: "Restore volume and contour with precise, conservative technique." },
-  { name: "Sciton Halo Laser", desc: "Hybrid fractional resurfacing for tone, texture and glow." },
-  { name: "IPL Photofacial", desc: "Erase sun damage, redness and brown spots with intense pulsed light." },
-  { name: "CoolSculpting", desc: "Non-surgical fat reduction that freezes away stubborn pockets." },
-  { name: "RF Microneedling", desc: "Radiofrequency collagen remodeling for firmer, smoother skin." },
-  { name: "Medical Facials & Peels", desc: "Clinical-grade facials, chemical peels and dermaplaning." },
+  { name: "Botox", desc: "Softens forehead lines, crow's feet and frown lines for a refreshed look." },
+  { name: "Juvéderm Fillers", desc: "The #1 hyaluronic-acid filler collection — placed with conservative artistry." },
+  { name: "Sciton Halo Laser", desc: "Hybrid fractional resurfacing for tone, texture and luminous glow." },
+  { name: "RF Microneedling", desc: "Radiofrequency collagen remodeling for fine lines, pores and texture." },
+  { name: "Doctor-Directed CoolSculpting", desc: "Physician-supervised, non-surgical fat reduction of stubborn pockets." },
+  { name: "Custom Facials & Peels", desc: "Clinical-grade facials and chemical peels, tailored to your skin." },
+  { name: "Dermaplaning & Waxing", desc: "Smooth, polished skin with expert dermaplaning and waxing services." },
   { name: "Skincare & Memberships", desc: "Physician-curated regimens and members-only aesthetic pricing." },
 ];
 
@@ -66,6 +66,7 @@ function ServiceBlock({
   lede,
   items,
   tone,
+  footnote,
 }: {
   id: string;
   eyebrow: string;
@@ -73,6 +74,7 @@ function ServiceBlock({
   lede: string;
   items: Service[];
   tone: "clinical" | "spa";
+  footnote?: React.ReactNode;
 }) {
   return (
     <Section id={id} labelledBy={`${id}-heading`}>
@@ -82,6 +84,11 @@ function ServiceBlock({
           <ServiceCard key={s.name} s={s} tone={tone} i={i} />
         ))}
       </ul>
+      {footnote && (
+        <Reveal className="mt-8">
+          <p className="text-sm text-[var(--color-fg-subtle)]">{footnote}</p>
+        </Reveal>
+      )}
     </Section>
   );
 }
@@ -111,9 +118,19 @@ export function SpaServices() {
         id="spa"
         eyebrow="The Spa at Encore"
         title={<>Aesthetics, <span className="italic">elevated.</span></>}
-        lede="A physician-supervised med-spa where dermatologic science meets luxury. The same expertise behind your medical care, now devoted to how you look and feel."
+        lede="The Spa at Encore blends medical treatments with spa luxury — in a relaxed, peaceful setting. The same expertise behind your medical care, now devoted to how you look and feel."
         items={SPA}
         tone="spa"
+        footnote={
+          <>
+            Every aesthetic journey begins with a{" "}
+            <span className="text-[var(--color-fg)]">
+              complimentary consultation
+            </span>{" "}
+            — and ask about Spa membership for members-only pricing. Treatments
+            are physician-supervised. Pricing shown elsewhere is illustrative.
+          </>
+        }
       />
     </div>
   );

@@ -21,10 +21,17 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Encore Dermatology — Academic-Level Skin Care in Columbus, OH",
+  title: "Encore Dermatology — The Finest in Skin Care · Columbus, OH",
   description:
-    "Board-certified, academic-level dermatology and luxury med-spa care in Columbus, led by Dr. Gwyn Londeree, MD — Associate Professor of Dermatology at the Ohio State University College of Medicine. Medical & surgical dermatology, skin cancer care, Botox, fillers, Sciton Halo laser, CoolSculpting and more. Book in 30 seconds.",
+    "Academic-level medical & surgical dermatology and The Spa at Encore — luxury aesthetics under one roof in Columbus. Led by Dr. Gwyn Londeree, MD, Associate Professor of Dermatology at the Ohio State University College of Medicine and board-certified since 2001. Skin-cancer care, Botox, Juvéderm, Sciton Halo, CoolSculpting and more. Book in 30 seconds — no Zocdoc detour.",
   robots: { index: false, follow: false },
+  openGraph: {
+    title: "Encore Dermatology — The Finest in Skin Care · Columbus, OH",
+    description:
+      "Academic-level dermatology meets luxury aesthetics. Led by Dr. Gwyn Londeree, MD — OSU Associate Professor of Dermatology. Serving Columbus since 2010.",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export default function EncoreLayout({

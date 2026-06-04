@@ -44,6 +44,19 @@ export function BookingCTA() {
                 Reserve directly with us — no third-party redirect. Pick a path
                 and a time; we&rsquo;ll confirm by text within the hour.
               </p>
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {["Same-week availability", "New patients welcome", "Complimentary aesthetic consults"].map(
+                  (t) => (
+                    <li
+                      key={t}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)]/50 px-3 py-1 text-xs text-[var(--color-fg-muted)]"
+                    >
+                      <span aria-hidden className="text-[var(--gold)]">✦</span>
+                      {t}
+                    </li>
+                  ),
+                )}
+              </ul>
               <p className="mt-6 flex items-center gap-2 text-sm text-[var(--color-fg-subtle)]">
                 <span aria-hidden>☎</span>
                 Prefer to talk?{" "}
@@ -116,9 +129,7 @@ export function BookingCTA() {
                     : "cursor-not-allowed bg-[var(--color-bg-subtle)] text-[var(--color-fg-subtle)]",
                 )}
               >
-                {ready
-                  ? `Confirm — ${time}`
-                  : "Select a path and time"}
+                {ready ? `Confirm — ${time}` : "Select a path and time"}
               </button>
               <p
                 role="status"
@@ -126,7 +137,7 @@ export function BookingCTA() {
                 className="mt-3 min-h-[1.25rem] text-center text-xs text-[var(--color-fg-subtle)]"
               >
                 {ready
-                  ? "Demo only — we'd text you a confirmation here."
+                  ? `${path} · ${time} — we'd text your confirmation here. (Demo only.)`
                   : ""}
               </p>
             </div>

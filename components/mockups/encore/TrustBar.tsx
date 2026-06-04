@@ -10,10 +10,10 @@ import { motion, useReducedMotion } from "motion/react";
 
 const ITEMS: { v: string; k: string; sr?: string }[] = [
   { v: "4.81★", k: "Zocdoc rating", sr: "4.81 out of 5 stars" },
-  { v: "404", k: "Patient reviews" },
+  { v: "404", k: "Verified patient reviews" },
   { v: "OSU", k: "Associate Professor of Dermatology" },
-  { v: "2010", k: "Serving Columbus since" },
-  { v: "ABD", k: "Board-certified dermatology" },
+  { v: "Since 2010", k: "Serving the Columbus area" },
+  { v: "Board-Certified", k: "Dermatology — since 2001" },
 ];
 
 export function TrustBar() {
@@ -37,7 +37,7 @@ export function TrustBar() {
             }}
             className="flex flex-col items-center gap-1.5 py-7 text-center md:py-9"
           >
-            <span className="font-display text-3xl leading-none text-[var(--color-fg)]">
+            <span className="font-display text-balance text-2xl leading-tight text-[var(--color-fg)] md:text-[1.65rem]">
               <span className="sr-only">{it.sr ?? it.v}</span>
               <span aria-hidden>{it.v}</span>
             </span>

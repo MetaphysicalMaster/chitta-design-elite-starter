@@ -6,6 +6,7 @@
  */
 
 import Link from "next/link";
+import { EncoreCrest } from "./primitives";
 
 const HOURS = [
   { d: "Monday – Thursday", h: "8:00a – 5:00p" },
@@ -27,13 +28,16 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr] md:py-20">
         {/* Brand + NAP */}
         <div>
-          <div className="flex items-baseline gap-2">
-            <span className="font-display text-2xl text-[var(--color-fg)]">
-              Encore
-            </span>
-            <span className="text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-fg-subtle)]">
-              Dermatology
-            </span>
+          <div className="flex items-center gap-3">
+            <EncoreCrest className="h-9 w-9 flex-none" />
+            <div className="flex items-baseline gap-2">
+              <span className="font-display text-2xl text-[var(--color-fg)]">
+                Encore
+              </span>
+              <span className="text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-fg-subtle)]">
+                Dermatology
+              </span>
+            </div>
           </div>
           <p className="mt-4 max-w-[40ch] text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
             Academic-level medical &amp; surgical dermatology and luxury

@@ -88,17 +88,17 @@ export function RenewalHero() {
           Left wash anchors the copy column; vertical seats nav + base. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(14%_0.02_265_/_0.86)] via-[oklch(15%_0.02_265_/_0.42)] to-transparent"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(14%_0.019_248_/_0.88)] via-[oklch(15%_0.019_248_/_0.44)] to-transparent"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(14%_0.02_265_/_0.72)] via-transparent to-[oklch(13%_0.02_266_/_0.72)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(14%_0.019_248_/_0.72)] via-transparent to-[oklch(13%_0.019_248_/_0.74)]"
       />
       {/* Focused anchor wash behind the copy column — guarantees WCAG-AA even
           if the warm light shaft sweeps toward the cursor on the left. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_90%_at_22%_55%,oklch(13%_0.02_266_/_0.6),transparent_62%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_90%_at_22%_55%,oklch(13%_0.019_248_/_0.62),transparent_62%)]"
       />
 
       <motion.div
@@ -112,25 +112,26 @@ export function RenewalHero() {
           className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg)] backdrop-blur-md"
         >
           <span aria-hidden className="text-[var(--gold)]">✦</span>
-          Board-certified · OSU faculty-led · Since 2010
+          Board-certified · OSU faculty-led · Columbus since 2010
         </motion.p>
 
         <motion.h1
           variants={item}
-          className="font-display max-w-[18ch] text-balance text-[var(--color-fg)] drop-shadow-[0_2px_30px_oklch(10%_0.02_265_/_0.6)]"
+          className="font-display display-tight max-w-[18ch] text-balance text-[var(--color-fg)] drop-shadow-[0_2px_30px_oklch(10%_0.02_248_/_0.6)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.02 }}
         >
-          The most trusted
-          <span className="italic foil"> skin </span>
-          in Columbus.
+          The finest in
+          <span className="italic foil-sheen"> skin care</span>
+          , Columbus.
         </motion.h1>
 
         <motion.p
           variants={item}
-          className="mt-7 max-w-[50ch] text-pretty font-light text-[var(--color-fg-muted)]"
+          className="mt-7 max-w-[52ch] text-pretty font-light text-[var(--color-fg-muted)]"
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.55 }}
         >
-          Dermatology practiced at an academic-medical level — led by{" "}
+          For over fifteen years, dermatology practiced at an academic-medical
+          level — led by{" "}
           <span className="font-medium text-[var(--color-fg)]">
             Dr. Gwyn Londeree, MD
           </span>
@@ -138,7 +139,9 @@ export function RenewalHero() {
           <span className="text-[var(--color-fg)]">
             Ohio State University College of Medicine
           </span>
-          . Clinical care and luxury aesthetics, under one roof.
+          . Medical &amp; surgical care and{" "}
+          <span className="text-[var(--color-fg)]">The Spa at Encore</span>,
+          under one roof.
         </motion.p>
 
         <motion.div
@@ -185,6 +188,7 @@ export function RenewalHero() {
             { v: "4.81★", k: "404 patient reviews" },
             { v: "OSU", k: "Associate Professor" },
             { v: "Est. 2010", k: "Columbus, Ohio" },
+            { v: "Since 2001", k: "Board-certified" },
           ].map((s) => (
             <div key={s.k} className="flex flex-col">
               <dt className="font-display text-2xl leading-none">{s.v}</dt>

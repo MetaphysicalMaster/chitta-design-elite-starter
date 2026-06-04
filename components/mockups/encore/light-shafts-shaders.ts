@@ -79,9 +79,9 @@ export const shaftFragmentShader = /* glsl */ `
     shaftField += fbm(vec2(warp * 0.5 - 1.7, dist * 1.6 - t * 2.6)) * 0.5;
 
     // Sharpen into beams and fade with distance (volumetric falloff).
-    float beams = pow(clamp(shaftField, 0.0, 1.0), 2.1);
-    float falloff = exp(-dist * 1.55);
-    float core = exp(-dist * 3.4) * 0.9; // bright source bloom seed
+    float beams = pow(clamp(shaftField, 0.0, 1.0), 2.25);
+    float falloff = exp(-dist * 1.5);
+    float core = exp(-dist * 3.2) * 0.95; // bright source bloom seed
 
     // Vertical bias so light reads as descending from upper area.
     float vertical = smoothstep(1.05, -0.15, uv.y);
@@ -98,12 +98,17 @@ export const shaftFragmentShader = /* glsl */ `
     base += u_void1 * core * 0.6;
 
     vec3 col = base;
-    col += u_beam * warmAmt * 1.15;
-    col += u_beamCool * coolAmt * 0.9;
+    col += u_beam * warmAmt * 1.22;
+    col += u_beamCool * coolAmt * 0.92;
+
+    // Faint drifting dust motes catching the light — cinematic volumetric feel.
+    vec2 mp = p * 5.5 + vec2(0.0, t * 1.4);
+    float motes = pow(noise(mp + noise(mp * 1.7)), 9.0);
+    col += u_beam * motes * warmAmt * 2.4;
 
     // Subtle vignette to frame.
     float vig = smoothstep(1.25, 0.25, length(p));
-    col *= mix(0.78, 1.0, vig);
+    col *= mix(0.76, 1.0, vig);
 
     // Fine grain to avoid banding on the dark gradient.
     float grain = (hash(uv * u_resolution + u_time) - 0.5) * 0.012;

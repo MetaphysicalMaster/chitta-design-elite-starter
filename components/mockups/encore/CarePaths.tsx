@@ -33,12 +33,12 @@ const PATHS = [
     kicker: "The Spa at Encore",
     title: "Aesthetic Medicine",
     blurb:
-      "A physician-supervised med-spa where dermatologic science meets luxury — injectables, Sciton Halo laser resurfacing, body contouring and signature facials.",
+      "A physician-supervised med-spa where dermatologic science meets luxury — Botox and Juvéderm, Sciton Halo resurfacing, doctor-directed CoolSculpting and signature facials, in a relaxed and peaceful setting.",
     points: [
-      "Botox & dermal fillers",
-      "Sciton Halo & IPL laser",
-      "CoolSculpting & RF microneedling",
-      "Medical facials, peels & dermaplaning",
+      "Botox & Juvéderm fillers",
+      "Sciton Halo & RF microneedling",
+      "Doctor-directed CoolSculpting",
+      "Custom facials, peels & dermaplaning",
     ],
     href: "#spa",
     cta: "Enter The Spa",

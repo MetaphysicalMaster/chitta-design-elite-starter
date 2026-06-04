@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/mockups/encore/SiteNav";
 import { RenewalHero } from "@/components/mockups/encore/RenewalHero";
 import { TrustBar } from "@/components/mockups/encore/TrustBar";
 import { CarePaths } from "@/components/mockups/encore/CarePaths";
+import { WhyEncore } from "@/components/mockups/encore/WhyEncore";
 import { MedicalServices, SpaServices } from "@/components/mockups/encore/Services";
 import { BeforeAfter } from "@/components/mockups/encore/BeforeAfter";
 import { Doctor } from "@/components/mockups/encore/Doctor";
@@ -26,6 +27,7 @@ export default function EncoreMockupPage() {
         <RenewalHero />
         <TrustBar />
         <CarePaths />
+        <WhyEncore />
         <MedicalServices />
         <SpaServices />
         <BeforeAfter />

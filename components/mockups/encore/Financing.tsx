@@ -10,9 +10,9 @@ import Link from "next/link";
 import { Section, Reveal } from "./primitives";
 
 const PERKS = [
-  { v: "0% APR", k: "Promotional financing on qualifying treatments via CareCredit." },
-  { v: "Members", k: "Spa membership unlocks priority booking and aesthetic pricing." },
-  { v: "Seasonal", k: "Rotating promotions on Botox, laser packages and CoolSculpting." },
+  { v: "CareCredit", k: "Promotional financing on qualifying aesthetic treatments, subject to approval." },
+  { v: "Membership", k: "The Spa membership unlocks priority booking and members-only pricing." },
+  { v: "Seasonal", k: "Rotating promotions on Botox, Halo laser packages and CoolSculpting." },
 ];
 
 export function Financing() {

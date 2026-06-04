@@ -8,7 +8,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "motion/react";
+import { EncoreCrest } from "./primitives";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -24,14 +30,17 @@ function Wordmark() {
   return (
     <Link
       href="#top"
-      className="group flex items-baseline gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]"
+      className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]"
       aria-label="Encore Dermatology — home"
     >
-      <span className="font-display text-xl tracking-tight text-[var(--color-fg)]">
-        Encore
-      </span>
-      <span className="text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-fg-subtle)] transition-colors group-hover:text-[var(--gold)]">
-        Dermatology
+      <EncoreCrest className="h-7 w-7 flex-none" />
+      <span className="flex items-baseline gap-2">
+        <span className="font-display text-xl tracking-tight text-[var(--color-fg)]">
+          Encore
+        </span>
+        <span className="hidden text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-fg-subtle)] transition-colors group-hover:text-[var(--gold)] sm:inline">
+          Dermatology
+        </span>
       </span>
     </Link>
   );
@@ -41,6 +50,14 @@ export function SiteNav() {
   const prefersReduced = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  // Slim gold reading-progress bar — a premium micro-detail.
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -64,6 +81,12 @@ export function SiteNav() {
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
       className="fixed inset-x-0 top-0 z-50"
     >
+      {/* Reading-progress hairline */}
+      <motion.div
+        aria-hidden
+        style={{ scaleX: prefersReduced ? 1 : progress }}
+        className="absolute inset-x-0 top-0 h-[2px] origin-left bg-gradient-to-r from-[var(--gold-deep)] via-[var(--gold)] to-[var(--clinical)]"
+      />
       <div
         className={cn(
           "mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 transition-all duration-300 sm:px-7",

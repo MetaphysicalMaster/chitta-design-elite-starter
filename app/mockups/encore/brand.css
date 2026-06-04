@@ -8,26 +8,28 @@
    ============================================================ */
 
 [data-brand="encore"] {
-  /* Surfaces — deep, sophisticated ink-navy (the cinematic dark theme) */
-  --color-bg: oklch(20% 0.022 264);
-  --color-bg-subtle: oklch(24% 0.024 264);
-  --color-bg-elevated: oklch(27% 0.026 263);
-  --color-bg-deep: oklch(15% 0.02 265); /* near-black for the hero void */
+  /* Surfaces — deep, sophisticated ink-navy with a faint clinical-teal cast
+     (their real brand leans aqua/teal, not pure navy). The cinematic dark
+     theme: a teaching-hospital-at-dusk calm under champagne light. */
+  --color-bg: oklch(20% 0.021 244);
+  --color-bg-subtle: oklch(23.5% 0.023 244);
+  --color-bg-elevated: oklch(26.5% 0.025 242);
+  --color-bg-deep: oklch(14.5% 0.019 248); /* near-black for the hero void */
 
   /* Foreground — warm porcelain whites for AA on the dark theme */
-  --color-fg: oklch(96% 0.008 80);
-  --color-fg-muted: oklch(80% 0.012 250);
-  --color-fg-subtle: oklch(66% 0.014 252);
+  --color-fg: oklch(96.5% 0.008 84);
+  --color-fg-muted: oklch(81% 0.013 230);
+  --color-fg-subtle: oklch(68% 0.015 232); /* lifted to clear AA (≥4.5:1) */
 
   /* Accent — champagne gold (the luxe / academic-crest accent).
      accent-fg stays dark so gold buttons read with AA contrast. */
-  --color-accent: oklch(82% 0.1 84);
-  --color-accent-fg: oklch(22% 0.03 264);
-  --color-accent-subtle: oklch(34% 0.05 80);
+  --color-accent: oklch(83% 0.098 86);
+  --color-accent-fg: oklch(21% 0.028 248);
+  --color-accent-subtle: oklch(33% 0.05 82);
 
   /* Borders — luminous hairlines on dark */
-  --color-border: oklch(38% 0.02 262);
-  --color-border-subtle: oklch(30% 0.018 263);
+  --color-border: oklch(39% 0.021 242);
+  --color-border-subtle: oklch(30.5% 0.018 244);
 
   --color-success: oklch(72% 0.13 162);
   --color-warning: oklch(82% 0.13 85);
@@ -35,24 +37,25 @@
   --color-info: oklch(72% 0.1 230);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Clinical-light cool teal — the "renewal light" cool counterpart to gold */
-  --clinical: oklch(80% 0.09 215);
-  --clinical-deep: oklch(60% 0.1 230);
+  /* Clinical aqua-teal — Encore's authentic brand hue, the cool "renewal
+     light" counterpart to champagne gold. Tuned toward their real aqua. */
+  --clinical: oklch(82% 0.095 205);
+  --clinical-deep: oklch(62% 0.105 212);
 
-  /* Gold ramp for crests, rules, dividers */
-  --gold: oklch(82% 0.1 84);
-  --gold-soft: oklch(88% 0.07 86);
-  --gold-deep: oklch(66% 0.11 78);
+  /* Gold ramp for crests, rules, dividers — refined champagne */
+  --gold: oklch(83% 0.098 86);
+  --gold-soft: oklch(89% 0.066 88);
+  --gold-deep: oklch(67% 0.108 80);
 
-  /* Spa-side warm rose — used to differentiate The Spa path */
-  --spa: oklch(78% 0.07 25);
-  --spa-deep: oklch(60% 0.1 22);
+  /* Spa-side warm rose-quartz — differentiates The Spa path (aesthetics) */
+  --spa: oklch(79% 0.072 22);
+  --spa-deep: oklch(61% 0.1 20);
 
   /* Hero crystal gradient stops (WebGL scene + CSS fallback) */
-  --void-0: oklch(16% 0.022 266);
-  --void-1: oklch(22% 0.03 262);
-  --beam: oklch(92% 0.06 88); /* warm light shaft */
-  --beam-cool: oklch(86% 0.07 220); /* cool refracted light */
+  --void-0: oklch(15.5% 0.02 248);
+  --void-1: oklch(21.5% 0.029 244);
+  --beam: oklch(93% 0.058 90); /* warm light shaft */
+  --beam-cool: oklch(87% 0.072 210); /* cool refracted (clinical) light */
 
   /* Glass tokens — dark, premium frosted surface */
   --glass-bg: oklch(28% 0.022 264 / 0.55);
@@ -83,6 +86,14 @@
   font-optical-sizing: auto;
   letter-spacing: -0.018em;
   font-weight: 400;
+  /* Crisper serif edges on the dark theme */
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero/large display gets slightly tighter optical tracking */
+[data-brand="encore"] .display-tight {
+  letter-spacing: -0.026em;
+  font-weight: 380;
 }
 
 /* Precise grotesque for eyebrows / UI labels */
@@ -146,6 +157,12 @@
 [data-brand="encore"] .text-gold {
   color: var(--gold);
 }
+[data-brand="encore"] .text-clinical {
+  color: var(--clinical);
+}
+[data-brand="encore"] .text-spa {
+  color: var(--spa);
+}
 [data-brand="encore"] .foil {
   background: linear-gradient(
     100deg,
@@ -157,6 +174,48 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Animated gold-foil sheen — a slow light rake across emphasized words,
+   echoing the hero's "renewal light." Pauses under reduced motion. */
+[data-brand="encore"] .foil-sheen {
+  background: linear-gradient(
+    100deg,
+    var(--gold-deep) 0%,
+    var(--gold-soft) 30%,
+    oklch(96% 0.04 92) 46%,
+    var(--gold) 62%,
+    var(--gold-deep) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: encore-foil 7s ease-in-out infinite;
+}
+@keyframes encore-foil {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+
+/* Refined crest ornament — a gold node flanked by tapering rules. Used as a
+   section ornament that nods to an academic/medical crest without a literal
+   logo. */
+[data-brand="encore"] .crest {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--gold);
+}
+[data-brand="encore"] .crest::before,
+[data-brand="encore"] .crest::after {
+  content: "";
+  height: 1px;
+  width: clamp(1.5rem, 6vw, 3rem);
+  background: linear-gradient(90deg, transparent, var(--gold-deep));
+}
+[data-brand="encore"] .crest::after {
+  background: linear-gradient(90deg, var(--gold-deep), transparent);
 }
 
 /* Thin hairline divider with a centered gold node */
@@ -171,9 +230,13 @@
   );
 }
 
-/* Respect reduced motion: freeze decorative transforms */
+/* Respect reduced motion: freeze decorative transforms + CSS animations */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="encore"] * {
     scroll-behavior: auto !important;
+  }
+  [data-brand="encore"] .foil-sheen {
+    animation: none;
+    background-position: 50% 0;
   }
 }
