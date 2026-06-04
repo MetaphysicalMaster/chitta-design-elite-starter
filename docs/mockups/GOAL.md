@@ -19,7 +19,7 @@
 |---|---|---|---|---|
 | Blue Sky Med Spa | 23 | `blue-sky` | Interactive volumetric "breath of sky" WebGL hero (living dawn→day gradient sky + cursor parallax) | ✅ done — 39 passes, 9.23 self-score, tsc+build green |
 | Encore Dermatology | 22 | `encore` | Cinematic god-rays + refractive-crystal "renewal" hero (light refraction) | ✅ done — 43 passes, 9.25 self-score, tsc+build green |
-| Beyond Skin Aesthetics | 20 | `beyond-skin` | 3D particle-morph "beyond the surface" hero (particles form & disperse, cursor-reactive) | ⬜ pending |
+| Beyond Skin Aesthetics | 20 | `beyond-skin` | 3D particle-morph "beyond the surface" hero (particles form & disperse, cursor-reactive) | ✅ done — 40 passes, 9.19 self-score, tsc+build green |
 
 *(#3 tie at 20 broken toward Beyond Skin — highest Close Likelihood 8. Swap to The Luxe on request.)*
 
@@ -28,9 +28,19 @@
 - Each owns: `app/mockups/<slug>/{page.tsx,layout.tsx,brand.css,PASSES.md}` + `components/mockups/<slug>/*`
 - No shared-file edits → parallel-safe folders, built sequentially.
 
-## Loop status
+## Loop status — ✅ 100% FULFILLED
 - [x] Infra: deps installed, baseline `tsc` green, Next 16 docs confirmed
-- [ ] Site 1 — Blue Sky
-- [ ] Site 2 — Encore
-- [ ] Site 3 — Beyond Skin
-- [ ] Final consolidated `next build` green + push
+- [x] Site 1 — Blue Sky (39 passes · 9.23)
+- [x] Site 2 — Encore (43 passes · 9.25)
+- [x] Site 3 — Beyond Skin (40 passes · 9.19)
+- [x] Final consolidated `next build` green (all 3 routes prerender static ○) + pushed
+
+**Total: 122 DesignGod refinement passes across 3 award-tier pitch mockups, each with a bespoke brand, a Three.js power element + graceful fallback, and clean tsc + build gates.**
+
+## Preview locally
+```bash
+cd chitta-design-elite-starter && pnpm install && pnpm dev
+# → http://localhost:3000/mockups/blue-sky
+# → http://localhost:3000/mockups/encore
+# → http://localhost:3000/mockups/beyond-skin
+```

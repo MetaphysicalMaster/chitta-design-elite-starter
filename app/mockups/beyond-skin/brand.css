@@ -1,0 +1,213 @@
+/* ============================================================
+   Beyond Skin Aesthetics — Scoped Brand Palette (OKLch)
+   Overrides shared --color-* tokens ONLY within
+   [data-brand="beyond-skin"]. Brand essence: bold, modern,
+   confident editorial luxury — "beyond the surface."
+   Direction: warm ivory canvas · espresso ink · molten
+   rose-gold + champagne bronze glow. Distinct from blue-sky
+   (airy blue) and encore (dark cinematic crystal).
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="beyond-skin"] {
+  /* Surfaces — warm porcelain ivory, the editorial "page" */
+  --color-bg: oklch(98.4% 0.008 70);
+  --color-bg-subtle: oklch(96.2% 0.012 66);
+  --color-bg-elevated: oklch(99.6% 0.004 80);
+
+  /* Foreground — deep espresso ink (not pure black) for AA contrast */
+  --color-fg: oklch(23% 0.02 50);
+  --color-fg-muted: oklch(44% 0.022 48);
+  --color-fg-subtle: oklch(58% 0.02 46);
+
+  /* Accent — molten rose-bronze. accent-fg stays light for buttons. */
+  --color-accent: oklch(58% 0.13 38);
+  --color-accent-fg: oklch(99% 0.006 80);
+  --color-accent-subtle: oklch(93% 0.04 44);
+
+  /* Borders — warm, barely-there */
+  --color-border: oklch(89% 0.012 60);
+  --color-border-subtle: oklch(94% 0.008 64);
+
+  --color-success: oklch(64% 0.13 150);
+  --color-warning: oklch(80% 0.13 80);
+  --color-error: oklch(60% 0.19 25);
+  --color-info: oklch(60% 0.1 250);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* "Beyond the Surface" glow stops — used by the WebGL hero + CSS fallback.
+     Kept perceptually adjacent so the morph reads as luminous skin/light. */
+  --glow-rose: oklch(72% 0.15 25); /* warm coral-rose */
+  --glow-bronze: oklch(74% 0.1 65); /* champagne bronze */
+  --glow-gold: oklch(82% 0.1 85); /* soft gold */
+  --glow-plum: oklch(46% 0.11 350); /* deep plum shadow */
+  --ink-deep: oklch(19% 0.02 40); /* near-espresso void */
+  --ink-warm: oklch(26% 0.03 35); /* warm shadow */
+
+  /* Gold/bronze luxe accent for membership + fine details */
+  --gold: oklch(76% 0.1 80);
+  --gold-deep: oklch(62% 0.11 68);
+  --rose: oklch(64% 0.15 22);
+
+  /* Glass tokens — warm-tinted */
+  --glass-bg: oklch(99% 0.01 70 / 0.62);
+  --glass-bg-strong: oklch(99.5% 0.008 75 / 0.85);
+  --glass-border: oklch(100% 0 0 / 0.55);
+  --glass-shadow: 0 10px 44px -14px oklch(30% 0.06 40 / 0.3);
+
+  /* Glass tokens for use on the DARK hero field */
+  --glass-dark: oklch(28% 0.03 40 / 0.34);
+  --glass-dark-border: oklch(90% 0.05 70 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper */
+  --font-display: var(--font-bricolage), "Times New Roman", Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  /* Fluid type tokens (clamp) for editorial rhythm */
+  --fluid-hero: clamp(2.9rem, 1.2rem + 7.4vw, 7.5rem);
+  --fluid-h2: clamp(2.1rem, 1.2rem + 3.9vw, 4rem);
+  --fluid-h3: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  --fluid-lead: clamp(1.05rem, 0.96rem + 0.74vw, 1.4rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings inside the brand wrapper default to the editorial display */
+[data-brand="beyond-skin"] .font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+[data-brand="beyond-skin"] .font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Reusable glass surfaces (light field) */
+[data-brand="beyond-skin"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+}
+
+[data-brand="beyond-skin"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+}
+
+/* Glass on the dark hero field */
+[data-brand="beyond-skin"] .glass-dark {
+  background: var(--glass-dark);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid var(--glass-dark-border);
+}
+
+/* Molten gradient text for the signature word — "beyond" */
+[data-brand="beyond-skin"] .text-molten {
+  background: linear-gradient(
+    100deg,
+    var(--glow-rose) 0%,
+    var(--glow-bronze) 42%,
+    var(--glow-gold) 70%,
+    var(--glow-rose) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated shimmer for the molten word (decorative; reduced-motion freezes it) */
+[data-brand="beyond-skin"] .text-molten-anim {
+  animation: bs-molten-shift 9s ease-in-out infinite;
+}
+@keyframes bs-molten-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Static "beyond the surface" hero field — SSR + reduced-motion + mobile
+   fallback. A luminous skin/light gradient over warm espresso void. */
+[data-brand="beyond-skin"] .surface-fallback {
+  background:
+    radial-gradient(
+      62% 70% at 30% 34%,
+      var(--glow-rose) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      54% 60% at 72% 62%,
+      var(--glow-bronze) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      40% 50% at 60% 18%,
+      var(--glow-gold) 0%,
+      transparent 55%
+    ),
+    linear-gradient(155deg, var(--ink-warm) 0%, var(--ink-deep) 60%, var(--glow-plum) 130%);
+  background-color: var(--ink-deep);
+}
+
+/* Grain overlay tying the editorial layers together (subtle) */
+[data-brand="beyond-skin"] .grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Fine bronze underline used on eyebrow labels */
+[data-brand="beyond-skin"] .rule-bronze::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  background: linear-gradient(90deg, var(--gold-deep), transparent);
+}
+
+/* Centered variant of the eyebrow rule */
+[data-brand="beyond-skin"] .rule-bronze-center::after {
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-deep),
+    transparent
+  );
+}
+
+/* Display ligatures + editorial niceties */
+[data-brand="beyond-skin"] {
+  font-feature-settings: "ss01", "cv05", "liga", "calt";
+}
+
+/* Respect reduced motion: freeze decorative animations */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="beyond-skin"] .text-molten-anim {
+    animation: none !important;
+  }
+  [data-brand="beyond-skin"] * {
+    scroll-behavior: auto !important;
+  }
+}
