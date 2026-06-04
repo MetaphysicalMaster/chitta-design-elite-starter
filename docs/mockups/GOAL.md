@@ -18,7 +18,7 @@
 | Site | Combined | Slug | Power element (direction) | Status |
 |---|---|---|---|---|
 | Blue Sky Med Spa | 23 | `blue-sky` | Interactive volumetric "breath of sky" WebGL hero (living dawn→day gradient sky + cursor parallax) | ✅ done — 39 passes, 9.23 self-score, tsc+build green |
-| Encore Dermatology | 22 | `encore` | Cinematic god-rays + refractive-crystal "renewal" hero (light refraction) | ⬜ pending |
+| Encore Dermatology | 22 | `encore` | Cinematic god-rays + refractive-crystal "renewal" hero (light refraction) | ✅ done — 43 passes, 9.25 self-score, tsc+build green |
 | Beyond Skin Aesthetics | 20 | `beyond-skin` | 3D particle-morph "beyond the surface" hero (particles form & disperse, cursor-reactive) | ⬜ pending |
 
 *(#3 tie at 20 broken toward Beyond Skin — highest Close Likelihood 8. Swap to The Luxe on request.)*
