@@ -9,50 +9,75 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Section, SectionHeading, Reveal } from "./primitives";
+import { encoreImages } from "@/app/mockups/encore/images.manifest";
 import { cn } from "@/lib/utils";
 
 const CASES = [
   {
     id: "halo",
     label: "Sciton Halo — tone & texture",
-    beforeTint: "from-[oklch(62%_0.04_60)] to-[oklch(54%_0.05_42)]",
-    afterTint: "from-[oklch(82%_0.03_70)] to-[oklch(76%_0.03_55)]",
+    /** object-position keeps a distinct region of the brand photo in frame */
+    position: "center 35%",
   },
   {
     id: "filler",
     label: "Filler — midface volume",
-    beforeTint: "from-[oklch(60%_0.03_50)] to-[oklch(52%_0.04_38)]",
-    afterTint: "from-[oklch(80%_0.025_65)] to-[oklch(74%_0.03_52)]",
+    position: "center 50%",
   },
   {
     id: "microneedling",
     label: "RF Microneedling — texture",
-    beforeTint: "from-[oklch(58%_0.05_45)] to-[oklch(50%_0.06_35)]",
-    afterTint: "from-[oklch(83%_0.02_72)] to-[oklch(77%_0.025_58)]",
+    position: "center 65%",
   },
 ];
 
-function FacePlaceholder({
+/** Lighter `_min.webp` sibling for these card-sized reveal panels. */
+const BA_SRC = encoreImages.beforeAfter.primary;
+const BA_SRC_LIGHT = BA_SRC.replace(/\.png(\?.*)?$/i, "_min.webp$1");
+
+/**
+ * One half of the reveal — the SAME real brand photo on both sides, with the
+ * "before" side dimmed/desaturated and the "after" side rendered at full
+ * clinical-luxe grade, so dragging the handle reads as a genuine renewal. The
+ * source image carries its own baked-in "SAMPLE" label; we keep it labeled.
+ */
+function RevealPanel({
   variant,
-  tint,
+  position,
 }: {
   variant: "before" | "after";
-  tint: string;
+  position: string;
 }) {
+  const [useLight, setUseLight] = useState(true);
   return (
-    <div className={cn("absolute inset-0 bg-gradient-to-br", tint)}>
-      {/* Abstract "skin" texture — never an actual person */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 mix-blend-soft-light"
-        style={{
-          backgroundImage:
-            variant === "before"
-              ? "radial-gradient(circle at 30% 35%, oklch(40% 0.06 30 / 0.5) 0 6%, transparent 7%), radial-gradient(circle at 62% 55%, oklch(38% 0.07 28 / 0.45) 0 5%, transparent 6%), radial-gradient(circle at 48% 72%, oklch(42% 0.05 32 / 0.4) 0 7%, transparent 8%)"
-              : "radial-gradient(circle at 50% 40%, oklch(95% 0.02 80 / 0.35), transparent 60%)",
-        }}
+    <div className="absolute inset-0 overflow-hidden bg-[var(--color-bg-subtle)]">
+      <img
+        src={useLight ? BA_SRC_LIGHT : BA_SRC}
+        alt={
+          variant === "after"
+            ? encoreImages.beforeAfter.altText
+            : ""
+        }
+        aria-hidden={variant === "before" || undefined}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        onError={() => useLight && setUseLight(false)}
+        style={{ objectPosition: position }}
+        className={cn(
+          "absolute inset-0 h-full w-full object-cover en-photo",
+          variant === "after"
+            ? "en-photo--graded"
+            : "[filter:saturate(0.62)_brightness(0.82)_contrast(0.96)_sepia(0.06)]",
+        )}
       />
-      <span className="absolute left-3 top-3 rounded-full bg-[oklch(15%_0.02_265_/_0.6)] px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-fg)] backdrop-blur-sm">
+      {variant === "before" && (
+        <span
+          aria-hidden
+          className="absolute inset-0 bg-[oklch(16%_0.02_248_/_0.18)]"
+        />
+      )}
+      <span className="absolute left-3 top-3 rounded-full bg-[oklch(13%_0.02_248_/_0.62)] px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-fg)] backdrop-blur-sm">
         {variant}
       </span>
     </div>
@@ -101,13 +126,13 @@ function Slider({ tone }: { tone: (typeof CASES)[number] }) {
       onPointerLeave={onPointerUp}
     >
       {/* AFTER (full) */}
-      <FacePlaceholder variant="after" tint={tone.afterTint} />
+      <RevealPanel variant="after" position={tone.position} />
       {/* BEFORE (clipped to handle) */}
       <div
         className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
-        <FacePlaceholder variant="before" tint={tone.beforeTint} />
+        <RevealPanel variant="before" position={tone.position} />
       </div>
 
       {/* Divider + handle */}
@@ -148,7 +173,7 @@ export function BeforeAfter() {
         id="results-heading"
         eyebrow="Real results"
         title={<>See the <span className="italic">difference.</span></>}
-        lede="Drag to reveal. A before-and-after gallery — the proof their old site never showed. Imagery below is sample placeholder art for layout demonstration."
+        lede="Drag to reveal. A before-and-after gallery — the proof their old site never showed. Imagery below is sample, illustrative photography for layout demonstration."
       />
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {CASES.map((c, i) => (

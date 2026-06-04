@@ -8,9 +8,16 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { Section, SectionHeading, Reveal } from "./primitives";
+import { BrandImage } from "./BrandImage";
+import { encoreImages } from "@/app/mockups/encore/images.manifest";
 import { cn } from "@/lib/utils";
 
-type Service = { name: string; desc: string };
+type ServicePhoto = {
+  src: string;
+  alt: string;
+  position?: string;
+};
+type Service = { name: string; desc: string; photo?: ServicePhoto };
 
 const MEDICAL: Service[] = [
   { name: "Skin Cancer Care", desc: "Routine exams, biopsy and surgical removal of skin cancers — with academic rigor." },
@@ -24,9 +31,25 @@ const MEDICAL: Service[] = [
 ];
 
 const SPA: Service[] = [
-  { name: "Botox", desc: "Softens forehead lines, crow's feet and frown lines for a refreshed look." },
+  {
+    name: "Botox",
+    desc: "Softens forehead lines, crow's feet and frown lines for a refreshed look.",
+    photo: {
+      src: encoreImages.injectable.primary,
+      alt: encoreImages.injectable.altText,
+      position: "center 40%",
+    },
+  },
   { name: "Juvéderm Fillers", desc: "The #1 hyaluronic-acid filler collection — placed with conservative artistry." },
-  { name: "Sciton Halo Laser", desc: "Hybrid fractional resurfacing for tone, texture and luminous glow." },
+  {
+    name: "Sciton Halo Laser",
+    desc: "Hybrid fractional resurfacing for tone, texture and luminous glow.",
+    photo: {
+      src: encoreImages.laser.primary,
+      alt: encoreImages.laser.altText,
+      position: "center 45%",
+    },
+  },
   { name: "RF Microneedling", desc: "Radiofrequency collagen remodeling for fine lines, pores and texture." },
   { name: "Doctor-Directed CoolSculpting", desc: "Physician-supervised, non-surgical fat reduction of stubborn pockets." },
   { name: "Custom Facials & Peels", desc: "Clinical-grade facials and chemical peels, tailored to your skin." },
@@ -42,19 +65,52 @@ function ServiceCard({ s, tone, i }: { s: Service; tone: "clinical" | "spa"; i: 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: prefersReduced ? 0 : (i % 4) * 0.06 }}
-      className="group relative overflow-hidden rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]/55 p-6 transition-colors duration-300 hover:border-[var(--color-border)]"
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]/55 transition-colors duration-300 hover:border-[var(--color-border)]",
+        s.photo ? "p-0" : "p-6",
+      )}
     >
-      <span
-        aria-hidden
-        className={cn(
-          "absolute left-0 top-6 h-7 w-px transition-all duration-300 group-hover:h-10",
-          tone === "clinical" ? "bg-[var(--clinical)]" : "bg-[var(--spa)]",
-        )}
-      />
-      <h4 className="font-display text-lg text-[var(--color-fg)]">{s.name}</h4>
-      <p className="mt-2 text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
-        {s.desc}
-      </p>
+      {s.photo && (
+        <div className="relative overflow-hidden">
+          <BrandImage
+            src={s.photo.src}
+            alt={s.photo.alt}
+            aspect="16:9"
+            light
+            graded
+            tone
+            vignette
+            scrim="soft"
+            radius="none"
+            position={s.photo.position ?? "center"}
+            className="!border-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          >
+            <span
+              aria-hidden
+              className={cn(
+                "absolute inset-x-0 bottom-0 h-px",
+                tone === "clinical"
+                  ? "bg-gradient-to-r from-transparent via-[var(--clinical)]/55 to-transparent"
+                  : "bg-gradient-to-r from-transparent via-[var(--spa)]/55 to-transparent",
+              )}
+            />
+          </BrandImage>
+        </div>
+      )}
+      <div className={cn("relative flex flex-1 flex-col", s.photo ? "p-6" : "")}>
+        <span
+          aria-hidden
+          className={cn(
+            "absolute left-0 top-0 h-7 w-px transition-all duration-300 group-hover:h-10",
+            s.photo && "hidden",
+            tone === "clinical" ? "bg-[var(--clinical)]" : "bg-[var(--spa)]",
+          )}
+        />
+        <h4 className="font-display text-lg text-[var(--color-fg)]">{s.name}</h4>
+        <p className="mt-2 text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
+          {s.desc}
+        </p>
+      </div>
     </motion.li>
   );
 }

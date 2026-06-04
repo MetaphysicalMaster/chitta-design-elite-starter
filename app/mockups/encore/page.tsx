@@ -11,6 +11,7 @@ import { Financing } from "@/components/mockups/encore/Financing";
 import { Testimonials } from "@/components/mockups/encore/Testimonials";
 import { BookingCTA } from "@/components/mockups/encore/BookingCTA";
 import { SiteFooter } from "@/components/mockups/encore/SiteFooter";
+import { RenewalSeam } from "@/components/mockups/encore/LightShaftDivider";
 
 export default function EncoreMockupPage() {
   return (
@@ -27,10 +28,15 @@ export default function EncoreMockupPage() {
         <RenewalHero />
         <TrustBar />
         <CarePaths />
+        {/* Renewal-light seam: melt the care-path split into the Why-Encore spine */}
+        <RenewalSeam from="var(--color-bg)" to="var(--color-bg)" />
         <WhyEncore />
         <MedicalServices />
+        {/* Cool clinical → warm spa: the seam shifts the underglow toward rose */}
+        <RenewalSeam underglow="oklch(70% 0.09 22 / 0.08)" />
         <SpaServices />
         <BeforeAfter />
+        <RenewalSeam />
         <Doctor />
         <Financing />
         <Testimonials />

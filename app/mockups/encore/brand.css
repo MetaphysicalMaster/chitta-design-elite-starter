@@ -230,6 +230,95 @@
   );
 }
 
+/* ============================================================
+   Brand photography treatment — the single, consistent grade so all
+   six AI photos read as ONE cinematic shoot (aqua-teal + champagne).
+   Mirrors the blue-sky `.bs-photo` system but tuned for Encore's dark,
+   clinical-luxe theme: lifted blacks toward ink-navy, a cool clinical
+   cast warmed by a champagne low-light, gentle contrast for depth.
+   ============================================================ */
+[data-brand="encore"] .en-photo {
+  /* paints the brand surface before the image loads → no white flash, no CLS */
+  background-color: var(--color-bg-subtle);
+  filter: saturate(1.05) contrast(1.03) brightness(0.99);
+}
+/* Stronger ambiance grade for wide room/lounge/authority shots — pushes the
+   cool clinical cast slightly toward Encore's aqua-teal anchor. */
+[data-brand="encore"] .en-photo--graded {
+  filter: saturate(1.08) contrast(1.045) brightness(0.985)
+    hue-rotate(-3deg);
+}
+
+/* Aqua-teal ↔ champagne duotone wash — a blended overlay that unifies the set
+   on-brand without crushing photographic detail (soft-light keeps midtones). */
+[data-brand="encore"] .en-photo-tone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.42;
+  background: linear-gradient(
+    152deg,
+    var(--gold) 0%,
+    transparent 40%,
+    transparent 58%,
+    var(--clinical-deep) 100%
+  );
+}
+
+/* Cinematic top vignette so photos seat into the dark theme (no hard top seam). */
+[data-brand="encore"] .en-photo-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, transparent 55%, oklch(15% 0.02 248 / 0.32) 100%),
+    radial-gradient(120% 90% at 50% 100%, transparent 60%, oklch(15% 0.02 248 / 0.28) 100%);
+}
+
+/* ============================================================
+   ATMOSPHERE MOTIF — "Renewal Light" god-rays / light-shaft section seams.
+   Encore's analog to Blue Sky's cloud motif: tasteful champagne-on-aqua
+   light shafts that melt one dark band into the next. Restrained, premium.
+   ============================================================ */
+[data-brand="encore"] .en-lightshaft {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* The shaft layer — two raked beams (warm champagne + cool clinical) that
+   breathe slowly, echoing the WebGL hero's renewal light. */
+[data-brand="encore"] .en-lightshaft::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(
+      102deg,
+      transparent 38%,
+      oklch(93% 0.058 90 / 0.06) 47%,
+      oklch(93% 0.058 90 / 0.11) 50%,
+      oklch(93% 0.058 90 / 0.06) 53%,
+      transparent 62%
+    ),
+    linear-gradient(
+      96deg,
+      transparent 60%,
+      oklch(87% 0.072 210 / 0.05) 70%,
+      oklch(87% 0.072 210 / 0.09) 73%,
+      transparent 82%
+    );
+  background-size: 200% 100%;
+  animation: encore-shaft 18s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes encore-shaft {
+  0%, 100% { background-position: 0% 0, 100% 0; opacity: 0.85; }
+  50% { background-position: 18% 0, 78% 0; opacity: 1; }
+}
+
 /* Respect reduced motion: freeze decorative transforms + CSS animations */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="encore"] * {
@@ -238,5 +327,9 @@
   [data-brand="encore"] .foil-sheen {
     animation: none;
     background-position: 50% 0;
+  }
+  [data-brand="encore"] .en-lightshaft::before {
+    animation: none;
+    background-position: 9% 0, 89% 0;
   }
 }

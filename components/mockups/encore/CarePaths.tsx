@@ -9,6 +9,8 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { Section, SectionHeading, Reveal } from "./primitives";
+import { BrandImage } from "./BrandImage";
+import { encoreImages } from "@/app/mockups/encore/images.manifest";
 import { cn } from "@/lib/utils";
 
 const PATHS = [
@@ -27,6 +29,8 @@ const PATHS = [
     href: "#medical",
     cta: "Explore medical care",
     tone: "clinical" as const,
+    photo: encoreImages.treatmentRoom,
+    photoPosition: "center 55%",
   },
   {
     id: "spa",
@@ -43,6 +47,8 @@ const PATHS = [
     href: "#spa",
     cta: "Enter The Spa",
     tone: "spa" as const,
+    photo: encoreImages.facial,
+    photoPosition: "center 45%",
   },
 ];
 
@@ -69,10 +75,39 @@ export function CarePaths() {
               whileHover={prefersReduced ? undefined : { y: -6 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                "group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border)] p-8 sm:p-10",
+                "group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border)]",
                 "bg-[var(--color-bg-elevated)]/70 backdrop-blur-sm",
               )}
             >
+              {/* Care-path photo banner — gives Medical and The Spa visually
+                  equal, cinematic weight (the two-path balance). */}
+              <div className="relative overflow-hidden">
+                <BrandImage
+                  src={p.photo.primary}
+                  alt={p.photo.altText}
+                  aspect="16:9"
+                  light
+                  graded
+                  tone
+                  vignette
+                  scrim="strong"
+                  radius="none"
+                  position={p.photoPosition}
+                  className="!border-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute inset-x-0 bottom-0 h-px",
+                      p.tone === "clinical"
+                        ? "bg-gradient-to-r from-transparent via-[var(--clinical)]/60 to-transparent"
+                        : "bg-gradient-to-r from-transparent via-[var(--spa)]/60 to-transparent",
+                    )}
+                  />
+                </BrandImage>
+              </div>
+
+              <div className="relative flex flex-1 flex-col p-8 sm:p-10">
               {/* Tone wash — clinical teal vs spa rose */}
               <div
                 aria-hidden
@@ -82,10 +117,6 @@ export function CarePaths() {
                     ? "bg-[var(--clinical-deep)]"
                     : "bg-[var(--spa-deep)]",
                 )}
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent"
               />
 
               <p className="relative text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">
@@ -133,6 +164,7 @@ export function CarePaths() {
                   →
                 </span>
               </Link>
+              </div>
             </motion.div>
           </Reveal>
         ))}
