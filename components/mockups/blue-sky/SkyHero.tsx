@@ -10,8 +10,8 @@
  */
 
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -24,11 +24,12 @@ const BreathOfSkyScene = dynamic(() => import("./BreathOfSkyScene"), {
 function useEnableWebGL() {
   const prefersReduced = useReducedMotion();
   const [ok, setOk] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isLarge, setIsLarge] = useState(false);
 
   useEffect(() => {
     if (prefersReduced) return;
     const mq = window.matchMedia("(min-width: 768px)");
+    const mqLarge = window.matchMedia("(min-width: 1024px)");
     const saveData =
       // @ts-expect-error — connection is non-standard but widely supported
       navigator.connection?.saveData === true;
@@ -44,22 +45,36 @@ function useEnableWebGL() {
     }
 
     const update = () => {
-      setIsDesktop(mq.matches);
+      setIsLarge(mqLarge.matches);
       setOk(mq.matches && hasWebGL && !saveData);
     };
     update();
     mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    mqLarge.addEventListener("change", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      mqLarge.removeEventListener("change", update);
+    };
   }, [prefersReduced]);
 
-  return { enabled: ok, isDesktop };
+  // Orb is the costliest layer — only run it on large/high-perf viewports.
+  return { enabled: ok, showOrb: ok && isLarge };
 }
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export function SkyHero() {
   const prefersReduced = useReducedMotion();
-  const { enabled } = useEnableWebGL();
+  const { enabled, showOrb } = useEnableWebGL();
+
+  // Gentle scroll parallax: copy drifts up & fades as you leave the hero.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, prefersReduced ? 0 : -64]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.65, 1], [1, 1, prefersReduced ? 1 : 0]);
 
   const container = {
     hidden: {},
@@ -74,6 +89,7 @@ export function SkyHero() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Blue Sky Med Spa — physician-led aesthetics"
       className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
@@ -83,7 +99,7 @@ export function SkyHero() {
       {/* Layer 1: WebGL power element (desktop, motion-ok, webgl-ok only) */}
       {enabled && (
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <BreathOfSkyScene />
+          <BreathOfSkyScene showOrb={showOrb} />
         </div>
       )}
 
@@ -91,17 +107,18 @@ export function SkyHero() {
           Vertical seats the top nav + bottom; the left wash anchors the copy. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(28%_0.08_255_/_0.42)] via-[oklch(30%_0.08_255_/_0.12)] to-[oklch(26%_0.08_255_/_0.5)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(26%_0.08_255_/_0.46)] via-[oklch(30%_0.08_255_/_0.14)] to-[oklch(24%_0.08_255_/_0.52)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(26%_0.08_255_/_0.45)] via-[oklch(28%_0.08_255_/_0.12)] to-transparent"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(24%_0.08_255_/_0.52)] via-[oklch(28%_0.08_255_/_0.16)] to-transparent"
       />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
+        style={{ y: copyY, opacity: copyOpacity }}
         className="mx-auto w-full max-w-6xl px-6 pt-28 pb-16 sm:px-8 md:pt-32"
       >
         <motion.p
@@ -114,21 +131,22 @@ export function SkyHero() {
 
         <motion.h1
           variants={item}
-          className="font-display max-w-[16ch] text-balance text-white drop-shadow-[0_2px_24px_oklch(30%_0.1_255_/_0.45)]"
+          className="font-display max-w-[15ch] text-balance text-white drop-shadow-[0_2px_24px_oklch(30%_0.1_255_/_0.45)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.02, fontWeight: 400 }}
         >
-          Aesthetics with the
-          <span className="italic"> calm of a clear sky.</span>
+          You are seen.
+          <span className="italic"> Live your best life.</span>
         </motion.h1>
 
         <motion.p
           variants={item}
-          className="mt-6 max-w-[46ch] text-pretty font-light text-white/90"
+          className="mt-6 max-w-[48ch] text-pretty font-light text-white/90"
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.5 }}
         >
-          German Village&rsquo;s physician-led, family-owned medical spa. Real
-          medicine, an artist&rsquo;s eye, and results you can trust &mdash; from{" "}
-          <span className="font-medium text-white">Dr. Maura Manning, MD</span>.
+          German Village&rsquo;s physician-led, family-owned medical spa &mdash;
+          where 30 years of medical expertise meets a holistic eye for beauty and
+          wellness, led by{" "}
+          <span className="font-medium text-white">Dr.&nbsp;Maura&nbsp;Manning,&nbsp;MD</span>.
         </motion.p>
 
         <motion.div variants={item} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -160,12 +178,12 @@ export function SkyHero() {
 
         <motion.dl
           variants={item}
-          className="mt-12 flex flex-wrap gap-x-10 gap-y-4 text-white/90"
+          className="mt-12 flex flex-wrap gap-x-7 gap-y-4 text-white/90 sm:gap-x-10"
         >
           {[
             { v: "5.0★", k: "Google rating" },
-            { v: "MD", k: "Physician-led care" },
-            { v: "Est. 2021", k: "Family-owned" },
+            { v: "30 yrs", k: "Medical expertise" },
+            { v: "MD-led", k: "Woman & family-owned" },
           ].map((s) => (
             <div key={s.k} className="flex flex-col">
               <dt className="font-display text-2xl leading-none">{s.v}</dt>

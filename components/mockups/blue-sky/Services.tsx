@@ -7,6 +7,7 @@
  */
 
 import { motion, useReducedMotion } from "motion/react";
+import Link from "next/link";
 import { SectionHeading } from "./SectionHeading";
 import { RevealGroup, RevealItem } from "./Reveal";
 import { cn } from "@/lib/utils";
@@ -92,7 +93,7 @@ export function Services() {
               <span className="italic"> under one roof.</span>
             </>
           }
-          lead="Every treatment is delivered or overseen by a physician — so you get the artistry of a spa with the safety of a medical practice."
+          lead="Every treatment is delivered or overseen by a physician — the artistry of a spa with the safety of real medicine, and a holistic eye on your whole-body wellness."
         />
 
         <RevealGroup className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" stagger={0.06}>
@@ -104,6 +105,7 @@ export function Services() {
                 className={cn(
                   "group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6",
                   "shadow-[0_1px_2px_oklch(46%_0.12_255_/_0.04)] transition-shadow duration-300 hover:shadow-[var(--glass-shadow)]",
+                  "focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--color-accent)]",
                 )}
               >
                 {/* hover sky wash */}
@@ -121,12 +123,20 @@ export function Services() {
                     {s.tag}
                   </span>
                 </div>
-                <h3 className="font-display mt-5 text-xl leading-snug text-[var(--color-fg)]">{s.name}</h3>
+                <h3 className="font-display mt-5 text-xl leading-snug text-[var(--color-fg)]">
+                  <Link
+                    href="#book"
+                    aria-label={`Book ${s.name}`}
+                    className="rounded outline-none after:absolute after:inset-0 after:content-['']"
+                  >
+                    {s.name}
+                  </Link>
+                </h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-fg-muted)]">{s.blurb}</p>
                 <div className="mt-5 flex items-center justify-between border-t border-[var(--color-border-subtle)] pt-4">
                   <span className="text-sm font-semibold text-[var(--color-fg)]">{s.from}</span>
-                  <span className="text-sm font-medium text-[var(--color-accent)] transition-transform duration-300 group-hover:translate-x-0.5">
-                    Book →
+                  <span aria-hidden className="text-sm font-medium text-accent-deep transition-transform duration-300 group-hover:translate-x-0.5">
+                    Book&nbsp;→
                   </span>
                 </div>
               </motion.article>

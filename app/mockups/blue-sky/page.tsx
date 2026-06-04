@@ -4,6 +4,7 @@ import { SkyHero } from "@/components/mockups/blue-sky/SkyHero";
 import { TrustBar } from "@/components/mockups/blue-sky/TrustBar";
 import { Services } from "@/components/mockups/blue-sky/Services";
 import { BeforeAfter } from "@/components/mockups/blue-sky/BeforeAfter";
+import { Story } from "@/components/mockups/blue-sky/Story";
 import { Membership } from "@/components/mockups/blue-sky/Membership";
 import { Testimonials } from "@/components/mockups/blue-sky/Testimonials";
 import { BookingCTA } from "@/components/mockups/blue-sky/BookingCTA";
@@ -25,6 +26,7 @@ export default function BlueSkyMockupPage() {
         <TrustBar />
         <Services />
         <BeforeAfter />
+        <Story />
         <Membership />
         <Testimonials />
         <BookingCTA />

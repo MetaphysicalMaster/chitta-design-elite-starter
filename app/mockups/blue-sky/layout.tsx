@@ -20,9 +20,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Blue Sky Med Spa — Physician-Led Aesthetics in German Village, Columbus",
+  title: "Blue Sky Med Spa — You Are Seen. Live Your Best Life. | German Village, Columbus",
   description:
-    "Physician-led, family-owned medical spa in German Village, Columbus. Botox, fillers, Sculptra, microneedling, PRP, IV therapy, BHRT and medical weight loss — delivered with a 5.0★ standard of care. Book in 30 seconds.",
+    "Physician-led, family- and woman-owned medical spa in German Village, Columbus. 30 years of medical expertise meets a holistic approach to beauty and wellness — Botox, fillers, Sculptra, microneedling & PRP, PDO thread lifts, facials & peels, IV therapy, BHRT and medical weight loss, all with a 5.0★ standard of care. Book in 30 seconds.",
   robots: { index: false, follow: false },
 };
 

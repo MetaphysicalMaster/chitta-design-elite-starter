@@ -15,17 +15,19 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshTransmissionMaterial } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { skyFragmentShader, skyVertexShader } from "./sky-shaders";
 
-/* Brand sky palette as linear THREE colors (kept in JS so it matches brand.css) */
+/* Brand sky palette as THREE colors (kept in JS so it matches brand.css).
+   Hex tuned to the refined OKLch stops: warm champagne dawn, clear daylight
+   blue, luminous azure, soft horizon ink, faint warm rose. */
 const PALETTE = {
-  dawn: "#f2dcb8",
-  mid: "#bcd4ec",
-  high: "#7fb0e6",
-  deep: "#4f74b3",
-  blush: "#f3d2d6",
+  dawn: "#f6e0bd", // champagne-gold dawn
+  mid: "#bfd8f1", // soft clear daylight blue
+  high: "#84b3ea", // luminous azure
+  deep: "#5076b4", // soft horizon ink-blue
+  blush: "#f7d6d4", // faint warm rose
 };
 
 function SkyPlane({ pointer }: { pointer: React.RefObject<{ x: number; y: number }> }) {
@@ -103,19 +105,19 @@ function GlassOrb({ pointer }: { pointer: React.RefObject<{ x: number; y: number
         <mesh>
           <sphereGeometry args={[0.62, 64, 64]} />
           <MeshTransmissionMaterial
-            samples={6}
-            resolution={256}
+            samples={8}
+            resolution={320}
             thickness={0.55}
-            roughness={0.08}
-            chromaticAberration={0.18}
-            anisotropy={0.2}
-            distortion={0.25}
+            roughness={0.07}
+            chromaticAberration={0.2}
+            anisotropy={0.22}
+            distortion={0.24}
             distortionScale={0.3}
-            temporalDistortion={0.1}
-            ior={1.18}
-            color="#eaf3ff"
-            attenuationColor="#cfe2f7"
-            attenuationDistance={1.5}
+            temporalDistortion={0.08}
+            ior={1.2}
+            color="#eef5ff"
+            attenuationColor="#d6e6f8"
+            attenuationDistance={1.6}
           />
         </mesh>
       </Float>
@@ -141,6 +143,20 @@ export interface BreathOfSkySceneProps {
 export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkySceneProps) {
   // Shared pointer ref; updated by a DOM listener for low overhead.
   const pointer = useRef({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Pause the render loop entirely when the hero scrolls offscreen (battery/GPU).
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const handlePointer = (e: React.PointerEvent) => {
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -148,8 +164,11 @@ export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkyScenePro
     pointer.current.y = -(((e.clientY - r.top) / r.height) * 2 - 1);
   };
 
+  const frameloop = visible ? "always" : "never";
+
   return (
     <div
+      ref={wrapRef}
       className="absolute inset-0"
       onPointerMove={handlePointer}
       onPointerLeave={() => {
@@ -160,6 +179,7 @@ export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkyScenePro
       {/* Orthographic full-bleed sky */}
       <Canvas
         orthographic
+        frameloop={frameloop}
         camera={{ zoom: 1, position: [0, 0, 1] }}
         dpr={[1, 2]}
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
@@ -171,6 +191,7 @@ export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkyScenePro
       {/* Perspective orb layer (transparent canvas over the sky) */}
       {showOrb && (
         <Canvas
+          frameloop={frameloop}
           camera={{ position: [0, 0, 4], fov: 42 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}

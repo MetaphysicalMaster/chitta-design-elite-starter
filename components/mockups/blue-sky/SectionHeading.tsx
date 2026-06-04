@@ -32,7 +32,7 @@ export function SectionHeading({
           className={cn(
             "rule-gold text-xs font-semibold uppercase tracking-[0.22em]",
             align === "center" && "[&::after]:mx-auto",
-            invert ? "text-white/80" : "text-[var(--color-accent)]",
+            invert ? "text-white/80" : "text-accent-deep",
           )}
         >
           {eyebrow}

@@ -13,17 +13,17 @@ import { cn } from "@/lib/utils";
 
 const TIERS = [
   {
-    name: "Blue Sky Wellness",
+    name: "Blue Sky Membership",
     price: "$129",
     cadence: "/ month",
-    summary: "For whole-body radiance, inside and out.",
+    summary: "Whole-body wellness, the holistic way — inside and out.",
     featured: false,
     perks: [
-      "Monthly IV therapy drip of your choice",
+      "Free monthly service of your choice",
       "Quarterly medical-grade facial",
       "10% off all injectables & skin services",
-      "BHRT & weight-loss program priority",
-      "Complimentary skin-health check-ins",
+      "BHRT, IV therapy & weight-loss priority",
+      "Member pricing on premium skincare",
     ],
   },
   {
@@ -33,9 +33,9 @@ const TIERS = [
     summary: "For patients who treat aesthetics as routine, not occasion.",
     featured: true,
     perks: [
-      "Everything in Blue Sky Wellness",
+      "Everything in the Blue Sky Membership",
       "Quarterly neurotoxin treatment included",
-      "Annual filler or Sculptra credit ($650)",
+      "Annual filler or Sculptra credit",
       "15% off all add-on treatments",
       "Priority booking & exclusive member events",
       "Personalized physician aesthetic plan",

@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
+  { href: "#story", label: "Our Story" },
   { href: "#membership", label: "Membership" },
   { href: "#reviews", label: "Reviews" },
   { href: "#visit", label: "Visit" },
@@ -29,17 +30,28 @@ function Logo({ onDark }: { onDark: boolean }) {
       <span
         aria-hidden
         className={cn(
-          "grid h-9 w-9 place-items-center rounded-full transition-colors",
-          onDark ? "bg-white/15 backdrop-blur-md" : "bg-[var(--color-accent-subtle)]",
+          "grid h-9 w-9 place-items-center overflow-hidden rounded-full transition-colors",
+          onDark
+            ? "bg-white/15 ring-1 ring-white/25 backdrop-blur-md"
+            : "bg-[var(--color-accent-subtle)] ring-1 ring-[var(--color-border)]",
         )}
       >
+        {/* Brand-faithful mark: champagne sun rising over a clear-sky horizon */}
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-          <circle cx="12" cy="11" r="4.2" fill="var(--gold)" opacity="0.95" />
+          <circle cx="12" cy="10.5" r="3.6" fill="var(--gold)" />
+          <circle cx="12" cy="10.5" r="5.4" stroke="var(--gold)" strokeWidth="0.9" opacity="0.45" />
           <path
-            d="M4 17c2.2-1.6 4-2 6-2s4.2.7 6 2c1.4-.9 2.6-1.2 4-1.2"
+            d="M3.5 16.5c2.4-1.5 4.2-1.9 6.1-1.9 2 0 3.9.7 6 2 1.4-.9 2.7-1.2 4.4-1.2"
             stroke={onDark ? "white" : "var(--color-accent)"}
-            strokeWidth="1.6"
+            strokeWidth="1.5"
             strokeLinecap="round"
+          />
+          <path
+            d="M5.5 19.5c2-1.1 3.6-1.4 5.3-1.4 1.8 0 3.4.6 5.2 1.6"
+            stroke={onDark ? "white" : "var(--color-accent)"}
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            opacity="0.55"
           />
         </svg>
       </span>

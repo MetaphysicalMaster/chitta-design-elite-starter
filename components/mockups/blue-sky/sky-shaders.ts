@@ -78,56 +78,67 @@ export const skyFragmentShader = /* glsl */ `
     vec2 p = (uv - 0.5);
     p.x *= aspect;
 
-    // Gentle parallax: clouds drift toward the cursor
-    vec2 par = u_pointer * 0.06;
+    // Gentle parallax: clouds drift toward the cursor (eased on CPU)
+    vec2 par = u_pointer * 0.055;
 
-    float t = u_time * 0.02;
+    // Slightly slower base drift for a calmer, more luxe cadence
+    float t = u_time * 0.017;
 
     // Domain-warped fbm for organic cloud structure
     vec2 q = vec2(
-      fbm(p * 1.3 + par + vec2(0.0, t)),
-      fbm(p * 1.3 + par + vec2(5.2, 1.3 - t))
+      fbm(p * 1.25 + par + vec2(0.0, t)),
+      fbm(p * 1.25 + par + vec2(5.2, 1.3 - t))
     );
     vec2 r = vec2(
-      fbm(p * 1.3 + 1.6 * q + vec2(1.7, 9.2) + t * 0.8),
-      fbm(p * 1.3 + 1.6 * q + vec2(8.3, 2.8) - t * 0.6)
+      fbm(p * 1.25 + 1.55 * q + vec2(1.7, 9.2) + t * 0.8),
+      fbm(p * 1.25 + 1.55 * q + vec2(8.3, 2.8) - t * 0.6)
     );
-    float clouds = fbm(p * 1.3 + 1.7 * r);
+    float clouds = fbm(p * 1.25 + 1.7 * r);
     clouds = clouds * 0.5 + 0.5; // 0..1
 
-    // Vertical dawn -> day gradient (top brighter, horizon deeper)
+    // Vertical clear-sky gradient (luminous crown, soft horizon).
     float v = uv.y;
     vec3 grad = mix(u_deep, u_high, smoothstep(0.0, 0.55, v));
-    grad = mix(grad, u_mid, smoothstep(0.4, 0.9, v));
+    grad = mix(grad, u_mid, smoothstep(0.4, 0.92, v));
 
-    // Warm dawn glow in the lower-left, slow palette shift over time
-    float dawnGlow = smoothstep(0.55, 0.0, distance(uv, vec2(0.18, 0.12)));
-    float palShift = 0.5 + 0.5 * sin(u_time * 0.05);
-    grad = mix(grad, u_dawn, dawnGlow * (0.45 + 0.2 * palShift));
+    // Soft sun/dawn bloom low-left — the warm "first light" that defines their
+    // clear-sky brand. Two-radius falloff: a tight warm core + a wide glow.
+    vec2 sun = vec2(0.16, 0.14);
+    float sunDist = distance(uv * vec2(aspect, 1.0), sun * vec2(aspect, 1.0));
+    float sunCore = smoothstep(0.32, 0.0, sunDist);
+    float sunGlow = smoothstep(0.7, 0.05, sunDist);
+    float palShift = 0.5 + 0.5 * sin(u_time * 0.045);
+    grad = mix(grad, u_dawn, sunGlow * (0.40 + 0.16 * palShift));
+    grad = mix(grad, mix(u_dawn, vec3(1.0), 0.5), sunCore * 0.55);
 
-    // Faint rose blush upper-right
-    float blush = smoothstep(0.6, 0.0, distance(uv, vec2(0.86, 0.9)));
-    grad = mix(grad, u_blush, blush * 0.22);
+    // Faint warm rose blush upper-right for atmospheric depth
+    float blush = smoothstep(0.62, 0.0, distance(uv, vec2(0.86, 0.9)));
+    grad = mix(grad, u_blush, blush * 0.2);
 
-    // Layer soft volumetric clouds — luminous, low-contrast
-    float cloudBand = smoothstep(0.45, 0.95, clouds);
-    vec3 cloudColor = mix(u_high, vec3(1.0), 0.65);
+    // Layer soft volumetric clouds — luminous, low-contrast; warmed near the sun
+    float cloudBand = smoothstep(0.44, 0.96, clouds);
+    vec3 cloudColor = mix(u_high, vec3(1.0), 0.68);
+    cloudColor = mix(cloudColor, mix(cloudColor, u_dawn, 0.6), sunGlow * 0.5);
     vec3 col = mix(grad, cloudColor, cloudBand * 0.5);
 
     // A second, higher wisp layer for depth
-    float wisp = smoothstep(0.6, 1.0, fbm(p * 2.4 + par * 1.4 + vec2(t * 1.4, -t)));
-    col = mix(col, vec3(1.0), wisp * 0.12);
+    float wisp = smoothstep(0.6, 1.0, fbm(p * 2.35 + par * 1.4 + vec2(t * 1.35, -t)));
+    col = mix(col, vec3(1.0), wisp * 0.11);
 
-    // "Breath": gentle global luminance pulse
-    float breath = 0.97 + 0.03 * sin(u_time * 0.12);
+    // "Breath": gentle global luminance pulse — the living, serene signature
+    float breath = 0.975 + 0.025 * sin(u_time * 0.11);
     col *= breath;
 
     // Subtle vignette to seat the headline
     float vig = smoothstep(1.25, 0.35, length(p));
-    col *= mix(0.86, 1.0, vig);
+    col *= mix(0.88, 1.0, vig);
+
+    // Very light atmospheric grain to kill banding on the smooth gradient
+    float grain = fract(sin(dot(uv * u_resolution, vec2(12.9898, 78.233))) * 43758.5453);
+    col += (grain - 0.5) * 0.012;
 
     // Master fade-in
-    col = mix(u_deep * 0.6, col, clamp(u_intensity, 0.0, 1.0));
+    col = mix(u_deep * 0.62, col, clamp(u_intensity, 0.0, 1.0));
 
     gl_FragColor = vec4(col, 1.0);
   }

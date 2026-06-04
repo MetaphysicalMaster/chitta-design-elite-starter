@@ -19,12 +19,12 @@ const PILLARS = [
   },
   {
     title: "Physician-led",
-    sub: "Dr. Maura Manning, MD · ex-ER",
+    sub: "Dr. Maura Manning, MD · former ER",
     icon: <Glyph d="M12 3v18M3 12h18" />,
   },
   {
-    title: "Family-owned",
-    sub: "Independent since 2021",
+    title: "30 years of expertise",
+    sub: "Woman & family-owned",
     icon: <Glyph d="M4 20v-6a8 8 0 0 1 16 0v6M9 20v-3a3 3 0 0 1 6 0v3" />,
   },
   {

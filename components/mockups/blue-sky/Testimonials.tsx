@@ -11,19 +11,19 @@ import { RevealGroup, RevealItem } from "./Reveal";
 const QUOTES = [
   {
     quote:
-      "Dr. Manning actually listened. I wanted to look refreshed, not done — and that's exactly what I got. The whole place feels calm and genuinely medical.",
+      "Quite the little hidden gem. Dr. Manning actually listened — I wanted to look refreshed, not done, and that's exactly what I got. The whole place feels calm and genuinely medical.",
     name: "Allison R.",
     meta: "Botox & filler",
   },
   {
     quote:
-      "Knowing a physician is overseeing everything made all the difference for me. Booking was easy, the space is gorgeous, and my results speak for themselves.",
+      "They go above and beyond on both the beauty and the wellness side. Knowing a physician oversees everything made all the difference, and the space is so relaxing I never want to leave.",
     name: "Megan T.",
     meta: "Microneedling + PRP",
   },
   {
     quote:
-      "I've been to bigger chains and nothing compares. It's personal, it's expert, and the membership pays for itself. Five stars isn't enough.",
+      "I've been to the bigger chains and nothing compares. It's personal, it's expert, and the membership pays for itself. Five stars truly isn't enough.",
     name: "Priya K.",
     meta: "Next Level Beauty member",
   },
@@ -69,7 +69,7 @@ export function Testimonials() {
                   &ldquo;{q.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-[var(--color-border-subtle)] pt-5">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--color-accent-subtle)] font-display text-sm text-[var(--color-accent)]">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--color-accent-subtle)] font-display text-sm text-accent-deep">
                     {q.name.charAt(0)}
                   </span>
                   <span className="flex flex-col">

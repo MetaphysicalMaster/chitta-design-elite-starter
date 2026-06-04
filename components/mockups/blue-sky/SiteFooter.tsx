@@ -32,17 +32,20 @@ export function SiteFooter() {
             {/* Brand + address */}
             <div>
               <div className="flex items-center gap-2.5">
-                <span aria-hidden className="grid h-9 w-9 place-items-center rounded-full bg-white/12">
+                <span aria-hidden className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-white/12 ring-1 ring-white/20">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-                    <circle cx="12" cy="11" r="4.2" fill="var(--gold)" />
-                    <path d="M4 17c2.2-1.6 4-2 6-2s4.2.7 6 2c1.4-.9 2.6-1.2 4-1.2" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
+                    <circle cx="12" cy="10.5" r="3.6" fill="var(--gold)" />
+                    <circle cx="12" cy="10.5" r="5.4" stroke="var(--gold)" strokeWidth="0.9" opacity="0.45" />
+                    <path d="M3.5 16.5c2.4-1.5 4.2-1.9 6.1-1.9 2 0 3.9.7 6 2 1.4-.9 2.7-1.2 4.4-1.2" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M5.5 19.5c2-1.1 3.6-1.4 5.3-1.4 1.8 0 3.4.6 5.2 1.6" stroke="white" strokeWidth="1.3" strokeLinecap="round" opacity="0.55" />
                   </svg>
                 </span>
                 <span className="font-display text-xl">Blue Sky Med Spa</span>
               </div>
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-                Physician-led, family-owned aesthetic &amp; wellness medicine in
-                the heart of German Village.
+                Physician-led, family- and woman-owned aesthetic &amp; wellness
+                medicine in the heart of German Village. You are seen &mdash; and
+                we&rsquo;re here to help you live your best life.
               </p>
               <address className="mt-6 space-y-2 not-italic text-sm text-white/80">
                 <p>

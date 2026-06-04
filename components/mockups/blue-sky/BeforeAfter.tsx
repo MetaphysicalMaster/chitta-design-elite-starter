@@ -136,7 +136,7 @@ function Slider({ data }: { data: Case }) {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pos)}
-          aria-valuetext={`${Math.round(pos)}% before`}
+          aria-valuetext={`Showing ${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
           onKeyDown={onKeyDown}
           className={cn(
             "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
@@ -173,6 +173,15 @@ export function BeforeAfter() {
           background:
             "radial-gradient(60% 50% at 80% 0%, var(--sky-high), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--sky-deep), transparent 70%)",
         }}
+      />
+      {/* gentle fade strips ease the transition from/to the light sections */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--color-bg)] to-transparent opacity-[0.12]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--color-bg)] to-transparent opacity-[0.12]"
       />
       <div className="relative mx-auto max-w-6xl px-6 sm:px-8">
         <SectionHeading

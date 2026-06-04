@@ -29,8 +29,8 @@ export function BookingCTA() {
       {/* Ambient aurora — shared effect, pure CSS, SSR-safe */}
       <div aria-hidden className="absolute inset-0 opacity-50">
         <AuroraGradient
-          colors={["#dceaf8", "#f3e6d2", "#bcd4ec", "#e9d9e2", "#cfe2f7"]}
-          blur={90}
+          colors={["#dcebfb", "#f6e6c8", "#bfd8f1", "#ecdce4", "#cfe4fa"]}
+          blur={92}
           className="h-full w-full"
         />
       </div>
@@ -39,7 +39,7 @@ export function BookingCTA() {
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 sm:px-8 lg:grid-cols-[1fr_minmax(0,32rem)]">
         <Reveal>
           <div>
-            <p className="rule-gold text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="rule-gold text-xs font-semibold uppercase tracking-[0.22em] text-accent-deep">
               Booking, reinvented
             </p>
             <h2
@@ -163,7 +163,7 @@ export function BookingCTA() {
                     setTreatment(null);
                     setSlot(null);
                   }}
-                  className="mt-5 text-sm font-medium text-[var(--color-accent)] underline-offset-4 hover:underline"
+                  className="mt-5 text-sm font-medium text-accent-deep underline-offset-4 hover:underline"
                 >
                   Start over
                 </button>
