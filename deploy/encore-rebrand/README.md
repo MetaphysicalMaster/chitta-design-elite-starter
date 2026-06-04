@@ -1,6 +1,5 @@
 # encore-rebrand — Homepage Rebrand (Owner Preview)
 
-Proposed homepage rebuild by CHITTA DesignGod. Brand-authentic enhancement round.
+Proposed homepage rebuild by CHITTA DesignGod. Brand-authentic enhancement + real photography.
 - Live: https://metaphysicalmaster.github.io/encore-rebrand/
-- Tech: Next.js static export · Three.js/R3F power-element hero · Tailwind v4 · Framer Motion
-- Self-contained static site (`.nojekyll` keeps `_next/` intact on Pages). Sample imagery marked as such.
+- Self-contained static site (.nojekyll keeps _next intact). Sample imagery marked as such.
