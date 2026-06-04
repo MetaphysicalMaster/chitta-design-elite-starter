@@ -43,6 +43,18 @@
 
 **Deploy note:** Vercel deploy is blocked from the build environment (no token + egress 403 to api.vercel.com). Use Vercel Git integration to go live: import the repo, select branch `claude/columbus-med-spa-leads-PIBPb`, deploy — `next build` is proven green.
 
+## 🌐 SHIPPED — Live GitHub Pages preview URLs (Pure Silk method)
+Deployed as per-client public repos under `MetaphysicalMaster`, static export at repo basePath, Pages source = main/root, `.nojekyll` for `_next/`.
+
+| Client | Repo | Live URL |
+|---|---|---|
+| Blue Sky Med Spa | `blue-sky-rebrand` | https://metaphysicalmaster.github.io/blue-sky-rebrand/ |
+| Encore Dermatology | `encore-rebrand` | https://metaphysicalmaster.github.io/encore-rebrand/ |
+| Beyond Skin Aesthetics | `beyond-skin-rebrand` | https://metaphysicalmaster.github.io/beyond-skin-rebrand/ |
+| The Luxe MedSpa | `the-luxe-rebrand` | https://metaphysicalmaster.github.io/the-luxe-rebrand/ |
+
+Rebuild bundle: `deploy/<repo>/` (via `deploy/build-pages.sh`). basePath is baked per repo name — renaming a repo requires a rebuild.
+
 ## Preview locally
 ```bash
 cd chitta-design-elite-starter && pnpm install && pnpm dev
