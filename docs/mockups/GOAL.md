@@ -21,7 +21,9 @@
 | Encore Dermatology | 22 | `encore` | Cinematic god-rays + refractive-crystal "renewal" hero (light refraction) | ✅ done — 43 passes, 9.25 self-score, tsc+build green |
 | Beyond Skin Aesthetics | 20 | `beyond-skin` | 3D particle-morph "beyond the surface" hero (particles form & disperse, cursor-reactive) | ✅ done — 40 passes, 9.19 self-score, tsc+build green |
 
-*(#3 tie at 20 broken toward Beyond Skin — highest Close Likelihood 8. Swap to The Luxe on request.)*
+*(#3 tie at 20 broken toward Beyond Skin — highest Close Likelihood 8. The Luxe added as 4th build on request.)*
+
+| The Luxe MedSpa | 20 | `the-luxe` | "Liquid Gold" reflective molten-metal membrane hero (cursor-rippling, bloom-lit) | ✅ done — 40 passes, 9.3 self-score, tsc+build green |
 
 ## Routes
 - `/mockups/blue-sky` · `/mockups/encore` · `/mockups/beyond-skin`
@@ -35,7 +37,11 @@
 - [x] Site 3 — Beyond Skin (40 passes · 9.19)
 - [x] Final consolidated `next build` green (all 3 routes prerender static ○) + pushed
 
-**Total: 122 DesignGod refinement passes across 3 award-tier pitch mockups, each with a bespoke brand, a Three.js power element + graceful fallback, and clean tsc + build gates.**
+- [x] Site 4 — The Luxe (40 passes · 9.3) — added on request, consolidated 4-route build green
+
+**Total: 162 DesignGod refinement passes across 4 award-tier pitch mockups, each with a bespoke brand, a Three.js power element + graceful fallback, and clean tsc + build gates.**
+
+**Deploy note:** Vercel deploy is blocked from the build environment (no token + egress 403 to api.vercel.com). Use Vercel Git integration to go live: import the repo, select branch `claude/columbus-med-spa-leads-PIBPb`, deploy — `next build` is proven green.
 
 ## Preview locally
 ```bash

@@ -1,0 +1,218 @@
+/* ============================================================
+   The Luxe MedSpa — Scoped Brand Palette (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="the-luxe"].
+   Brand essence: opulent, glamorous, jewel-toned luxury — onyx + deep
+   emerald with molten/champagne gold. "Luxe" made literal: liquid gold.
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="the-luxe"] {
+  /* Surfaces — deep onyx warming toward black-emerald.
+     This is a DARK luxury brand by default (couture, after-hours opulence). */
+  --color-bg: oklch(17% 0.022 168);
+  --color-bg-subtle: oklch(21% 0.026 166);
+  --color-bg-elevated: oklch(25% 0.03 165);
+
+  /* Foreground — warm champagne ivory (not pure white) for soft luxe glow. */
+  --color-fg: oklch(96% 0.018 92);
+  --color-fg-muted: oklch(82% 0.022 95);
+  --color-fg-subtle: oklch(66% 0.024 110);
+
+  /* Accent — molten gold. accent-fg is the deep onyx ink for buttons. */
+  --color-accent: oklch(80% 0.13 86);
+  --color-accent-fg: oklch(19% 0.03 165);
+  --color-accent-subtle: oklch(34% 0.05 120);
+
+  /* Borders — barely-there warm hairlines on the dark field. */
+  --color-border: oklch(34% 0.022 150);
+  --color-border-subtle: oklch(27% 0.02 155);
+
+  --color-success: oklch(72% 0.13 150);
+  --color-warning: oklch(82% 0.13 85);
+  --color-error: oklch(64% 0.19 25);
+  --color-info: oklch(70% 0.1 200);
+
+  /* ---- Brand-specific vars (not in the shared system) ---- */
+  /* Emerald jewel stops — the deep luxe field + section grounds. */
+  --emerald-abyss: oklch(13% 0.024 168); /* near-black emerald */
+  --emerald-deep: oklch(20% 0.04 165); /* deep jewel emerald */
+  --emerald-mid: oklch(30% 0.055 160); /* lit emerald velvet */
+  --onyx: oklch(15% 0.012 200); /* cool onyx */
+  --onyx-warm: oklch(18% 0.018 150); /* warmed onyx */
+
+  /* Molten / champagne gold stops — used by the WebGL hero + CSS fallback. */
+  --gold: oklch(80% 0.13 86);
+  --gold-bright: oklch(88% 0.12 92); /* champagne highlight */
+  --gold-deep: oklch(66% 0.12 72); /* burnished bronze-gold */
+  --gold-molten: oklch(74% 0.155 70); /* saturated molten core */
+  --gold-pale: oklch(92% 0.06 95); /* near-ivory gold sheen */
+
+  /* Glass tokens — smoked obsidian glass with a warm gold rim. */
+  --glass-bg: oklch(22% 0.03 165 / 0.45);
+  --glass-bg-strong: oklch(20% 0.03 167 / 0.78);
+  --glass-border: oklch(82% 0.1 88 / 0.22);
+  --glass-shadow: 0 18px 60px -22px oklch(8% 0.02 168 / 0.8);
+
+  /* Fonts wired from next/font on the layout wrapper. */
+  --font-display: var(--font-italiana), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-jost), system-ui, -apple-system, sans-serif;
+
+  /* Fluid type tokens (clamp) for hero + section rhythm. */
+  --fluid-hero: clamp(2.85rem, 1.2rem + 7.1vw, 7rem);
+  --fluid-h2: clamp(2rem, 1.15rem + 3.9vw, 4rem);
+  --fluid-lead: clamp(1.05rem, 0.95rem + 0.72vw, 1.4rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings inside the brand wrapper default to the couture serif. */
+[data-brand="the-luxe"] .font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* Refined uppercase eyebrow rhythm. */
+[data-brand="the-luxe"] .eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-weight: 500;
+}
+
+/* ---- Gold leaf text treatment — the signature wordmark sheen ---- */
+[data-brand="the-luxe"] .gold-leaf {
+  background: linear-gradient(
+    100deg,
+    var(--gold-deep) 0%,
+    var(--gold-bright) 28%,
+    var(--gold-pale) 46%,
+    var(--gold) 60%,
+    var(--gold-deep) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated molten sheen sweep across gold text — paused for reduced motion. */
+[data-brand="the-luxe"] .gold-leaf-anim {
+  animation: luxe-sheen 7s ease-in-out infinite;
+}
+@keyframes luxe-sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Reusable smoked-glass surfaces. */
+[data-brand="the-luxe"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="the-luxe"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.45);
+  backdrop-filter: blur(22px) saturate(1.45);
+  border: 1px solid var(--glass-border);
+}
+
+/* Static liquid-gold fallback — SSR + reduced-motion + mobile + no-WebGL.
+   A still frame of molten metal pooled on an onyx field so the hero never
+   flashes blank and never causes CLS. */
+[data-brand="the-luxe"] .liquid-gold-fallback {
+  background:
+    radial-gradient(
+      60% 52% at 62% 40%,
+      var(--gold-pale) 0%,
+      var(--gold-bright) 14%,
+      var(--gold-molten) 34%,
+      var(--gold-deep) 52%,
+      transparent 74%
+    ),
+    radial-gradient(
+      40% 38% at 38% 64%,
+      oklch(70% 0.12 64 / 0.7) 0%,
+      transparent 60%
+    ),
+    radial-gradient(120% 120% at 50% 50%, var(--emerald-deep), var(--emerald-abyss) 70%),
+    var(--emerald-abyss);
+}
+
+/* Fine gold rule under eyebrow labels. */
+[data-brand="the-luxe"] .rule-gold::after {
+  content: "";
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  margin-top: 0.7rem;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+[data-brand="the-luxe"] .rule-gold-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Subtle film grain to keep the dark field from banding — luxe texture. */
+[data-brand="the-luxe"] .grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hairline gold divider used between sections. */
+[data-brand="the-luxe"] .hairline-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold) 18%,
+    var(--gold-pale) 50%,
+    var(--gold) 82%,
+    transparent
+  );
+  opacity: 0.5;
+}
+
+/* Brand-scoped focus ring + selection — gold, not the shared purple accent. */
+[data-brand="the-luxe"] :focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+[data-brand="the-luxe"] ::selection {
+  background-color: var(--gold);
+  color: var(--color-accent-fg);
+}
+
+/* Tighten couture display headings — Italiana is delicate, so add a touch of
+   weight perception via crisp rendering and slight negative tracking on large. */
+[data-brand="the-luxe"] h1.font-display,
+[data-brand="the-luxe"] h2.font-display {
+  text-wrap: balance;
+}
+
+/* Respect reduced motion: freeze decorative sheen + transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="the-luxe"] .gold-leaf-anim {
+    animation: none;
+  }
+  [data-brand="the-luxe"] * {
+    scroll-behavior: auto !important;
+  }
+}
