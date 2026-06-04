@@ -1,4 +1,4 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,74303,e=>{"use strict";var t=e.i(64556),r=e.i(96996),o=e.i(21348);let i=t.forwardRef(({children:e,enabled:i=!0,speed:a=1,rotationIntensity:n=1,floatIntensity:s=1,floatingRange:l=[-.1,.1],autoInvalidate:c=!1,...u},m)=>{let f=t.useRef(null);t.useImperativeHandle(m,()=>f.current,[]);let d=t.useRef(1e4*Math.random());return(0,r.useFrame)(e=>{var t,r;if(!i||0===a)return;c&&e.invalidate();let u=d.current+e.clock.elapsedTime;f.current.rotation.x=Math.cos(u/4*a)/8*n,f.current.rotation.y=Math.sin(u/4*a)/8*n,f.current.rotation.z=Math.sin(u/4*a)/20*n;let m=Math.sin(u/4*a)/10;m=o.MathUtils.mapLinear(m,-.1,.1,null!=(t=null==l?void 0:l[0])?t:-.1,null!=(r=null==l?void 0:l[1])?r:.1),f.current.position.y=m*s,f.current.updateMatrix()}),t.createElement("group",u,t.createElement("group",{ref:f,matrixAutoUpdate:!1},e))});e.s(["Float",0,i])},71611,e=>{"use strict";function t(){return(t=Object.assign.bind()).apply(null,arguments)}e.s(["default",()=>t])},4020,e=>{"use strict";var t,r,o,i,a=e.i(71611),n=e.i(21348),s=e.i(64556),l=e.i(17866),c=e.i(96996),u=e.i(15746);function m(e,t,r){let o=(0,u.useThree)(e=>e.size),i=(0,u.useThree)(e=>e.viewport),a="number"==typeof e?e:o.width*i.dpr,l="number"==typeof t?t:o.height*i.dpr,c=("number"==typeof e?r:e)||{},{samples:m=0,depth:f,...d}=c,v=null!=f?f:c.depthBuffer,h=s.useMemo(()=>{let e=new n.WebGLRenderTarget(a,l,{minFilter:n.LinearFilter,magFilter:n.LinearFilter,type:n.HalfFloatType,...d});return v&&(e.depthTexture=new n.DepthTexture(a,l,n.FloatType)),e.samples=m,e},[]);return s.useLayoutEffect(()=>{h.setSize(a,l),m&&(h.samples=m)},[m,h,a,l]),s.useEffect(()=>()=>h.dispose(),[]),h}var f=n;let d=(t={},r="void main() { }",o="void main() { gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0); discard;  }",(i=class extends f.ShaderMaterial{constructor(e){for(const i in super({vertexShader:r,fragmentShader:o,...e}),t)this.uniforms[i]=new f.Uniform(t[i]),Object.defineProperty(this,i,{get(){return this.uniforms[i].value},set(e){this.uniforms[i].value=e}});this.uniforms=f.UniformsUtils.clone(this.uniforms)}}).key=f.MathUtils.generateUUID(),i);class v extends n.MeshPhysicalMaterial{constructor(e=6,t=!1){super(),this.uniforms={chromaticAberration:{value:.05},transmission:{value:0},_transmission:{value:1},transmissionMap:{value:null},roughness:{value:0},thickness:{value:0},thicknessMap:{value:null},attenuationDistance:{value:1/0},attenuationColor:{value:new n.Color("white")},anisotropicBlur:{value:.1},time:{value:0},distortion:{value:0},distortionScale:{value:.5},temporalDistortion:{value:0},buffer:{value:null}},this.onBeforeCompile=r=>{r.uniforms={...r.uniforms,...this.uniforms},this.anisotropy>0&&(r.defines.USE_ANISOTROPY=""),t?r.defines.USE_SAMPLER="":r.defines.USE_TRANSMISSION="",r.fragmentShader=`
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,74303,e=>{"use strict";var t=e.i(64556),r=e.i(96996),o=e.i(21348);let i=t.forwardRef(({children:e,enabled:i=!0,speed:n=1,rotationIntensity:a=1,floatIntensity:s=1,floatingRange:l=[-.1,.1],autoInvalidate:c=!1,...u},m)=>{let f=t.useRef(null);t.useImperativeHandle(m,()=>f.current,[]);let d=t.useRef(1e4*Math.random());return(0,r.useFrame)(e=>{var t,r;if(!i||0===n)return;c&&e.invalidate();let u=d.current+e.clock.elapsedTime;f.current.rotation.x=Math.cos(u/4*n)/8*a,f.current.rotation.y=Math.sin(u/4*n)/8*a,f.current.rotation.z=Math.sin(u/4*n)/20*a;let m=Math.sin(u/4*n)/10;m=o.MathUtils.mapLinear(m,-.1,.1,null!=(t=null==l?void 0:l[0])?t:-.1,null!=(r=null==l?void 0:l[1])?r:.1),f.current.position.y=m*s,f.current.updateMatrix()}),t.createElement("group",u,t.createElement("group",{ref:f,matrixAutoUpdate:!1},e))});e.s(["Float",0,i])},71611,e=>{"use strict";function t(){return(t=Object.assign.bind()).apply(null,arguments)}e.s(["default",()=>t])},4020,e=>{"use strict";var t,r,o,i,n=e.i(71611),a=e.i(21348),s=e.i(64556),l=e.i(17866),c=e.i(96996),u=e.i(15746);function m(e,t,r){let o=(0,u.useThree)(e=>e.size),i=(0,u.useThree)(e=>e.viewport),n="number"==typeof e?e:o.width*i.dpr,l="number"==typeof t?t:o.height*i.dpr,c=("number"==typeof e?r:e)||{},{samples:m=0,depth:f,...d}=c,v=null!=f?f:c.depthBuffer,h=s.useMemo(()=>{let e=new a.WebGLRenderTarget(n,l,{minFilter:a.LinearFilter,magFilter:a.LinearFilter,type:a.HalfFloatType,...d});return v&&(e.depthTexture=new a.DepthTexture(n,l,a.FloatType)),e.samples=m,e},[]);return s.useLayoutEffect(()=>{h.setSize(n,l),m&&(h.samples=m)},[m,h,n,l]),s.useEffect(()=>()=>h.dispose(),[]),h}var f=a;let d=(t={},r="void main() { }",o="void main() { gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0); discard;  }",(i=class extends f.ShaderMaterial{constructor(e){for(const i in super({vertexShader:r,fragmentShader:o,...e}),t)this.uniforms[i]=new f.Uniform(t[i]),Object.defineProperty(this,i,{get(){return this.uniforms[i].value},set(e){this.uniforms[i].value=e}});this.uniforms=f.UniformsUtils.clone(this.uniforms)}}).key=f.MathUtils.generateUUID(),i);class v extends a.MeshPhysicalMaterial{constructor(e=6,t=!1){super(),this.uniforms={chromaticAberration:{value:.05},transmission:{value:0},_transmission:{value:1},transmissionMap:{value:null},roughness:{value:0},thickness:{value:0},thicknessMap:{value:null},attenuationDistance:{value:1/0},attenuationColor:{value:new a.Color("white")},anisotropicBlur:{value:.1},time:{value:0},distortion:{value:0},distortionScale:{value:.5},temporalDistortion:{value:0},buffer:{value:null}},this.onBeforeCompile=r=>{r.uniforms={...r.uniforms,...this.uniforms},this.anisotropy>0&&(r.defines.USE_ANISOTROPY=""),t?r.defines.USE_SAMPLER="":r.defines.USE_TRANSMISSION="",r.fragmentShader=`
       uniform float chromaticAberration;         
       uniform float anisotropicBlur;      
       uniform float time;
@@ -214,7 +214,7 @@
         }
         transmission /= ${e}.0;
         totalDiffuse = mix( totalDiffuse, transmission.rgb, material.transmission );
-`)},Object.keys(this.uniforms).forEach(e=>Object.defineProperty(this,e,{get:()=>this.uniforms[e].value,set:t=>this.uniforms[e].value=t}))}}let h=s.forwardRef(({buffer:e,transmissionSampler:t=!1,backside:r=!1,side:o=n.FrontSide,transmission:i=1,thickness:u=0,backsideThickness:f=0,backsideEnvMapIntensity:h=1,samples:p=10,resolution:x,backsideResolution:g,background:y,anisotropy:w,anisotropicBlur:M,...b},S)=>{let C,_,T,R;(0,l.extend)({MeshTransmissionMaterial:v});let F=s.useRef(null),[j]=s.useState(()=>new d),z=m(g||x),D=m(x);return(0,c.useFrame)(e=>{if(F.current.time=e.clock.elapsedTime,F.current.buffer===D.texture&&!t){var i;(R=null==(i=F.current.__r3f.parent)?void 0:i.object)&&(T=e.gl.toneMapping,C=e.scene.background,_=F.current.envMapIntensity,e.gl.toneMapping=n.NoToneMapping,y&&(e.scene.background=y),R.material=j,r&&(e.gl.setRenderTarget(z),e.gl.render(e.scene,e.camera),R.material=F.current,R.material.buffer=z.texture,R.material.thickness=f,R.material.side=n.BackSide,R.material.envMapIntensity=h),e.gl.setRenderTarget(D),e.gl.render(e.scene,e.camera),R.material=F.current,R.material.thickness=u,R.material.side=o,R.material.buffer=D.texture,R.material.envMapIntensity=_,e.scene.background=C,e.gl.setRenderTarget(null),e.gl.toneMapping=T)}}),s.useImperativeHandle(S,()=>F.current,[]),s.createElement("meshTransmissionMaterial",(0,a.default)({args:[p,t],ref:F},b,{buffer:e||D.texture,_transmission:i,anisotropicBlur:null!=M?M:w,transmission:t?i:0,thickness:u,side:o}))});e.s(["MeshTransmissionMaterial",0,h],4020)},1020,e=>{"use strict";var t=e.i(44180),r=e.i(4430),o=e.i(96996),i=e.i(15746),a=e.i(74303),n=e.i(4020),s=e.i(64556),l=e.i(21348);let c=`
+`)},Object.keys(this.uniforms).forEach(e=>Object.defineProperty(this,e,{get:()=>this.uniforms[e].value,set:t=>this.uniforms[e].value=t}))}}let h=s.forwardRef(({buffer:e,transmissionSampler:t=!1,backside:r=!1,side:o=a.FrontSide,transmission:i=1,thickness:u=0,backsideThickness:f=0,backsideEnvMapIntensity:h=1,samples:p=10,resolution:x,backsideResolution:g,background:y,anisotropy:w,anisotropicBlur:b,...C},M)=>{let S,_,T,R;(0,l.extend)({MeshTransmissionMaterial:v});let F=s.useRef(null),[D]=s.useState(()=>new d),j=m(g||x),k=m(x);return(0,c.useFrame)(e=>{if(F.current.time=e.clock.elapsedTime,F.current.buffer===k.texture&&!t){var i;(R=null==(i=F.current.__r3f.parent)?void 0:i.object)&&(T=e.gl.toneMapping,S=e.scene.background,_=F.current.envMapIntensity,e.gl.toneMapping=a.NoToneMapping,y&&(e.scene.background=y),R.material=D,r&&(e.gl.setRenderTarget(j),e.gl.render(e.scene,e.camera),R.material=F.current,R.material.buffer=j.texture,R.material.thickness=f,R.material.side=a.BackSide,R.material.envMapIntensity=h),e.gl.setRenderTarget(k),e.gl.render(e.scene,e.camera),R.material=F.current,R.material.thickness=u,R.material.side=o,R.material.buffer=k.texture,R.material.envMapIntensity=_,e.scene.background=S,e.gl.setRenderTarget(null),e.gl.toneMapping=T)}}),s.useImperativeHandle(M,()=>F.current,[]),s.createElement("meshTransmissionMaterial",(0,n.default)({args:[p,t],ref:F},C,{buffer:e||k.texture,_transmission:i,anisotropicBlur:null!=b?b:w,transmission:t?i:0,thickness:u,side:o}))});e.s(["MeshTransmissionMaterial",0,h],4020)},1020,e=>{"use strict";var t=e.i(44180),r=e.i(4430),o=e.i(96996),i=e.i(15746),n=e.i(74303),a=e.i(4020),s=e.i(64556),l=e.i(21348);let c=`
   varying vec2 vUv;
   void main() {
     vUv = uv;
@@ -283,57 +283,68 @@
     vec2 p = (uv - 0.5);
     p.x *= aspect;
 
-    // Gentle parallax: clouds drift toward the cursor
-    vec2 par = u_pointer * 0.06;
+    // Gentle parallax: clouds drift toward the cursor (eased on CPU)
+    vec2 par = u_pointer * 0.055;
 
-    float t = u_time * 0.02;
+    // Slightly slower base drift for a calmer, more luxe cadence
+    float t = u_time * 0.017;
 
     // Domain-warped fbm for organic cloud structure
     vec2 q = vec2(
-      fbm(p * 1.3 + par + vec2(0.0, t)),
-      fbm(p * 1.3 + par + vec2(5.2, 1.3 - t))
+      fbm(p * 1.25 + par + vec2(0.0, t)),
+      fbm(p * 1.25 + par + vec2(5.2, 1.3 - t))
     );
     vec2 r = vec2(
-      fbm(p * 1.3 + 1.6 * q + vec2(1.7, 9.2) + t * 0.8),
-      fbm(p * 1.3 + 1.6 * q + vec2(8.3, 2.8) - t * 0.6)
+      fbm(p * 1.25 + 1.55 * q + vec2(1.7, 9.2) + t * 0.8),
+      fbm(p * 1.25 + 1.55 * q + vec2(8.3, 2.8) - t * 0.6)
     );
-    float clouds = fbm(p * 1.3 + 1.7 * r);
+    float clouds = fbm(p * 1.25 + 1.7 * r);
     clouds = clouds * 0.5 + 0.5; // 0..1
 
-    // Vertical dawn -> day gradient (top brighter, horizon deeper)
+    // Vertical clear-sky gradient (luminous crown, soft horizon).
     float v = uv.y;
     vec3 grad = mix(u_deep, u_high, smoothstep(0.0, 0.55, v));
-    grad = mix(grad, u_mid, smoothstep(0.4, 0.9, v));
+    grad = mix(grad, u_mid, smoothstep(0.4, 0.92, v));
 
-    // Warm dawn glow in the lower-left, slow palette shift over time
-    float dawnGlow = smoothstep(0.55, 0.0, distance(uv, vec2(0.18, 0.12)));
-    float palShift = 0.5 + 0.5 * sin(u_time * 0.05);
-    grad = mix(grad, u_dawn, dawnGlow * (0.45 + 0.2 * palShift));
+    // Soft sun/dawn bloom low-left — the warm "first light" that defines their
+    // clear-sky brand. Two-radius falloff: a tight warm core + a wide glow.
+    vec2 sun = vec2(0.16, 0.14);
+    float sunDist = distance(uv * vec2(aspect, 1.0), sun * vec2(aspect, 1.0));
+    float sunCore = smoothstep(0.32, 0.0, sunDist);
+    float sunGlow = smoothstep(0.7, 0.05, sunDist);
+    float palShift = 0.5 + 0.5 * sin(u_time * 0.045);
+    grad = mix(grad, u_dawn, sunGlow * (0.40 + 0.16 * palShift));
+    grad = mix(grad, mix(u_dawn, vec3(1.0), 0.5), sunCore * 0.55);
 
-    // Faint rose blush upper-right
-    float blush = smoothstep(0.6, 0.0, distance(uv, vec2(0.86, 0.9)));
-    grad = mix(grad, u_blush, blush * 0.22);
+    // Faint warm rose blush upper-right for atmospheric depth
+    float blush = smoothstep(0.62, 0.0, distance(uv, vec2(0.86, 0.9)));
+    grad = mix(grad, u_blush, blush * 0.2);
 
-    // Layer soft volumetric clouds — luminous, low-contrast
-    float cloudBand = smoothstep(0.45, 0.95, clouds);
-    vec3 cloudColor = mix(u_high, vec3(1.0), 0.65);
+    // Layer soft volumetric clouds — luminous, low-contrast; warmed near the sun
+    float cloudBand = smoothstep(0.44, 0.96, clouds);
+    vec3 cloudColor = mix(u_high, vec3(1.0), 0.68);
+    cloudColor = mix(cloudColor, mix(cloudColor, u_dawn, 0.6), sunGlow * 0.5);
     vec3 col = mix(grad, cloudColor, cloudBand * 0.5);
 
     // A second, higher wisp layer for depth
-    float wisp = smoothstep(0.6, 1.0, fbm(p * 2.4 + par * 1.4 + vec2(t * 1.4, -t)));
-    col = mix(col, vec3(1.0), wisp * 0.12);
+    float wisp = smoothstep(0.6, 1.0, fbm(p * 2.35 + par * 1.4 + vec2(t * 1.35, -t)));
+    col = mix(col, vec3(1.0), wisp * 0.11);
 
-    // "Breath": gentle global luminance pulse
-    float breath = 0.97 + 0.03 * sin(u_time * 0.12);
+    // "Breath": gentle global luminance pulse — the living, serene signature
+    float breath = 0.975 + 0.025 * sin(u_time * 0.11);
     col *= breath;
 
     // Subtle vignette to seat the headline
     float vig = smoothstep(1.25, 0.35, length(p));
-    col *= mix(0.86, 1.0, vig);
+    col *= mix(0.88, 1.0, vig);
+
+    // Very light atmospheric grain to kill banding on the smooth gradient
+    float grain = fract(sin(dot(uv * u_resolution, vec2(12.9898, 78.233))) * 43758.5453);
+    col += (grain - 0.5) * 0.012;
 
     // Master fade-in
-    col = mix(u_deep * 0.6, col, clamp(u_intensity, 0.0, 1.0));
+    col = mix(u_deep * 0.62, col, clamp(u_intensity, 0.0, 1.0));
 
     gl_FragColor = vec4(col, 1.0);
   }
-`;function m({pointer:e}){let r=(0,s.useRef)(null),{size:a,viewport:n}=(0,i.useThree)(),f=(0,s.useRef)({x:0,y:0}),d=(0,s.useMemo)(()=>({u_time:{value:0},u_resolution:{value:new l.Vector2(a.width,a.height)},u_pointer:{value:new l.Vector2(0,0)},u_intensity:{value:0},u_dawn:{value:new l.Color("#f2dcb8")},u_mid:{value:new l.Color("#bcd4ec")},u_high:{value:new l.Color("#7fb0e6")},u_deep:{value:new l.Color("#4f74b3")},u_blush:{value:new l.Color("#f3d2d6")}}),[]);return(0,o.useFrame)(({clock:t},o)=>{let i=r.current;if(!i)return;i.uniforms.u_time.value=t.getElapsedTime(),i.uniforms.u_resolution.value.set(a.width,a.height);let n=e.current??{x:0,y:0},s=1-Math.pow(.001,o);f.current.x+=(n.x-f.current.x)*s,f.current.y+=(n.y-f.current.y)*s,i.uniforms.u_pointer.value.set(f.current.x,f.current.y);let l=i.uniforms.u_intensity.value;i.uniforms.u_intensity.value=l+(1-l)*Math.min(1,1.6*o)}),(0,t.jsxs)("mesh",{scale:[n.width,n.height,1],children:[(0,t.jsx)("planeGeometry",{args:[1,1]}),(0,t.jsx)("shaderMaterial",{ref:r,vertexShader:c,fragmentShader:u,uniforms:d,depthWrite:!1})]})}function f({pointer:e}){let r=(0,s.useRef)(null);return(0,o.useFrame)((t,o)=>{let i=r.current;if(!i)return;let a=e.current??{x:0,y:0},n=1-Math.pow(.0015,o);i.position.x+=(.6*a.x-i.position.x)*n,i.position.y+=(.15+.35*a.y-i.position.y)*n}),(0,t.jsx)("group",{ref:r,position:[.9,.2,1.5],children:(0,t.jsx)(a.Float,{speed:1.1,rotationIntensity:.35,floatIntensity:.9,children:(0,t.jsxs)("mesh",{children:[(0,t.jsx)("sphereGeometry",{args:[.62,64,64]}),(0,t.jsx)(n.MeshTransmissionMaterial,{samples:6,resolution:256,thickness:.55,roughness:.08,chromaticAberration:.18,anisotropy:.2,distortion:.25,distortionScale:.3,temporalDistortion:.1,ior:1.18,color:"#eaf3ff",attenuationColor:"#cfe2f7",attenuationDistance:1.5})]})})})}function d(){return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)("ambientLight",{intensity:.7}),(0,t.jsx)("directionalLight",{position:[3,4,5],intensity:1.1,color:"#fff4e0"}),(0,t.jsx)("directionalLight",{position:[-4,-2,2],intensity:.4,color:"#bcd4ec"})]})}e.s(["default",0,function({showOrb:e=!0}){let o=(0,s.useRef)({x:0,y:0});return(0,t.jsxs)("div",{className:"absolute inset-0",onPointerMove:e=>{let t=e.currentTarget.getBoundingClientRect();o.current.x=(e.clientX-t.left)/t.width*2-1,o.current.y=-((e.clientY-t.top)/t.height*2-1)},onPointerLeave:()=>{o.current.x=0,o.current.y=0},children:[(0,t.jsx)(r.Canvas,{orthographic:!0,camera:{zoom:1,position:[0,0,1]},dpr:[1,2],gl:{antialias:!1,alpha:!1,powerPreference:"high-performance"},style:{position:"absolute",inset:0},children:(0,t.jsx)(m,{pointer:o})}),e&&(0,t.jsxs)(r.Canvas,{camera:{position:[0,0,4],fov:42},dpr:[1,2],gl:{antialias:!0,alpha:!0,powerPreference:"high-performance"},style:{position:"absolute",inset:0,pointerEvents:"none"},children:[(0,t.jsx)(d,{}),(0,t.jsx)(f,{pointer:o})]})]})}],1020)},5781,e=>{e.n(e.i(1020))}]);
+`;function m({pointer:e}){let r=(0,s.useRef)(null),{size:n,viewport:a}=(0,i.useThree)(),f=(0,s.useRef)({x:0,y:0}),d=(0,s.useMemo)(()=>({u_time:{value:0},u_resolution:{value:new l.Vector2(n.width,n.height)},u_pointer:{value:new l.Vector2(0,0)},u_intensity:{value:0},u_dawn:{value:new l.Color("#f6e0bd")},u_mid:{value:new l.Color("#bfd8f1")},u_high:{value:new l.Color("#84b3ea")},u_deep:{value:new l.Color("#5076b4")},u_blush:{value:new l.Color("#f7d6d4")}}),[]);return(0,o.useFrame)(({clock:t},o)=>{let i=r.current;if(!i)return;i.uniforms.u_time.value=t.getElapsedTime(),i.uniforms.u_resolution.value.set(n.width,n.height);let a=e.current??{x:0,y:0},s=1-Math.pow(.001,o);f.current.x+=(a.x-f.current.x)*s,f.current.y+=(a.y-f.current.y)*s,i.uniforms.u_pointer.value.set(f.current.x,f.current.y);let l=i.uniforms.u_intensity.value;i.uniforms.u_intensity.value=l+(1-l)*Math.min(1,1.6*o)}),(0,t.jsxs)("mesh",{scale:[a.width,a.height,1],children:[(0,t.jsx)("planeGeometry",{args:[1,1]}),(0,t.jsx)("shaderMaterial",{ref:r,vertexShader:c,fragmentShader:u,uniforms:d,depthWrite:!1})]})}function f({pointer:e}){let r=(0,s.useRef)(null);return(0,o.useFrame)((t,o)=>{let i=r.current;if(!i)return;let n=e.current??{x:0,y:0},a=1-Math.pow(.0015,o);i.position.x+=(.6*n.x-i.position.x)*a,i.position.y+=(.15+.35*n.y-i.position.y)*a}),(0,t.jsx)("group",{ref:r,position:[.9,.2,1.5],children:(0,t.jsx)(n.Float,{speed:1.1,rotationIntensity:.35,floatIntensity:.9,children:(0,t.jsxs)("mesh",{children:[(0,t.jsx)("sphereGeometry",{args:[.62,64,64]}),(0,t.jsx)(a.MeshTransmissionMaterial,{samples:8,resolution:320,thickness:.55,roughness:.07,chromaticAberration:.2,anisotropy:.22,distortion:.24,distortionScale:.3,temporalDistortion:.08,ior:1.2,color:"#eef5ff",attenuationColor:"#d6e6f8",attenuationDistance:1.6})]})})})}function d(){return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)("ambientLight",{intensity:.7}),(0,t.jsx)("directionalLight",{position:[3,4,5],intensity:1.1,color:"#fff4e0"}),(0,t.jsx)("directionalLight",{position:[-4,-2,2],intensity:.4,color:"#bcd4ec"})]})}e.s(["default",0,function({showOrb:e=!0}){let o=(0,s.useRef)({x:0,y:0}),i=(0,s.useRef)(null),[n,a]=(0,s.useState)(!0);(0,s.useEffect)(()=>{let e=i.current;if(!e||"u"<typeof IntersectionObserver)return;let t=new IntersectionObserver(([e])=>a(e.isIntersecting),{rootMargin:"0px",threshold:0});return t.observe(e),()=>t.disconnect()},[]);let l=n?"always":"never";return(0,t.jsxs)("div",{ref:i,className:"absolute inset-0",onPointerMove:e=>{let t=e.currentTarget.getBoundingClientRect();o.current.x=(e.clientX-t.left)/t.width*2-1,o.current.y=-((e.clientY-t.top)/t.height*2-1)},onPointerLeave:()=>{o.current.x=0,o.current.y=0},children:[(0,t.jsx)(r.Canvas,{orthographic:!0,frameloop:l,camera:{zoom:1,position:[0,0,1]},dpr:[1,2],gl:{antialias:!1,alpha:!1,powerPreference:"high-performance"},style:{position:"absolute",inset:0},children:(0,t.jsx)(m,{pointer:o})}),e&&(0,t.jsxs)(r.Canvas,{frameloop:l,camera:{position:[0,0,4],fov:42},dpr:[1,2],gl:{antialias:!0,alpha:!0,powerPreference:"high-performance"},style:{position:"absolute",inset:0,pointerEvents:"none"},children:[(0,t.jsx)(d,{}),(0,t.jsx)(f,{pointer:o})]})]})}],1020)},5781,e=>{e.n(e.i(1020))}]);
