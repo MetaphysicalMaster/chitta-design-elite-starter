@@ -157,3 +157,68 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Brand photography treatment
+   On-brand cohesion for the 6 AI photos so they read as one shoot:
+   a gentle temperature nudge toward the sky-blue + champagne palette,
+   plus a unified contrast/saturation lift. Kept subtle so faces/skin in
+   the injectable/glow macros stay believable. Layered scrims live in JSX.
+   ============================================================ */
+[data-brand="blue-sky"] .bs-photo {
+  filter: saturate(1.04) contrast(1.015) brightness(1.005);
+  background-color: var(--color-bg-subtle); /* paints before load → no flash */
+}
+/* Stronger cohesion grade for wide ambiance shots (rooms/lounge/reception). */
+[data-brand="blue-sky"] .bs-photo--graded {
+  filter: saturate(1.06) contrast(1.02) brightness(1.01)
+    sepia(0.04) hue-rotate(-4deg);
+}
+
+/* Champagne→sky duotone wash, applied as a blended overlay so on-brand color
+   unifies the set without destroying photographic detail (multiply lows). */
+[data-brand="blue-sky"] .bs-photo-tone {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+  background: linear-gradient(
+    150deg,
+    var(--sky-dawn) 0%,
+    transparent 42%,
+    transparent 60%,
+    var(--sky-high) 100%
+  );
+}
+
+/* Cloud-form section divider: soft drifting wisps. Honors reduced-motion. */
+[data-brand="blue-sky"] .bs-cloud-drift {
+  animation: bs-cloud-drift 60s linear infinite;
+}
+[data-brand="blue-sky"] .bs-cloud-drift--slow {
+  animation: bs-cloud-drift 96s linear infinite reverse;
+}
+@keyframes bs-cloud-drift {
+  from { transform: translateX(-3%); }
+  to   { transform: translateX(3%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="blue-sky"] .bs-cloud-drift,
+  [data-brand="blue-sky"] .bs-cloud-drift--slow {
+    animation: none;
+  }
+}
+
+/* Dawn→day page color drift: a faint full-page sky scrim whose tint deepens
+   subtly toward the foot so the page reads as a single descending sky. The
+   sections themselves are opaque; this only tints the gaps/edges. */
+[data-brand="blue-sky"] .bs-skyfield {
+  background:
+    linear-gradient(
+      180deg,
+      oklch(98% 0.012 232) 0%,
+      oklch(97.4% 0.018 236) 38%,
+      oklch(96.6% 0.024 240) 70%,
+      oklch(95.8% 0.03 244) 100%
+    );
+}

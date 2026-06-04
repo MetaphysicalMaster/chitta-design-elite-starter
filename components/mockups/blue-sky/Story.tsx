@@ -11,6 +11,8 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
+import { BrandImage } from "./BrandImage";
+import { blueSkyImages } from "@/app/mockups/blue-sky/images.manifest";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -33,29 +35,42 @@ export function Story() {
         }}
       />
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 sm:px-8 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
-        {/* Portrait placeholder — clearly sample, no scraped assets */}
+        {/* Reception / interior — warm German Village space. Brand-faithful AI
+            sample (labeled), used as ambiance rather than a fabricated portrait. */}
         <Reveal>
           <figure className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] shadow-[var(--glass-shadow)]">
-              <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(150deg, var(--sky-mid), var(--sky-high) 55%, var(--sky-deep)), radial-gradient(70% 50% at 30% 20%, oklch(95% 0.03 232 / 0.6), transparent 60%)",
-                }}
+            <BrandImage
+              src={blueSkyImages.interior.primary}
+              alt={blueSkyImages.interior.altText}
+              aspect="4:5"
+              position="center 42%"
+              graded
+              tone
+              parallax
+              scrim="soft"
+              radius="3xl"
+              className="shadow-[var(--glass-shadow)]"
+            >
+              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/35 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+                Sample · illustrative
+              </span>
+            </BrandImage>
+            {/* Radiant skin-quality accent — overlaps the corner for editorial depth */}
+            <div className="absolute -bottom-6 -right-4 hidden w-32 sm:block lg:-right-8 lg:w-36">
+              <BrandImage
+                src={blueSkyImages.glow.primary}
+                alt={blueSkyImages.glow.altText}
+                aspect="1:1"
+                light
+                tone
+                radius="2xl"
+                position="center 40%"
+                className="shadow-[0_18px_40px_-16px_oklch(46%_0.12_255_/_0.5)] ring-4 ring-[var(--color-bg)]"
               />
-              {/* soft monogram so the placeholder reads as portrait, not empty */}
-              <span className="font-display absolute inset-0 grid place-items-center text-[6rem] leading-none text-white/30">
-                MM
-              </span>
-              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/30 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
-                Sample portrait
-              </span>
             </div>
             <figcaption className="mt-4 text-sm text-[var(--color-fg-muted)]">
-              <span className="font-semibold text-[var(--color-fg)]">Dr. Maura Manning, MD</span>{" "}
-              · Physician &amp; co-owner
+              <span className="font-semibold text-[var(--color-fg)]">Our German Village home</span>{" "}
+              · led by Dr. Maura Manning, MD
             </figcaption>
           </figure>
         </Reveal>

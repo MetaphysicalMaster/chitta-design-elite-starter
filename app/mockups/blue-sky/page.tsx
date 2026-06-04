@@ -20,7 +20,9 @@ export default function BlueSkyMockupPage() {
         Skip to content
       </a>
       <SiteNav />
-      <main id="main">
+      {/* Dawn→day color drift: a single descending sky behind the (mostly
+          transparent) sections, so the blue-sky feeling runs top-to-bottom. */}
+      <main id="main" className="bs-skyfield">
         <div id="top" />
         <SkyHero />
         <TrustBar />

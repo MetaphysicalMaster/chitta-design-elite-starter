@@ -55,8 +55,17 @@ export function Membership() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section id="membership" className="relative scroll-mt-24 py-24 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6 sm:px-8">
+    <section id="membership" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28">
+      {/* faint drifting cloud depth behind the heading — atmospheric, not literal */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-72 opacity-[0.5]"
+        style={{
+          background:
+            "radial-gradient(60% 70% at 50% -10%, var(--color-accent-subtle), transparent 65%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-6xl px-6 sm:px-8">
         <SectionHeading
           align="center"
           eyebrow="Membership"

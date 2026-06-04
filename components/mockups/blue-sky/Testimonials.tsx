@@ -7,6 +7,7 @@
 
 import { SectionHeading } from "./SectionHeading";
 import { RevealGroup, RevealItem } from "./Reveal";
+import { CloudDivider } from "./CloudDivider";
 
 const QUOTES = [
   {
@@ -39,8 +40,15 @@ function Stars() {
 
 export function Testimonials() {
   return (
-    <section id="reviews" className="relative scroll-mt-24 bg-[var(--color-bg-subtle)] py-24 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6 sm:px-8">
+    <section id="reviews" className="relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-28">
+      {/* sky-blue cloud melt from the (transparent) membership band above */}
+      <CloudDivider
+        variant="top"
+        fill="var(--color-bg-subtle)"
+        tint="var(--color-accent-subtle)"
+        heightClass="h-14 sm:h-20"
+      />
+      <div className="relative mx-auto max-w-6xl px-6 sm:px-8">
         <div className="flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Loved in German Village"

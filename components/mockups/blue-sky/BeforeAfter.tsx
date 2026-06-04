@@ -9,6 +9,8 @@
 import { useCallback, useRef, useState } from "react";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { CloudDivider } from "./CloudDivider";
+import { blueSkyImages } from "@/app/mockups/blue-sky/images.manifest";
 import { cn } from "@/lib/utils";
 
 type Case = {
@@ -49,7 +51,8 @@ const CASES: Case[] = [
   },
 ];
 
-function Slider({ data }: { data: Case }) {
+/** Shared drag + full-keyboard slider engine (pointer capture, arrows/Home/End). */
+function useSlider() {
   const [pos, setPos] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -74,7 +77,6 @@ function Slider({ data }: { data: Case }) {
   const onPointerUp = () => {
     dragging.current = false;
   };
-
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
       e.preventDefault();
@@ -88,6 +90,121 @@ function Slider({ data }: { data: Case }) {
       setPos(100);
     }
   };
+
+  return { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown };
+}
+
+/** Shared handle button + divider line for a comparison slider. */
+function SliderHandle({
+  pos,
+  label,
+  onKeyDown,
+}: {
+  pos: number;
+  label: string;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+}) {
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute inset-y-0"
+        style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
+      >
+        <div className="relative h-full w-0.5 bg-white/90 shadow-[0_0_0_1px_oklch(46%_0.12_255_/_0.2)]" />
+      </div>
+      <button
+        type="button"
+        role="slider"
+        aria-label={`Reveal ${label} before and after. Use arrow keys to compare.`}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(pos)}
+        aria-valuetext={`Showing ${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
+        onKeyDown={onKeyDown}
+        className={cn(
+          "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
+          "border border-white bg-white/90 text-[var(--color-accent)] shadow-lg backdrop-blur",
+          "transition-transform duration-200 hover:scale-105",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+        )}
+        style={{ left: `${pos}%` }}
+      >
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+          <path d="M9 6 4 12l5 6M15 6l5 6-5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+    </>
+  );
+}
+
+/** Featured slider over the real brand before/after photograph (3:2, SAMPLE-labeled). */
+function PhotoSlider() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider();
+  const img = blueSkyImages.beforeAfter;
+
+  return (
+    <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
+      <div
+        ref={ref}
+        className="relative aspect-[3/2] w-full cursor-ew-resize touch-none select-none"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        {/* AFTER — the radiant treated result (full image) */}
+        <img
+          src={img.primary}
+          alt={img.altText}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          className="bs-photo absolute inset-0 h-full w-full object-cover"
+        />
+        <span className="absolute right-3 top-3 z-[3] rounded-full bg-white/85 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
+          After
+        </span>
+
+        {/* BEFORE — same frame, graded cooler/flatter to read as untreated; clipped left */}
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          aria-hidden
+        >
+          <img
+            src={img.primary}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ filter: "saturate(0.62) brightness(0.93) contrast(0.96)" }}
+          />
+          <span className="absolute inset-0 bg-[oklch(60%_0.02_250_/_0.16)]" />
+          <span className="absolute left-3 top-3 rounded-full bg-[var(--color-fg)]/80 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
+            Before
+          </span>
+        </div>
+
+        <span className="pointer-events-none absolute bottom-3 left-1/2 z-[3] -translate-x-1/2 rounded-full bg-black/35 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+          Sample · illustrative
+        </span>
+
+        <div className="relative z-[2]">
+          <SliderHandle pos={pos} label="featured skin result" onKeyDown={onKeyDown} />
+        </div>
+      </div>
+      <figcaption className="flex items-center justify-between gap-3 px-5 py-4">
+        <span className="font-display text-lg text-[var(--color-fg)]">Skin radiance & tone</span>
+        <span className="text-xs text-[var(--color-fg-muted)]">Representative outcome · drag to compare</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function Slider({ data }: { data: Case }) {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider();
 
   return (
     <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
@@ -122,34 +239,7 @@ function Slider({ data }: { data: Case }) {
           Sample · illustrative
         </span>
 
-        {/* Handle */}
-        <div
-          className="pointer-events-none absolute inset-y-0"
-          style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
-        >
-          <div className="relative h-full w-0.5 bg-white/90 shadow-[0_0_0_1px_oklch(46%_0.12_255_/_0.2)]" />
-        </div>
-        <button
-          type="button"
-          role="slider"
-          aria-label={`Reveal ${data.treatment} before and after. Use arrow keys to compare.`}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(pos)}
-          aria-valuetext={`Showing ${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
-          onKeyDown={onKeyDown}
-          className={cn(
-            "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
-            "border border-white bg-white/90 text-[var(--color-accent)] shadow-lg backdrop-blur",
-            "transition-transform duration-200 hover:scale-105",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
-          )}
-          style={{ left: `${pos}%` }}
-        >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-            <path d="M9 6 4 12l5 6M15 6l5 6-5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        <SliderHandle pos={pos} label={data.treatment} onKeyDown={onKeyDown} />
       </div>
       <figcaption className="flex items-center justify-between gap-3 px-5 py-4">
         <span className="font-display text-lg text-[var(--color-fg)]">{data.treatment}</span>
@@ -174,14 +264,27 @@ export function BeforeAfter() {
             "radial-gradient(60% 50% at 80% 0%, var(--sky-high), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--sky-deep), transparent 70%)",
         }}
       />
-      {/* gentle fade strips ease the transition from/to the light sections */}
+      {/* Cloud-form melts: light sections billow into the dark results field */}
+      <CloudDivider
+        variant="top"
+        fill="var(--color-bg)"
+        tint="var(--color-bg-subtle)"
+        heightClass="h-12 sm:h-20 opacity-[0.10]"
+      />
+      <CloudDivider
+        variant="bottom"
+        fill="var(--color-bg)"
+        tint="var(--color-bg-subtle)"
+        heightClass="h-12 sm:h-20 opacity-[0.10]"
+      />
+      {/* gentle fade strips reinforce the transition from/to the light sections */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--color-bg)] to-transparent opacity-[0.12]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--color-bg)] to-transparent opacity-[0.10]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--color-bg)] to-transparent opacity-[0.12]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--color-bg)] to-transparent opacity-[0.10]"
       />
       <div className="relative mx-auto max-w-6xl px-6 sm:px-8">
         <SectionHeading
@@ -196,7 +299,15 @@ export function BeforeAfter() {
           lead="The before/after gallery their current site doesn't have. Slide the handle — or use your keyboard — to compare treatment outcomes."
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Featured real-photo slider (wide) above the treatment-specific demos */}
+        <Reveal className="mt-14">
+          <PhotoSlider />
+        </Reveal>
+
+        <p className="mt-10 text-sm font-medium uppercase tracking-[0.18em] text-white/55">
+          More comparisons
+        </p>
+        <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-3">
           {CASES.map((c, i) => (
             <Reveal key={c.id} delay={i * 0.08}>
               <Slider data={c} />

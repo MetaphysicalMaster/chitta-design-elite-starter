@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { CloudDivider } from "./CloudDivider";
 import { cn } from "@/lib/utils";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
@@ -211,6 +212,14 @@ export function SkyHero() {
           />
         </span>
       </motion.div>
+
+      {/* Cloud-form landing: the hero sky settles into the page on soft wisps. */}
+      <CloudDivider
+        variant="bottom"
+        fill="var(--color-bg-subtle)"
+        tint="oklch(96% 0.02 236)"
+        heightClass="h-14 sm:h-24"
+      />
     </section>
   );
 }
