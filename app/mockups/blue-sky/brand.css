@@ -1,0 +1,117 @@
+/* ============================================================
+   Blue Sky Med Spa — Scoped Brand Palette (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="blue-sky"].
+   Brand essence: serene, premium, trustworthy, airy — "blue sky."
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="blue-sky"] {
+  /* Surfaces — airy off-white warming to a hint of sky */
+  --color-bg: oklch(99% 0.006 230);
+  --color-bg-subtle: oklch(97.5% 0.012 232);
+  --color-bg-elevated: oklch(100% 0 0);
+
+  /* Foreground — deep, calm sky-ink (not pure black) for AA contrast */
+  --color-fg: oklch(28% 0.045 250);
+  --color-fg-muted: oklch(48% 0.035 248);
+  --color-fg-subtle: oklch(62% 0.028 245);
+
+  /* Accent — serene sky blue. accent-fg stays light for buttons. */
+  --color-accent: oklch(58% 0.13 238);
+  --color-accent-fg: oklch(99% 0.005 230);
+  --color-accent-subtle: oklch(95% 0.035 235);
+
+  /* Borders — barely-there */
+  --color-border: oklch(91% 0.014 235);
+  --color-border-subtle: oklch(95% 0.008 235);
+
+  --color-success: oklch(66% 0.13 160);
+  --color-warning: oklch(80% 0.13 85);
+  --color-error: oklch(62% 0.19 25);
+  --color-info: oklch(64% 0.13 238);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Sky gradient stops used by the WebGL hero + CSS fallback */
+  --sky-dawn: oklch(82% 0.06 60); /* warm champagne dawn */
+  --sky-mid: oklch(80% 0.085 230); /* soft daylight blue */
+  --sky-high: oklch(64% 0.13 245); /* deeper azure */
+  --sky-deep: oklch(46% 0.12 255); /* horizon ink-blue */
+  --sky-blush: oklch(86% 0.055 20); /* faint rose */
+
+  /* Gold/champagne luxe accent for membership + fine details */
+  --gold: oklch(78% 0.085 80);
+  --gold-deep: oklch(64% 0.1 75);
+
+  /* Glass tokens */
+  --glass-bg: oklch(100% 0 0 / 0.6);
+  --glass-bg-strong: oklch(100% 0 0 / 0.82);
+  --glass-border: oklch(100% 0 0 / 0.55);
+  --glass-shadow: 0 8px 40px -12px oklch(46% 0.12 255 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+
+  /* Fluid type tokens (clamp) for hero rhythm */
+  --fluid-hero: clamp(2.75rem, 1.4rem + 6.4vw, 6.5rem);
+  --fluid-h2: clamp(2rem, 1.2rem + 3.6vw, 3.75rem);
+  --fluid-lead: clamp(1.05rem, 0.95rem + 0.7vw, 1.375rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings inside the brand wrapper default to the serif */
+[data-brand="blue-sky"] .font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/* Reusable glass surface */
+[data-brand="blue-sky"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+}
+
+[data-brand="blue-sky"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+}
+
+/* Static sky gradient — SSR + reduced-motion + mobile fallback for the hero */
+[data-brand="blue-sky"] .sky-fallback {
+  background:
+    radial-gradient(120% 90% at 18% 8%, var(--sky-blush) 0%, transparent 45%),
+    radial-gradient(130% 100% at 85% 12%, var(--sky-dawn) 0%, transparent 50%),
+    linear-gradient(
+      180deg,
+      var(--sky-mid) 0%,
+      var(--sky-high) 48%,
+      var(--sky-deep) 100%
+    );
+}
+
+/* Fine gold underline used on eyebrow labels */
+[data-brand="blue-sky"] .rule-gold::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* Respect reduced motion: freeze decorative transforms */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="blue-sky"] * {
+    scroll-behavior: auto !important;
+  }
+}
