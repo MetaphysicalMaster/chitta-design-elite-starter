@@ -1,0 +1,395 @@
+/* ============================================================
+   Darst Dermatology — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="darst"].
+
+   Brand essence: CLINICAL-MINIMAL ACADEMIC AUTHORITY. A deep clinical
+   navy + a single oxblood accent on cool paper-white. The voice of a
+   double board-certified academic dermatologist — evidence-led,
+   reassuring, precise. This is the AFTER for a practice whose authority
+   is undermined by a cookie-cutter medical-vendor template, SEO-spam
+   location-suffixed URL slugs, and a slipping 3.5★ reputation. The
+   reframe: the doctor's RARE senior credentials lead — board-certified
+   in Dermatology AND Dermatopathology — and the reputation is recast
+   around expertise the way the vendor template never could.
+
+   Deliberately distinct from siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Happy Clinic → aurora violet→teal, optimistic, saturated
+     · SimplySkin   → restrained platinum, warm nude, one teal note
+     · Timeless     → aubergine-ink + aged brass on warm ivory
+     · Hanami       → sakura-pink + sumi-ink on rice-paper white
+     · Sousan       → emerald jewel + champagne-gold on cream marble
+     · Darst        → DEEP CLINICAL NAVY + a single OXBLOOD accent on
+                      COOL PAPER-WHITE. Restrained, academic, evidence-
+                      led. Where the others reach for warmth or jewels,
+                      Darst is a journal page and an anatomy plate:
+                      precise hairlines, dermal-strata motifs, tabular
+                      figures, near-monochrome with one surgical red.
+
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="darst"] {
+  /* Surfaces — cool paper-white. A clinical journal page: the faintest
+     blue-grey breath, never a warm cream. Elevated reads as pure card. */
+  --color-bg: oklch(98.4% 0.003 240);
+  --color-bg-subtle: oklch(96.4% 0.004 240);
+  --color-bg-elevated: oklch(99.6% 0.0015 240);
+  --color-bg-wash: oklch(94.6% 0.006 242); /* deeper paper wash blocks */
+
+  /* Foreground — deep clinical navy ink. A near-black navy that carries
+     the brand's authority; AA-tuned on paper-white. */
+  --color-fg: oklch(24% 0.035 252);
+  --color-fg-muted: oklch(42% 0.03 252); /* AA on paper + subtle */
+  --color-fg-subtle: oklch(50% 0.026 252); /* AA at small sizes on paper */
+
+  /* Accent — the single OXBLOOD. A surgical, restrained red. -deep clears
+     AA for text; -bright is reserved for on-navy glints only. */
+  --color-accent: oklch(45% 0.15 22);
+  --color-accent-fg: oklch(98.5% 0.004 240);
+  --color-accent-subtle: oklch(93% 0.04 24);
+  --color-accent-deep: oklch(41% 0.145 23); /* AA links / labels on paper */
+  --color-accent-bright: oklch(55% 0.17 24); /* glints on navy only */
+
+  /* Clinical navy scale — strata, hero base, dark sections, hairlines. */
+  --navy: oklch(34% 0.06 252);
+  --navy-deep: oklch(27% 0.05 253);
+  --navy-night: oklch(20% 0.04 254); /* dark sections base */
+  --navy-ink: oklch(15% 0.03 255); /* deepest stratum / hero floor */
+  --navy-mid: oklch(46% 0.07 250); /* mid strata, muted-on-navy text */
+
+  /* Dermal-strata stops — used by the WebGL lattice + CSS fallback.
+     A depth progression read top→down: stratum corneum (pale) →
+     epidermis → dermis → hypodermis (deep navy). One oxblood vessel. */
+  --strata-corneum: oklch(92% 0.012 250); /* pale surface */
+  --strata-epidermis: oklch(70% 0.04 248);
+  --strata-dermis: oklch(48% 0.07 250);
+  --strata-deep: oklch(30% 0.055 253);
+  --strata-vessel: oklch(52% 0.16 24); /* the lone oxblood capillary */
+
+  /* Borders — cool blue-grey paper hairlines (the journal rule). */
+  --color-border: oklch(90% 0.008 246);
+  --color-border-subtle: oklch(93.5% 0.006 246);
+  --color-hairline: oklch(85% 0.012 248);
+
+  --color-success: oklch(56% 0.1 162);
+  --color-warning: oklch(72% 0.13 70);
+  --color-error: oklch(52% 0.18 25);
+  --color-info: oklch(55% 0.1 250);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Navy night scale — dark hero base + dark sections + booking field. */
+  --night-0: oklch(18% 0.035 254);
+  --night-1: oklch(22% 0.042 253);
+  --night-2: oklch(27% 0.048 252);
+
+  /* Glass tokens — frosted paper nav + cards. */
+  --glass-bg: oklch(99% 0.003 240 / 0.62);
+  --glass-bg-strong: oklch(99% 0.003 240 / 0.86);
+  --glass-border: oklch(100% 0 0 / 0.6);
+  --glass-shadow: 0 16px 50px -24px oklch(27% 0.05 253 / 0.22);
+
+  /* Glass tokens for the DARK hero nav state (over navy). */
+  --glass-bg-dark: oklch(22% 0.042 253 / 0.5);
+  --glass-border-dark: oklch(70% 0.05 250 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper. */
+  --font-display: var(--font-display), "Newsreader", Georgia, serif;
+  --font-sans: var(--font-body), "IBM Plex Sans", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — academic, measured, restrained scale.
+     Less couture-extreme than the spa siblings; more journal masthead. */
+  --fluid-hero: clamp(2.5rem, 1.1rem + 6.2vw, 5.6rem);
+  --fluid-h2: clamp(1.9rem, 1.2rem + 3vw, 3.25rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.45vw, 1.28rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — Newsreader editorial serif, calm authority. */
+[data-brand="darst"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.012em;
+  font-weight: 480;
+  text-wrap: balance;
+}
+
+/* Italic display variant for the rare emphasis word (e.g. "dermatopathology"). */
+[data-brand="darst"] .font-display-em {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.004em;
+}
+
+/* Tabular numerics for NAP / metrics / figures / years. */
+[data-brand="darst"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent text meeting AA on light surfaces (links, labels, figures). */
+[data-brand="darst"] .text-accent-deep {
+  color: var(--color-accent-deep);
+}
+
+/* Refined letterspaced eyebrow label — the journal kicker. */
+[data-brand="darst"] .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-family: var(--font-sans);
+}
+
+/* Hairline rule under eyebrow labels — quiet oxblood fade. */
+[data-brand="darst"] .rule-accent::after {
+  content: "";
+  display: block;
+  width: 2.4rem;
+  height: 2px;
+  margin-top: 0.7rem;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-deep),
+    var(--color-accent-deep) 40%,
+    transparent
+  );
+}
+[data-brand="darst"] .rule-accent-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A fine measured-tick row — the anatomy-plate / depth-scale motif. */
+[data-brand="darst"] .strata-ticks {
+  background-image: repeating-linear-gradient(
+    180deg,
+    var(--color-hairline) 0,
+    var(--color-hairline) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+}
+
+/* Reusable glass surfaces — frosted paper. */
+[data-brand="darst"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  backdrop-filter: blur(16px) saturate(1.1);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="darst"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.18);
+  backdrop-filter: blur(22px) saturate(1.18);
+  border: 1px solid var(--glass-border);
+}
+/* Dark glass — chips that sit over the navy hero. */
+[data-brand="darst"] .glass-dark {
+  background: var(--glass-bg-dark);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid var(--glass-border-dark);
+}
+
+/* Thin clinical frame — the journal-plate border motif. */
+[data-brand="darst"] .plate {
+  position: relative;
+}
+[data-brand="darst"] .plate::after {
+  content: "";
+  position: absolute;
+  inset: 0.5rem;
+  border: 1px solid var(--color-accent-deep);
+  opacity: 0.32;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ============================================================
+   Dermal-lattice FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS field: a deep clinical-navy cross-section with
+   horizontal dermal STRATA bands (corneum → epidermis → dermis →
+   hypodermis), a fine lattice grid, and one oxblood capillary thread.
+   Built from layered gradients. NEVER a blank box. Zero CLS. The faint
+   drift is reduced-motion gated; static it still reads as a dermal plate.
+   The on-brand static SVG dermal illustration is layered ON TOP of this in
+   the hero (DermalFallback component) for the richest no-WebGL state.
+   ============================================================ */
+[data-brand="darst"] .lattice-fallback {
+  position: relative;
+  overflow: hidden;
+  background:
+    /* hypodermis deep glow, lower */
+    radial-gradient(
+      80% 60% at 50% 96%,
+      oklch(26% 0.05 253 / 0.7) 0%,
+      transparent 64%
+    ),
+    /* horizontal dermal strata bands */
+    linear-gradient(
+      180deg,
+      var(--strata-corneum) 0%,
+      oklch(74% 0.035 249) 12%,
+      var(--strata-epidermis) 26%,
+      var(--strata-dermis) 50%,
+      var(--strata-deep) 78%,
+      var(--navy-ink) 100%
+    );
+}
+/* Fine particle-lattice grid — the resolved cellular structure. */
+[data-brand="darst"] .lattice-fallback::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      1.5px 1.5px at 50% 50%,
+      oklch(96% 0.01 250 / 0.5),
+      transparent 60%
+    );
+  background-size: 26px 26px;
+  background-position: 0 0;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 60%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+  opacity: 0.6;
+}
+/* The lone oxblood capillary thread + cell glints catching the lattice. */
+[data-brand="darst"] .lattice-fallback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      2.5px 2.5px at 30% 38%,
+      oklch(96% 0.01 250 / 0.7),
+      transparent 70%
+    ),
+    radial-gradient(
+      2px 2px at 64% 30%,
+      oklch(94% 0.01 250 / 0.55),
+      transparent 70%
+    ),
+    radial-gradient(
+      2px 2px at 78% 58%,
+      var(--color-accent-bright),
+      transparent 70%
+    ),
+    radial-gradient(
+      2.5px 2.5px at 44% 66%,
+      oklch(92% 0.012 250 / 0.5),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="darst"] .lattice-fallback::before {
+    animation: dt-lattice 30s ease-in-out infinite alternate;
+  }
+}
+/* Slow lattice settle — cells breathing into place. */
+@keyframes dt-lattice {
+  from {
+    background-position: 0 -6px;
+    opacity: 0.5;
+  }
+  to {
+    background-position: 0 6px;
+    opacity: 0.66;
+  }
+}
+
+/* Before/after range — invisible track, a wide invisible thumb so the whole
+   width is a drag surface while the visible handle is the styled divider. */
+[data-brand="darst"] .ba-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="darst"] .ba-range::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="darst"] .ba-range::-moz-range-track {
+  background: transparent;
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — navy / paper / oxblood gradient "plates" that read
+   as one cohesive clinical shoot (portraits, procedure rooms, details).
+   Each marked "sample".
+   ============================================================ */
+[data-brand="darst"] .dt-plate {
+  position: relative;
+  background:
+    radial-gradient(
+      120% 120% at 24% 14%,
+      oklch(98% 0.004 240 / 0.95),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 120% at 86% 92%,
+      oklch(46% 0.07 250 / 0.3),
+      transparent 62%
+    ),
+    linear-gradient(158deg, oklch(95% 0.006 244), oklch(88% 0.02 248));
+}
+[data-brand="darst"] .dt-plate--navy {
+  background:
+    radial-gradient(
+      110% 110% at 72% 16%,
+      oklch(46% 0.07 250 / 0.5),
+      transparent 62%
+    ),
+    radial-gradient(
+      96% 100% at 14% 96%,
+      var(--color-accent) 0%,
+      transparent 30%
+    ),
+    linear-gradient(160deg, var(--night-1), var(--night-0));
+}
+[data-brand="darst"] .dt-plate--accent {
+  background:
+    radial-gradient(
+      120% 110% at 28% 22%,
+      oklch(60% 0.13 24 / 0.5),
+      transparent 60%
+    ),
+    linear-gradient(150deg, oklch(40% 0.12 23), oklch(28% 0.07 252));
+}
+/* Faint clinical-glint overlay so plates read as designed, not empty. */
+[data-brand="darst"] .dt-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2.5px 2.5px at 24% 30%, oklch(100% 0 0 / 0.28), transparent 70%),
+    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.22), transparent 70%),
+    radial-gradient(2.5px 2.5px at 78% 66%, oklch(100% 0 0 / 0.24), transparent 70%),
+    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.18), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="darst"] * {
+    scroll-behavior: auto !important;
+  }
+}
