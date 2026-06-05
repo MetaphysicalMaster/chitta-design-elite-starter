@@ -1,0 +1,430 @@
+/* ============================================================
+   Karma Beauty & Wellness — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="karma"].
+
+   Brand essence: BALANCED BOTANICAL WELLNESS. A grounded, holistic palette of
+   sage-green + terracotta + warm sand on a soft oat ground — earthy, serene,
+   balanced. The voice is calm and centered: beauty *and* wellness, equilibrium
+   over excess. This is the AFTER for a fragmented brand split across flat .htm
+   pages, a still-indexed `testkc.com` staging leak, and a bare Square booking
+   redirect. The reframe: ONE unified, premium two-metro wellness brand
+   (Lee's Summit + Overland Park) under a single canonical domain, with native
+   booking and per-metro NAP.
+
+   Deliberately distinct from siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Happy Clinic → aurora violet→teal, optimistic, saturated
+     · SimplySkin   → restrained platinum, warm nude (Fraunces)
+     · Timeless     → aubergine-ink + aged brass on warm ivory
+     · Hanami       → sakura-pink + sumi-ink on rice-paper white
+     · Sousan       → emerald jewel + champagne-gold on cream marble
+     · Darst        → deep clinical navy + a single oxblood on paper-white
+     · Beautox Bar  → candy magenta + electric lilac on soft cream
+     · Karma        → SAGE-GREEN + TERRACOTTA + WARM SAND on OAT. Earthy,
+                      grounded, meditative balance — where Sousan's green is a
+                      saturated emerald jewel, Karma's sage is muted, dusty and
+                      botanical; calm, not opulent.
+
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="karma"] {
+  /* Surfaces — warm oat / sand. Never clinical white: a grounded, sun-warmed
+     paper so the sage and terracotta read earthy and calm. */
+  --color-bg: oklch(97.4% 0.012 92);
+  --color-bg-subtle: oklch(95.4% 0.02 85);
+  --color-bg-elevated: oklch(98.8% 0.008 95);
+  --color-bg-wash: oklch(93% 0.028 130); /* faint sage wash blocks */
+  --sand: oklch(92% 0.03 80); /* warm sand band */
+  --sand-deep: oklch(87% 0.04 75);
+
+  /* Foreground — a deep, warm bark/umber ink. Not pure black: a grounded
+     earth-brown that belongs to the terracotta family, AA-tuned on oat. */
+  --color-fg: oklch(28% 0.03 60);
+  --color-fg-muted: oklch(44% 0.028 64); /* AA on oat + subtle */
+  --color-fg-subtle: oklch(52% 0.026 66); /* AA at small sizes on oat */
+
+  /* Accent — the grounded SAGE-GREEN. -deep clears AA for text on oat;
+     -bright is the lit highlight reserved for fills / on-dark accents. */
+  --color-accent: oklch(54% 0.072 145);
+  --color-accent-fg: oklch(98.5% 0.01 95);
+  --color-accent-subtle: oklch(91% 0.04 140);
+  --color-accent-deep: oklch(43% 0.066 147); /* AA links / labels on oat */
+  --color-accent-bright: oklch(66% 0.1 144); /* glints on dark only */
+
+  /* Terracotta — the warm second accent. The grounding earthen clay note. */
+  --terra: oklch(60% 0.13 45);
+  --terra-deep: oklch(50% 0.13 42); /* AA on oat for text */
+  --terra-bright: oklch(70% 0.13 48); /* glints / on-dark */
+  --terra-subtle: oklch(92% 0.045 50);
+
+  /* Orbit spectrum stops — used by the WebGL balance flow-field + CSS fallback.
+     A calm botanical read across the orbiting motes: sage → moss → terracotta
+     → warm sand, all muted and grounded. */
+  --orbit-sage: oklch(62% 0.085 146);
+  --orbit-moss: oklch(50% 0.07 150);
+  --orbit-terra: oklch(64% 0.12 46);
+  --orbit-clay: oklch(56% 0.115 38);
+  --orbit-sand: oklch(82% 0.06 82);
+  --orbit-bloom: oklch(88% 0.05 120); /* pale sage bloom highlight */
+
+  /* Borders — warm sand hairlines with a sage whisper. */
+  --color-border: oklch(89% 0.022 84);
+  --color-border-subtle: oklch(92.5% 0.016 86);
+  --color-hairline: oklch(85% 0.026 82);
+
+  --color-success: oklch(58% 0.1 150);
+  --color-warning: oklch(76% 0.13 70);
+  --color-error: oklch(56% 0.18 25);
+  --color-info: oklch(58% 0.08 200);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Deep grounded-earth night scale — dark hero base + dark sections + booking
+     field. A warm forest-umber night so sage + terracotta glints settle on it. */
+  --night-0: oklch(22% 0.026 130);
+  --night-1: oklch(27% 0.03 132);
+  --night-2: oklch(33% 0.034 134);
+
+  /* Glass tokens — frosted warm-oat nav + cards. */
+  --glass-bg: oklch(98.5% 0.012 92 / 0.64);
+  --glass-bg-strong: oklch(98.5% 0.012 92 / 0.88);
+  --glass-border: oklch(100% 0 0 / 0.6);
+  --glass-shadow: 0 18px 54px -26px oklch(40% 0.06 130 / 0.3);
+
+  /* Glass tokens for the DARK earth-night hero nav state. */
+  --glass-bg-dark: oklch(27% 0.03 132 / 0.5);
+  --glass-border-dark: oklch(66% 0.1 144 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper. */
+  --font-display: var(--font-display), "Spectral", Georgia, serif;
+  --font-sans: var(--font-body), "Inter", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — calm, editorial, grounded scale. Quieter and
+     more serene than the candy-pop siblings; serif-led for a holistic voice. */
+  --fluid-hero: clamp(2.5rem, 1.1rem + 6.4vw, 5.4rem);
+  --fluid-h2: clamp(1.9rem, 1.2rem + 3vw, 3.25rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.28rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — Spectral serif, grounded editorial calm. */
+[data-brand="karma"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.012em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+/* An italic editorial emphasis word — the serene botanical flourish. */
+[data-brand="karma"] .font-display-em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* The botanical-gradient headline word — sage → terracotta, grounded. */
+[data-brand="karma"] .balance-text {
+  background: linear-gradient(
+    100deg,
+    var(--color-accent-deep) 0%,
+    var(--orbit-moss) 40%,
+    var(--terra-deep) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* On the dark earth-night, lift the gradient so it reads off the umber. */
+[data-brand="karma"] .balance-text--bright {
+  background: linear-gradient(
+    100deg,
+    var(--color-accent-bright) 0%,
+    var(--orbit-sage) 42%,
+    var(--terra-bright) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tabular numerics for NAP / metrics / prices / years. */
+[data-brand="karma"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent text meeting AA on light surfaces (links, labels, prices). */
+[data-brand="karma"] .text-accent-deep {
+  color: var(--color-accent-deep);
+}
+[data-brand="karma"] .text-terra-deep {
+  color: var(--terra-deep);
+}
+
+/* Refined letterspaced eyebrow label — the grounded kicker. */
+[data-brand="karma"] .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-family: var(--font-sans);
+}
+
+/* A small orbit rule under eyebrow labels — the balance / orbit motif:
+   a center seed with an orbiting dot, drawn from radial gradients. */
+[data-brand="karma"] .rule-orbit::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 0.5rem;
+  margin-top: 0.7rem;
+  background-image: radial-gradient(
+      circle at 5px 50%,
+      var(--color-accent) 0 4px,
+      transparent 5px
+    ),
+    radial-gradient(circle at 20px 50%, var(--terra) 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 34px 50%, var(--orbit-moss) 0 2px, transparent 3px);
+  background-repeat: no-repeat;
+}
+[data-brand="karma"] .rule-orbit-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Reusable glass surfaces — frosted warm-oat. */
+[data-brand="karma"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="karma"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+}
+/* Dark glass — chips that sit over the earth-night hero. */
+[data-brand="karma"] .glass-dark {
+  background: var(--glass-bg-dark);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid var(--glass-border-dark);
+}
+
+/* Grounded fill pill — the signature calm chip with a soft top sheen. */
+[data-brand="karma"] .earth-pill {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    var(--color-accent),
+    var(--orbit-moss)
+  );
+}
+[data-brand="karma"] .earth-pill--terra {
+  background: linear-gradient(160deg, var(--terra), var(--orbit-clay));
+}
+[data-brand="karma"] .earth-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 55% 0;
+  background: linear-gradient(180deg, oklch(100% 0 0 / 0.28), transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Balance / orbit FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS field: a calm earth-night with concentric balance
+   rings around a soft gravitational center, plus a few orbiting motes (sage,
+   terracotta, sand) settling into equilibrium. Built from layered radial +
+   conic gradients. NEVER a blank box. Zero CLS. The gentle orbit drift is
+   reduced-motion gated; static it still reads as a balanced orbit diagram.
+   ============================================================ */
+[data-brand="karma"] .orbit-fallback {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      60% 60% at 50% 48%,
+      oklch(34% 0.05 140 / 0.55) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      70% 60% at 80% 16%,
+      oklch(40% 0.07 46 / 0.4) 0%,
+      transparent 60%
+    ),
+    linear-gradient(165deg, var(--night-1), var(--night-0) 80%);
+}
+/* Concentric balance rings + the gravitational seed at center. */
+[data-brand="karma"] .orbit-fallback::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(78vmin, 640px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle, var(--orbit-bloom) 0 2.4%, transparent 3.2%),
+    radial-gradient(
+      circle,
+      transparent 0 17%,
+      oklch(70% 0.08 144 / 0.16) 17.4% 18%,
+      transparent 18.6%
+    ),
+    radial-gradient(
+      circle,
+      transparent 0 31%,
+      oklch(66% 0.1 48 / 0.14) 31.4% 32%,
+      transparent 32.6%
+    ),
+    radial-gradient(
+      circle,
+      transparent 0 45%,
+      oklch(70% 0.08 144 / 0.1) 45.4% 46%,
+      transparent 46.6%
+    );
+}
+/* Orbiting motes — sage / terracotta / sand dots riding the rings. */
+[data-brand="karma"] .orbit-fallback::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(78vmin, 640px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background-image:
+    radial-gradient(circle at 50% 9%, var(--orbit-sage) 0 1.1%, transparent 1.7%),
+    radial-gradient(circle at 83% 34%, var(--orbit-terra) 0 0.9%, transparent 1.5%),
+    radial-gradient(circle at 27% 78%, var(--orbit-sand) 0 0.8%, transparent 1.4%),
+    radial-gradient(circle at 66% 70%, var(--orbit-moss) 0 0.7%, transparent 1.3%),
+    radial-gradient(circle at 13% 40%, var(--orbit-clay) 0 0.7%, transparent 1.2%);
+  filter: drop-shadow(0 0 6px oklch(70% 0.08 144 / 0.4));
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="karma"] .orbit-fallback::after {
+    animation: km-orbit 36s linear infinite;
+    transform-origin: 50% 50%;
+  }
+  [data-brand="karma"] .orbit-fallback::before {
+    animation: km-breathe 9s ease-in-out infinite alternate;
+  }
+}
+/* Slow orbital revolution — motes circling the gravitational center. */
+@keyframes km-orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+/* Gentle gravitational breathe of the ring system. */
+@keyframes km-breathe {
+  from {
+    transform: translate(-50%, -50%) scale(0.985);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.015);
+    opacity: 1;
+  }
+}
+
+/* CSS-only orbiting dot used as small decorative accents elsewhere. */
+[data-brand="karma"] .css-orbit-dot {
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 34% 30%, oklch(100% 0 0 / 0.5) 0 16%, transparent 36%),
+    radial-gradient(circle at 60% 64%, var(--color-accent), var(--orbit-moss));
+  box-shadow: 0 10px 26px -10px oklch(45% 0.07 140 / 0.5);
+}
+[data-brand="karma"] .css-orbit-dot--terra {
+  background:
+    radial-gradient(circle at 34% 30%, oklch(100% 0 0 / 0.5) 0 16%, transparent 36%),
+    radial-gradient(circle at 60% 64%, var(--terra), var(--orbit-clay));
+}
+
+/* Before/after range — invisible track, a wide invisible thumb so the whole
+   width is a drag surface while the visible handle is the styled divider. */
+[data-brand="karma"] .ba-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="karma"] .ba-range::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="karma"] .ba-range::-moz-range-track {
+  background: transparent;
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — sage / terracotta / sand gradient "plates" that read as
+   one cohesive, grounded wellness shoot (treatment rooms, botanicals, calm
+   portraits). Each marked "sample".
+   ============================================================ */
+[data-brand="karma"] .km-plate {
+  position: relative;
+  background:
+    radial-gradient(120% 120% at 22% 16%, oklch(98% 0.01 95 / 0.92), transparent 58%),
+    radial-gradient(110% 120% at 86% 90%, var(--orbit-sage) 0%, transparent 56%),
+    linear-gradient(155deg, oklch(93% 0.035 120), var(--sand-deep));
+}
+[data-brand="karma"] .km-plate--sage {
+  background:
+    radial-gradient(110% 110% at 70% 16%, var(--orbit-bloom) 0%, transparent 58%),
+    radial-gradient(96% 100% at 14% 96%, var(--orbit-moss) 0%, transparent 44%),
+    linear-gradient(160deg, var(--color-accent), var(--orbit-moss));
+}
+[data-brand="karma"] .km-plate--terra {
+  background:
+    radial-gradient(120% 110% at 28% 22%, var(--orbit-sand) 0%, transparent 52%),
+    linear-gradient(150deg, var(--terra), var(--orbit-clay));
+}
+[data-brand="karma"] .km-plate--night {
+  background:
+    radial-gradient(110% 110% at 74% 18%, oklch(38% 0.06 140 / 0.7), transparent 60%),
+    radial-gradient(96% 100% at 12% 96%, oklch(40% 0.08 46 / 0.5) 0%, transparent 38%),
+    linear-gradient(160deg, var(--night-1), var(--night-0));
+}
+/* Faint botanical-glint overlay so plates read as designed, not empty. */
+[data-brand="karma"] .km-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.4), transparent 70%),
+    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.3), transparent 70%),
+    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.36), transparent 70%),
+    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.26), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="karma"] * {
+    scroll-behavior: auto !important;
+  }
+}
