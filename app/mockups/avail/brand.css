@@ -1,0 +1,229 @@
+/* ============================================================
+   Avail Aesthetics — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="avail"].
+   Brand essence: scaled, engineered, sporty-precise — "built to scale."
+   Signal cobalt + graphite + crisp white. NASCAR-CEO velocity energy.
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="avail"] {
+  /* Surfaces — crisp white warming to the faintest cool graphite tint.
+     Clean, engineered, enterprise — never clinical-cold. */
+  --color-bg: oklch(99.3% 0.003 255);
+  --color-bg-subtle: oklch(97.2% 0.006 256);
+  --color-bg-elevated: oklch(100% 0 0);
+
+  /* Foreground — deep graphite ink (not pure black) tuned for AA. */
+  --color-fg: oklch(24% 0.024 262);
+  --color-fg-muted: oklch(44% 0.026 260); /* AA on white + bg-subtle */
+  --color-fg-subtle: oklch(55% 0.024 259); /* AA at small sizes */
+
+  /* Accent — signal cobalt. The brand's velocity color. */
+  --color-accent: oklch(52% 0.205 264);
+  --color-accent-fg: oklch(99.3% 0.003 255);
+  --color-accent-subtle: oklch(95% 0.045 264);
+  --color-accent-deep: oklch(44% 0.19 266); /* AA as on-light text/links */
+  --color-accent-bright: oklch(62% 0.205 262); /* glints / streaks */
+
+  /* Borders — engineered hairlines */
+  --color-border: oklch(90% 0.012 258);
+  --color-border-subtle: oklch(94% 0.007 258);
+
+  --color-success: oklch(64% 0.15 150);
+  --color-warning: oklch(78% 0.14 80);
+  --color-error: oklch(60% 0.2 25);
+  --color-info: oklch(60% 0.16 255);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Graphite scale — the dark sections + slipstream void. */
+  --graphite-0: oklch(18% 0.022 262);
+  --graphite-1: oklch(22% 0.026 263);
+  --graphite-2: oklch(28% 0.03 264);
+
+  /* Slipstream speed-line stops — used by WebGL hero + CSS fallback. */
+  --streak-core: oklch(72% 0.16 262); /* hot cobalt core */
+  --streak-cool: oklch(58% 0.2 268); /* deep signal edge */
+  --streak-white: oklch(98% 0.01 255); /* crisp leading glint */
+
+  /* Cobalt foil / sheen for accent metrics */
+  --foil-a: oklch(64% 0.2 262);
+  --foil-b: oklch(82% 0.1 250);
+
+  /* Glass tokens — frosted enterprise nav + cards */
+  --glass-bg: oklch(100% 0 0 / 0.62);
+  --glass-bg-strong: oklch(100% 0 0 / 0.84);
+  --glass-border: oklch(100% 0 0 / 0.5);
+  --glass-shadow: 0 10px 44px -14px oklch(40% 0.12 264 / 0.26);
+
+  /* Fonts wired from next/font on the layout wrapper */
+  --font-display: var(--font-display), "Space Grotesk", system-ui, sans-serif;
+  --font-tight: var(--font-tight), "Inter Tight", system-ui, sans-serif;
+  --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+
+  /* Fluid type tokens (clamp) for hero rhythm */
+  --fluid-hero: clamp(2.6rem, 1.1rem + 6.9vw, 6.75rem);
+  --fluid-h2: clamp(1.95rem, 1.15rem + 3.7vw, 3.7rem);
+  --fluid-lead: clamp(1.05rem, 0.96rem + 0.66vw, 1.35rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — confident grotesque, tightened tracking, engineered feel. */
+[data-brand="avail"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.022em;
+  font-feature-settings: "ss01" 1, "calt" 1;
+  text-wrap: balance;
+}
+[data-brand="avail"] .font-tight {
+  font-family: var(--font-tight);
+  letter-spacing: -0.015em;
+}
+
+/* Body copy: clean neutral sans with tabular numerics for NAP/metrics. */
+[data-brand="avail"] {
+  font-feature-settings: "cv05" 1, "tnum" 0;
+}
+[data-brand="avail"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent text that meets AA on light surfaces (links, prices, labels) */
+[data-brand="avail"] .text-accent-deep {
+  color: var(--color-accent-deep);
+}
+
+/* Cobalt foil sheen for hero metrics — restrained, premium, moving glint. */
+[data-brand="avail"] .foil-sheen {
+  background: linear-gradient(
+    100deg,
+    var(--foil-a) 0%,
+    var(--foil-b) 42%,
+    var(--foil-a) 70%,
+    var(--foil-b) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="avail"] .foil-sheen {
+    animation: av-foil 7s linear infinite;
+  }
+}
+@keyframes av-foil {
+  from { background-position: 0% 0; }
+  to   { background-position: 220% 0; }
+}
+
+/* Reusable glass surfaces */
+[data-brand="avail"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="avail"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+}
+
+/* ============================================================
+   Slipstream fallback — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand cobalt speed-line field over graphite, NEVER a blank box.
+   Layered: graphite void → diagonal cobalt streaks → leading-edge glint.
+   Zero CLS. The drift animation is reduced-motion gated below.
+   ============================================================ */
+[data-brand="avail"] .slipstream-fallback {
+  background:
+    /* hot near-cursor glint, upper-right */
+    radial-gradient(60% 80% at 88% 16%, oklch(60% 0.18 264 / 0.55) 0%, transparent 56%),
+    /* cool depth, lower-left */
+    radial-gradient(70% 90% at 6% 92%, oklch(40% 0.14 268 / 0.5) 0%, transparent 60%),
+    /* diagonal speed-line streaks */
+    repeating-linear-gradient(
+      114deg,
+      transparent 0px,
+      transparent 26px,
+      oklch(66% 0.17 263 / 0.16) 27px,
+      oklch(74% 0.14 260 / 0.05) 31px,
+      transparent 34px,
+      transparent 60px
+    ),
+    /* graphite base field */
+    linear-gradient(120deg, var(--graphite-0) 0%, var(--graphite-1) 55%, var(--graphite-2) 100%);
+  background-size: 100% 100%, 100% 100%, 280px 280px, 100% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="avail"] .slipstream-fallback {
+    animation: av-stream 18s linear infinite;
+  }
+}
+@keyframes av-stream {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: 0 0, 0 0, -560px -240px, 0 0; }
+}
+
+/* Engineered cobalt rule used under eyebrow labels. */
+[data-brand="avail"] .rule-cobalt::after {
+  content: "";
+  display: block;
+  width: 2.75rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+}
+
+/* A fine speed-tick row — engineered ruler motif echoing "Hero-Ruler". */
+[data-brand="avail"] .ruler-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-border) 0,
+    var(--color-border) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — engineered cobalt/graphite gradient "plates" that
+   read as one cohesive shoot. Each is clearly marked "sample" in JSX.
+   ============================================================ */
+[data-brand="avail"] .av-plate {
+  position: relative;
+  background:
+    radial-gradient(120% 120% at 30% 20%, oklch(70% 0.13 262 / 0.32), transparent 60%),
+    linear-gradient(150deg, oklch(92% 0.03 258), oklch(83% 0.05 262));
+}
+[data-brand="avail"] .av-plate--cool {
+  background:
+    radial-gradient(120% 120% at 70% 30%, oklch(64% 0.16 266 / 0.4), transparent 62%),
+    linear-gradient(150deg, oklch(40% 0.07 264), oklch(26% 0.04 264));
+}
+/* Faint engineered grid overlay so plates read as designed, not empty. */
+[data-brand="avail"] .av-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(oklch(100% 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(100% 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(120% 120% at 50% 0%, #000 30%, transparent 100%);
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="avail"] * {
+    scroll-behavior: auto !important;
+  }
+}
