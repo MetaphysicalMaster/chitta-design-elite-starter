@@ -6,9 +6,11 @@ import { Locations } from "@/components/mockups/beautox-bar/Locations";
 import { Services } from "@/components/mockups/beautox-bar/Services";
 import { BeforeAfter } from "@/components/mockups/beautox-bar/BeforeAfter";
 import { Reviews } from "@/components/mockups/beautox-bar/Reviews";
+import { Meet } from "@/components/mockups/beautox-bar/Meet";
 import { Financing } from "@/components/mockups/beautox-bar/Financing";
 import { Booking } from "@/components/mockups/beautox-bar/Booking";
 import { SiteFooter } from "@/components/mockups/beautox-bar/SiteFooter";
+import { MobileBookingBar } from "@/components/mockups/beautox-bar/MobileBookingBar";
 
 export default function BeautoxBarPage() {
   return (
@@ -26,18 +28,27 @@ export default function BeautoxBarPage() {
       <main id="main">
         <BubbleHero />
         <TrustBar />
-        {/* THE CLOSER — the "Find your Bar" growth-ready multi-location grid,
-            timed to the White Bear Township opening. Placed high so the
-            multi-location / scalability story lands before the menu. */}
-        <Locations />
+        {/* THE MENU leads — for "a cocktail bar for injectables," what's on tap
+            is the hook, so the visitor sees the treatments before being asked to
+            pick a neighborhood. Desire → proof → people → logistics → book. */}
         <Services />
         <BeforeAfter />
         <Reviews />
+        {/* "Behind the bar" — WHO holds the needle: the #1 trust lever for a
+            high-ticket aesthetics buyer. Sits with the proof cluster. */}
+        <Meet />
+        {/* "Find your bar" — the two real locations, placed late so "pick your
+            bar" flows straight into "grab your seat" at Booking. */}
+        <Locations />
         <Financing />
         <Booking />
       </main>
 
       <SiteFooter />
+
+      {/* Mobile-only sticky booking bar — appears after the hero, hides over the
+          booking module. Thumb-reachable Book + Text for the mobile-first buyer. */}
+      <MobileBookingBar />
     </SmoothScroll>
   );
 }

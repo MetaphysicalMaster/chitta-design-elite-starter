@@ -8,6 +8,58 @@ meaning, and surface the personal brand the live broken-title SEO template hides
 
 ---
 
+## REBRAND ADDENDUM — faithful re-skin to the REAL brand (hanamimedspa.com)
+
+The original passes below (1–54) describe the FIRST build, which *guessed* a
+sakura-pink + sumi-ink-on-washi palette and Shippori Mincho type. This addendum
+records the corrections made to match the client's live identity faithfully. The
+CSS var NAMES were retained; only their VALUES (and the fonts/assets) changed —
+the darst "REBRANDED to REAL identity" approach.
+
+- **Palette → SUMI-BLACK + GOLD luxury with SAKURA-PINK** (was pink-on-washi).
+  Retuned every `--color-*` / `--sakura*` / `--petal-*` / `--night-*` / `--sheen-*`
+  token in `brand.css` to the real world: black-tie black (#111/#1A1A1A) ink +
+  sections, brand GOLD (#C8A24B / #E3C77A champagne) as the awards/accent color,
+  and the live logo's true blossom pinks (#E8A0B8 / #F4C6D4) for petals.
+- **Fonts → Abel (display) + Open Sans (body)** via `next/font/google`, matching
+  the live hero. Fixed a self-referential CSS-var cycle (`--font-display:
+  var(--font-display)…`) that silently voided the display font → fell back to
+  body; now mapped from a distinct `--font-display-src` source variable.
+- **Real logo** (`logo.png` — black script + cherry-blossom branch + MEDSPA)
+  wired via `next/image` in SiteNav + SiteFooter (replaced the hand-built SVG
+  blossom wordmark). Nav stays frosted in both states so the black logo + ink
+  links read over the now-dark hero.
+- **Hero → sumi-black field** with the real sakura petals drifting over it; copy
+  in rice-paper white + a GOLD sheen highlight; black/gold CTAs; award-led
+  eyebrow + stats. Section carries a solid `--night-0` base for a robust black-tie
+  hero even before the canvas/fallback (added `.sakura-fallback--ink`).
+- **Petals → realistic cherry-blossom.** Retuned the WebGL `PALETTE` to the live
+  blossom pinks and rewrote the fragment-shader `petalMask` to a true sakura
+  silhouette (teardrop, narrow base → wide top, with the signature V-cleft).
+- **Reviews DROPPED entirely** (removed `ProofWall` + its component) and replaced
+  by an **OVERSIZED auto-scrolling AWARDS RAIL** (`AwardsRail.tsx`): the real DFW
+  Favorites WINNER badges (2024/25/26) + Fort Worth Top Doctor, big and proud in
+  black + gold-leaf plates with gold-foil captions. Scroll mechanics ported from
+  darst's `.dt-marquee` → `.hn-marquee` (pause on hover/focus; reduced-motion →
+  static, swipeable, snapping strip; masked edges; seamless -50% loop).
+- **Dr. Phuah photo** (`dr-phuah-candidate.jpg`) pulled into the "Meet Dr. Phuah"
+  authority section, framed elegantly with a gold inset rule + signature seal
+  (new `BrandPhoto` primitive = real `next/image`, export/basePath-safe).
+- **Ambiance photos** wired: real clinic interior (`interior.jpeg`) in Financing;
+  a treatment-result moment (`model.jpg`, stock → kept the "sample" tag) in the
+  before/after intro. Before/after plates retuned dull-neutral → luminous rose.
+- **Copy de-fictionalized:** removed the invented "4.9★ / 243 reviews" proof
+  (TrustBar + hero + nav) in favor of the real, verifiable awards. Nav/footer
+  "Reviews → Awards" (`#proof` → `#awards`).
+- Verified live in-browser (Chrome): black/gold/sakura hero, awards rail (8 li =
+  4 + seamless dup, `hn-marquee-scroll` 44s infinite, edge mask), Dr. Phuah +
+  interior + model photos loading, Abel display resolving, no horizontal overflow,
+  mobile nav toggle present. (`next build`/`tsc` not run per task constraints; the
+  pre-existing sibling `timeless/HorologyScene.tsx` syntax error is unrelated and
+  untouched.)
+
+---
+
 ## Brand, palette & identity
 1. Scoped the entire token system under `[data-brand="hanami"]` so nothing leaks
    into shared `globals.css` or any sibling client folder.
@@ -178,3 +230,54 @@ meaning, and surface the personal brand the live broken-title SEO template hides
 | Conversion design      | 9.4   | Sole-injector closer surfaces the hidden personal brand; native 2-step scheduler; clean NAP. |
 
 **Average ≈ 9.49** (target ≥ 9.4 met).
+
+---
+
+## CO-COUNSEL PASS 2 — corrections (supersedes the stale claims above)
+
+Two counsels (DesignGod + DistroGod) reviewed the live build. This pass made the
+following high-impact corrections; where they contradict the log above, THIS
+section is authoritative.
+
+- **Hero void FIXED for real (P0).** The rebrand note + Pass 41 claimed a working
+  staggered hero reveal, and an interim change had switched it to
+  `whileInView`/`viewport.once`. That was the WRONG tool for ALWAYS-above-fold
+  content: on a cold reload the IntersectionObserver callback didn't fire at mount
+  during the R3F-canvas + Lenis-init race, so the H1/CTAs/stats sat at opacity:0
+  for seconds (a black void on desktop, an empty void on mobile). `PetalHero`'s
+  `item()` now uses a plain `initial → animate` PLAY-ON-MOUNT transition (same
+  duration/stagger/ease, reduced-motion hard-cut). Below-fold `Reveal`/whileInView
+  is correct and untouched.
+- **"Results" imagery reframed HONESTLY.** `photo-a.png` and `photo-b.jpeg` are
+  **Fort Worth Magazine editorial features** (a FOCUS / "Women Who Forward Fort
+  Worth" bio of Dr. Phuah, and the 2022 "Faces of Fort Worth — The Face of Laser
+  & Noninvasive Skin Rejuvenation" promotion), NOT client before/afters. They were
+  mis-captioned "Real client · placed by Dr. Phuah." Now reframed as an honest **As
+  featured in Fort Worth Magazine** press strip (reinforcing the awards/credibility
+  theme), alt text describes the actual features, and the "drag to reveal" promise
+  is scoped to the clearly-labelled illustrative sample sliders only.
+- **Petals retuned to the logo's REAL color.** The rebrand note claimed petals
+  match the logo's "blossom pinks (#E8A0B8 / #F4C6D4)." The actual logo blossoms
+  (and the Top Doctors ribbon) are a coral/cherry-**RED** (~#E8504D). The
+  `--petal-deep`/`--petal-plum` stops, the WebGL `PALETTE` deep/plum, and the
+  fallback near/far deep blooms were pushed toward that coral-red (hue ~24–28,
+  higher chroma) so each falling petal blooms pale rim → sakura → CORAL-RED heart,
+  matching the mark it sits beside. The pale rim stays soft (real sakura is
+  two-tone); AA-safe pink TEXT tokens are unchanged.
+- **Booking CTA hierarchy fixed.** The only REAL conversion (the phone line) was
+  the quieter ghost button while the demo "Confirm request" carried the gold. At
+  the ready-state the phone line is now the GOLD primary ("Call to confirm ·
+  (817) 808-8938") and the demo drops to a quiet supporting "Request this slot";
+  the footnote leads with the real phone line.
+- **Services grid warmed.** Added quiet brand texture (a faint gold-hairline top
+  rule — full on the featured card, a whisper elsewhere, brightening on hover; a
+  soft petal-mark corner watermark; gold-tinted hover border + price divider) so
+  the menu matches the couture polish elsewhere. Featured card stays dominant.
+- **Awards aggregate de-duped.** The strip line "Four consecutive years of Fort
+  Worth's favor." echoed the heading verbatim; it now reads "Recognized every year
+  since 2024 — by one set of hands." Hero left-column scrim widened/deepened at
+  `lg+` so copy keeps an AA margin where petal density peaks.
+- **Doc drift corrected:** `model.jpg` is a generic clinical stock photo (blue
+  scrubs/gloves), is **deprecated/UNUSED**, and must NOT be wired (it would
+  genericize the luxury aesthetic). The rebrand note's claim that it appears in the
+  before/after intro is obsolete — that area is now the press strip.

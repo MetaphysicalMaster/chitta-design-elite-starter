@@ -1,40 +1,42 @@
 "use client";
 
 /**
- * SiteFooter — clean per-location NAP, navigation, and fine print. Quiet
- * luxury: hairline rules, the editorial wordmark, two clearly-separated
- * Name/Address/Phone blocks (Fishers + Carmel) with tel: links and tabular
- * numerics. Closes the page with the "sample mockup" disclosure.
+ * SiteFooter — clean per-location NAP, navigation, and fine print. Understated
+ * restraint: hairline rules, the recreated two-tone wordmark, two clearly-
+ * separated Name/Address/Phone blocks (Fishers + Carmel · Zionsville) with
+ * tel: links and tabular numerics. Closes the page with the "sample mockup"
+ * disclosure.
  */
 
 import Link from "next/link";
+import { Wordmark } from "./primitives";
 
 const NAV = [
   { href: "#locations", label: "Locations" },
-  { href: "#authority", label: "Why SimplySkin" },
+  { href: "#authority", label: "Our Approach" },
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
   { href: "#proof", label: "Reviews" },
-  { href: "#financing", label: "Allē & Financing" },
+  { href: "#financing", label: "Rewards & Financing" },
   { href: "#book", label: "Book" },
 ];
 
 const NAP = [
   {
     name: "SimplySkin Fishers",
-    street: "11529 Spring Mill Rd, Ste 200",
-    city: "Fishers, IN 46038",
-    phoneDisplay: "(317) 597-8625",
-    phoneTel: "+13175978625",
-    hours: "Tue–Sat · By appointment",
+    street: "9879 E 116th St",
+    city: "Fishers, IN 46037",
+    phoneDisplay: "(317) 348-1313",
+    phoneTel: "+13173481313",
+    hours: "By appointment",
   },
   {
-    name: "SimplySkin Carmel",
-    street: "10485 N Pennsylvania St, Ste 100",
-    city: "Carmel · Zionsville, IN 46032",
-    phoneDisplay: "(317) 597-8625",
-    phoneTel: "+13175978625",
-    hours: "Now open · By appointment",
+    name: "SimplySkin Carmel · Zionsville",
+    street: "3965 W 106th St",
+    city: "Carmel / Zionsville, IN 46032",
+    phoneDisplay: "(317) 348-1313",
+    phoneTel: "+13173481313",
+    hours: "By appointment",
   },
 ];
 
@@ -47,32 +49,15 @@ export function SiteFooter() {
           <div className="lg:col-span-4">
             <Link
               href="#top"
-              className="group inline-flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+              aria-label="SimplySkin MedSpa — home"
+              className="group inline-flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
             >
-              <span
-                aria-hidden
-                className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-border)] text-[var(--color-accent)]"
-                style={{
-                  background:
-                    "radial-gradient(120% 120% at 30% 25%, oklch(99% 0.006 80), oklch(94% 0.02 56))",
-                }}
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-                  <path
-                    d="M12 3.5c3.4 4 5.2 6.6 5.2 9.2a5.2 5.2 0 1 1-10.4 0c0-2.6 1.8-5.2 5.2-9.2Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              <span className="font-display text-lg tracking-tight text-[var(--color-fg)]">
-                SimplySkin <span className="text-[var(--color-fg-subtle)]">MedSpa</span>
-              </span>
+              <Wordmark />
             </Link>
             <p className="mt-5 max-w-[34ch] text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
-              Simple by design, elite by results. Top 1% Allergan injectable
-              artistry for the Indianapolis metro — Fishers &amp; Carmel.
+              Body &amp; skincare, guided by medical expertise. Understated,
+              medical-grade care for the Indianapolis metro — Fishers and Carmel
+              &middot; Zionsville.
             </p>
           </div>
 
@@ -131,7 +116,7 @@ export function SiteFooter() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-[var(--color-border)] pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--color-fg-subtle)]">
-            © {new Date().getFullYear()} SimplySkin MedSpa · Paquin Partners. All rights reserved.
+            © {new Date().getFullYear()} SimplySkin MedSpa · Allergan &amp; Galderma award-winner. All rights reserved.
           </p>
           <p className="text-xs text-[var(--color-fg-subtle)]">
             Pitch mockup — sample copy &amp; imagery for design demonstration only.

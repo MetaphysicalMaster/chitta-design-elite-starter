@@ -1,24 +1,26 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Over the luminous light hero it's a
- * near-transparent hairline bar; once scrolled it frosts to airy white glass.
- * Restrained wordmark, native "Book" CTA. Mobile: accessible disclosure menu
- * with focus-visible rings + Esc to close. Quiet-luxury: dark text throughout
- * (the hero is light), fine hairline borders, no heavy chrome.
+ * SiteNav — sticky glass navigation. Over the warm photo-led hero it's a
+ * near-transparent hairline bar; once scrolled it frosts to airy warm glass.
+ * The wordmark is the recreated SimplySkin identity: a thin, light, two-tone
+ * "SimplySkin" with a smaller, quieter "MedSpa" — elegant and understated, no
+ * heavy chrome. Mobile: accessible disclosure menu with focus-visible rings +
+ * Esc to close. Dark warm-charcoal text throughout (the hero is light).
  */
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { Wordmark } from "./primitives";
 
-const PHONE_DISPLAY = "(317) 597-8625";
-const PHONE_TEL = "+13175978625";
+const PHONE_DISPLAY = "(317) 348-1313";
+const PHONE_TEL = "+13173481313";
 
 const LINKS = [
   { href: "#locations", label: "Locations" },
-  { href: "#authority", label: "Why SimplySkin" },
+  { href: "#authority", label: "Our Approach" },
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
   { href: "#proof", label: "Reviews" },
@@ -58,38 +60,13 @@ export function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — a fine refractive-droplet mark, set in the editorial serif */}
+        {/* Wordmark — the recreated thin two-tone SimplySkin identity. */}
         <Link
           href="#top"
-          className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          aria-label="SimplySkin MedSpa — home"
+          className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
-          <span
-            aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-border)] text-[var(--color-accent)] shadow-[0_6px_18px_-10px_oklch(48%_0.072_196_/_0.6)]"
-            style={{
-              background:
-                "radial-gradient(120% 120% at 30% 25%, oklch(99% 0.006 80), oklch(94% 0.02 56))",
-            }}
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-              <path
-                d="M12 3.5c3.4 4 5.2 6.6 5.2 9.2a5.2 5.2 0 1 1-10.4 0c0-2.6 1.8-5.2 5.2-9.2Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M10 13.4a2 2 0 0 0 2 2"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
-          <span className="font-display text-lg tracking-tight text-[var(--color-fg)]">
-            SimplySkin
-            <span className="text-[var(--color-fg-subtle)]"> MedSpa</span>
-          </span>
+          <Wordmark />
         </Link>
 
         {/* Desktop links */}
@@ -125,7 +102,7 @@ export function SiteNav() {
             href="#book"
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-14px_oklch(48%_0.072_196_/_0.8)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_30px_-16px_oklch(58%_0.04_184_/_0.7)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
           >

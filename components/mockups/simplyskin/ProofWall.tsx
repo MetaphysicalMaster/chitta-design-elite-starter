@@ -22,20 +22,20 @@ const REVIEWS: Review[] = [
   {
     id: "r1",
     quote:
-      "Holly is an artist. No one can tell I've had anything done — I just look like I slept well for a year.",
+      "No one can tell I've had anything done — I just look like I slept well for a year. Exactly what I wanted.",
     name: "Megan R.",
-    meta: "BOTOX® & lip · Fishers",
+    meta: "Injectables · Fishers",
     span: true,
   },
   {
     id: "r2",
-    quote: "Twenty years of trust, and now five minutes from my house in Carmel.",
+    quote: "Trusted care, and now five minutes from my house in Carmel.",
     name: "Anita P.",
-    meta: "Filler · Carmel",
+    meta: "Filler · Carmel · Zionsville",
   },
   {
     id: "r3",
-    quote: "She talked me out of more, not into it. That's why I'll never go anywhere else.",
+    quote: "They talked me out of more, not into it. That's why I'll never go anywhere else.",
     name: "Dana K.",
     meta: "Facial balancing · Fishers",
   },
@@ -44,14 +44,14 @@ const REVIEWS: Review[] = [
     quote:
       "The most natural, refined work in Indianapolis. You feel the difference the moment you walk in.",
     name: "Sara L.",
-    meta: "Sculptra® · Fishers",
+    meta: "Skincare · Fishers",
     span: true,
   },
   {
     id: "r5",
-    quote: "Calm, clean, never rushed. It feels like the luxury it is.",
+    quote: "Calm, clean, never rushed. It feels exactly as considered as it is.",
     name: "Brooke T.",
-    meta: "Microneedling · Carmel",
+    meta: "Microneedling · Carmel · Zionsville",
   },
 ];
 
@@ -71,7 +71,7 @@ export function ProofWall() {
   return (
     <section
       id="proof"
-      className="relative scroll-mt-20 bg-[var(--color-bg-subtle)] py-24 sm:py-28"
+      className="relative scroll-mt-28 bg-[var(--color-bg-subtle)] py-24 sm:py-28"
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -83,7 +83,7 @@ export function ProofWall() {
                 <span className="font-display-em">obsessively</span> loved.
               </>
             }
-            lead="Two decades of word-of-mouth in the Indianapolis metro — the kind of loyalty you can't buy with a template."
+            lead="Word-of-mouth across the Indianapolis metro — the quiet kind of loyalty that medical-grade, understated care earns."
           />
           <Reveal delay={0.08} className="lg:pb-2">
             <div className="flex items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[var(--glass-shadow)]">
@@ -93,7 +93,7 @@ export function ProofWall() {
                   <Stars />
                 </p>
                 <p className="mt-1 text-xs text-[var(--color-fg-subtle)]">
-                  Across Google &amp; @simplyskinmedspa · sample
+                  <span className="tnum">300+</span> Google reviews · @simplyskinmedspa · sample
                 </p>
               </div>
             </div>

@@ -67,8 +67,10 @@ function buildLattice(n: number, rng: () => number) {
   const TOP_Y = 1.0; // surface (corneum)
   const BOT_Y = -1.0; // hypodermis floor
 
-  // Capillary thread params (a vessel meandering through the dermis).
-  const vesselCount = Math.floor(n * 0.05);
+  // Capillary thread params (a vessel meandering through the dermis). A touch
+  // denser (0.05 → 0.07) so the teal thread reads as a continuous capillary,
+  // not a sparse dotted line — the page's single chroma signature.
+  const vesselCount = Math.floor(n * 0.07);
 
   for (let i = 0; i < n; i++) {
     const isVessel = i < vesselCount;
@@ -156,7 +158,7 @@ function DermalLattice({
       uResolve: { value: 0 },
       uIntro: { value: 0 },
       uDpr: { value: 1 },
-      uSize: { value: lite ? 3.6 : 4.2 },
+      uSize: { value: lite ? 4.4 : 5.2 },
       uFocus: { value: 0.5 },
       uPointer: { value: new THREE.Vector2(0, 0) },
       uPointerStr: { value: 0 },

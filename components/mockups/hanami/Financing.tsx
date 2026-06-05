@@ -8,7 +8,7 @@
  */
 
 import Link from "next/link";
-import { Reveal, btnPrimary, btnGhost } from "./primitives";
+import { Reveal, BrandPhoto, btnGold, btnGhost } from "./primitives";
 
 const PERKS = [
   {
@@ -37,11 +37,22 @@ export function Financing() {
               className="absolute inset-0 -z-10"
               style={{
                 background:
-                  "radial-gradient(80% 100% at 12% 10%, oklch(96% 0.03 352), transparent 64%), radial-gradient(70% 90% at 92% 96%, var(--color-accent-subtle), transparent 66%), linear-gradient(160deg, oklch(98% 0.01 350), oklch(94% 0.04 354))",
+                  "radial-gradient(80% 100% at 12% 10%, oklch(96% 0.03 8), transparent 64%), radial-gradient(70% 90% at 92% 96%, var(--color-accent-subtle), transparent 66%), linear-gradient(160deg, oklch(98% 0.01 8), oklch(94% 0.04 7))",
               }}
             />
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
               <div className="lg:col-span-5">
+                {/* the real clinic — a quiet ambiance frame */}
+                <BrandPhoto
+                  src="/clients/hanami/interior.jpeg"
+                  alt="Inside Hanami Medspa — the Fort Worth treatment space"
+                  aspect="16 / 10"
+                  radius="2xl"
+                  position="50% 40%"
+                  frame
+                  sizes="(min-width: 1024px) 26rem, 100vw"
+                  className="mb-7 shadow-[var(--glass-shadow)]"
+                />
                 <p className="rule-fine eyebrow inline-block text-accent-deep">
                   Value, the gentle way
                 </p>
@@ -57,7 +68,7 @@ export function Financing() {
                   unhurried.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="#book" className={btnPrimary}>
+                  <Link href="#book" className={btnGold}>
                     Start your plan
                   </Link>
                   <Link href="#services" className={btnGhost}>

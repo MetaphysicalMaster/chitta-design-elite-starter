@@ -2,9 +2,15 @@
 
 /**
  * BeforeAfter — interactive drag slider on a soft nude field. Pointer + full
- * keyboard support (arrows/Home/End on the handle). Placeholder gradient
- * "plates" clearly marked "sample · illustrative". Quiet-luxury: a light,
- * editorial frame rather than a dark gallery — restraint over spectacle.
+ * keyboard support (arrows/Home/End on the handle). The page's primary proof-
+ * of-work, so the LEAD case is grounded in the real hero complexion (one large
+ * comparison: a degraded "before" grade revealing the clean "after") — a real
+ * face, not a swatch. Two supporting cases stay as soft-lit complexion STUDIES
+ * (ss-skin), the "after" the same warm skin only brighter/clearer — a
+ * luminosity lift, never a hue jump — so the gallery stays on-palette. Every
+ * tile is honestly tagged "sample · illustrative"; real client photos are
+ * shared privately at consultation. Quiet-luxury: a light, editorial frame
+ * rather than a dark gallery — restraint over spectacle.
  */
 
 import { useCallback, useRef, useState } from "react";
@@ -15,31 +21,37 @@ type Case = {
   id: string;
   treatment: string;
   detail: string;
-  before: string;
-  after: string;
+  /** When set, the slider reveals the REAL hero complexion (graded before vs
+      clean after) instead of a CSS skin-study plate. */
+  photo?: { src: string; position?: string; alt: string };
 };
 
+// The LEAD case is grounded in the real hero photograph (one actual complexion,
+// graded as a degraded "before" revealing the clean "after") so the gallery's
+// primary proof is a real face, not a swatch. The two supporting cases stay as
+// soft-lit complexion STUDIES (ss-skin) — the "after" the same warm skin, only
+// brighter/clearer (a luminosity lift, never a hue jump) — on-palette and
+// honestly tagged "sample · illustrative".
 const CASES: Case[] = [
+  {
+    id: "balance",
+    treatment: "Liquid Facial Balancing",
+    detail: "Full-face plan · proportion-led",
+    photo: {
+      src: "/clients/simplyskin/hero.jpg",
+      position: "62% 34%",
+      alt: "A SimplySkin client's calm, healthy complexion — the natural, rested result of a full-face balancing plan.",
+    },
+  },
   {
     id: "tox",
     treatment: "BOTOX® — Glabella & Forehead",
-    detail: "Top-1% placed · 14 days post",
-    before: "linear-gradient(155deg, oklch(84% 0.018 60), oklch(77% 0.026 54))",
-    after: "linear-gradient(155deg, oklch(92% 0.022 62), oklch(85% 0.03 56))",
+    detail: "Conservative placement · 14 days post",
   },
   {
     id: "filler",
     treatment: "JUVÉDERM® — Lip & Chin",
     detail: "1.0ml · two-week follow-up",
-    before: "radial-gradient(120% 120% at 40% 30%, oklch(85% 0.02 40), oklch(77% 0.03 34))",
-    after: "radial-gradient(120% 120% at 40% 30%, oklch(91% 0.03 30), oklch(84% 0.04 26))",
-  },
-  {
-    id: "balance",
-    treatment: "Liquid Facial Balancing",
-    detail: "Full-face plan · proportion-led",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(83% 0.02 54), oklch(75% 0.03 48))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(90% 0.03 196), oklch(85% 0.05 196))",
   },
 ];
 
@@ -102,7 +114,7 @@ function SliderHandle({
         className="pointer-events-none absolute inset-y-0"
         style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
       >
-        <div className="relative h-full w-px bg-white/95 shadow-[0_0_0_1px_oklch(48%_0.072_196_/_0.25)]" />
+        <div className="relative h-full w-px bg-white/95 shadow-[0_0_0_1px_oklch(58%_0.04_184_/_0.22)]" />
       </div>
       <button
         type="button"
@@ -143,17 +155,49 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
-          <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
+        {/* AFTER layer (full width) — real clean complexion, or the brighter
+            skin-study plate. */}
+        <div className="absolute inset-0" aria-hidden>
+          {data.photo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={data.photo.src}
+              alt=""
+              aria-hidden
+              draggable={false}
+              loading="lazy"
+              className="ss-photo ss-photo--after"
+              style={{ objectPosition: data.photo.position ?? "center" }}
+            />
+          ) : (
+            <div className="ss-skin ss-skin--after absolute inset-0" />
+          )}
+          <span className="absolute right-3 top-3 z-[1] rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
             After
           </span>
         </div>
+        {/* BEFORE layer (clipped) — same real frame, degraded grade; or the
+            deeper skin-study plate. */}
         <div
           className="absolute inset-0"
-          style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <span className="absolute left-3 top-3 rounded-full bg-[var(--ink-0)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
+          {data.photo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={data.photo.src}
+              alt=""
+              aria-hidden
+              draggable={false}
+              loading="lazy"
+              className="ss-photo ss-photo--before"
+              style={{ objectPosition: data.photo.position ?? "center" }}
+            />
+          ) : (
+            <div className="ss-skin absolute inset-0" />
+          )}
+          <span className="absolute left-3 top-3 z-[1] rounded-full bg-[var(--ink-0)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
             Before
           </span>
         </div>
@@ -174,7 +218,7 @@ export function BeforeAfter() {
   return (
     <section
       id="results"
-      className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
+      className="relative scroll-mt-28 overflow-hidden py-24 sm:py-28"
     >
       {/* soft nude aura echoing the hero glow */}
       <div
@@ -188,21 +232,24 @@ export function BeforeAfter() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <SectionHeading
           eyebrow="Real results"
-          title={
-            <>
-              See the difference.{" "}
-              <span className="font-display-em">Drag to reveal.</span>
-            </>
-          }
-          lead="The before/after gallery a repurposed shop template could never show. Slide the handle — or use your keyboard — to compare representative outcomes from Holly's chair."
+          title="See the difference for yourself."
+          lead="Natural, undetectable change — never overdone. Drag the handle (or use your keyboard) to compare representative outcomes from our care."
         />
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {CASES.map((c, i) => (
-            <Reveal key={c.id} delay={i * 0.08}>
-              <Slider data={c} />
+            <Reveal
+              key={c.id}
+              delay={i * 0.08}
+              className={cn(c.photo && "lg:col-span-2")}
+            >
+              <Slider data={c} ratio={c.photo ? "16 / 10" : "4/5"} />
             </Reveal>
           ))}
         </div>
+        <p className="mt-8 text-center text-xs text-[var(--color-fg-subtle)]">
+          Representative studies for layout. Real client before/after photos are
+          shared privately at your consultation.
+        </p>
       </div>
     </section>
   );

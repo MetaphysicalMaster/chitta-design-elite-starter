@@ -1,18 +1,23 @@
 "use client";
 
 /**
- * TrustBar — a slim candy band of proof points directly under the hero: three
- * locations, the reviews, the years, woman-owned. Quick credibility before the
- * scroll deepens. Reduced-motion safe via the shared Reveal.
+ * TrustBar — a slim band of proof points directly under the hero: two locations,
+ * the reviews, the cocktail-bar concept, woman-owned. Quick credibility before
+ * the scroll deepens. Reduced-motion safe via the shared Reveal.
  */
 
 import { Reveal } from "./primitives";
+import { BRAND } from "./nap";
 
+/* Four concrete, non-duplicative proofs. The rating keeps the honest
+   "live on launch" convention (the real B&A / reviews are Instagram-only until
+   wired); the rest are true today. No Happy-Hour echo (the Services panel +
+   Locations badges already carry it). */
 const ITEMS = [
-  { v: "3", k: "Twin Cities bars" },
-  { v: "5.0★", k: "Regulars who rebook" },
-  { v: "2018", k: "Pouring tox since" },
-  { v: "100%", k: "Woman-owned" },
+  { v: "2", k: "Twin Cities bars" },
+  { v: "5.0★", k: "Google & IG · live on launch" },
+  { v: `Est. ${BRAND.foundedYear}`, k: "Years pouring" },
+  { v: "100%", k: "Woman-owned · nurse-led" },
 ];
 
 export function TrustBar() {

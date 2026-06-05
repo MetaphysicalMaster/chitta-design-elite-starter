@@ -30,12 +30,16 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-/* Sakura palette as THREE colors (kept in JS to mirror brand.css petal stops). */
+/* TWO-TONE cherry-blossom palette as THREE colors — matched to the REAL logo,
+   whose blossoms are a coral/cherry-RED (~#E8504D), not a soft pink. A pale rim
+   at the petal tip eases to a sakura body and blooms to a coral-red heart at the
+   base, so the falling field reads as THIS logo's flower (it sits beside it in
+   the nav). Mirrors brand.css --petal-* stops (pale → sakura → deep → plum). */
 const PALETTE = {
-  pale: "#f3dbe6", // --petal-pale  (pale rim)
-  sakura: "#f0b9cf", // --petal-sakura
-  deep: "#e486a9", // --petal-deep
-  plum: "#cf6d92", // --petal-plum  (heart)
+  pale: "#f7d2d4", // --petal-pale   (soft pale rim, the two-tone tip)
+  sakura: "#f0a59f", // --petal-sakura (sakura body, warmed toward coral)
+  deep: "#ec6f68", // --petal-deep   (deep coral-rose)
+  plum: "#e44b48", // --petal-plum   (coral-RED heart, logo ~#E8504D)
 };
 
 const COUNT_FULL = 2600;
@@ -144,32 +148,56 @@ const fragment = /* glsl */ `
   varying float vColorMix;
   varying float vFade;
 
-  // signed-distance-ish petal silhouette in UV space (a notched almond).
+  // Cherry-blossom petal silhouette in UV space: a teardrop that is narrow at
+  // the base (bottom, v=0) and wide at the top (v=1), with the signature sakura
+  // V-CLEFT notched into the top edge. Built from a width profile + a notch carve.
   float petalMask(vec2 uv) {
-    vec2 p = uv - vec2(0.5, 0.5);
-    p.y *= 0.78;                 // squash into a petal proportion
-    float r = length(p);
-    // almond outline: narrower at the tip, with a soft top notch (sakura cleft)
-    float body = smoothstep(0.5, 0.36, r);
-    // notch at the top to suggest the cherry-blossom cleft
-    float notch = smoothstep(0.0, 0.16, abs(uv.x - 0.5) - (0.5 - uv.y) * 0.5);
-    float tipY = smoothstep(0.0, 0.12, uv.y);     // soften base
-    return clamp(body * mix(0.65, 1.0, notch) * tipY, 0.0, 1.0);
+    float x = uv.x - 0.5;          // -0.5..0.5 across
+    float y = uv.y;                // 0 (base) .. 1 (tip)
+
+    // Width profile: pinched at the base, swelling to its widest near the top,
+    // then easing back so the top corners are rounded (egg-shaped petal).
+    float w = sin(clamp(y, 0.0, 1.0) * 3.14159) * 0.34   // round body
+            + y * 0.18;                                   // bias width toward top
+    float body = smoothstep(w, w - 0.06, abs(x));         // inside the outline
+
+    // base rounding so the bottom point isn't a hard spike
+    float baseSoft = smoothstep(0.0, 0.1, y);
+
+    // the sakura cleft: carve a small V-notch DOWN into the top edge at center.
+    float cleftDepth = 0.2;                                // how deep the notch
+    float cleftWidth = 0.16;                               // how wide
+    float notchEdge = 1.0 - cleftDepth + (cleftWidth - abs(x)) * (cleftDepth / cleftWidth);
+    float topCut = (abs(x) < cleftWidth)
+      ? smoothstep(notchEdge + 0.03, notchEdge, y)         // cut the V out
+      : 1.0;
+    float topSoft = smoothstep(1.02, 0.96, y);             // soften the very top
+
+    return clamp(body * baseSoft * topCut * topSoft, 0.0, 1.0);
   }
 
   void main() {
     float mask = petalMask(vUv);
     if (mask < 0.02) discard;
 
-    // length-wise color: heart (plum/deep) at base → sakura → pale rim at tip.
-    vec3 base = mix(uDeep, uSakura, smoothstep(0.0, 0.6, vUv.y));
-    base = mix(base, uPale, smoothstep(0.55, 1.0, vUv.y));
-    // per-petal ramp shift so the field has variety
-    base = mix(base, uPlum, vColorMix * 0.35 * (1.0 - vUv.y));
+    // length-wise color: a SAKURA-dominant petal. Body sits in sakura, easing to
+    // a pale rim at the tip; only the deepest base hints the blossom heart. This
+    // keeps petals reading pink over the black field rather than maroon.
+    vec3 base = mix(uDeep, uSakura, smoothstep(0.0, 0.32, vUv.y));
+    base = mix(base, uPale, smoothstep(0.5, 1.0, vUv.y));
+    // per-petal ramp shift toward the plum heart — applied to the MINORITY of
+    // petals (colorMix is cubed at generation) and only near the very base.
+    base = mix(base, uPlum, vColorMix * 0.3 * (1.0 - smoothstep(0.0, 0.45, vUv.y)));
+
+    // additive sakura rim — lift the petal edges toward pale pink so the
+    // silhouette glows softly over the sumi-black field instead of crushing to a
+    // dark maroon edge under NormalBlending. Strongest at the outline, fades in.
+    float rim = smoothstep(0.0, 0.12, mask) * (1.0 - smoothstep(0.12, 0.4, mask));
+    base += uPale * rim * 0.22;
 
     // gentle inner glow toward the heart
     float glow = smoothstep(0.5, 0.0, length(vUv - vec2(0.5, 0.32)));
-    base += uPlum * glow * 0.08;
+    base += uSakura * glow * 0.06;
 
     // depth dims the far layer slightly; flow fades the whole field as it calms.
     float depthDim = mix(0.82, 1.0, vDepth);
@@ -253,7 +281,11 @@ function PetalField({
       phases[i] = rand();
       speeds[i] = 0.45 + rand() * 0.9;
       scales[i] = 0.16 + rand() * 0.22;
-      colorMix[i] = rand();
+      // Color ramp bias: cube the random so most petals land PALE→SAKURA and the
+      // deep/plum heart is reserved for a small minority. Over the sumi-black
+      // hero this keeps the field reading as true cherry-blossom pink instead of
+      // the oxblood/maroon that a uniform distribution produced.
+      colorMix[i] = Math.pow(rand(), 3);
     }
 
     geo.setAttribute("aOffset", new THREE.InstancedBufferAttribute(offsets, 3));

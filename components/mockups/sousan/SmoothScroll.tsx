@@ -4,8 +4,8 @@
  * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
  * Wires anchor (#hash) clicks to glide instead of jump, offset for the sticky
  * nav. The caustics WebGL has its own internal frameloop; Lenis simply makes the
- * page's scroll feel unhurried and considered — the cadence of a River Oaks
- * drawing room, never rushed.
+ * page's scroll feel unhurried and considered — an editorial, never-rushed
+ * cadence that suits the brand.
  */
 
 import { useEffect } from "react";

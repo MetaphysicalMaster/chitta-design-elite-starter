@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * BeforeAfter — interactive drag slider on a warm ivory field. Pointer + full
+ * BeforeAfter — interactive drag slider on a warm, sunlit field. Pointer + full
  * keyboard support (arrows/Home/End on the handle). Placeholder gradient
- * "plates" clearly marked "sample · illustrative". Heirloom: a light, editorial
- * frame rather than a dark gallery — restraint over spectacle.
+ * "plates" clearly marked "sample · illustrative": BEFORE reads dull/cool/tired,
+ * AFTER reads brighter + warmer peach, so the drag shows a real lift in tone.
+ * Light and clean — true to the orange/peach brand, never a dark gallery.
  */
 
 import { useCallback, useRef, useState } from "react";
@@ -19,27 +20,32 @@ type Case = {
   after: string;
 };
 
+// Before/after "plates". To read as a real transformation (not two near-identical
+// rectangles), BEFORE is deliberately lower-L, lower-chroma and cooler-toned (a
+// dull, tired skin field), while AFTER is higher-L, warmer and more saturated
+// PEACH — all kept inside the true brand hue range (~52–62), never the old
+// brassy 70–82. The drag now visibly lifts tone + warmth.
 const CASES: Case[] = [
   {
     id: "tox",
     treatment: "Neuromodulator — Forehead & Glabella",
     detail: "Physician-placed · 14 days post",
-    before: "linear-gradient(155deg, oklch(84% 0.03 70), oklch(77% 0.04 62))",
-    after: "linear-gradient(155deg, oklch(92% 0.03 76), oklch(85% 0.045 68))",
+    before: "linear-gradient(155deg, oklch(72% 0.018 56), oklch(64% 0.022 50))",
+    after: "linear-gradient(155deg, oklch(93% 0.035 60), oklch(86% 0.055 58))",
   },
   {
     id: "secretrf",
     treatment: "Secret RF — Texture & Tightening",
     detail: "Three-session plan · 8 weeks",
-    before: "radial-gradient(120% 120% at 40% 30%, oklch(83% 0.03 60), oklch(75% 0.04 52))",
-    after: "radial-gradient(120% 120% at 40% 30%, oklch(90% 0.035 78), oklch(84% 0.05 70))",
+    before: "radial-gradient(120% 120% at 40% 30%, oklch(70% 0.016 54), oklch(61% 0.02 50))",
+    after: "radial-gradient(120% 120% at 40% 30%, oklch(92% 0.04 60), oklch(85% 0.06 56))",
   },
   {
     id: "filler",
     treatment: "Liquid Facial Balancing",
     detail: "Full-face plan · proportion-led",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(82% 0.03 56), oklch(74% 0.04 48))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(89% 0.05 80), oklch(84% 0.07 72))",
+    before: "radial-gradient(130% 100% at 60% 40%, oklch(71% 0.018 52), oklch(62% 0.022 48))",
+    after: "radial-gradient(130% 100% at 60% 40%, oklch(92% 0.05 60), oklch(85% 0.07 56))",
   },
 ];
 
@@ -102,7 +108,7 @@ function SliderHandle({
         className="pointer-events-none absolute inset-y-0"
         style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
       >
-        <div className="relative h-full w-px bg-white/95 shadow-[0_0_0_1px_oklch(58%_0.094_76_/_0.3)]" />
+        <div className="relative h-full w-px bg-white/95 shadow-[0_0_0_1px_oklch(60%_0.15_52_/_0.3)]" />
       </div>
       <button
         type="button"
@@ -144,6 +150,14 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
         onPointerLeave={onPointerUp}
       >
         <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
+          {/* after: a soft warm sheen — reads smoother / more luminous */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(60% 50% at 50% 28%, oklch(99% 0.01 64 / 0.5), transparent 64%)",
+            }}
+          />
           <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
             After
           </span>
@@ -153,7 +167,15 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <span className="absolute left-3 top-3 rounded-full bg-[var(--ink-0)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
+          {/* before: a faint texture + soft de-focus so it reads tired / pre-treatment */}
+          <div
+            className="absolute inset-0 opacity-50 mix-blend-soft-light"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(48deg, oklch(40% 0.01 50 / 0.5) 0 1px, transparent 1px 3px), repeating-linear-gradient(-42deg, oklch(40% 0.01 50 / 0.4) 0 1px, transparent 1px 4px)",
+            }}
+          />
+          <span className="absolute left-3 top-3 rounded-full bg-[var(--color-fg)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
             Before
           </span>
         </div>
@@ -176,13 +198,13 @@ export function BeforeAfter() {
       id="results"
       className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
     >
-      {/* soft brass aura echoing the hero */}
+      {/* soft peach aura echoing the hero (on-brand hue ~58) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-70"
         style={{
           background:
-            "radial-gradient(55% 50% at 85% 0%, oklch(92% 0.05 80 / 0.7), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--color-accent-subtle), transparent 72%)",
+            "radial-gradient(55% 50% at 85% 0%, oklch(90% 0.06 58 / 0.6), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--color-accent-subtle), transparent 72%)",
         }}
       />
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
@@ -194,7 +216,7 @@ export function BeforeAfter() {
               <span className="font-display-em">Drag to reveal.</span>
             </>
           }
-          lead="The before/after gallery a mis-branded EMR template could never show. Slide the handle — or use your keyboard — to compare representative outcomes from our physicians' chairs."
+          lead="Representative results from our physicians' chairs. Slide the handle — or use your keyboard — to compare before and after."
         />
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
           {CASES.map((c, i) => (

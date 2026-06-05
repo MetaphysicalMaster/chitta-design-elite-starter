@@ -8,10 +8,15 @@
 
 import { Reveal } from "./primitives";
 
+// Proof points are deliberately diversified — the Allergan & Galderma award is
+// reserved for ONE hero-grade placement (the Locations badge) so it stays a
+// scarce, prestigious signal rather than a repeated one. Here the band leads on
+// reviews, volume, tenure and footprint. "sample" tags stay until real figures
+// are supplied at handoff.
 const POINTS = [
-  { v: "Top 1%", k: "US Allergan" },
-  { v: "Top 10", k: "Injector in Indiana" },
-  { v: "20 years", k: "Of injectable artistry" },
+  { v: "4.9 ★", k: "300+ Google reviews · sample" },
+  { v: "10,000+", k: "Treatments delivered · sample" },
+  { v: "12+ yrs", k: "In aesthetics · sample" },
   { v: "Fishers + Carmel", k: "Two Indy-metro locations" },
 ];
 

@@ -41,7 +41,7 @@ export function BeforeAfter() {
                 sample={false}
                 className="rounded-none border-0"
               >
-                <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-[oklch(18%_0.04_166_/_0.55)] px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[oklch(95%_0.02_92)] backdrop-blur-sm">
+                <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-[oklch(15%_0_0_/_0.6)] px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[oklch(96%_0_0)] backdrop-blur-sm">
                   After
                 </span>
               </BrandImage>
@@ -60,7 +60,7 @@ export function BeforeAfter() {
                   sample={false}
                   className="rounded-none border-0"
                 >
-                  <span className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-[oklch(18%_0.04_166_/_0.55)] px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[oklch(95%_0.02_92)] backdrop-blur-sm">
+                  <span className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-[oklch(15%_0_0_/_0.6)] px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[oklch(96%_0_0)] backdrop-blur-sm">
                     Before
                   </span>
                 </BrandImage>
@@ -68,10 +68,10 @@ export function BeforeAfter() {
 
               {/* divider line + handle */}
               <div
-                className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[var(--gold-bright)] shadow-[0_0_18px_oklch(82%_0.12_86_/_0.7)]"
+                className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[var(--gold-bright)] shadow-[0_0_18px_oklch(66%_0.255_356_/_0.75)]"
                 style={{ left: `${pos}%` }}
               >
-                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--gold-bright)] bg-[oklch(20%_0.045_166_/_0.7)] backdrop-blur-sm">
+                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--gold-bright)] bg-[oklch(16%_0_0_/_0.72)] backdrop-blur-sm">
                   <span aria-hidden className="text-sm text-[var(--gold-bright)]">
                     ⇋
                   </span>

@@ -38,11 +38,12 @@ export function BeforeAfter() {
         <Reveal className="mt-12 sm:mt-14">
           <figure className="mx-auto max-w-3xl">
             <div className="relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] shadow-[0_30px_80px_-40px_oklch(30%_0.05_58_/_0.4)]">
-              {/* AFTER (base layer, full) */}
+              {/* AFTER (base layer, full) — the warm, radiant register, so the
+                  reveal reads as duller skin → glow even as a sample. */}
               <BrandImage
-                alt="After treatment — clearer, healthier skin"
+                alt="After treatment — clearer, more radiant skin"
                 aspect="16 / 11"
-                variant="paper"
+                variant="warm"
                 radius="2xl"
                 showSample={false}
                 className="!rounded-none !border-0"
@@ -65,7 +66,7 @@ export function BeforeAfter() {
                   <BrandImage
                     alt="Before treatment"
                     aspect="16 / 11"
-                    variant="navy"
+                    variant="muted"
                     radius="2xl"
                     showSample={false}
                     className="!h-full !w-full !rounded-none !border-0"
@@ -74,18 +75,21 @@ export function BeforeAfter() {
                 </div>
               </div>
 
-              {/* divider handle */}
+              {/* divider handle — given brand craft (most-interacted control):
+                  a warm-paper disc with a teal ring + hairline and a teal
+                  chevron, so it matches the page's finish (Solari bevels, strata
+                  rails, the swoosh) rather than reading as a plain flat circle. */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[oklch(98%_0.012_72)]"
                 style={{ left: `${pos}%` }}
               >
-                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[oklch(98%_0.012_72)] text-[var(--navy-ink)] shadow-[0_6px_20px_-8px_oklch(17%_0.03_54_/_0.7)]">
+                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[oklch(98%_0.012_72)] text-[var(--color-accent-deep)] shadow-[0_6px_20px_-8px_oklch(17%_0.03_54_/_0.7)] ring-1 ring-[var(--color-accent-deep)]/30 ring-offset-1 ring-offset-[oklch(98%_0.012_72)]">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
                     <path
                       d="M9 7l-4 5 4 5M15 7l4 5-4 5"
                       stroke="currentColor"
-                      strokeWidth="1.6"
+                      strokeWidth="1.8"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -96,6 +100,12 @@ export function BeforeAfter() {
               {/* "sample" tag for the whole comparison */}
               <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
                 Sample
+              </span>
+
+              {/* representative-treatment chip — names what the comparison would
+                  show, so the placeholder communicates an aesthetic outcome. */}
+              <span className="pointer-events-none absolute bottom-3 right-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.55)] px-2.5 py-0.5 text-[0.62rem] font-medium tracking-tight text-[oklch(96%_0.012_72)] backdrop-blur-sm">
+                Laser resurfacing — sample
               </span>
 
               {/* the accessible control */}

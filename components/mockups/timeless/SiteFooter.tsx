@@ -1,13 +1,14 @@
 "use client";
 
 /**
- * SiteFooter — clean NAP, navigation, and fine print. Heirloom: hairline rules,
- * the editorial concentric-ring wordmark, one clear Name/Address/Phone block
- * with a tel: link and tabular numerics. Closes the page with the "sample
- * mockup" disclosure.
+ * SiteFooter — clean NAP, navigation, and fine print. Warm and quiet: peach
+ * hairline rules, the lowercase dot-cluster wordmark, one clear
+ * Name/Address/Phone block with a tel: link and tabular numerics. Closes the
+ * page with the "sample mockup" disclosure.
  */
 
 import Link from "next/link";
+import { TimelessLogo } from "./TimelessLogo";
 
 const NAV = [
   { href: "#physicians", label: "The Physicians" },
@@ -36,30 +37,15 @@ export function SiteFooter() {
           <div className="lg:col-span-5">
             <Link
               href="#top"
+              aria-label="Timeless Aesthetics MedSpa — home"
               className="group inline-flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
             >
-              <span
-                aria-hidden
-                className="grid h-8 w-8 place-items-center rounded-full border border-[var(--brass)]/50 text-[var(--color-accent)]"
-                style={{
-                  background:
-                    "radial-gradient(120% 120% at 30% 25%, oklch(94% 0.05 84), oklch(82% 0.07 72))",
-                }}
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-                  <circle cx="12" cy="12" r="8.2" stroke="currentColor" strokeWidth="1.3" />
-                  <circle cx="12" cy="12" r="4.6" stroke="currentColor" strokeWidth="1.3" />
-                  <circle cx="12" cy="12" r="1.4" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="font-display text-lg tracking-tight text-[var(--color-fg)]">
-                Timeless <span className="text-[var(--color-fg-subtle)]">Aesthetics</span>
-              </span>
+              <TimelessLogo size="md" />
             </Link>
             <p className="mt-5 max-w-[40ch] text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
-              Physician-led aesthetics for Cincinnati — injectables, laser &amp;
-              Secret RF, and medical skin. Trusted for a decade, ahead for the
-              next.
+              A friendly, physician-run medspa for Cincinnati — Botox &amp;
+              Xeomin, filler, laser hair removal, Secret RF micro-needling and
+              medical skin care. Rejuvenate. Renew. Refresh.
             </p>
           </div>
 
@@ -89,6 +75,7 @@ export function SiteFooter() {
                 <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
               </svg>
               @timelessaesthetics
+              <span className="text-xs font-normal text-[var(--color-fg-subtle)]">· sample</span>
             </a>
           </div>
 
@@ -114,7 +101,7 @@ export function SiteFooter() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-[var(--color-border)] pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--color-fg-subtle)]">
-            © {new Date().getFullYear()} Timeless Aesthetics MedSpa · Drs. McCarren &amp; Heuker. All rights reserved.
+            © {new Date().getFullYear()} Timeless Aesthetics MedSpa · Drs. Heuker &amp; McCarren. All rights reserved.
           </p>
           <p className="text-xs text-[var(--color-fg-subtle)]">
             Pitch mockup — sample copy &amp; imagery for design demonstration only.

@@ -9,7 +9,7 @@
  */
 
 import Link from "next/link";
-import { Reveal, SectionHeading, btnGhost } from "./primitives";
+import { Reveal, SectionHeading, btnGold } from "./primitives";
 import { cn } from "@/lib/utils";
 
 type Service = {
@@ -71,15 +71,33 @@ function ServiceCard({ s }: { s: Service }) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-300 sm:p-7",
+        "group relative isolate flex flex-col overflow-hidden rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-300 sm:p-7",
         "hover:-translate-y-0.5",
         s.featured
-          ? "border-[var(--color-accent-subtle)] bg-[var(--color-bg-elevated)] shadow-[0_24px_70px_-44px_oklch(64%_0.13_354_/_0.42)] hover:shadow-[0_30px_80px_-40px_oklch(64%_0.13_354_/_0.5)]"
-          : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] hover:border-[var(--color-hairline)] hover:shadow-[var(--glass-shadow)]",
+          ? "border-[var(--gold-hairline)] bg-[var(--color-bg-elevated)] shadow-[0_24px_70px_-44px_oklch(72%_0.11_86_/_0.45)] hover:shadow-[0_30px_80px_-40px_oklch(72%_0.11_86_/_0.55)]"
+          : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] hover:border-[var(--gold-hairline)] hover:shadow-[var(--glass-shadow)]",
       )}
     >
+      {/* Quiet brand texture — a faint gold hairline top rule (full strength on
+          the featured card, a whisper on the rest, brightening on hover) and a
+          soft petal-mark watermark in the corner. Additive only; no layout shift. */}
+      <span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent transition-opacity duration-300",
+          "via-[var(--color-accent)]",
+          s.featured ? "opacity-80" : "opacity-30 group-hover:opacity-70",
+        )}
+      />
+      <span
+        aria-hidden
+        className={cn(
+          "petal-mark pointer-events-none absolute -right-3 -top-3 h-16 w-16 rotate-12 transition-opacity duration-300",
+          s.featured ? "opacity-[0.1]" : "opacity-[0.05] group-hover:opacity-[0.09]",
+        )}
+      />
       {s.featured && (
-        <span className="absolute right-5 top-5 rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-accent-subtle)] px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)]">
+        <span className="absolute right-5 top-5 z-[1] rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-accent-subtle)] px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)]">
           Most requested
         </span>
       )}
@@ -90,7 +108,7 @@ function ServiceCard({ s }: { s: Service }) {
       <p className="mt-4 flex-1 text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
         {s.detail}
       </p>
-      <div className="mt-6 flex items-center justify-between border-t border-[var(--color-border)] pt-4">
+      <div className="mt-6 flex items-center justify-between border-t border-[var(--gold-hairline)]/55 pt-4">
         <span className="tnum text-sm text-[var(--color-fg)]">{s.from}</span>
         <Link
           href="#book"
@@ -117,19 +135,33 @@ export function Services() {
             title={
               <>
                 Injectables, laser &amp; IPL.{" "}
-                <span className="font-display-em italic">Consult-driven, always.</span>
+                <span className="font-display-em text-[var(--color-accent-deep)]">Consult-driven, always.</span>
               </>
             }
             lead="Every plan begins with a conversation with Dr. Phuah, not a form-dump. Pricing shown as a starting point — the right plan is the one designed for your face, in its season."
           />
           <Reveal delay={0.08} className="lg:pb-2">
-            <Link href="#book" className={cn(btnGhost, "whitespace-nowrap")}>
+            <Link href="#book" className={cn(btnGold, "whitespace-nowrap")}>
               Book a consultation
             </Link>
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Price-permission band — converts the sole-injector differentiator into
+            permission to pay physician prices, confronting the "cheaper-is-fine"
+            belief before the buyer reaches the "from $…" lines below. */}
+        <Reveal delay={0.06}>
+          <p className="mt-10 max-w-[64ch] border-l-2 border-[var(--color-accent)] pl-5 text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
+            Priced as{" "}
+            <span className="font-medium text-[var(--color-fg)]">
+              physician-placed work
+            </span>
+            , not volume injecting — you&apos;re paying for one trained eye that
+            learns your face over seasons, never a rotating room.
+          </p>
+        </Reveal>
+
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((s, i) => (
             <Reveal key={s.id} delay={(i % 3) * 0.07}>
               <ServiceCard s={s} />

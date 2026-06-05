@@ -45,13 +45,26 @@
   --color-fg-muted: oklch(44% 0.04 62); /* AA on paper + subtle */
   --color-fg-subtle: oklch(52% 0.035 62); /* AA at small sizes on paper */
 
-  /* Accent — the TEAL/AQUA. The practice's secondary signature. -deep clears
-     AA for text on paper; -bright is reserved for glints on the dark brown. */
-  --color-accent: oklch(58% 0.085 196);
+  /* Accent — the TEAL/AQUA. The practice's secondary signature, and the single
+     most brand-load-bearing color (the real DarstLogo swoosh + "DERMATOLOGY"
+     caps are a vivid aqua). Chroma lifted toward the confident aqua the practice
+     actually owns (was 0.085/0.082 — read teal-grey on warm paper). -deep stays
+     at L48% so it still clears WCAG AA for text on the L98% paper with headroom;
+     -bright is reserved for glints on the dark brown. Hue held ~195-197. */
+  --color-accent: oklch(58% 0.108 196);
   --color-accent-fg: oklch(99% 0.004 200);
-  --color-accent-subtle: oklch(93% 0.04 196);
-  --color-accent-deep: oklch(48% 0.082 197); /* AA links / labels on paper */
-  --color-accent-bright: oklch(72% 0.1 194); /* glints on dark brown only */
+  --color-accent-subtle: oklch(93% 0.05 196);
+  --color-accent-deep: oklch(48% 0.105 197); /* AA links / labels on paper */
+  --color-accent-bright: oklch(72% 0.115 194); /* glints on dark brown only */
+
+  /* Coral — the real brand's THIRD note (brown + teal + coral). Teal stays the
+     clinical-trust primary accent; coral is reserved, sparingly, for the
+     human/AESTHETIC warmth the female-luxury cosmetic story needs — a soft
+     warm-paper wash + one chip/rail on the cosmetic touchpoints. -deep clears
+     AA for small text/labels on the warm paper surfaces. */
+  --color-coral: oklch(66% 0.12 30);
+  --color-coral-subtle: oklch(93% 0.045 33); /* soft coral wash on paper */
+  --color-coral-deep: oklch(52% 0.13 31); /* AA labels / rails on paper */
 
   /* Warm-brown scale — strata, hero base, dark sections, hairlines.
      (var names kept as --navy* for compatibility; values are brown.) */
@@ -68,7 +81,7 @@
   --strata-epidermis: oklch(74% 0.045 66);
   --strata-dermis: oklch(52% 0.055 62);
   --strata-deep: oklch(33% 0.045 58);
-  --strata-vessel: oklch(60% 0.1 195); /* the lone TEAL capillary */
+  --strata-vessel: oklch(60% 0.12 195); /* the lone TEAL capillary */
 
   /* Borders — warm sepia paper hairlines (the journal rule). */
   --color-border: oklch(90% 0.012 70);
@@ -78,7 +91,7 @@
   --color-success: oklch(56% 0.1 162);
   --color-warning: oklch(72% 0.13 70);
   --color-error: oklch(52% 0.18 25);
-  --color-info: oklch(58% 0.085 196);
+  --color-info: oklch(58% 0.108 196);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
   /* Warm-brown night scale — dark hero base + dark sections + booking field. */
@@ -86,8 +99,8 @@
   --night-1: oklch(25% 0.044 57);
   --night-2: oklch(30% 0.048 58);
 
-  /* Teal swoosh accent for the wordmark logo. */
-  --teal-swoosh: oklch(64% 0.095 195);
+  /* Teal swoosh accent for the wordmark logo — the most literal brand teal. */
+  --teal-swoosh: oklch(64% 0.12 195);
 
   /* Glass tokens — frosted warm paper nav + cards. */
   --glass-bg: oklch(99% 0.004 70 / 0.62);
@@ -152,7 +165,7 @@
   font-family: var(--font-sans);
 }
 
-/* Hairline rule under eyebrow labels — quiet oxblood fade. */
+/* Hairline rule under eyebrow labels — quiet teal fade. */
 [data-brand="darst"] .rule-accent::after {
   content: "";
   display: block;
@@ -219,9 +232,9 @@
 
 /* ============================================================
    Dermal-lattice FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand, layered CSS field: a deep clinical-navy cross-section with
-   horizontal dermal STRATA bands (corneum → epidermis → dermis →
-   hypodermis), a fine lattice grid, and one oxblood capillary thread.
+   An on-brand, layered CSS field: a deep warm-brown (espresso) cross-section
+   with horizontal dermal STRATA bands (corneum → epidermis → dermis →
+   hypodermis), a fine lattice grid, and one TEAL capillary thread.
    Built from layered gradients. NEVER a blank box. Zero CLS. The faint
    drift is reduced-motion gated; static it still reads as a dermal plate.
    The on-brand static SVG dermal illustration is layered ON TOP of this in
@@ -270,7 +283,7 @@
   mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
   opacity: 0.6;
 }
-/* The lone oxblood capillary thread + cell glints catching the lattice. */
+/* The lone TEAL capillary thread + cell glints catching the lattice. */
 [data-brand="darst"] .lattice-fallback::after {
   content: "";
   position: absolute;
@@ -338,9 +351,10 @@
 
 /* ============================================================
    Brand photography placeholder treatment.
-   No external assets — navy / paper / oxblood gradient "plates" that read
-   as one cohesive clinical shoot (portraits, procedure rooms, details).
-   Each marked "sample".
+   No external assets — warm-paper / warm-brown / teal gradient "plates" (plus
+   the warm radiant-skin AFTER + skin-portrait variants) that read as one
+   cohesive clinical shoot (portraits, procedure rooms, details, the aesthetic
+   glow). Each marked "sample".
    ============================================================ */
 [data-brand="darst"] .dt-plate {
   position: relative;
@@ -380,6 +394,232 @@
     ),
     linear-gradient(150deg, oklch(46% 0.075 197), oklch(30% 0.05 58));
 }
+/* AFTER plate — a warm, radiant skin-tone field with a soft luminous "glow"
+   bloom. Even as a sample, the before→after reveal reads as "duller skin →
+   radiant, lit skin", carrying the aesthetic transformation the high-ticket
+   buyer is looking for: warm out-of-focus skin bokeh + an editorial highlight
+   bloom, not an abstract gradient. */
+[data-brand="darst"] .dt-plate--warm {
+  background:
+    /* specular cheekbone catch — the radiant "after" glow */
+    radial-gradient(
+      15% 12% at 40% 40%,
+      oklch(99% 0.018 70 / 0.95),
+      transparent 70%
+    ),
+    /* editorial key-light on forehead / temple */
+    radial-gradient(
+      32% 28% at 42% 24%,
+      oklch(97% 0.03 62 / 0.92),
+      transparent 70%
+    ),
+    /* lit cheek plane */
+    radial-gradient(
+      32% 36% at 37% 48%,
+      oklch(92% 0.06 50 / 0.92),
+      transparent 72%
+    ),
+    /* turned cheek / jaw soft form shadow */
+    radial-gradient(
+      34% 40% at 66% 54%,
+      oklch(76% 0.085 38 / 0.6),
+      transparent 70%
+    ),
+    /* warm shoulder mass lower-right */
+    radial-gradient(
+      90% 90% at 86% 90%,
+      oklch(74% 0.1 34 / 0.5),
+      transparent 64%
+    ),
+    /* full complexion midtone */
+    radial-gradient(
+      74% 88% at 48% 46%,
+      oklch(88% 0.07 46 / 0.92),
+      transparent 74%
+    ),
+    /* warm studio ground */
+    linear-gradient(155deg, oklch(91% 0.06 44), oklch(82% 0.092 36));
+}
+/* Dewy specular highlights + a subsurface sheen + a darkroom vignette on the
+   warm AFTER plate, so the field reads as a radiant complexion SHOT (lit, dewy,
+   framed) rather than a flat wash. Sits under the film-grain (::after). */
+[data-brand="darst"] .dt-plate--warm::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* subsurface warm/cool scatter so the skin reads as lit flesh */
+    linear-gradient(
+      118deg,
+      oklch(97% 0.025 70 / 0.2),
+      transparent 40%,
+      oklch(66% 0.06 34 / 0.16) 100%
+    ),
+    /* dewy specular catches on cheek / lip / brow */
+    radial-gradient(7px 7px at 42% 42%, oklch(99% 0.015 70 / 0.62), transparent 72%),
+    radial-gradient(18px 18px at 70% 34%, oklch(99% 0.02 62 / 0.4), transparent 72%),
+    radial-gradient(12px 12px at 58% 72%, oklch(98% 0.025 56 / 0.36), transparent 74%),
+    /* darkroom edge vignette */
+    radial-gradient(
+      116% 116% at 44% 40%,
+      transparent 60%,
+      oklch(32% 0.05 38 / 0.3) 100%
+    );
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* SKIN portrait plate — the "her outcome" sample for the Aesthetics column.
+   The single most perceived-quality-load-bearing surface on the page (both
+   counsels flagged the aesthetic side reading as flat gradient). With no real
+   licensed portrait available this pass, the CRAFT is pushed hard so the plate
+   reads as PHOTOGRAPHY, not a color field: a modelled three-quarter face —
+   forehead/temple key-light, a lit cheek plane, a turned-away cheek in soft
+   shade, a jaw/neck core shadow, and a hair/shoulder mass framing the lower
+   right — finished (in ::before) with a chromatic skin sheen, a darkroom edge
+   vignette and a fine film-grain. The honest "sample" tag stays. */
+[data-brand="darst"] .dt-plate--skin {
+  background:
+    /* specular dewy highlight on the cheekbone (the radiant "glow" catch) */
+    radial-gradient(
+      16% 13% at 41% 40%,
+      oklch(99% 0.018 70 / 0.95),
+      transparent 70%
+    ),
+    /* forehead / temple key-light */
+    radial-gradient(
+      30% 26% at 44% 22%,
+      oklch(96% 0.035 62 / 0.92),
+      transparent 70%
+    ),
+    /* lit cheek plane (camera-left, toward the key) */
+    radial-gradient(
+      30% 34% at 38% 46%,
+      oklch(91% 0.06 52 / 0.95),
+      transparent 72%
+    ),
+    /* turned cheek / jaw in soft shade (form shadow, camera-right) */
+    radial-gradient(
+      34% 40% at 64% 52%,
+      oklch(72% 0.075 42 / 0.7),
+      transparent 70%
+    ),
+    /* jaw + neck core shadow anchoring the chin */
+    radial-gradient(
+      30% 24% at 50% 78%,
+      oklch(56% 0.07 38 / 0.66),
+      transparent 72%
+    ),
+    /* hair / shoulder mass framing lower-right (gives the head a silhouette) */
+    radial-gradient(
+      60% 56% at 90% 92%,
+      oklch(44% 0.06 36 / 0.72),
+      transparent 66%
+    ),
+    /* full head mass — warm complexion midtone the planes sit within */
+    radial-gradient(
+      70% 86% at 50% 46%,
+      oklch(84% 0.07 47 / 0.9),
+      transparent 74%
+    ),
+    /* warm-paper editorial studio ground */
+    linear-gradient(158deg, oklch(89% 0.05 46), oklch(76% 0.085 39));
+}
+[data-brand="darst"] .dt-plate--skin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* subsurface chroma sheen — a faint warm/cool split across the skin so it
+       reads as lit flesh, not flat paint (the "scatter" real skin shows) */
+    linear-gradient(
+      118deg,
+      oklch(96% 0.03 70 / 0.22),
+      transparent 38%,
+      oklch(62% 0.05 34 / 0.16) 100%
+    ),
+    /* dewy specular dapples on cheek / lip / brow */
+    radial-gradient(8px 8px at 43% 42%, oklch(99% 0.015 70 / 0.6), transparent 72%),
+    radial-gradient(6px 5px at 52% 58%, oklch(99% 0.02 58 / 0.42), transparent 74%),
+    radial-gradient(5px 5px at 36% 52%, oklch(99% 0.02 64 / 0.36), transparent 76%),
+    /* darkroom edge vignette — the frame the eye reads as a lens */
+    radial-gradient(
+      116% 116% at 46% 40%,
+      transparent 58%,
+      oklch(30% 0.05 40 / 0.34) 100%
+    );
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+/* BEFORE plate — the SAME face composition as the warm AFTER, but read as
+   "before": light is flatter, the complexion cooler + desaturated, and the skin
+   is faintly uneven (a couple of dull tone patches) so the slider reveal lands
+   as a believable tired-skin → radiant transformation, not gray-vs-peach. The
+   face geometry mirrors --warm/--skin so the wipe stays anatomically aligned. */
+[data-brand="darst"] .dt-plate--muted {
+  background:
+    /* weak, flat forehead light (no specular catch — that's the "after") */
+    radial-gradient(
+      30% 26% at 42% 24%,
+      oklch(84% 0.012 64 / 0.7),
+      transparent 72%
+    ),
+    /* cheek plane — desaturated, lower value */
+    radial-gradient(
+      32% 36% at 38% 48%,
+      oklch(78% 0.016 52 / 0.8),
+      transparent 72%
+    ),
+    /* dull tone unevenness on the turned cheek (the "before" complaint) */
+    radial-gradient(
+      20% 18% at 62% 50%,
+      oklch(66% 0.022 38 / 0.5),
+      transparent 70%
+    ),
+    /* jaw / neck shade */
+    radial-gradient(
+      32% 26% at 52% 78%,
+      oklch(58% 0.018 40 / 0.55),
+      transparent 72%
+    ),
+    /* shoulder mass lower-right (cool) */
+    radial-gradient(
+      90% 90% at 88% 92%,
+      oklch(56% 0.014 50 / 0.55),
+      transparent 64%
+    ),
+    /* full complexion midtone — cooler + flatter than --warm */
+    radial-gradient(
+      74% 88% at 48% 46%,
+      oklch(76% 0.018 54 / 0.9),
+      transparent 74%
+    ),
+    linear-gradient(155deg, oklch(79% 0.01 60), oklch(67% 0.014 56));
+}
+[data-brand="darst"] .dt-plate--muted::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* a cool, flat sheen (no warm subsurface glow — that's the after) */
+    linear-gradient(
+      118deg,
+      oklch(86% 0.01 60 / 0.16),
+      transparent 46%,
+      oklch(52% 0.02 50 / 0.18) 100%
+    ),
+    /* faint dull patches — the texture/tone the treatment evens out */
+    radial-gradient(16px 14px at 60% 52%, oklch(62% 0.02 40 / 0.22), transparent 72%),
+    radial-gradient(12px 12px at 46% 62%, oklch(64% 0.018 44 / 0.18), transparent 74%),
+    /* darkroom edge vignette (matches --warm so the frames register) */
+    radial-gradient(
+      116% 116% at 44% 40%,
+      transparent 60%,
+      oklch(34% 0.02 44 / 0.3) 100%
+    );
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
 /* Faint clinical-glint overlay so plates read as designed, not empty. */
 [data-brand="darst"] .dt-plate::after {
   content: "";
@@ -391,6 +631,22 @@
     radial-gradient(2.5px 2.5px at 78% 66%, oklch(100% 0 0 / 0.24), transparent 70%),
     radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.18), transparent 70%);
   background-repeat: no-repeat;
+}
+/* On the PHOTOGRAPHIC plates (skin / warm AFTER / muted BEFORE) the 4 big
+   sparkle dots read as "abstract gradient" — exactly what undercuts the photo.
+   Swap them for true FINE FILM GRAIN: a tiled fractal-noise SVG, small and
+   low-contrast, so these plates read as a complexion shot, not a color field.
+   Real licensed photography would replace these plates entirely; until then the
+   grain + modelling does the most to lift the cosmetic half to the credential
+   half (both counsels' top conversion lever). */
+[data-brand="darst"] .dt-plate--skin::after,
+[data-brand="darst"] .dt-plate--warm::after,
+[data-brand="darst"] .dt-plate--muted::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 120px 120px;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
 }
 
 /* ============================================================
@@ -419,6 +675,11 @@
   letter-spacing: 0.42em;
   color: var(--wm-caps, var(--color-accent-deep));
 }
+/* The swoosh width tracks the script line (em) so the arc caps the wordmark at
+   ANY size — at md the wider "Darst" no longer out-spans a fixed-width arc. */
+[data-brand="darst"] .dt-wordmark__swoosh {
+  width: 4.3em;
+}
 [data-brand="darst"] .dt-wordmark--on-dark {
   --wm-script: oklch(96% 0.014 72);
   --wm-caps: var(--color-accent-bright);
@@ -432,6 +693,43 @@
 [data-brand="darst"] .flap-panel {
   position: relative;
   perspective: 1100px;
+  /* A hairline vertical bevel on each panel edge (inset highlight left, shadow
+     right) so the slat reads as seated in a housing — the Solari "physical
+     leaf" cue, kept whisper-quiet to honor the editorial-clinical restraint. */
+  box-shadow:
+    inset 1px 0 0 oklch(86% 0.02 70 / 0.07),
+    inset -1px 0 0 oklch(0% 0 0 / 0.22),
+    0 18px 44px -26px oklch(15% 0.03 54 / 0.8),
+    inset 0 1px 0 oklch(80% 0.04 64 / 0.12);
+}
+/* Clamp the review body so the tallest quotes never clip the seam / bottom
+   caption under the panel's overflow-hidden — the one concrete legibility risk
+   on the signature element. Five lines fits the resting face above the 3-line
+   figcaption at the lg 6-col width AND at 375px. */
+[data-brand="darst"] .flap-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+}
+/* Faint top-edge highlight on each panel — even at rest the two slats read as
+   physical leaves catching light, not a flat card. */
+[data-brand="darst"] .flap-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+  background: linear-gradient(
+    180deg,
+    oklch(92% 0.02 70 / 0.16) 0%,
+    transparent 8%,
+    transparent 50%,
+    oklch(92% 0.02 70 / 0.12) 50.5%,
+    transparent 58%
+  );
 }
 [data-brand="darst"] .flap-leaf {
   position: absolute;
@@ -445,15 +743,18 @@
   left: 0;
   right: 0;
   top: 50%;
-  height: 2px;
-  transform: translateY(-1px);
+  height: 3px;
+  transform: translateY(-1.5px);
+  /* a deeper shadow line + a thin upper catch-light so the seam reads as the
+     physical gap where the two slats meet. */
   background: linear-gradient(
     90deg,
     transparent,
-    oklch(0% 0 0 / 0.42) 12%,
-    oklch(0% 0 0 / 0.42) 88%,
+    oklch(0% 0 0 / 0.52) 12%,
+    oklch(0% 0 0 / 0.52) 88%,
     transparent
   );
+  box-shadow: 0 -1px 0 oklch(88% 0.02 70 / 0.1);
   z-index: 5;
   pointer-events: none;
 }
@@ -530,9 +831,14 @@
   [data-brand="darst"] .dt-marquee__track {
     animation: none;
   }
-  /* Reduced-motion: drop the seamless duplicate + allow manual scroll. */
+  /* Reduced-motion: drop the seamless duplicate + allow manual scroll. Also
+     remove the edge fade — a manually-scrolled strip must show full, unfaded
+     cards (the faded first/last card would hide content for exactly the users
+     who need clarity most). */
   [data-brand="darst"] .dt-marquee {
     overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 

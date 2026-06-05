@@ -1,11 +1,23 @@
 # Happy Clinic Denver — Refinement Log (PASSES)
 
 Pitch homepage mockup for **Happy Clinic Denver** at `/mockups/happy-clinic`.
-The "AFTER": one authoritative aurora-violet→teal flagship that replaces a DIY
-Wix with a duplicate `/homecopy` page and an abandoned indexed second domain
-(`denverbotox.biz`). Brand voice: altitude optimism + premium-clinical
-peak-performance. Owner Dr. Phil Nguyen, MD is an Allergan national trainer —
-the peer-prestige hook drives the whole page.
+
+> ⚠ **REAL BRAND (current truth — supersedes the early passes below).**
+> Happy Clinic Denver is a single-physician cosmetic-injection practice led by
+> **Dr. Phil Hong Nguyen, MD** (25 years of cosmetic-injection experience). Voice:
+> **"Subtle is The New WOW"** — natural, never frozen. Palette: **deep navy
+> #0A2A4A + pine-teal #1F7A6A (the core ACTION color) + pale-yellow #FFED86
+> (accent/spotlight only)** on white + light cool-grey. Type: **Cormorant
+> Garamond** italic tagline + **Montserrat** body/headings. Signatures: the real
+> **"Real Results"** before/after gallery, the navy/teal **Solari split-flap
+> review board**, and a **navy-night aurora** (luminous calm — NOT a Rockies
+> ridge). Honest **$9/unit Botox** is a value REASSURANCE, not the hero hook.
+>
+> Passes 1–44 below are LINEAGE ONLY: they describe the abandoned pre-rebrand
+> guess (aurora-violet, "altitude optimism", an "Allergan national trainer"
+> peer-prestige hook, a `denverbotox.biz` duplicate-domain story, two-MD copy).
+> None of that is the real brand — read them for history, not current state. The
+> live code + the Pass 2 co-counsel entry at the bottom carry the real brand.
 
 Each pass below is ONE genuine improvement. No filler.
 
@@ -168,3 +180,169 @@ Each pass below is ONE genuine improvement. No filler.
 | Conversion design      | 9.6   | Allergan-trainer peer-prestige closer, injectables-led menu, single-NAP SEO-consolidation story, native 30-sec booking. |
 
 **Average ≈ 9.53** (target ≥ 9.4 ✔)
+
+> NOTE: the score table above rates the OLD aurora-violet concept and is kept for
+> lineage. The current brand-faithful self-score is the Pass 2 table below.
+
+---
+
+## Pass 2 — Co-counsel elevation (REAL brand fidelity + conversion)
+
+A focused, additive pass synthesizing two reviews (DesignGod: design/structure;
+DistroGod: brand/conversion). No rewrites — every change deepens fidelity to the
+REAL navy + pine-teal + pale-yellow, female-luxury "Subtle is The New WOW" brand.
+
+45. **CTA color rebalanced to the real action hierarchy — pine-teal primary,
+    pale-yellow spotlight.** The biggest fidelity drift was 7 yellow buttons / 0
+    teal buttons; brand.css itself documents pine-teal as the core button color.
+    Converted the five navigational/closer CTAs to pine-teal (`--color-accent` +
+    white text): SiteNav "Book Now", Authority "Book with Dr. Phil" (band recast
+    teal-forward), Financing "Pre-qualify & book", BookingCTA submit, SiteFooter
+    "Book in 30 seconds". RESERVED pale-yellow for exactly the slots it owns: the
+    ONE hero "Book in 30 seconds" CTA, the mobile-bar Book CTA, the Services
+    "$9/unit" + "Signature" chips, the Financing "Refer & save $25" chip, and the
+    stat/scroll glints. Navy fields + teal actions + rare yellow sparks = this
+    brand, and the yellow regains its punch.
+46. **Fixed the clipped "25 Years Injecting" credential badge.** The signature
+    trust badge (`-bottom-5 -right` negative offsets) was cut off by the Authority
+    section's `overflow-hidden`. Gave the portrait cell internal padding
+    (`pb-7 pr-1 sm:pr-4 lg:pr-6`) and pulled the badge offsets slightly inward so
+    it renders fully inside the clip box (verified 1024–1280px).
+47. **Hero stat numerals → Montserrat bold (one numeric voice).** Switched the
+    four hero metrics from Cormorant (`font-display`, spindly on navy) to
+    `font-heading` (Montserrat 700) at text-4xl — now aligned with the TrustBar /
+    Financing numbers. Cormorant is reserved for the tagline + accent words only.
+48. **"Real Results" promoted to the brand's #1 proof block.** Swapped the soft,
+    low-res 1024×720 / 174KB `ba-featured.jpg` OUT of the featured slot and
+    promoted the highest-res REAL pair (`ba-2.png`, 1444×1080) — which is ALSO the
+    female aspirational outcome the primary buyer should see herself in (sharper
+    Mirror). Unified every tile to the same 1.337 ratio so the two columns align;
+    added tasteful BEFORE | AFTER chip overlays so the split reads instantly.
+49. **Carousel ARIA corrected to the APG pattern.** Dropped the orphaned
+    `role="tablist"`/`role="tab"`/`aria-selected` dots (there were no tabpanels);
+    they're now plain buttons with `aria-current` inside the existing
+    `role="group" aria-roledescription="carousel"` + aria-live region.
+50. **Aggregate social proof added (highest conversion lever).** A compact
+    rating strip atop TrustBar — 5-star glyph + "Rated 5.0" + "300+ verified
+    patient reviews on Google", marked "sample" until real figures land. For a
+    "where do I inject my face" decision, a quantified third-party number is the
+    single most decisive trust element, and it was entirely absent.
+51. **TrustBar metrics differentiated from the hero stat row.** The old TrustBar
+    repeated 3 of 4 hero data points (25 yrs / subtle / MD-led). Recast it as
+    CONCRETE logistics the hero doesn't state — Same-week appointments · Free
+    first consult · Allergan/Galderma products · Free parking — so it adds new
+    information instead of echoing.
+52. **Mobile sticky Book + Call bar (`MobileActionBar.tsx`).** Med-spa traffic is
+    mostly mobile; the hero/nav CTAs scroll away. A new lg-hidden bottom bar keeps
+    a one-tap pale-yellow "Book in 30s" + teal-outline "Call" persistent. Reveals
+    after the hero (so it never doubles the hero CTA), reduced-motion gated, AA
+    contrast, safe-area inset.
+53. **Hero scrims lightened to a luminous navy twilight.** The left legibility
+    wash dropped from ~0.92 near-black to ~0.74 and now fades faster past the copy
+    column, letting more of the signature aurora bloom read through; the headline
+    keeps its own drop-shadow and body copy (white/85) still clears AA.
+54. **Retired the literal Rockies ridge → "luminous calm" horizon.** Both the
+    WebGL shader (`ridgeHeight` flattened to a soft undulating horizon, mask
+    widened to light-pooling) and the CSS `aurora-fallback::after` (conic-gradient
+    peaks → soft radial horizon glow) now read as an abstract navy horizon shimmer,
+    not a ski-resort silhouette — refined + feminine, matching the brand. Kept the
+    gorgeous on-palette aurora bloom + teal/yellow ribbons intact; dropped the
+    "cold sparks" framing on the motes (they're soft luminous particles).
+55. **PASSES.md de-stale'd.** Added the REAL-brand banner up top and flagged
+    passes 1–44 as lineage-only, so the next reader gets the correct single-
+    physician "Subtle is The New WOW" story, not the abandoned guess.
+
+### Self-score — current REAL brand vs the $10K bar (each /10)
+
+| Criterion              | Score | Notes |
+|------------------------|:-----:|-------|
+| Brand fidelity         | 9.5   | Navy + pine-teal actions + rare yellow sparks now match brand.css's documented hierarchy; serif reserved for tagline; ridge retired for luminous calm. |
+| Visual impact          | 9.4   | Signature aurora reads through brighter scrims; Real Results leads with a sharp female result + BEFORE/AFTER chips; teal actions feel intentional. |
+| Power-element wow       | 9.4   | Volumetric aurora bloom + drift + cursor sway + bloom, now without the off-brand mountain metaphor. |
+| Conversion design       | 9.5   | Aggregate 5.0 rating strip (the missing lever), persistent mobile Book+Call, teal-primary action path, differentiated trust logistics. |
+| Female-luxury targeting | 9.2   | Female aspirational result leads the gallery; warmer teal closer band; luminous-calm hero. (Authority is still a dark field — a light-flip remains the next lever.) |
+| Motion craft            | 9.4   | Reveals, scroll parallax, restrained hover, reduced-motion safe end-to-end incl. the new mobile bar. |
+| A11y                    | 9.5   | APG carousel ARIA fixed, AA-tuned, focus rings, sample tags honest, reduced-motion gates intact. |
+| Code quality            | 9.5   | Additive, scoped tokens, typed props, `cn()`, documented; `tsc --noEmit` clean. |
+
+**Average ≈ 9.42** (target ≥ 9.4 ✔ — honest, against the REAL brand)
+
+---
+
+## Pass 3 — Co-counsel elevation (female-luxury light-flip + funnel credibility)
+
+A second focused, additive pass synthesizing two reviews (DesignGod + DistroGod),
+both of which converged on the SAME #1 lever Pass 2 explicitly deferred: the
+Authority section was still a dark field. No rewrites — five high-impact moves.
+
+56. **Light-flipped the Authority closer — the single highest-impact move (both
+    counsels' #1).** Flipped the navy gradient field to a LIGHT warm cool-grey
+    (`bg-bg-subtle` + `border-y`) with a faint pale-teal/yellow wash. Dr. Phil's
+    portrait now sits on a soft WHITE card with a pale-teal/yellow halo; the
+    "25 Years" badge, all three credential cards and the team card are white with
+    hairline borders + navy ink + teal checks; the closing band is a pale-teal
+    card with navy ink (teal CTA button kept). The figcaption keeps white text
+    over a deepened navy floor-scrim on the photo (AA). This breaks the old
+    5-navy-field tunnel — the page now reads navy hero → light trio (Trust ·
+    Authority · Services) → navy BeforeAfter → light reviews/Financing → navy
+    Booking/Footer: light-dominant + female-luxury, dark as punctuation.
+57. **Dr. Phil portrait → `priority` + `quality={75}` (trust + perf).** The
+    closer's LCP-class trust image was `priority={false}` at a 4.5MB source; it
+    now eager-loads and hints a lighter encode (next/image still downscales the
+    4480px source to the ~40vw slot).
+58. **De-cluttered the hero's pale-yellow so the CTA leads (DesignGod #2).** The
+    first viewport had ~5 competing gold glints. Demoted the eyebrow star, the
+    "$9-per-unit Botox" body span, and the scroll-cue dot to white; kept yellow
+    on exactly the ONE loud signal (the primary "Book in 30 seconds" CTA), the
+    signature foil headline, and the single "$9/unit" stat. The conversion CTA
+    regains a singular pull.
+59. **Booking funnel now captures contact info — the demo can actually "text to
+    confirm" (DistroGod #2).** Added a gated Step 4 ("Where should we text your
+    confirmation?") with a real `<label>`'d first-name + `type="tel"` mobile
+    pair, unlocked by the 3 chip picks. Progress meter spans 4 steps; submit is
+    disabled until name + number are present; the confirmation personalizes by
+    name + echoes the number. The funnel that IS the sales argument is no longer
+    non-functional.
+60. **Demoted the discount so "Subtle is The New WOW" owns the headlines
+    (DistroGod #4).** Recast the Financing H2 from a giant serif "$9 per unit"
+    to a premium-access line — "Premium care, never *out of reach.*" — with $9
+    moved to supporting body; dropped "$9/unit" from the BookingCTA footnote
+    (now leads with "No consult fee, no phone tag"). $9 stays as reassurance in
+    the hero stat, Services chip, and the Financing body/card — never the hook.
+61. **Reserved the animated foil-sheen for the HERO headline only (DesignGod
+    #4).** The moving gold-teal shimmer recurred on three dark H2s. Authority's
+    accent word is now static `--color-accent-deep` (required anyway on the new
+    light field for AA); BeforeAfter's "undeniably you." is static
+    `--color-accent-bright` on navy. Motion stays precious; the hero reads as
+    the one hero moment.
+
+> Also folded into #56: de-stock-ified the team (real first names + concrete
+> roles — "Sofia · Nurse Injector", "Maya · Patient Coordinator" — matching the
+> page's sample-name convention) and quantified one credential ("25 Years ·
+> Thousands of Treatments"), addressing DistroGod's "anonymized staff reads as
+> stock" + "no hard proof number" notes.
+
+### Deliberately deferred (low-impact polish, not this pass)
+- Mounting `ProofWall.tsx` as a static named-review wall beneath the Solari
+  board. Real lift, but a structural add; the light-flip already warms the closer
+  and the Solari board ships strong proof. Next-pass candidate, kept dormant +
+  documented (NOT deleted — both counsels disagreed on delete-vs-mount, so the
+  conservative call is to leave it as the documented alternate).
+- NAP punctuation unification across TrustBar/Footer/layout metadata; softening
+  the sample rating 5.0 → 4.9; easing the SplitFlap cadence + mobile clamp. All
+  genuine but low-impact copy/polish.
+
+### Self-score — current REAL brand vs the $10K bar (each /10)
+
+| Criterion              | Score | Notes |
+|------------------------|:-----:|-------|
+| Brand fidelity          | 9.6   | Light-dominant female-luxury rhythm now matches the brand; navy is punctuation; foil-sheen reserved to the hero; $9 demoted to reassurance per brand.css. |
+| Visual impact           | 9.5   | The light Authority closer + white portrait card with teal/yellow halo is a clear lift; dark BeforeAfter/Booking now read as intentional chapters. |
+| Power-element wow        | 9.4   | Volumetric aurora hero unchanged + still the singular foil moment. |
+| Conversion design        | 9.6   | Booking funnel now captures name + mobile (credible demo); CTA regains singular pull; premium-access financing line. |
+| Female-luxury targeting  | 9.5   | The deferred light-flip is DONE — calm, warm, light-dominant; the single biggest remaining miss is closed. |
+| Motion craft            | 9.4   | Reveals, parallax, restrained hover, reduced-motion safe; new contact inputs are keyboard/AT-labelled. |
+| A11y                    | 9.5   | New inputs have real labels + tel semantics; AA preserved on the flipped field; reduced-motion + focus rings intact. |
+| Code quality            | 9.5   | Additive, scoped tokens, typed props, `cn()`, documented; `tsc --noEmit` clean (exit 0). |
+
+**Average ≈ 9.50** (target ≥ 9.4 ✔ — honest, against the REAL brand)

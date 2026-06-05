@@ -1,22 +1,22 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Over the DARK emerald caustics hero it's a
- * near-transparent bar with champagne text; once scrolled it frosts to a cream
- * marble glass with emerald-ink text. A gold "S" monogram wordmark + native
- * "Book" CTA. Mobile: accessible disclosure menu with focus-visible rings + Esc.
+ * SiteNav — sticky glass navigation. Over the DARK monochrome hero it's a
+ * near-transparent bar with white text; once scrolled it frosts to a clean
+ * white glass with near-black ink. The wordmark is the recreated Sousan
+ * identity: an elegant black SCRIPT "Sousan" with "MED SPA" in small
+ * letter-spaced caps beneath (the live brand mark, CSS/typography only).
+ * Mobile: accessible disclosure menu with focus-visible rings + Esc.
  */
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-
-const PHONE_DISPLAY = "(713) 527-9878";
-const PHONE_TEL = "+17135279878";
+import { NAP } from "./nap";
 
 const LINKS = [
-  { href: "#legacy", label: "Since 1995" },
+  { href: "#awards", label: "Awards" },
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
   { href: "#reviews", label: "Reviews" },
@@ -41,8 +41,8 @@ export function SiteNav() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Text/icon color flips with the surface: champagne over the dark hero,
-  // emerald-ink once the marble glass is frosted in.
+  // Text/icon color flips with the surface: white over the dark hero,
+  // near-black ink once the white glass is frosted in.
   const overHero = !scrolled && !open;
 
   return (
@@ -61,44 +61,24 @@ export function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — a gold "S" monogram beside the Playfair name. */}
+        {/* Wordmark — the recreated Sousan mark: elegant script "Sousan" with
+            "MED SPA" letter-spaced caps beneath. Tone flips over the dark hero. */}
         <Link
           href="#top"
-          className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold-deep)]"
+          aria-label="Sousan Med Spa — home"
+          className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold-deep)]"
         >
           <span
-            aria-hidden
-            className="grid h-9 w-9 place-items-center rounded-full shadow-[0_6px_18px_-10px_oklch(40%_0.1_164_/_0.6)]"
-            style={{
-              background:
-                "radial-gradient(120% 120% at 30% 25%, oklch(46% 0.12 163), oklch(28% 0.06 166))",
-              border: "1px solid oklch(80% 0.1 86 / 0.5)",
-            }}
-          >
-            <span
-              className="font-display text-[1.05rem] leading-none"
-              style={{ color: "var(--gold-bright)" }}
-            >
-              S
-            </span>
-          </span>
-          <span
             className={cn(
-              "font-display text-lg tracking-tight transition-colors",
-              overHero ? "text-[var(--color-bg)]" : "text-[var(--color-fg)]",
+              "sn-wordmark",
+              overHero && "sn-wordmark--on-dark",
             )}
           >
-            Sousan
-            <span
-              className={cn(
-                "ml-1.5 align-middle text-[0.62rem] font-sans uppercase tracking-[0.28em]",
-                overHero
-                  ? "text-[var(--gold)]"
-                  : "text-[var(--gold-ink)]",
-              )}
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              Med Spa
+            <span className="sn-wordmark__script text-[2.1rem] leading-none">
+              Sousan
+            </span>
+            <span className="sn-wordmark__caps text-[0.52rem] leading-none">
+              Med&nbsp;Spa
             </span>
           </span>
         </Link>
@@ -112,7 +92,7 @@ export function SiteNav() {
               className={cn(
                 "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 overHero
-                  ? "text-[oklch(90%_0.02_110_/_0.86)] hover:text-[var(--color-bg)]"
+                  ? "text-[oklch(92%_0_0_/_0.88)] hover:text-[var(--color-bg)]"
                   : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
               )}
@@ -125,7 +105,7 @@ export function SiteNav() {
         {/* Right cluster */}
         <div className="flex items-center gap-2">
           <a
-            href={`tel:${PHONE_TEL}`}
+            href={`tel:${NAP.phoneTel}`}
             className={cn(
               "hidden rounded-full px-3.5 py-2 text-sm font-semibold tnum transition-colors sm:inline-flex",
               overHero
@@ -134,13 +114,13 @@ export function SiteNav() {
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
             )}
           >
-            {PHONE_DISPLAY}
+            {NAP.phoneDisplay}
           </a>
           <Link
             href="#book"
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-14px_oklch(40%_0.1_164_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_30px_-14px_oklch(51%_0.22_357_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
             )}
           >
@@ -205,10 +185,10 @@ export function SiteNav() {
               </Link>
             ))}
             <a
-              href={`tel:${PHONE_TEL}`}
+              href={`tel:${NAP.phoneTel}`}
               className="mt-1 rounded-xl px-3 py-3 text-base font-semibold tnum text-[var(--color-accent-deep)]"
             >
-              Call {PHONE_DISPLAY}
+              Call {NAP.phoneDisplay}
             </a>
           </div>
         </div>

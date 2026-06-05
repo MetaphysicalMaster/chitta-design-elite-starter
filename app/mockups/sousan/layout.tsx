@@ -1,42 +1,54 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Jost } from "next/font/google";
+import { Inter, Pinyon_Script } from "next/font/google";
 import "./brand.css";
 
-/* Playfair Display — a high-contrast transitional serif with sharp, modern
-   couture proportions: thin hairlines, generous ball terminals, an editorial
-   "Vogue/Harper's" voice that belongs in a River Oaks drawing room. It carries
-   a 29-year institution the way the DIY WordPress template never could —
-   established, discreet, expensive. Deliberately distinct from the siblings'
-   display faces (Timeless → Cormorant Garamond; SimplySkin → Fraunces; Hanami
-   → Shippori Mincho; The Luxe → its own serif). The brief names Cormorant as
-   already-used; Playfair is the chosen couture serif here. */
-const playfair = Playfair_Display({
+/* Inter — the live Sousan Med Spa site is set entirely in Inter. We honor that
+   single-typeface reality: Inter does ALL the work here, used two ways. As the
+   DISPLAY face it's pushed bold + tight (large weights, negative tracking) for
+   the editorial, monochrome-fashion headline voice that matches the greyscale-
+   with-hot-pink hero. As the BODY face it's the clean, highly legible workhorse
+   Inter is known for. One family, two registers — exactly the live brand.
+   (The historical var names --font-display / --font-body are retained so every
+   consuming component keeps working; both now resolve to Inter.) */
+const inter = Inter({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   style: ["normal", "italic"],
 });
 
-/* Jost — a refined geometric sans (a contemporary Futura) for body copy, UI and
-   fine print. Its quiet circular geometry keeps the couture serif as the star
-   while reading clean and modern — the polish a luxury destination needs. */
-const jost = Jost({
+/* Same Inter instance exposed under the body var — a second next/font binding so
+   --font-body also resolves to Inter without a second network face. */
+const interBody = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+/* The "Sousan" SCRIPT wordmark — the literal logo of this pitch. Previously it
+   rode an OS-dependent cursive stack ("Snell Roundhand"/"Apple Chancery" on Mac,
+   "Segoe Script" on Windows, italic Inter on Linux/mobile) so the brand's primary
+   identity mark rendered as a different font on every device — and often as plain
+   italic Inter, which is not a script logo at all. Both counsels flagged this.
+   Pinyon Script is a refined, formal calligraphic face wired via next/font (no OS
+   roulette, no CLS) so the wordmark — and the plate ghost-"S" — render IDENTICALLY
+   on every platform, on-brand. The real vector logo can still drop in later. */
+const pinyon = Pinyon_Script({
+  variable: "--font-script",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
-  /* The identity correction in a single tag: the live site is a dated DIY
-     WordPress with a gmail business email and conflicting NAP data across
-     directories. This reads as the credentialed luxury institution the name —
-     and the zip code — deserve. */
+  /* The brand voice, straight from the live site: a bold, editorial beauty
+     destination in Houston. Monochrome confidence with one hot-pink statement. */
   title:
-    "Sousan Med Spa — HydraFacial MD, IPL & Injectables · River Oaks, Houston | Est. 1995",
+    "Sousan Med Spa — IPL, HydraFacial MD & Deluxe Facial · Houston, TX | Your Beauty Evolution",
   description:
-    "River Oaks has trusted one name for 29 years. Sousan Med Spa — HydraFacial MD, IPL, body contouring & injectables in the heart of River Oaks, Houston. One address, one standard, since 1995. (713) 527-9878. Book in 30 seconds.",
+    "Embark on your beauty evolution. Sousan Med Spa, Houston TX — transformative medspa services including IPL, HydraFacial MD and the Deluxe Facial. Award-winning care. Book in 30 seconds.",
   robots: { index: false, follow: false },
 };
 
@@ -46,7 +58,7 @@ export default function SousanLayout({
   return (
     <div
       data-brand="sousan"
-      className={`${playfair.variable} ${jost.variable} min-h-screen`}
+      className={`${inter.variable} ${interBody.variable} ${pinyon.variable} min-h-screen`}
     >
       {children}
     </div>

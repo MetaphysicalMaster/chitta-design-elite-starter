@@ -1,26 +1,24 @@
 /**
- * NAP — the single source of truth for Sousan Med Spa's Name, Address & Phone.
+ * NAP — the single source of truth for Sousan Medspa's Name, Address & Phone.
  *
- * The entire point of this mockup is ONE clean, authoritative listing. So every
- * surface that shows contact details (Legacy fix block, Booking scheduler,
- * footer) imports from HERE — there is structurally no way for the address to
- * conflict across the page, which is precisely the trust gap the live site has.
+ * Every surface that shows contact details (the nav, the Story contact block,
+ * Booking scheduler, footer) imports from HERE — so the phone & address are
+ * byte-identical everywhere and can never conflict across the page.
  *
- * Note: street address is a representative River Oaks placeholder for the
- * mockup; the real verified address would be slotted in. Phone is the real
- * published line.
+ * Phone is the practice's REAL verified Houston number. The street address is a
+ * representative Houston placeholder for the mockup; the verified suite would be
+ * slotted in.
  */
 export const NAP = {
-  name: "Sousan Med Spa",
-  street: "1900 West Gray Street, Suite 240",
+  name: "Sousan Medspa",
+  street: "5433 Westheimer Road, Suite 200",
   city: "Houston",
   state: "TX",
-  zip: "77019",
-  neighborhood: "River Oaks",
+  zip: "77056",
+  neighborhood: "Houston, TX",
   phoneDisplay: "(713) 527-9878",
   phoneTel: "+17135279878",
-  email: "hello@sousanmedspa.com",
+  email: "hello@sousanmedspahouston.net",
   hours: "Tue–Sat · 10am–6pm · By appointment",
-  mapsQuery:
-    "Sousan Med Spa, 1900 West Gray Street, Houston, TX 77019",
+  mapsQuery: "Sousan Medspa, 5433 Westheimer Road, Houston, TX 77056",
 } as const;

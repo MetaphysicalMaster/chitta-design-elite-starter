@@ -3,8 +3,9 @@
 /**
  * Shared Happy Clinic primitives — SectionHeading, Reveal, BrandImage
  * (self-contained placeholder "plate"), and shared CTA styles. Keeps section
- * files lean and the aurora brand system consistent. No external image assets —
- * placeholder plates are aurora violet/teal gradients, each marked "sample".
+ * files lean and the brand system consistent. Real client photography is wired
+ * directly via next/image in the sections; these placeholder plates (navy /
+ * pine-teal gradients, each marked "sample") remain only for decorative slots.
  */
 
 import { motion, useReducedMotion } from "motion/react";
@@ -73,10 +74,10 @@ export function SectionHeading({
       </p>
       <h2
         className={cn(
-          "font-display mt-4 text-balance",
-          invert ? "text-white" : "text-[var(--color-fg)]",
+          "font-heading mt-4 text-balance",
+          invert ? "text-white" : "text-[var(--color-accent-deep)]",
         )}
-        style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.05, fontWeight: 600 }}
+        style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.08 }}
       >
         {title}
       </h2>
@@ -162,9 +163,9 @@ export function BrandImage({
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
-  "shadow-[0_16px_44px_-16px_oklch(56%_0.2_300_/_0.6)]",
+  "shadow-[0_16px_44px_-16px_oklch(52%_0.087_178_/_0.6)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-14px_oklch(56%_0.2_300_/_0.78)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-14px_oklch(52%_0.087_178_/_0.78)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 

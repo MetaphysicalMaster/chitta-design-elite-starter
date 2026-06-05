@@ -3,12 +3,13 @@
 /**
  * HorologyHero — hero section + the lazy WebGL boundary.
  *
- * The brass-orrery R3F scene is dynamically imported with ssr:false (only legal
+ * The orange-bokeh R3F scene is dynamically imported with ssr:false (only legal
  * inside a client component — Next 16). Until it mounts (and on mobile /
- * reduced-motion / no-WebGL), we render a static CSS brass-aura + concentric
- * rings field so there is never a blank frame, no CLS, and full graceful
- * degradation. The hero is DARK (candlelit aubergine) so copy is warm ivory —
- * heirloom-luxury, distinct from the light SimplySkin sibling hero.
+ * reduced-motion / no-WebGL), we render a static CSS bokeh field (warm
+ * orange→peach gradient + soft out-of-focus light dots) so there is never a
+ * blank frame, no CLS, and full graceful degradation. The hero is LIGHT (sunlit
+ * peach/cream — the live brand) so copy is warm charcoal — friendly and
+ * optimistic, true to cincymedspa.com.
  */
 
 import dynamic from "next/dynamic";
@@ -79,22 +80,28 @@ export function HorologyHero() {
     [1, 1, prefersReduced ? 1 : 0],
   );
 
+  // The hero copy must NEVER flash empty during the WebGL-compile / hydration
+  // gap (the most-seen screen). So the entrance is a gentle SETTLE, not a
+  // from-nothing build: the copy starts at FULL opacity and only rises a few px,
+  // and under reduced-motion it is fully static. Even if the stagger only runs
+  // post-hydration, the worst case is text that's already legible easing up a
+  // hair — never an invisible headline.
   const container = {
     hidden: {},
     show: {
-      transition: { staggerChildren: prefersReduced ? 0 : 0.09, delayChildren: 0.12 },
+      transition: { staggerChildren: prefersReduced ? 0 : 0.06, delayChildren: 0.04 },
     },
   };
   const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 18 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
+    hidden: { opacity: 1, y: prefersReduced ? 0 : 10 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
   };
 
   return (
     <section
       id="top"
       ref={sectionRef}
-      aria-label="Timeless Aesthetics MedSpa — ten years ahead of timeless"
+      aria-label="Timeless Aesthetics MedSpa — rejuvenate, renew, refresh"
       className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
       {/* Layer 0: static brass-aura + concentric rings — always painted
@@ -108,15 +115,16 @@ export function HorologyHero() {
         </div>
       )}
 
-      {/* Legibility scrims — keep warm-ivory copy WCAG-AA over any frame.
-          The hero is dark, so we DARKEN behind the copy (left/bottom). */}
+      {/* Legibility scrims — keep warm-CHARCOAL copy WCAG-AA over any frame.
+          The hero is LIGHT, so we LIGHTEN behind the copy (left/bottom) with a
+          warm cream veil rather than darkening. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(18%_0.05_338_/_0.9)] via-[oklch(18%_0.05_338_/_0.5)] to-transparent"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(98%_0.014_64_/_0.92)] via-[oklch(97%_0.02_60_/_0.5)] to-transparent"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(16%_0.05_338_/_0.85)] via-transparent to-[oklch(16%_0.05_338_/_0.35)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(98%_0.012_64_/_0.85)] via-transparent to-[oklch(98%_0.012_64_/_0.18)]"
       />
 
       <motion.div
@@ -128,32 +136,35 @@ export function HorologyHero() {
       >
         <motion.p
           variants={item}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--brass)]/35 bg-[oklch(20%_0.05_338_/_0.5)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[var(--brass-pale)] backdrop-blur-md"
+          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--brass)]/40 bg-[oklch(100%_0_0_/_0.7)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[var(--color-accent-deep)] shadow-[0_8px_24px_-16px_oklch(60%_0.14_52_/_0.6)] backdrop-blur-md"
         >
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-bright)]" />
-          Cincinnati, Ohio · Physician-led since 2014
+          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+          Cincinnati, Ohio · Physician-run medspa
         </motion.p>
 
         <motion.h1
           variants={item}
-          className="font-display max-w-[15ch] text-balance text-[var(--color-bg)]"
-          style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.02 }}
+          className="font-display max-w-[16ch] text-balance text-[var(--color-fg)]"
+          style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.04 }}
         >
-          Ten years ahead of{" "}
-          <span className="font-display-em foil-sheen">timeless.</span>
+          Rejuvenate. Renew.{" "}
+          <span className="font-display-em foil-sheen">Refresh.</span>
         </motion.h1>
 
         <motion.p
           variants={item}
-          className="mt-7 max-w-[52ch] text-pretty font-light text-[var(--color-bg)]/80"
+          className="mt-7 max-w-[52ch] text-pretty font-light text-[var(--color-fg-muted)]"
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.62 }}
         >
-          A physician-led aesthetics institution in Cincinnati — directed by{" "}
-          <span className="font-medium text-[var(--color-bg)]">Dr. Timothy McCarren</span>{" "}
+          Look in the mirror and see{" "}
+          <span className="font-medium text-[var(--color-fg)]">you on your best day</span>{" "}
+          — rested, refreshed, never &ldquo;done.&rdquo; Every treatment is placed
+          in person by two physicians,{" "}
+          <span className="font-medium text-[var(--color-fg)]">Dr. Sonja Heuker, MD</span>{" "}
           &amp;{" "}
-          <span className="font-medium text-[var(--color-bg)]">Dr. Sonja Heuker</span>.
-          Injectables, Secret RF &amp; laser, and medical skin, held to one
-          standard for over a decade. Trusted for a decade, ahead for the next.
+          <span className="font-medium text-[var(--color-fg)]">Dr. Timothy McCarren, MD</span>,
+          so the result always looks like you. Tox, filler, laser, Secret RF and
+          medical skin care.
         </motion.p>
 
         <motion.div
@@ -165,48 +176,59 @@ export function HorologyHero() {
             className={cn(
               "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
               "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-              "shadow-[0_18px_50px_-18px_oklch(58%_0.094_76_/_0.7)]",
+              "shadow-[0_18px_50px_-18px_oklch(60%_0.15_52_/_0.65)]",
               "transition-[transform,box-shadow] duration-300 ease-out",
-              "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(58%_0.094_76_/_0.9)]",
+              "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(60%_0.15_52_/_0.85)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
-            Book in 30 seconds
+            Start with a conversation
             <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
           <Link
             href="#physicians"
             className={cn(
               "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "border border-[var(--brass)]/40 bg-[oklch(22%_0.05_338_/_0.4)] font-medium text-[var(--color-bg)] backdrop-blur-md",
-              "transition-colors duration-300 hover:bg-[oklch(26%_0.06_340_/_0.55)]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
+              "border border-[var(--color-border)] bg-[oklch(100%_0_0_/_0.75)] font-medium text-[var(--color-fg)] backdrop-blur-md",
+              "transition-colors duration-300 hover:bg-[oklch(100%_0_0_/_0.95)]",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
           >
             Meet the physicians
           </Link>
         </motion.div>
 
-        <motion.dl
-          variants={item}
-          className="mt-14 flex flex-wrap gap-x-10 gap-y-5 sm:gap-x-14"
-        >
-          {[
-            { v: "4.9★", k: "Across hundreds of reviews" },
-            { v: "10+ yrs", k: "One uncompromising standard" },
-            { v: "Two", k: "Physicians · McCarren + Heuker" },
-            { v: "Westbourne", k: "3260 Westbourne Dr · 45248" },
-          ].map((s) => (
-            <div key={s.k} className="flex flex-col">
-              <dt className="font-display text-[1.85rem] leading-none tnum text-[var(--color-bg)]">
-                {s.v}
-              </dt>
-              <dd className="mt-2 max-w-[18ch] text-xs uppercase tracking-[0.14em] text-[var(--brass-pale)]/80">
-                {s.k}
-              </dd>
-            </div>
-          ))}
-        </motion.dl>
+        {/* Hero proof — given real structure: a faint glass strip with hairline
+            dividers so the four signals read as one credibility unit at first
+            impression, led by a quiet one-line label. */}
+        <motion.div variants={item} className="mt-14">
+          <p className="mb-4 text-[0.62rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-accent-deep)]">
+            Why Cincinnati trusts us
+          </p>
+          <dl className="inline-flex flex-wrap items-stretch gap-y-4 rounded-2xl border border-[var(--color-border)] bg-[oklch(100%_0_0_/_0.55)] px-6 py-5 shadow-[var(--glass-shadow)] backdrop-blur-md">
+            {[
+              { v: "4.9★", k: "Across hundreds of reviews" },
+              { v: "10+ yrs", k: "Caring for Cincinnati" },
+              { v: "Two MDs", k: "Heuker + McCarren" },
+              { v: "Westbourne", k: "3260 Westbourne Dr · 45248" },
+            ].map((s, i) => (
+              <div
+                key={s.k}
+                className={cn(
+                  "flex flex-col px-5 first:pl-0 last:pr-0",
+                  i > 0 && "border-l border-[var(--color-border)]",
+                )}
+              >
+                <dt className="font-display text-[2rem] font-normal leading-none tnum text-[var(--color-fg)]">
+                  {s.v}
+                </dt>
+                <dd className="mt-2 max-w-[16ch] text-[0.7rem] font-medium uppercase tracking-[0.14em] text-[var(--color-accent-deep)]">
+                  {s.k}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </motion.div>
       </motion.div>
 
       {/* Scroll cue */}
@@ -217,9 +239,9 @@ export function HorologyHero() {
         transition={{ delay: 1.2, duration: 0.9 }}
         className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center"
       >
-        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[var(--brass)]/40 bg-[oklch(22%_0.05_338_/_0.35)] p-1 backdrop-blur-sm">
+        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[var(--brass)]/45 bg-[oklch(100%_0_0_/_0.6)] p-1 backdrop-blur-sm">
           <motion.span
-            className="block h-2 w-1 rounded-full bg-[var(--color-accent-bright)]"
+            className="block h-2 w-1 rounded-full bg-[var(--color-accent)]"
             animate={prefersReduced ? {} : { y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />

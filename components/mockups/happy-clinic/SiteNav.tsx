@@ -1,8 +1,9 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Transparent over the dark aurora hero,
- * frosts to a light glass bar once scrolled. Prominent native Book CTA.
+ * SiteNav — sticky glass navigation. Transparent over the dark navy hero
+ * (white logo), frosts to a light glass bar once scrolled (pine-teal logo).
+ * Pale-yellow native Book CTA with dark text (the live site's button color).
  * Mobile: accessible disclosure menu with focus-visible rings + Esc to close.
  */
 
@@ -10,15 +11,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { HappyLogo } from "./HappyLogo";
 
-const PHONE_DISPLAY = "(720) 747-9999";
+const PHONE_DISPLAY = "720-747-9999";
 const PHONE_TEL = "+17207479999";
 
 const LINKS = [
-  { href: "#authority", label: "Dr. Nguyen" },
+  { href: "#authority", label: "Dr. Phil" },
   { href: "#services", label: "Treatments" },
-  { href: "#results", label: "Results" },
-  { href: "#proof", label: "Reviews" },
+  { href: "#results", label: "Real Results" },
+  { href: "#reviews", label: "Reviews" },
   { href: "#financing", label: "Financing" },
 ];
 
@@ -56,37 +58,13 @@ export function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — a peak/aurora mark */}
+        {/* Wordmark — the real spiral mark + two-line Happy Clinic Denver */}
         <Link
           href="#top"
-          className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          aria-label="Happy Clinic Denver — home"
+          className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
-          <span
-            aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-lg text-white shadow-[0_6px_18px_-6px_oklch(56%_0.2_300_/_0.7)]"
-            style={{
-              background:
-                "linear-gradient(140deg, var(--color-accent), var(--color-teal))",
-            }}
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-              <path
-                d="M3 19 L9 8 L13 14 L16 9 L21 19 Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span
-            className={cn(
-              "font-display text-lg font-semibold tracking-tight transition-colors",
-              scrolled ? "text-[var(--color-fg)]" : "text-white",
-            )}
-          >
-            Happy<span className="text-[var(--color-accent)]"> Clinic</span>
-          </span>
+          <HappyLogo tone={scrolled ? "light" : "dark"} size="sm" />
         </Link>
 
         {/* Desktop links */}
@@ -100,7 +78,7 @@ export function SiteNav() {
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
                 scrolled
                   ? "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
-                  : "text-white/80 hover:text-white",
+                  : "text-white/85 hover:text-white",
               )}
             >
               {l.label}
@@ -115,7 +93,7 @@ export function SiteNav() {
             className={cn(
               "hidden rounded-full px-3.5 py-2 text-sm font-semibold tnum transition-colors sm:inline-flex",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
-              scrolled ? "text-[var(--color-fg)]" : "text-white",
+              scrolled ? "text-[var(--color-accent-deep)]" : "text-white",
             )}
           >
             {PHONE_DISPLAY}
@@ -123,16 +101,20 @@ export function SiteNav() {
           <Link
             href="#book"
             className={cn(
-              "group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-12px_oklch(56%_0.2_300_/_0.8)] transition-transform duration-300 hover:-translate-y-0.5",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+              "group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight",
+              "transition-[transform,background-color,border-color] duration-300 hover:-translate-y-0.5",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+              // At the TOP (over the navy hero) keep exactly ONE filled CTA — the
+              // yellow hero button — by demoting this to a glass/outline pill so
+              // the eye isn't split between two competing primaries ~50px apart.
+              // Once scrolled, restore the solid pine-teal pill where it becomes
+              // the persistent primary.
+              scrolled
+                ? "border border-transparent bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_10px_30px_-12px_oklch(52%_0.087_178_/_0.9)] hover:bg-[var(--color-accent-deep)]"
+                : "border border-white/35 bg-white/10 text-white backdrop-blur-md hover:bg-white/20",
             )}
-            style={{
-              background:
-                "linear-gradient(120deg, var(--color-accent), var(--color-teal-deep))",
-            }}
           >
-            Book
+            Book Now
             <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </Link>
 

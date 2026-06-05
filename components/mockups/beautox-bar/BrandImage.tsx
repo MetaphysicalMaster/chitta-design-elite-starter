@@ -1,15 +1,16 @@
 "use client";
 
 /**
- * BrandImage — the single, consistent treatment for every piece of brand
- * "photography" on the page. There are NO external assets in this mockup, so
- * each slot renders an on-brand candy gradient PLATE (cream / magenta / lilac /
- * night) that reads as one cohesive, fun shoot, plus an explicit "sample" chip
+ * BrandImage — a consistent on-brand PLATE for slots without a real photo (the
+ * before/after sample pair, location interiors). Each renders a cohesive
+ * hot-pink / blush / gold / black gradient plate plus an explicit "sample" chip
  * so the prospect understands these are placeholders for their real imagery.
+ * (Real assets — logo, happy-hour, peptides, specials — are wired via next/image
+ * directly in their sections.)
  *
  * Craft baked in:
  *  - CSS `aspect-ratio` → zero CLS, no width/height race
- *  - rounded corners + candy hairline border consistent with the system
+ *  - rounded corners + blush hairline border consistent with the system
  *  - optional gentle scroll parallax on the plate (reduced-motion safe)
  *  - optional scrim so overlaid copy holds WCAG-AA contrast
  */
@@ -97,9 +98,19 @@ export function BrandImage({
         aria-hidden
         style={{
           y,
+          /* position MUST be inline: the `.bx-plate` brand.css rule declares
+             `position: relative` (it owns the ::after glint layer), and that
+             scoped `[data-brand]` selector out-specifies the Tailwind `absolute`
+             utility — leaving this fill span `position: relative` + `display:
+             inline`, which collapses it to 0×0 so the gradient paints nothing and
+             the plate reads as an empty (white) box. Forcing position here (inline
+             styles beat the selector) makes the plate actually fill the slot. */
+          position: "absolute",
+          left: 0,
+          right: 0,
           ...(parallax && !prefersReduced
             ? { height: "110%", top: "-5%" }
-            : { height: "100%" }),
+            : { height: "100%", top: 0 }),
         }}
         className={cn("absolute inset-0 w-full", TONE[tone])}
       />
@@ -111,15 +122,15 @@ export function BrandImage({
           className={cn(
             "pointer-events-none absolute inset-0",
             scrim === "soft"
-              ? "bg-gradient-to-t from-[oklch(22%_0.09_330_/_0.6)] via-[oklch(22%_0.09_330_/_0.12)] to-transparent"
-              : "bg-gradient-to-t from-[oklch(20%_0.09_330_/_0.84)] via-[oklch(22%_0.09_330_/_0.36)] to-[oklch(24%_0.09_330_/_0.08)]",
+              ? "bg-gradient-to-t from-[oklch(16%_0.01_350_/_0.6)] via-[oklch(16%_0.01_350_/_0.12)] to-transparent"
+              : "bg-gradient-to-t from-[oklch(14%_0.01_350_/_0.84)] via-[oklch(16%_0.01_350_/_0.36)] to-[oklch(18%_0.01_350_/_0.08)]",
           )}
         />
       )}
 
       {/* "sample" chip — honest placeholder marker */}
       {sample && (
-        <span className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-[oklch(100%_0_0_/_0.4)] bg-[oklch(22%_0.09_330_/_0.5)] px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-[oklch(97%_0.02_350)] backdrop-blur-sm">
+        <span className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-[oklch(100%_0_0_/_0.4)] bg-[oklch(16%_0.01_350_/_0.55)] px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm">
           Sample
         </span>
       )}

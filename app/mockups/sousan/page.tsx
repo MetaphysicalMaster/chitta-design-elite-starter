@@ -1,6 +1,7 @@
 import { SmoothScroll } from "@/components/mockups/sousan/SmoothScroll";
 import { SiteNav } from "@/components/mockups/sousan/SiteNav";
 import { CausticsHero } from "@/components/mockups/sousan/CausticsHero";
+import { Awards } from "@/components/mockups/sousan/Awards";
 import { TrustBar } from "@/components/mockups/sousan/TrustBar";
 import { Legacy } from "@/components/mockups/sousan/Legacy";
 import { Services } from "@/components/mockups/sousan/Services";
@@ -25,10 +26,10 @@ export default function SousanPage() {
 
       <main id="main">
         <CausticsHero />
+        {/* Awards strip — directly under the hero, as on the live site. */}
+        <Awards />
         <TrustBar />
-        {/* The closer — the "Since 1995, River Oaks" legacy timeline + the
-            single clean NAP & branded-contact block that fixes the
-            gmail/conflicting-address trust gap. */}
+        {/* The story + the single clean NAP / branded-contact block. */}
         <Legacy />
         <Services />
         <BeforeAfter />

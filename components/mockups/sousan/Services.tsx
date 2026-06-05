@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * Services — the treatment menu, presented as a couture card set. Four pillars
- * the brief names: HydraFacial MD, IPL Photofacial, Body Contouring,
- * Injectables. Marble cards with gold hairlines, a representative price-from,
- * and a hover lift. Prices are sample "from" figures for the mockup.
+ * Services — the treatment menu, presented as a bold editorial card set. The
+ * three services the live site names lead (IPL, HydraFacial MD, Deluxe Facial),
+ * plus one complementary pillar. Clean white cards, hot-pink hairline accents,
+ * a representative price-from, and a hover lift. Card imagery is greyscale
+ * sample plates with the lone pink pop. Prices are sample "from" figures.
  */
 
 import { BrandImage } from "./BrandImage";
@@ -23,14 +24,6 @@ type Service = {
 
 const SERVICES: Service[] = [
   {
-    name: "HydraFacial MD",
-    tag: "Signature",
-    from: "$199",
-    body: "Cleanse, extract and hydrate in one River Oaks ritual — the resurfacing facial the corridor returns for monthly.",
-    points: ["Vortex extraction", "Booster serums", "Zero downtime"],
-    tone: "marble",
-  },
-  {
     name: "IPL Photofacial",
     tag: "Brightening",
     from: "$299",
@@ -39,20 +32,28 @@ const SERVICES: Service[] = [
     tone: "gold",
   },
   {
-    name: "Body Contouring",
-    tag: "Sculpt",
-    from: "$349",
-    body: "Non-invasive sculpting and skin tightening to refine the silhouette — results without the recovery.",
-    points: ["Fat reduction", "Skin tightening", "Series plans"],
-    tone: "emerald",
+    name: "HydraFacial MD",
+    tag: "Signature",
+    from: "$199",
+    body: "Cleanse, extract and hydrate in one ritual — the resurfacing facial clients return for, month after month.",
+    points: ["Vortex extraction", "Booster serums", "Zero downtime"],
+    tone: "marble",
   },
   {
-    name: "Injectables",
+    name: "Deluxe Facial",
+    tag: "Restorative",
+    from: "$149",
+    body: "A bespoke, deeply restorative facial tailored to your skin — the full Sousan glow, start to finish.",
+    points: ["Custom analysis", "Deep hydration", "Lasting radiance"],
+    tone: "marble",
+  },
+  {
+    name: "Injectables & Skin",
     tag: "Refresh",
     from: "$12 / unit",
-    body: "Tox and dermal filler placed with a 29-year eye for proportion — refreshed, never overdone.",
-    points: ["Neuromodulators", "Dermal filler", "Lip & cheek"],
-    tone: "marble",
+    body: "Tox, filler and medical-grade skin treatments placed with an artist's eye — refreshed, never overdone.",
+    points: ["Neuromodulators", "Dermal filler", "Medical-grade"],
+    tone: "emerald",
   },
 ];
 
@@ -67,11 +68,11 @@ export function Services() {
           eyebrow="The Menu"
           title={
             <>
-              Medical-grade care,{" "}
-              <span className="font-display-em">couture delivery.</span>
+              Transformative care,{" "}
+              <span className="font-display-em">an artist&rsquo;s eye.</span>
             </>
           }
-          lead="Four disciplines, one trusted hand. Every treatment is performed in-house under the standard River Oaks has trusted since 1995."
+          lead="The treatments Houston comes to Sousan for. Every service is performed in-house, tailored to your skin and your goals."
         />
 
         <RevealGroup

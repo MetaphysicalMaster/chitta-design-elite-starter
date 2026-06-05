@@ -1,16 +1,16 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Over the light dawn hero it's a
- * near-transparent hairline bar with sumi-ink text; once scrolled it frosts to
- * a rice-paper glass. A quiet sakura-petal wordmark mark + native "Book" CTA.
+ * SiteNav — sticky glass navigation. The hero is SUMI-BLACK, so the bar stays a
+ * frosted rice-paper glass in both states (the real black Hanami logo.png + ink
+ * text always read); the frost just deepens on scroll. The REAL logo.png (black
+ * script "Hanami" + cherry-blossom branch + MEDSPA) is the wordmark — not a
+ * hand-built SVG. Display Abel + Open Sans body. Native sumi-black "Book" CTA.
  * Mobile: accessible disclosure menu with focus-visible rings + Esc to close.
- *
- * (The hero is LIGHT, so unlike the dark-hero sibling this nav keeps ink text in
- * BOTH states — only the surface frost changes on scroll.)
  */
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ const LINKS = [
   { href: "#injector", label: "Dr. Phuah" },
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
-  { href: "#proof", label: "Reviews" },
+  { href: "#awards", label: "Awards" },
 ];
 
 export function SiteNav() {
@@ -51,49 +51,35 @@ export function SiteNav() {
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        // The hero is sumi-black, so the bar stays frosted rice-paper in BOTH
+        // states (the real black logo + ink text always read); the frost just
+        // deepens on scroll.
         scrolled
           ? "glass-strong border-b border-[var(--color-border)]"
-          : "border-b border-transparent",
+          : "glass border-b border-[var(--glass-border)]",
       )}
     >
       <nav
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — a soft sakura-petal mark beside the Mincho name. */}
+        {/* Wordmark — the REAL Hanami logo (black script + cherry-blossom branch
+            + MEDSPA), wired via next/image. Transparent PNG reads cleanly on the
+            light glass nav. */}
         <Link
           href="#top"
-          className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-deep)]"
+          aria-label="Hanami Medspa — home"
+          className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-deep)]"
         >
-          <span
-            aria-hidden
-            className="grid h-8 w-8 place-items-center rounded-full border border-[var(--sakura)]/60 shadow-[0_6px_18px_-10px_oklch(64%_0.15_356_/_0.5)]"
-            style={{
-              background:
-                "radial-gradient(120% 120% at 30% 25%, oklch(96% 0.03 352), oklch(86% 0.09 354))",
-            }}
-          >
-            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" width="18" height="18" fill="none" aria-hidden>
-              {/* five-petal blossom */}
-              {[0, 72, 144, 216, 288].map((a) => (
-                <ellipse
-                  key={a}
-                  cx="12"
-                  cy="6.6"
-                  rx="2.5"
-                  ry="4.2"
-                  transform={`rotate(${a} 12 12)`}
-                  fill="var(--color-accent-deep)"
-                  opacity="0.85"
-                />
-              ))}
-              <circle cx="12" cy="12" r="1.5" fill="oklch(95% 0.04 352)" />
-            </svg>
-          </span>
-          <span className="font-display text-lg tracking-tight text-[var(--color-fg)]">
-            Hanami
-            <span className="text-[var(--color-accent-deep)]"> 花見</span>
-          </span>
+          <Image
+            src="/clients/hanami/logo.png"
+            alt="Hanami Medspa"
+            width={880}
+            height={220}
+            priority
+            sizes="(min-width: 640px) 13rem, 10.5rem"
+            className="h-9 w-auto sm:h-10"
+          />
         </Link>
 
         {/* Desktop links */}
@@ -126,13 +112,13 @@ export function SiteNav() {
           <Link
             href="#book"
             className={cn(
-              "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-14px_oklch(60%_0.15_356_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5",
+              "group inline-flex items-center gap-1.5 rounded-full bg-[var(--ink-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-bg)]",
+              "shadow-[0_10px_30px_-14px_oklch(16%_0.003_60_/_0.9)] ring-1 ring-[oklch(82%_0.09_88_/_0.25)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
             )}
           >
             Book
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5 text-[var(--color-accent-bright)]">→</span>
           </Link>
 
           {/* Mobile toggle */}

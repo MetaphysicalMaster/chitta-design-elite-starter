@@ -6,6 +6,12 @@
  * credential context and curates patient quotes that speak to diagnostic
  * expertise, early catches and being heard. An honest framing line sets
  * expectations. Sample quotes, clearly labelled. Reduced-motion safe.
+ *
+ * NOTE: SUPERSEDED by SplitFlapBoard (the live #reviews section, wired in
+ * page.tsx); this component is no longer imported and is kept only as a
+ * static-grid reference variant. Its id="reviews" is removed so there is exactly
+ * ONE owner of the #reviews anchor — no ambiguity if a future editor re-wires
+ * it. Pure hygiene, no render impact.
  */
 
 import { Reveal, RevealGroup, RevealItem, SectionHeading } from "./primitives";
@@ -46,7 +52,6 @@ const QUOTES: Quote[] = [
 export function Reviews() {
   return (
     <section
-      id="reviews"
       aria-labelledby="reviews-title"
       className="bg-[var(--color-bg)] py-24 sm:py-32"
     >

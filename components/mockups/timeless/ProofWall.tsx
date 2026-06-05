@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * ProofWall — a quiet wall of reviews/proof. Editorial pull-quotes in the
- * Cormorant serif over warm ivory cards, a calm 4.9★ aggregate strip, and an IG
- * handle cue. Restrained masonry — no star-spam, no badges; the confidence
- * reads in the typography, not the noise (heirloom restraint).
+ * ProofWall — a warm wall of patient reviews. Friendly pull-quotes in Open Sans
+ * over clean cards, a calm 4.9★ aggregate strip, and an IG handle cue. The voice
+ * is warm and confident — real people, real results — to match the sunlit
+ * orange/peach brand ("Rejuvenate. Renew. Refresh."), never couture-cold.
  */
 
 import { Reveal, SectionHeading } from "./primitives";
@@ -16,16 +16,20 @@ type Review = {
   name: string;
   meta: string;
   span?: boolean;
+  /** The emotional-peak quote — feeling-led, foregrounded. */
+  feature?: boolean;
 };
 
 const REVIEWS: Review[] = [
+  // The emotional peak leads — a FEELING, named ("like myself, only brighter").
   {
-    id: "r1",
+    id: "r5",
     quote:
-      "Ten years I've trusted them, and they've never once chased a trend. Just my face, looking rested and like me.",
-    name: "Karen M.",
-    meta: "Injectables · Westbourne",
+      "I walked out feeling like myself — only brighter. Calm, unhurried, never a sales pitch, just real doctors who listen.",
+    name: "Beth T.",
+    meta: "Medical skin · Westbourne",
     span: true,
+    feature: true,
   },
   {
     id: "r2",
@@ -40,18 +44,19 @@ const REVIEWS: Review[] = [
     meta: "Facial balancing · Westbourne",
   },
   {
-    id: "r4",
+    id: "r1",
     quote:
-      "The most refined, physician-led work in Cincinnati. You feel the standard the moment you walk in.",
-    name: "Allison R.",
-    meta: "Laser · Cincinnati",
+      "Ten years I've trusted them, and they've never once chased a trend. Just my face, looking rested and like me.",
+    name: "Karen M.",
+    meta: "Injectables · Westbourne",
     span: true,
   },
   {
-    id: "r5",
-    quote: "Calm, unhurried, never a sales pitch. It feels like the institution it is.",
-    name: "Beth T.",
-    meta: "Medical skin · Westbourne",
+    id: "r4",
+    quote:
+      "Real doctors who actually listen — the best physician-led care in Cincinnati. You feel looked-after the moment you walk in.",
+    name: "Allison R.",
+    meta: "Laser · Cincinnati",
   },
 ];
 
@@ -76,14 +81,14 @@ export function ProofWall() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            eyebrow="In their words"
+            eyebrow="Patient love"
             title={
               <>
-                Quietly,{" "}
-                <span className="font-display-em">enduringly</span> loved.
+                Loved by Cincinnati for{" "}
+                <span className="font-display-em">over a decade.</span>
               </>
             }
-            lead="A decade of word-of-mouth across Cincinnati — the kind of loyalty no template, and no trend, can manufacture."
+            lead="Hundreds of patients keep coming back — and bringing their friends. Here's what they say about being cared for by Drs. Heuker and McCarren."
           />
           <Reveal delay={0.08} className="lg:pb-2">
             <div className="flex items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[var(--glass-shadow)]">
@@ -107,11 +112,38 @@ export function ProofWall() {
               delay={(i % 3) * 0.07}
               className={cn(r.span && "sm:col-span-2 lg:col-span-1")}
             >
-              <figure className="flex h-full flex-col rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7 shadow-[var(--glass-shadow)]">
+              <figure
+                className={cn(
+                  "relative flex h-full flex-col rounded-[1.5rem] border bg-[var(--color-bg-elevated)] p-7 shadow-[var(--glass-shadow)]",
+                  r.feature
+                    ? "border-[var(--color-accent)]/30"
+                    : "border-[var(--color-border)]",
+                )}
+              >
+                {/* Feature quote: a faint peach top-edge glow marks the emotional peak. */}
+                {r.feature && (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent"
+                  />
+                )}
                 <Stars />
-                <blockquote className="mt-4 flex-1">
-                  <p className="font-display text-xl italic leading-relaxed text-[var(--color-fg)]">
-                    &ldquo;{r.quote}&rdquo;
+                {/* Upright Open Sans (no synthetic italic) — differentiated by a
+                    large orange opening-quote glyph + weight/leading instead. */}
+                <blockquote className="relative mt-4 flex-1">
+                  <span
+                    aria-hidden
+                    className="font-display absolute -left-0.5 -top-5 select-none text-5xl leading-none text-[var(--color-accent)]/35"
+                  >
+                    &ldquo;
+                  </span>
+                  <p
+                    className={cn(
+                      "font-display leading-relaxed text-[var(--color-fg)]",
+                      r.feature ? "text-[1.45rem]" : "text-xl",
+                    )}
+                  >
+                    {r.quote}
                   </p>
                 </blockquote>
                 <figcaption className="mt-5 border-t border-[var(--color-border)] pt-4">

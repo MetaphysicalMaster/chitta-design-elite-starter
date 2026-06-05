@@ -139,19 +139,26 @@ export function LatticeHero() {
         </div>
       )}
 
-      {/* Legibility scrims — keep copy WCAG-AA over any lattice frame.
-          Left wash anchors the copy column; vertical seats nav + base. */}
+      {/* Legibility scrims — keep copy WCAG-AA over any lattice frame WHILE
+          letting the WebGL dermal-lattice (resolve / DoF / teal capillary)
+          breathe on the right two-thirds where the eye lands after reading. The
+          left wash + base anchor stay strong (copy lives there, with its own
+          drop-shadow); the right end-stop is now fully clear (0.08 → 0.0) and
+          the bottom scrim eased (0.82 → 0.6) so the resolving lattice + teal
+          capillary actually read on first paint instead of drowning under a
+          flat espresso wash. The radial copy-column ellipse anchors the headline
+          column only. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(18%_0.032_54_/_0.92)] via-[oklch(21%_0.038_56_/_0.55)] to-[oklch(24%_0.042_57_/_0.18)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(18%_0.032_54_/_0.92)] from-5% via-[oklch(21%_0.038_56_/_0.42)] via-45% to-transparent"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(18%_0.032_54_/_0.72)] via-transparent to-[oklch(17%_0.03_54_/_0.82)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(18%_0.032_54_/_0.66)] via-transparent to-[oklch(17%_0.03_54_/_0.6)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_92%_at_26%_56%,oklch(17%_0.03_54_/_0.5),transparent_62%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(54%_80%_at_20%_54%,oklch(17%_0.03_54_/_0.5),transparent_62%)]"
       />
 
       <motion.div
@@ -193,7 +200,9 @@ export function LatticeHero() {
             Dr. Marc A. Darst, MD reads it himself
           </span>{" "}
           — board-certified in both disciplines, caring for Charlotte for over
-          two decades.
+          two decades. The same expert eye, from a skin-cancer screening to
+          natural-looking, never-overdone aesthetics — your skin read by the
+          physician who treats you.
         </motion.p>
 
         <motion.div
@@ -234,23 +243,50 @@ export function LatticeHero() {
           </Link>
         </motion.div>
 
-        <motion.dl
+        {/* Dual-path scent trail — the medical headline above carries the
+            differentiator; this opens the SECOND door so the high-ticket
+            aesthetics buyer sees herself above the fold, not eight sections
+            down. Two quiet hash-links: a teal medical chip + a coral aesthetic
+            chip (the only warm note in the dark hero), each routing the
+            scheduler to her intent. */}
+        <motion.nav
           variants={item}
-          className="mt-14 flex flex-wrap gap-x-10 gap-y-5 text-[oklch(97%_0.012_72)]"
+          aria-label="Choose your path"
+          className="mt-7 flex flex-wrap items-center gap-2.5 text-[0.82rem]"
         >
-          {[
-            { v: "2 boards", k: "Dermatology + dermatopathology" },
-            { v: "20+ yrs", k: "Serving Charlotte" },
-            { v: "Sole owner", k: "Physician-led, independent" },
-          ].map((s) => (
-            <div key={s.k} className="flex flex-col">
-              <dt className="font-display text-2xl leading-none tnum">{s.v}</dt>
-              <dd className="mt-1.5 text-xs uppercase tracking-[0.14em] text-[oklch(86%_0.025_70_/_0.74)]">
-                {s.k}
-              </dd>
-            </div>
-          ))}
-        </motion.dl>
+          <span className="mr-0.5 text-[oklch(82%_0.025_70_/_0.62)]">
+            Two paths, one physician:
+          </span>
+          <Link
+            href="#credentials"
+            className="group inline-flex items-center gap-2 rounded-full border border-[var(--glass-border-dark)] bg-[var(--glass-bg-dark)] px-3.5 py-1.5 font-medium text-[oklch(95%_0.014_72)] backdrop-blur-md transition-colors duration-300 hover:border-[var(--color-accent-bright)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]"
+          >
+            <span
+              aria-hidden
+              className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-bright)]"
+            />
+            Skin cancer &amp; medical
+          </Link>
+          <Link
+            href="#aesthetics"
+            className="group inline-flex items-center gap-2 rounded-full border border-[oklch(70%_0.09_32_/_0.42)] bg-[oklch(40%_0.06_34_/_0.32)] px-3.5 py-1.5 font-medium text-[oklch(95%_0.02_46)] backdrop-blur-md transition-colors duration-300 hover:border-[oklch(78%_0.1_34)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(78%_0.1_34)]"
+          >
+            <span
+              aria-hidden
+              className="h-1.5 w-1.5 rounded-full bg-[oklch(78%_0.12_34)]"
+            />
+            Aesthetics &amp; injectables
+          </Link>
+        </motion.nav>
+
+        {/* No numeric stat row here. The headline + lead already carry "2
+            boards" and "20+ years" in prose, and TrustBar (the very next
+            section) owns the figures — restating them back-to-back was the
+            page's most-scrutinized fold repeating the same two numbers one row
+            apart (both counsels flagged it). Dropping the <dl> also lets the
+            signature lattice + teal capillary breathe in the lower-right, and
+            gives the hero a cleaner scroll into the credential band. The
+            dual-path chips above carry the scent trail without numbers. */}
       </motion.div>
 
       {/* Scroll cue */}

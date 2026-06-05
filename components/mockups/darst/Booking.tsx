@@ -10,18 +10,36 @@
  * live site's scattered, keyword-stuffed listings created.
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 import { NAP } from "./nap";
+import {
+  BOOKING_INTENT_EVENT,
+  consumeBookingReason,
+  reasonForIntent,
+  type BookingIntent,
+} from "./bookingIntent";
 
+// Both paths granular: the medical buyer AND the high-ticket aesthetics buyer
+// each see their specific want, so the funnel reads as "the place for me",
+// not a medical-only intake.
 const REASONS = [
   "Skin check / screening",
   "Spot or lesion",
   "Acne / eczema / rash",
+  "Injectables (Botox / filler)",
+  "Laser & skin rejuvenation",
   "Cosmetic consult",
   "Vein evaluation",
 ];
+
+// The elective/cosmetic reasons get a quiet reassurance line in the scheduler.
+const ELECTIVE = new Set([
+  "Injectables (Botox / filler)",
+  "Laser & skin rejuvenation",
+  "Cosmetic consult",
+]);
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const TIMES = ["8:30", "9:30", "11:00", "1:30", "3:00", "4:00"];
@@ -30,26 +48,48 @@ export function Booking() {
   const [reason, setReason] = useState(REASONS[0]);
   const [day, setDay] = useState(DAYS[0]);
   const [time, setTime] = useState(TIMES[0]);
+  // Which of the two REAL offices (Charlotte / Monroe) — a two-city practice,
+  // so the scheduler must let her pick where to be seen. Default = primary.
+  const [officeIdx, setOfficeIdx] = useState(0);
+  const office = NAP.locations[officeIdx];
   const [done, setDone] = useState(false);
 
+  // Honor an aesthetic CTA's intent: consume any pending sessionStorage handoff
+  // on mount, AND listen for same-page clicks via the custom event, so "Book an
+  // aesthetic consult" pre-selects HER elective reason instead of the default
+  // skin-check. (Decoupled from hash/URL → robust under reduced-motion too.)
+  useEffect(() => {
+    const pending = consumeBookingReason();
+    if (pending) setReason(pending);
+
+    const onIntent = (e: Event) => {
+      const detail = (e as CustomEvent<BookingIntent>).detail;
+      if (detail) setReason(reasonForIntent(detail));
+    };
+    window.addEventListener(BOOKING_INTENT_EVENT, onIntent);
+    return () => window.removeEventListener(BOOKING_INTENT_EVENT, onIntent);
+  }, []);
+
   const summary = useMemo(
-    () => `${reason} · ${day} at ${time}`,
-    [reason, day, time],
+    () => `${reason} · ${office.city} · ${day} at ${time}`,
+    [reason, office.city, day, time],
   );
 
   return (
     <section
       id="book"
       aria-labelledby="book-title"
-      className="relative overflow-hidden bg-[var(--night-1)] py-24 sm:py-32"
+      className="relative overflow-hidden bg-[var(--night-0)] py-24 sm:py-32"
     >
-      {/* depth wash so the booking room is lit, never a flat block */}
+      {/* depth wash — deliberately a DIFFERENT room from the Credentials closer:
+          a warmer brown-weighted floor (origins flipped right→left) so the two
+          dark sections read as distinct beats, not the same room twice. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(54% 80% at 18% 24%, oklch(50% 0.055 62 / 0.18), transparent 60%), radial-gradient(60% 90% at 86% 78%, oklch(58% 0.085 196 / 0.16), transparent 62%)",
+            "radial-gradient(58% 84% at 82% 18%, oklch(46% 0.06 58 / 0.28), transparent 60%), radial-gradient(54% 80% at 12% 86%, oklch(52% 0.07 196 / 0.14), transparent 62%)",
         }}
       />
 
@@ -70,25 +110,32 @@ export function Booking() {
             </span>
           </h2>
           <p className="mt-5 max-w-[44ch] text-pretty font-light text-[oklch(88%_0.025_70_/_0.88)]">
-            No phone tag, no portal maze. Tell us why you&rsquo;re coming, pick a
-            day, and we&rsquo;ll confirm your Charlotte appointment by text.
+            No phone tag, no portal maze. Tell us why you&rsquo;re coming, choose
+            your office, pick a day, and we&rsquo;ll confirm your{" "}
+            {office.city} appointment by text.
           </p>
 
+          {/* The address reflects the office she picks on the right — two REAL
+              North Carolina locations (Charlotte · Monroe), one clean listing
+              each, never a single-city NAP on a two-city practice. */}
           <address className="mt-8 not-italic">
-            <p className="font-display text-lg text-[var(--color-bg)]">
-              {NAP.name}
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[oklch(80%_0.04_64_/_0.7)]">
+              {NAP.name} · {NAP.cities}
+            </p>
+            <p className="mt-2 font-display text-lg text-[var(--color-bg)]">
+              {office.city} office
             </p>
             <p className="mt-1 text-[0.95rem] text-[oklch(86%_0.025_70_/_0.82)] tnum">
-              {NAP.street} · {NAP.city}, {NAP.state} {NAP.zip}
+              {office.street} · {office.city}, {office.state} {office.zip}
             </p>
             <p className="mt-0.5 text-[0.9rem] text-[oklch(82%_0.025_70_/_0.7)]">
               {NAP.hours}
             </p>
             <a
-              href={`tel:${NAP.phoneTel}`}
+              href={`tel:${office.phoneTel}`}
               className="mt-2 inline-block font-medium text-[var(--color-accent-bright)] underline-offset-4 hover:underline tnum focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]"
             >
-              Prefer to call? {NAP.phoneDisplay}
+              Prefer to call? {office.phoneDisplay}
             </a>
           </address>
         </Reveal>
@@ -135,7 +182,24 @@ export function Booking() {
               >
                 <fieldset>
                   <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-fg-subtle)]">
-                    1 · Reason for visit
+                    1 · Which office?
+                  </legend>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {NAP.locations.map((loc, i) => (
+                      <Chip
+                        key={loc.city}
+                        active={officeIdx === i}
+                        onClick={() => setOfficeIdx(i)}
+                      >
+                        {loc.city}
+                      </Chip>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-fg-subtle)]">
+                    2 · Reason for visit
                   </legend>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {REASONS.map((r) => (
@@ -152,7 +216,7 @@ export function Booking() {
 
                 <fieldset>
                   <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-fg-subtle)]">
-                    2 · Day
+                    3 · Day
                   </legend>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {DAYS.map((d) => (
@@ -165,7 +229,7 @@ export function Booking() {
 
                 <fieldset>
                   <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-fg-subtle)]">
-                    3 · Time
+                    4 · Time
                   </legend>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {TIMES.map((t) => (
@@ -190,6 +254,21 @@ export function Booking() {
                     inputMode="tel"
                   />
                 </div>
+
+                {ELECTIVE.has(reason) && (
+                  <p className="flex items-start gap-2 rounded-xl border border-[var(--color-coral-subtle)] bg-[var(--color-coral-subtle)] px-4 py-3 text-[0.85rem] leading-relaxed text-[var(--color-fg-muted)]">
+                    <span
+                      aria-hidden
+                      className="mt-0.5 text-[var(--color-coral-deep)]"
+                    >
+                      ✦
+                    </span>
+                    <span>
+                      Your consult is unhurried and quoted up front — Dr. Darst
+                      plans the result with you, with no surprise add-ons.
+                    </span>
+                  </p>
+                )}
 
                 <div className="rounded-xl bg-[var(--color-bg-subtle)] px-4 py-3 text-sm text-[var(--color-fg-muted)]">
                   Reserving:{" "}

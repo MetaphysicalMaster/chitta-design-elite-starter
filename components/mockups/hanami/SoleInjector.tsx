@@ -3,15 +3,15 @@
 /**
  * SoleInjector — THE SECOND HALF OF THE CLOSER. "Every face, by Dr. Phuah."
  *
- * The single most important correction this page makes: the live healthcare-SEO
- * template, with its broken/duplicate title tags, completely hides the practice's
- * actual differentiator — that Dr. Elaine Phuah (DO, MBA) is the SOLE injector
- * and performs every injectable treatment herself. That is the entire personal
- * brand a template can never carry. Here we foreground it as an intimacy
- * section: one named physician, one set of hands, every single face.
+ * The practice's true differentiator, foregrounded: Dr. Elaine Phuah (DO, MBA)
+ * is the SOLE injector and performs every injectable treatment herself — her
+ * "feather touch" (#drfeathertouch), the soft, never-overworked result. We make
+ * it an intimacy section: one named physician, one set of hands, every single
+ * face. Copy speaks TO the buyer about that one trusted set of hands — never
+ * about the old website.
  */
 
-import { Reveal, BrandImage, btnPrimary, btnGhost } from "./primitives";
+import { Reveal, BrandPhoto, btnGold, btnGhost } from "./primitives";
 import Link from "next/link";
 
 const CREDS = [
@@ -27,36 +27,45 @@ export function SoleInjector() {
       id="injector"
       className="relative scroll-mt-20 overflow-hidden bg-[var(--color-bg-warm)] py-24 sm:py-28"
     >
-      {/* soft sakura aura echoing the hero */}
+      {/* soft sakura + gold aura echoing the hero */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-70"
         style={{
           background:
-            "radial-gradient(50% 46% at 90% 6%, oklch(88% 0.07 352 / 0.55), transparent 70%), radial-gradient(46% 50% at 4% 98%, var(--color-accent-subtle), transparent 72%)",
+            "radial-gradient(50% 46% at 90% 6%, oklch(88% 0.07 6 / 0.5), transparent 70%), radial-gradient(46% 50% at 4% 98%, var(--color-accent-subtle), transparent 72%)",
         }}
       />
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 sm:px-8 lg:grid-cols-12 lg:gap-16">
-        {/* Portrait */}
+        {/* Portrait — the REAL Dr. Elaine Phuah, framed elegantly. The source is
+            a small landscape (460×365), so we CAP the rendered width (~22rem) and
+            sizes so it is never asked to upscale on retina/2x — brand-fidelity
+            insurance on the highest-trust photo. */}
         <Reveal className="lg:col-span-5">
-          <div className="relative">
-            <BrandImage
+          <div className="relative mx-auto max-w-[22rem] lg:mx-0">
+            <BrandPhoto
+              src="/clients/hanami/dr-phuah-candidate.jpg"
+              alt="Dr. Elaine Phuah, DO MBA FACOI — founder and sole injector at Hanami Medspa"
               aspect="4 / 5"
-              variant="sakura"
               radius="3xl"
-              label="Dr. Elaine Phuah, DO MBA"
+              position="50% 26%"
+              frame
+              sizes="(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw"
               className="shadow-[var(--glass-shadow)]"
             />
-            {/* signature seal — "one set of hands" */}
+            {/* signature seal — "one set of hands". Offset further out (-bottom-7
+                / -right-6) so it KISSES the frame corner as an applied seal rather
+                than covering Dr. Phuah's shoulder — keeps the elegant overlap with
+                a cleaner gap off the subject. */}
             <div
               aria-hidden
-              className="absolute -bottom-5 -right-3 hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[0_18px_50px_-24px_oklch(58%_0.12_354_/_0.4)] sm:block"
+              className="absolute -bottom-7 -right-6 hidden rounded-2xl border border-[var(--gold-hairline)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[0_18px_50px_-24px_oklch(20%_0.01_70_/_0.4)] sm:block"
             >
-              <p className="font-display text-2xl italic text-[var(--color-accent-deep)]">
+              <p className="font-display text-2xl text-[var(--color-accent-deep)]">
                 Elaine Phuah
               </p>
               <p className="mt-0.5 text-[0.62rem] uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-                Sole injector · every face
+                The feather touch · #drfeathertouch
               </p>
             </div>
           </div>
@@ -73,9 +82,12 @@ export function SoleInjector() {
               style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.08 }}
             >
               Every face here is shaped by{" "}
-              <span className="font-display-em italic">one person.</span>
+              <span className="font-display-em text-[var(--color-accent-deep)]">one person.</span>
             </h2>
             <p className="mt-6 max-w-[52ch] text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
+              <span className="font-medium text-[var(--color-fg)]">
+                For women who want to look rested, not &ldquo;done.&rdquo;
+              </span>{" "}
               Not a rotating roster. Not a nurse you&apos;ll meet once. Every
               injectable at Hanami is placed by{" "}
               <span className="font-medium text-[var(--color-fg)]">
@@ -83,8 +95,11 @@ export function SoleInjector() {
               </span>{" "}
               herself — a physician (DO, MBA) who built this practice and remains
               its sole injector. The continuity of one trained eye, one steady
-              hand, learning your face over time. That is what the old template
-              never said out loud.
+              hand learning your face over time:{" "}
+              <span className="font-medium text-[var(--color-fg)]">
+                her feather touch
+              </span>
+              {" "}— soft, considered, never overworked.
             </p>
           </Reveal>
 
@@ -111,7 +126,7 @@ export function SoleInjector() {
 
           <Reveal delay={0.14}>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="#book" className={btnPrimary}>
+              <Link href="#book" className={btnGold}>
                 Book with Dr. Phuah
               </Link>
               <Link href="#services" className={btnGhost}>
@@ -123,10 +138,15 @@ export function SoleInjector() {
       </div>
 
       <Reveal delay={0.16}>
-        <p className="mx-auto mt-20 max-w-[58ch] px-6 text-center font-display text-xl italic leading-relaxed text-[var(--color-fg)] sm:text-2xl">
-          &ldquo;One injector. One philosophy. Your face, learned over seasons —
-          never handed off.&rdquo;
-        </p>
+        <figure className="mx-auto mt-20 max-w-[58ch] px-6 text-center">
+          <blockquote className="font-display text-2xl leading-relaxed tracking-wide text-[var(--color-fg)] sm:text-3xl">
+            &ldquo;One injector. One philosophy. Your face, learned over seasons —
+            never handed off.&rdquo;
+          </blockquote>
+          <figcaption className="mt-4 text-[0.7rem] uppercase tracking-[0.22em] text-[var(--color-accent-deep)]">
+            Dr. Elaine Phuah · the feather touch
+          </figcaption>
+        </figure>
       </Reveal>
     </section>
   );

@@ -1,39 +1,40 @@
 import type { Metadata } from "next";
-import { Shippori_Mincho, Zen_Kaku_Gothic_New } from "next/font/google";
+import { Abel, Open_Sans } from "next/font/google";
 import "./brand.css";
 
-/* Shippori Mincho — a warm, literary Japanese-rooted Mincho (serif) with
-   brush-cut terminals and quiet high contrast. It carries the name "Hanami"
-   (花見 — cherry-blossom viewing) the way the live SEO template never could:
-   poetic, calm, intentional (mono no aware). Latin glyphs share the family's
-   measured, hand-cut rhythm, so the display voice feels authored, not generic.
+/* Abel — the tall, refined condensed sans the LIVE Hanami hero uses for its
+   headings. It carries the brand's feminine-luxury voice: clean, elegant, a
+   little couture, and reads beautifully large. Wired to --font-display so every
+   consuming component keeps working unchanged.
    Deliberately distinct from the siblings' display faces (Timeless → Cormorant
-   Garamond; SimplySkin → Fraunces; Happy Clinic → Sora; Avail → Space Grotesk). */
-const shippori = Shippori_Mincho({
-  variable: "--font-display",
+   Garamond; SimplySkin → Fraunces; Happy Clinic → Sora; Darst → Newsreader). */
+const abel = Abel({
+  /* NOTE: a distinct source-variable name (not --font-display) so brand.css can
+     map --font-display → this without a self-referential CSS cycle (which would
+     silently void the variable and fall back to the body font). */
+  variable: "--font-display-src",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
 });
 
-/* Zen Kaku Gothic New — a soft, humanist Japanese gothic (sans) for body copy,
-   UI and fine print. Gentle terminals keep the rice-paper calm; pairs with the
-   Mincho the way Japanese editorial design pairs mincho + gothic. */
-const zenKaku = Zen_Kaku_Gothic_New({
+/* Open Sans — the live site's body face: a clean, friendly humanist sans for
+   copy, UI and fine print. Pairs with Abel the way the real brand does. */
+const openSans = Open_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   /* The identity correction in a single tag: the live site ships a generic
      healthcare-SEO template with broken/duplicate title tags that waste the
-     name. This reads as the branded sensory world the name promises. */
+     name. This reads as the branded, award-winning world the name promises. */
   title:
-    "Hanami Medspa — Injectables, Laser & IPL by Dr. Elaine Phuah · Fort Worth, TX | 花見",
+    "Hanami Medspa — Injectables, Laser & IPL by Dr. Elaine Phuah, DO · Fort Worth, TX | 花見",
   description:
-    "Fort Worth's botanical med spa — every face by Dr. Elaine Phuah, DO MBA, the sole injector. 4.9★ across 243 reviews. Injectables, laser & IPL at 800 8th Ave, Suite 508. Hanami means cherry-blossom viewing — the art of becoming, in bloom. Book in 30 seconds.",
+    "Fort Worth's award-winning med spa — DFW Favorites WINNER & Fort Worth Top Doctor. Every face by Dr. Elaine Phuah, DO MBA FACOI, the sole injector. Injectables, laser & IPL at 800 8th Ave, Suite 508. Hanami means cherry-blossom viewing — the art of becoming, in bloom. Book your consultation.",
   robots: { index: false, follow: false },
 };
 
@@ -43,7 +44,7 @@ export default function HanamiLayout({
   return (
     <div
       data-brand="hanami"
-      className={`${shippori.variable} ${zenKaku.variable} min-h-screen`}
+      className={`${abel.variable} ${openSans.variable} min-h-screen`}
     >
       {children}
     </div>

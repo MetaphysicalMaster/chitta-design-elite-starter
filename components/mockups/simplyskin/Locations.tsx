@@ -1,13 +1,12 @@
 "use client";
 
 /**
- * Locations — THE CLOSER. A two-location premium grid (Fishers + Carmel) that
- * foregrounds the Carmel-expansion launch moment, paired with a Top-1% Allergan
- * authority badge. This is the section the prospect's repurposed-Shopify site
- * could never express: a confident, editorial statement of a growing practice.
+ * Locations — THE CLOSER. A two-location grid (Fishers + Carmel · Zionsville)
+ * paired with an Allergan & Galderma award-winner badge. An understated,
+ * editorial statement of a trusted, growing practice.
  *
- * Quiet luxury: large soft plates, fine hairline NAP, one teal accent. The
- * Carmel card carries a tasteful "Now Open" launch ribbon.
+ * Restraint: large soft plates, fine hairline NAP, one quiet teal accent. The
+ * Carmel · Zionsville card carries a tasteful "Now Open" ribbon.
  */
 
 import Link from "next/link";
@@ -31,21 +30,21 @@ const LOCATIONS: Location[] = [
     id: "fishers",
     name: "Fishers",
     city: "Fishers, IN",
-    street: "11529 Spring Mill Rd, Ste 200",
-    cityLine: "Fishers, IN 46038",
-    phoneDisplay: "(317) 597-8625",
-    phoneTel: "+13175978625",
-    note: "Our founding studio — twenty years of trusted, natural results.",
+    street: "9879 E 116th St",
+    cityLine: "Fishers, IN 46037",
+    phoneDisplay: "(317) 348-1313",
+    phoneTel: "+13173481313",
+    note: "Our Fishers home — quiet, medical-grade care for body and skin.",
   },
   {
     id: "carmel",
-    name: "Carmel",
-    city: "Carmel, IN",
-    street: "10485 N Pennsylvania St, Ste 100",
-    cityLine: "Carmel · Zionsville, IN 46032",
-    phoneDisplay: "(317) 597-8625",
-    phoneTel: "+13175978625",
-    note: "Our newest studio — the same elite hands, now closer to you.",
+    name: "Carmel · Zionsville",
+    city: "Carmel / Zionsville, IN",
+    street: "3965 W 106th St",
+    cityLine: "Carmel / Zionsville, IN 46032",
+    phoneDisplay: "(317) 348-1313",
+    phoneTel: "+13173481313",
+    note: "Our newest location on the north side — the same expertise, closer to you.",
     launch: true,
   },
 ];
@@ -63,7 +62,7 @@ function AllerganBadge() {
         className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[var(--color-accent-subtle)] text-[var(--color-accent)]"
         style={{
           background:
-            "radial-gradient(120% 120% at 30% 25%, oklch(99% 0.006 80), oklch(95% 0.022 196))",
+            "radial-gradient(120% 120% at 30% 25%, oklch(99% 0.006 80), oklch(94% 0.018 184))",
         }}
       >
         <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden>
@@ -77,10 +76,10 @@ function AllerganBadge() {
       </span>
       <div>
         <p className="font-display text-base text-[var(--color-fg)]">
-          Top 1% US Allergan Injector
+          Allergan &amp; Galderma Award-Winner
         </p>
         <p className="mt-0.5 text-xs text-[var(--color-fg-subtle)]">
-          BOTOX® &amp; JUVÉDERM® · Allē Partner · Top 10 in Indiana
+          Top-tier partner recognition · <span className="italic">[tier &amp; year at launch]</span>
         </p>
       </div>
     </div>
@@ -93,7 +92,7 @@ function LocationCard({ loc }: { loc: Location }) {
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-[1.75rem] border bg-[var(--color-bg-elevated)]",
         loc.launch
-          ? "border-[var(--color-accent-subtle)] shadow-[0_30px_80px_-40px_oklch(48%_0.072_196_/_0.4)]"
+          ? "border-[var(--color-accent-subtle)] shadow-[0_30px_80px_-40px_oklch(58%_0.04_184_/_0.38)]"
           : "border-[var(--color-border)] shadow-[var(--glass-shadow)]",
       )}
     >
@@ -102,10 +101,24 @@ function LocationCard({ loc }: { loc: Location }) {
           aspect="16 / 10"
           variant={loc.launch ? "default" : "nude"}
           radius="lg"
-          sample
-          label={`${loc.name} studio`}
           className="rounded-none border-0"
-        />
+        >
+          {/* Both location cards carry a matched, art-directed editorial plate
+              (a place-name flourish) so they read as a considered pair rather
+              than "real photo + placeholder" — and the single real hero
+              photograph is reserved for its strongest moments (hero, Authority
+              portrait, and the results lead) instead of being reused here. */}
+          <div className="absolute inset-0 z-[1] grid place-items-center text-center">
+            <div>
+              <p className="font-display text-[2.6rem] leading-none text-[var(--color-fg)]/85">
+                {loc.name === "Carmel · Zionsville" ? "Carmel" : loc.name}
+              </p>
+              <p className="mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-accent-deep)]">
+                {loc.launch ? "Now Welcoming · Zionsville" : "Our Fishers home"}
+              </p>
+            </div>
+          </div>
+        </BrandImage>
         {loc.launch && (
           <span className="absolute right-4 top-4 z-[3] inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-fg)] shadow-lg">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-white/90" />
@@ -147,7 +160,7 @@ function LocationCard({ loc }: { loc: Location }) {
             href={`tel:${loc.phoneTel}`}
             className={cn(btnGhost, "px-5 py-3 text-sm")}
           >
-            Call studio
+            Call {loc.name}
           </a>
         </div>
       </div>
@@ -159,7 +172,7 @@ export function Locations() {
   return (
     <section
       id="locations"
-      className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
+      className="relative scroll-mt-28 overflow-hidden py-24 sm:py-28"
     >
       {/* faint nude wash so the closer feels like its own considered chapter */}
       <div
@@ -177,10 +190,10 @@ export function Locations() {
             title={
               <>
                 Now in Carmel.{" "}
-                <span className="font-display-em">The same elite hands</span> — closer to you.
+                <span className="font-display-em">The same medical expertise</span> — closer to you.
               </>
             }
-            lead="After two decades building trust in Fishers, we're proud to open our Carmel studio. Same Top 1% Allergan artistry, same restrained aesthetic, now serving the north-side and Zionsville."
+            lead="From our Fishers home, we're glad to welcome the north side and Zionsville at our Carmel location — the same understated, medical-grade care for body and skin, now closer to you."
           />
           <Reveal delay={0.08} className="lg:max-w-sm lg:pb-2">
             <AllerganBadge />

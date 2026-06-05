@@ -2,13 +2,14 @@
  * Skin-glow caustic shaders for the SimplySkin hero power element.
  *
  * A full-bleed orthographic backdrop plane that renders an ultra-soft,
- * refractive "caustic light-sweep" over a luminous near-white surface —
- * implying healthy, glowing skin caught in studio light. Restrained and
- * expensive (quiet-luxury), NOT a saturated light show: gentle platinum +
- * warm-nude caustics with a single whisper of teal, low contrast, no grain
- * harshness. Bloom in the composer lifts only the brightest caustic cores.
+ * refractive "caustic light-sweep" over a warm near-white surface — a quiet,
+ * understated sheen behind the hero photograph. Deliberately restrained, NOT a
+ * saturated light show: gentle warm-greige caustics with a single whisper of
+ * desaturated teal, low contrast, no grain harshness. It must never fight the
+ * photo. Bloom in the composer lifts only the brightest caustic cores.
  *
- * Palette matches app/mockups/simplyskin/brand.css (glow-* + accent).
+ * Palette matches app/mockups/simplyskin/brand.css (glow-* + accent): the real
+ * muted greige/taupe identity, not the previous platinum guess.
  */
 
 export const glowVertexShader = /* glsl */ `

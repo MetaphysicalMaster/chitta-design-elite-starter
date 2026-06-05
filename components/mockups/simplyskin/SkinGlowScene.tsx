@@ -38,13 +38,16 @@ import * as THREE from "three";
 import { glowFragmentShader, glowVertexShader } from "./skin-glow-shaders";
 
 /* Brand palette as THREE colors (kept in JS to match brand.css glow-* stops).
-   Soft, luminous, low-chroma — quiet luxury. */
+   REBRANDED to the real SimplySkin identity: muted warm greige / taupe with a
+   single whisper of desaturated teal (#7E9B96). Deliberately LOW-chroma and
+   warm so the glow sits quietly behind the hero photograph and never fights
+   it — understated restraint, not a light show. */
 const PALETTE = {
-  surface: "#f7f3ec", // luminous platinum near-white
-  nude: "#ecdcc8", // warm nude
-  rose: "#f0dcd0", // soft champagne/rose
-  teal: "#bfe2e0", // single teal whisper
-  attenuation: "#e7d3bd", // warm-nude interior absorption (reads as skin)
+  surface: "#faf8f5", // warm near-white paper (#FAF8F5)
+  nude: "#d8d0c5", // warm greige (#C9C2B8 → softened)
+  rose: "#e2d4cd", // muted warm rose/taupe
+  teal: "#cdddd8", // single soft teal hush (#7E9B96 → lightened)
+  attenuation: "#cfc6b9", // warm greige interior absorption (reads as soft skin)
 };
 
 /* ---- Orthographic full-bleed caustic skin-glow backdrop ---- */
@@ -148,13 +151,13 @@ function GlowLens({
             samples={lite ? 6 : 10}
             resolution={lite ? 256 : 512}
             thickness={1.1}
-            roughness={0.16}
-            ior={1.32}
-            chromaticAberration={0.42}
-            anisotropy={0.18}
-            distortion={0.12}
-            distortionScale={0.35}
-            temporalDistortion={0.04}
+            roughness={0.2}
+            ior={1.3}
+            chromaticAberration={0.22}
+            anisotropy={0.14}
+            distortion={0.1}
+            distortionScale={0.3}
+            temporalDistortion={0.03}
             clearcoat={1}
             clearcoatRoughness={0.12}
             color="#ffffff"
@@ -172,36 +175,36 @@ function GlowLens({
 function StudioLights() {
   return (
     <>
-      <ambientLight intensity={0.55} />
+      <ambientLight intensity={0.6} />
       <Environment resolution={256} frames={1}>
-        {/* Warm nude key from upper-left (the "skin" light). */}
+        {/* Warm greige key from upper-left (the soft "skin" light). */}
         <Lightformer
           form="rect"
-          intensity={2.4}
-          color="#fbeedd"
+          intensity={2.2}
+          color="#f4ece0"
           position={[-3.4, 3.2, 2]}
           rotation={[-Math.PI / 5, 0, 0]}
           scale={[6, 9, 1]}
         />
-        {/* Cool platinum fill from the right. */}
+        {/* Warm taupe fill from the right (kept warm, not cool-blue). */}
         <Lightformer
           form="rect"
-          intensity={1.8}
-          color="#eef3f5"
+          intensity={1.6}
+          color="#efe9e1"
           position={[4, 1.4, 1]}
           rotation={[0, -Math.PI / 2.4, 0]}
           scale={[6, 6, 1]}
         />
-        {/* Single soft teal rim from behind — the brand's one note. */}
+        {/* Single soft desaturated-teal rim from behind — the brand's one note. */}
         <Lightformer
           form="circle"
-          intensity={1.4}
-          color="#cdeae8"
+          intensity={1.1}
+          color="#d3e0db"
           position={[0, -2.4, -4]}
           scale={[7, 7, 1]}
         />
       </Environment>
-      <directionalLight position={[-4, 5, 3]} intensity={0.7} color="#fff6ec" />
+      <directionalLight position={[-4, 5, 3]} intensity={0.65} color="#f7efe3" />
     </>
   );
 }

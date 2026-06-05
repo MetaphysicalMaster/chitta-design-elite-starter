@@ -1,20 +1,26 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./brand.css";
 
-/* Sora — a geometric, high-altitude display with optimistic, rounded-modern
-   terminals. Reads premium-clinical yet warm — the "peak performance" voice.
-   Deliberately distinct from the sibling Avail build's Space Grotesk. */
-const sora = Sora({
-  variable: "--font-display",
+/* Cormorant Garamond — the elegant high-contrast serif behind the live site's
+   signature italic tagline, "Subtle is The New WOW." A true italic optical axis
+   carries the refined, understated-luxury voice of a 25-year cosmetic-injection
+   practice. Set as --font-display; used for the hero tagline + rare serif
+   accents. Deliberately distinct from the sibling builds' display faces. */
+const cormorant = Cormorant_Garamond({
+  // Exposed under a distinct *source* var so brand.css can compose a full font
+  // stack on --font-display without a self-referential (cyclic) declaration.
+  variable: "--font-display-src",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-/* Inter — clean, neutral clinical sans for body copy, UI and fine print. */
-const inter = Inter({
-  variable: "--font-body",
+/* Montserrat — the live site's working sans for section headings (bold, in
+   pine-teal) and all body/UI copy. Geometric, warm, legible at every size. */
+const montserrat = Montserrat({
+  variable: "--font-body-src",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
@@ -22,9 +28,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "Happy Clinic Denver — Colorado's #1 Botox & Juvéderm | Dr. Phil Nguyen, Allergan National Trainer",
+    "Happy Clinic Denver — Subtle is The New WOW® | Dr. Phil Hong Nguyen, MD · Botox, Filler & Dysport",
   description:
-    "Colorado's #1 Botox & Juvéderm volume clinic, led by Dr. Phil Nguyen, MD — an Allergan national trainer who teaches other injectors. Botox, Juvéderm, lasers & aesthetics in Denver. Two MDs, multiple expert injectors. Book in 30 seconds. 1241 S Parker Rd Ste 100, Denver, CO 80231.",
+    "Subtle is The New WOW. Led by Dr. Phil Hong Nguyen, MD — 25 years of cosmetic injection experience for a naturally younger you. Botox, Juvéderm, Dysport & aesthetics in Denver, CO. 1241 S Parker Rd Ste 100. Call 720-747-9999.",
   robots: { index: false, follow: false },
 };
 
@@ -34,7 +40,7 @@ export default function HappyClinicLayout({
   return (
     <div
       data-brand="happy-clinic"
-      className={`${sora.variable} ${inter.variable} min-h-screen`}
+      className={`${cormorant.variable} ${montserrat.variable} min-h-screen`}
     >
       {children}
     </div>

@@ -1,11 +1,12 @@
 "use client";
 
 /**
- * BookingCTA — the native "book in 30 seconds" scheduler. A self-contained,
- * accessible mini-flow (location → treatment → time) that demonstrates a real
- * booking experience inside the page — the antithesis of a Shopify "add to
- * cart". No backend; selecting all three reveals a confirmation affordance.
- * Quiet luxury: an ink card with one teal accent, generous spacing, fine type.
+ * BookingCTA — the native consultation scheduler. A self-contained, accessible
+ * mini-flow (location → treatment → time) that lets a client compose their
+ * request inside the page. No backend; once all three are chosen the highest-
+ * intent moment surfaces a LIVE next action — a real call to confirm — so the
+ * funnel never dead-ends. Quiet luxury: an ink card with one teal accent,
+ * generous spacing, fine type. Copy speaks only to the future client.
  */
 
 import { useId, useState } from "react";
@@ -94,7 +95,7 @@ export function BookingCTA() {
   return (
     <section
       id="book"
-      className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
+      className="relative scroll-mt-28 overflow-hidden py-24 sm:py-28"
       style={{ background: "linear-gradient(165deg, var(--ink-1), var(--ink-0))" }}
     >
       {/* skin-glow aura echoing the hero on the ink field */}
@@ -103,7 +104,7 @@ export function BookingCTA() {
         className="pointer-events-none absolute inset-0 opacity-50"
         style={{
           background:
-            "radial-gradient(55% 50% at 84% 4%, oklch(70% 0.06 196 / 0.6), transparent 70%), radial-gradient(50% 50% at 6% 100%, oklch(80% 0.04 56 / 0.5), transparent 72%)",
+            "radial-gradient(55% 50% at 84% 4%, oklch(70% 0.035 184 / 0.5), transparent 70%), radial-gradient(50% 50% at 6% 100%, oklch(80% 0.022 70 / 0.45), transparent 72%)",
         }}
       />
       <div className="relative mx-auto max-w-3xl px-6 text-center sm:px-8">
@@ -113,12 +114,12 @@ export function BookingCTA() {
             className="font-display mx-auto mt-5 max-w-[18ch] text-balance text-white"
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
           >
-            Book in 30 seconds.{" "}
-            <span className="font-display-em">No carts, no clutter.</span>
+            Reserve your{" "}
+            <span className="font-display-em">consultation</span>.
           </h2>
           <p className="mx-auto mt-5 max-w-[46ch] font-light text-white/75">
-            Choose a studio, a treatment, and a time — we&apos;ll confirm with a
-            real person. The effortless booking their old shop template never had.
+            Choose a location, a treatment, and a time that suits you — a member
+            of our team will confirm with you personally.
           </p>
         </Reveal>
 
@@ -134,37 +135,50 @@ export function BookingCTA() {
                   <>
                     <span className="text-white">{treat}</span> · {loc} ·{" "}
                     <span className="tnum">{time}</span>
+                    <span className="mt-1 block text-white/60">
+                      Call to confirm — we&apos;ll secure your time within one
+                      business day.
+                    </span>
                   </>
                 ) : (
                   "Make your three selections to continue."
                 )}
               </p>
-              <button
-                type="button"
-                disabled={!ready}
-                className={cn(
-                  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-medium transition-all duration-300",
-                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
-                  ready
-                    ? "bg-white text-[var(--ink-0)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-16px_oklch(70%_0.06_196_/_0.7)]"
-                    : "cursor-not-allowed bg-white/15 text-white/45",
-                )}
-              >
-                {ready ? "Confirm request" : "Select to book"}
-                <span aria-hidden>→</span>
-              </button>
+              {ready ? (
+                // Highest-intent moment gets a LIVE next action (a real call),
+                // never a dead-end demo button.
+                <a
+                  href="tel:+13173481313"
+                  className={cn(
+                    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 font-medium transition-all duration-300",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
+                    "bg-white text-[var(--ink-0)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-18px_oklch(70%_0.035_184_/_0.6)]",
+                  )}
+                >
+                  Call to confirm
+                  <span aria-hidden>→</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-white/15 px-7 py-3.5 font-medium text-white/45"
+                >
+                  Select to book
+                  <span aria-hidden>→</span>
+                </button>
+              )}
             </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.16}>
           <p className="mt-6 text-xs text-white/45">
-            Demonstration scheduler · no booking is submitted. Prefer to talk?
-            Call{" "}
-            <a href="tel:+13175978625" className="tnum text-white/75 underline-offset-2 hover:underline">
-              (317) 597-8625
+            Prefer to talk? Call{" "}
+            <a href="tel:+13173481313" className="tnum text-white/75 underline-offset-2 hover:underline">
+              (317) 348-1313
             </a>
-            .
+            {" "}— we&apos;ll find the right time together.
           </p>
         </Reveal>
       </div>

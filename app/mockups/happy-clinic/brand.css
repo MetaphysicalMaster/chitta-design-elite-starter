@@ -1,73 +1,120 @@
 /* ============================================================
    Happy Clinic Denver — Scoped Brand System (OKLch)
    Overrides shared --color-* tokens ONLY within [data-brand="happy-clinic"].
-   Brand essence: altitude optimism, premium-clinical — "Colorado's #1, and it
-   shows." Aurora violet → teal over bright clinical white. Northern-lights
-   optimism + Rocky-Mountain peak-performance confidence.
-   Deliberately distinct from the sibling Avail build (cobalt + graphite):
-   warmer, brighter, an aurora gradient rather than a graphite slipstream.
+
+   Brand essence (REBRANDED to the client's REAL identity):
+   "Subtle is The New WOW." — a Denver cosmetic-injection practice led by
+   Dr. Phil Hong Nguyen, MD (25 years of cosmetic injection experience).
+   The live happyclinicdenver.com identity is built on THREE colors:
+     · a DEEP NAVY primary (#0A2A4A) — the hero base + ink,
+     · a PINE-TEAL core (#1F7A6A / deeper #1A6657) — buttons, section
+       backgrounds, the footer, and the spiral logo mark, and
+     · a PALE-YELLOW accent (#FFED86) — CTAs, the "$25 refer" highlight,
+       and warm glints.
+   Surfaces are bright white + a light cool-grey (#E9ECEC). The voice is
+   elegant + reassuring: an italic serif tagline over bold-sans pine-teal
+   headings, Montserrat body. This REPLACES the prior "aurora violet"
+   guess entirely — every token now carries navy + pine-teal + pale-yellow.
+
+   NOTE: the historical CSS var NAMES are retained (--night-*, --aurora-*,
+   --color-accent*) so every consuming component keeps working unchanged —
+   only their VALUES are re-tuned. Read --color-accent* as "the PINE-TEAL
+   brand scale", --aurora-* as "the navy night-sky + teal/yellow ribbons",
+   and --night-* as "the navy depth scale".
+
+   Deliberately distinct from siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Darst        → warm chocolate/sepia brown + teal on warm paper
+     · SimplySkin   → restrained platinum, warm nude, one teal note
+     · Happy Clinic → DEEP NAVY + PINE-TEAL + PALE-YELLOW on white +
+                      cool-grey. Colorado-night aurora over the Rockies,
+                      a spiral-mark medspa with a serif "subtle WOW" voice.
+
    Does NOT touch app/globals.css.
    ============================================================ */
 
 [data-brand="happy-clinic"] {
-  /* Surfaces — bright clinical white warming to the faintest violet mist.
-     Clean and luminous, never sterile-cold. */
-  --color-bg: oklch(99.4% 0.004 300);
-  --color-bg-subtle: oklch(97.4% 0.008 295);
-  --color-bg-elevated: oklch(100% 0 0);
+  /* Surfaces — bright white + the live site's light cool-grey section wash.
+     Clean and clinical, the faintest teal-grey breath, never violet. */
+  --color-bg: oklch(99.6% 0.002 197);
+  --color-bg-subtle: oklch(94.1% 0.003 197); /* the real #E9ECEC section bg */
+  --color-bg-elevated: oklch(100% 0 0); /* white cards */
+  --color-bg-wash: oklch(96.6% 0.003 197); /* a lighter grey wash */
 
-  /* Foreground — deep aurora-ink (violet-leaning charcoal), tuned for AA. */
-  --color-fg: oklch(23% 0.03 290);
-  --color-fg-muted: oklch(43% 0.03 288); /* AA on white + bg-subtle */
-  --color-fg-subtle: oklch(54% 0.028 286); /* AA at small sizes */
+  /* Foreground — deep navy ink (the brand primary), tuned AA on white. */
+  --color-fg: oklch(28.1% 0.07 252); /* #0A2A4A navy */
+  --color-fg-muted: oklch(43% 0.05 252); /* AA on white + cool-grey */
+  --color-fg-subtle: oklch(52% 0.04 250); /* AA at small sizes */
 
-  /* Accent — aurora violet. The brand's signature. */
-  --color-accent: oklch(56% 0.2 300);
-  --color-accent-fg: oklch(99.4% 0.004 300);
-  --color-accent-subtle: oklch(95.5% 0.04 300);
-  --color-accent-deep: oklch(47% 0.19 300); /* AA as on-light text/links */
-  --color-accent-bright: oklch(66% 0.19 300); /* glints / highlights */
+  /* Accent — PINE-TEAL. The brand's core (buttons, sections, logo, footer).
+     -deep clears AA for text/links on light; -bright is for glints on navy. */
+  --color-accent: oklch(52.3% 0.087 178); /* #1F7A6A pine-teal */
+  --color-accent-fg: oklch(99.6% 0.005 178); /* white on teal — AA 5.2:1 */
+  --color-accent-subtle: oklch(93.5% 0.03 180); /* pale teal chip bg */
+  --color-accent-deep: oklch(46.1% 0.076 177); /* #1A6657 — AA text on light */
+  --color-accent-bright: oklch(68% 0.11 180); /* glints / highlights on navy */
 
-  /* Secondary accent — clinical teal (the other end of the aurora). */
-  --color-teal: oklch(70% 0.13 195);
-  --color-teal-deep: oklch(52% 0.11 200); /* AA on light */
-  --color-teal-bright: oklch(78% 0.14 192);
+  /* Pale-yellow accent — CTAs, refer-a-friend, highlights. ALWAYS pairs with
+     dark (navy) text: navy-on-yellow = 12.3:1. Never white text on yellow. */
+  --color-gold: oklch(93.9% 0.126 100); /* #FFED86 pale-yellow */
+  --color-gold-deep: oklch(86% 0.15 96); /* a touch deeper for borders/hover */
+  --color-gold-ink: var(--color-fg); /* the mandated dark text on yellow */
 
-  /* Borders — luminous hairlines */
-  --color-border: oklch(91% 0.012 295);
-  --color-border-subtle: oklch(94.5% 0.008 295);
+  /* Legacy alias kept so older component refs to teal still resolve. */
+  --color-teal: oklch(52.3% 0.087 178);
+  --color-teal-deep: oklch(46.1% 0.076 177);
+  --color-teal-bright: oklch(68% 0.11 180);
 
-  --color-success: oklch(66% 0.15 160);
-  --color-warning: oklch(80% 0.14 85);
-  --color-error: oklch(60% 0.2 25);
-  --color-info: oklch(62% 0.16 260);
+  /* Borders — quiet cool-grey hairlines. */
+  --color-border: oklch(89% 0.004 197);
+  --color-border-subtle: oklch(93% 0.003 197);
+  --color-hairline: oklch(85% 0.006 197);
+
+  --color-success: oklch(54% 0.09 165);
+  --color-warning: oklch(80% 0.13 90);
+  --color-error: oklch(58% 0.19 25);
+  --color-info: oklch(52.3% 0.087 178);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Night-sky scale — the dark aurora sections + WebGL void backdrop. */
-  --night-0: oklch(17% 0.045 285);
-  --night-1: oklch(21% 0.055 287);
-  --night-2: oklch(26% 0.06 289);
+  /* Navy night scale — dark hero base, dark sections, footer, booking field.
+     (var names kept as --night-* for compatibility; values are navy now.) */
+  --night-0: oklch(20% 0.06 252); /* deepest navy floor */
+  --night-1: oklch(28.1% 0.07 252); /* #0A2A4A — the canonical hero navy */
+  --night-2: oklch(34% 0.068 250); /* lifted navy panel */
 
-  /* Aurora stops — used by WebGL shader + CSS fallback. */
-  --aurora-violet: oklch(62% 0.2 300);
-  --aurora-magenta: oklch(64% 0.18 330);
-  --aurora-teal: oklch(74% 0.13 192);
-  --aurora-cyan: oklch(80% 0.12 210);
-  --ridge: oklch(30% 0.05 285); /* mountain silhouette */
+  /* Aurora stops — the Colorado-night sky: a brighter clinical-blue bloom over
+     navy, with PINE-TEAL + soft PALE-YELLOW ribbons. Used by WebGL + fallback. */
+  --aurora-blue: oklch(62% 0.13 248); /* brighter clinical-blue bloom */
+  --aurora-teal: oklch(70% 0.11 180); /* pine-teal ribbon */
+  --aurora-cyan: oklch(80% 0.08 196); /* cool teal-cyan tip */
+  --aurora-gold: oklch(90% 0.12 99); /* soft pale-yellow ribbon */
+  --ridge: oklch(24% 0.055 252); /* navy mountain silhouette */
 
-  /* Aurora foil / sheen for accent metrics — violet → teal sweep. */
-  --foil-a: oklch(64% 0.2 300);
-  --foil-b: oklch(78% 0.13 200);
+  /* Legacy alias (old violet var name) → now the clinical-blue bloom. */
+  --aurora-violet: oklch(62% 0.13 248);
+  --aurora-magenta: oklch(70% 0.11 180);
+
+  /* Foil / sheen for accent words — teal → pale-yellow sweep. */
+  --foil-a: oklch(70% 0.11 180);
+  --foil-b: oklch(90% 0.12 99);
 
   /* Glass tokens — frosted clinical nav + cards */
-  --glass-bg: oklch(100% 0 0 / 0.62);
-  --glass-bg-strong: oklch(100% 0 0 / 0.85);
+  --glass-bg: oklch(100% 0 0 / 0.66);
+  --glass-bg-strong: oklch(100% 0 0 / 0.88);
   --glass-border: oklch(100% 0 0 / 0.5);
-  --glass-shadow: 0 12px 46px -16px oklch(48% 0.16 300 / 0.28);
+  --glass-shadow: 0 14px 46px -18px oklch(28.1% 0.07 252 / 0.3);
 
-  /* Fonts wired from next/font on the layout wrapper */
-  --font-display: var(--font-display), "Sora", system-ui, sans-serif;
-  --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+  /* Glass tokens for the DARK hero nav state (over navy). */
+  --glass-bg-dark: oklch(28.1% 0.07 252 / 0.5);
+  --glass-border-dark: oklch(70% 0.06 230 / 0.24);
+
+  /* Fonts wired from next/font on the layout wrapper. The layout exposes the
+     loaded faces under *-src vars; we compose the full stacks here (no
+     self-reference, so the var chain resolves cleanly).
+     Display = Cormorant Garamond (the italic "subtle WOW" serif).
+     Body/headings = Montserrat (the live site's working sans). */
+  --font-display: var(--font-display-src), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-body-src), "Montserrat", system-ui, -apple-system, sans-serif;
 
   /* Fluid type tokens (clamp) for hero rhythm */
   --fluid-hero: clamp(2.55rem, 1.0rem + 6.95vw, 6.6rem);
@@ -81,15 +128,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings — optimistic geometric Sora, gently tightened. */
+/* Display headings — Cormorant Garamond. Used for the italic hero tagline and
+   the rare elegant serif accent; section headings stay on the Montserrat sans
+   (set per-element) to mirror the live bold-sans teal headings. */
 [data-brand="happy-clinic"] .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.018em;
-  font-feature-settings: "ss01" 1, "calt" 1;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+/* Italic display variant — the signature "Subtle is The New WOW" voice. */
+[data-brand="happy-clinic"] .font-display-em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+/* The live site's section headings are a BOLD SANS in pine-teal — expose a
+   helper so headings can opt into Montserrat-bold instead of the serif. */
+[data-brand="happy-clinic"] .font-heading {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
 
-/* Body copy: clean neutral sans; tabular numerics for NAP/metrics. */
+/* Body copy: tabular numerics for NAP/metrics. */
 [data-brand="happy-clinic"] .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
@@ -100,23 +163,32 @@
   color: var(--color-accent-deep);
 }
 [data-brand="happy-clinic"] .text-teal-deep {
-  color: var(--color-teal-deep);
+  color: var(--color-accent-deep);
 }
 
-/* Aurora foil sheen for hero metrics — restrained, premium, moving glint. */
+/* Teal → pale-yellow foil sheen for hero/accent words — premium moving glint.
+   Tuned for DARK navy fields: the stops are biased BRIGHT (lifted cyan-teal +
+   a wide pale-yellow band) so the marquee phrase reads as the most LUMINOUS
+   words on the line, never a dim washed-out patch. A soft pale-yellow
+   under-glow (drop-shadow) seats it as gold-teal shimmer over the navy and the
+   darkest stop comfortably clears AA on the night base. */
 [data-brand="happy-clinic"] .foil-sheen {
   background: linear-gradient(
     100deg,
-    var(--aurora-violet) 0%,
-    var(--aurora-teal) 40%,
-    var(--aurora-cyan) 58%,
-    var(--aurora-magenta) 80%,
-    var(--aurora-violet) 100%
+    var(--foil-sheen-1, oklch(82% 0.1 184)) 0%,
+    var(--foil-sheen-2, oklch(90% 0.08 196)) 26%,
+    var(--foil-sheen-3, oklch(95% 0.12 99)) 52%,
+    var(--foil-sheen-2, oklch(90% 0.08 196)) 74%,
+    var(--foil-sheen-1, oklch(82% 0.1 184)) 100%
   );
   background-size: 240% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* under-glow so the clipped text reads luminous on navy (transparent fill
+     has no text-shadow, so we drop-shadow the element instead) */
+  filter: drop-shadow(0 1px 10px oklch(90% 0.12 99 / 0.32))
+    drop-shadow(0 0 1px oklch(80% 0.08 196 / 0.45));
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="happy-clinic"] .foil-sheen {
@@ -131,37 +203,45 @@
 /* Reusable glass surfaces */
 [data-brand="happy-clinic"] .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(16px) saturate(1.5);
-  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
   border: 1px solid var(--glass-border);
 }
 [data-brand="happy-clinic"] .glass-strong {
   background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--glass-border);
+}
+/* Dark glass — chips that sit over the navy hero. */
+[data-brand="happy-clinic"] .glass-dark {
+  background: var(--glass-bg-dark);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid var(--glass-border-dark);
 }
 
 /* ============================================================
    Aurora fallback — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand volumetric aurora (violet→teal) over a night sky with a faint
-   Rockies ridge silhouette. NEVER a blank box. Zero CLS.
-   Layers: night sky → aurora ribbons → cyan glow → ridge silhouette.
-   The slow drift is reduced-motion gated below.
+   The Colorado night sky: a NAVY base with a brighter clinical-blue bloom,
+   PINE-TEAL + soft PALE-YELLOW aurora ribbons, and a faint navy Rockies
+   ridge. NEVER a blank box. Zero CLS. Drift is reduced-motion gated below.
    ============================================================ */
 [data-brand="happy-clinic"] .aurora-fallback {
   position: relative;
   background:
-    /* upper violet aurora bloom */
-    radial-gradient(80% 60% at 28% 8%, oklch(62% 0.2 300 / 0.6) 0%, transparent 60%),
-    /* teal/cyan aurora curtain, upper-right */
-    radial-gradient(70% 65% at 78% 2%, oklch(74% 0.13 196 / 0.5) 0%, transparent 62%),
-    /* magenta accent, mid-left */
-    radial-gradient(60% 50% at 8% 40%, oklch(64% 0.18 330 / 0.32) 0%, transparent 64%),
-    /* deep night base */
-    linear-gradient(180deg, var(--night-0) 0%, var(--night-1) 55%, var(--night-2) 100%);
+    /* upper clinical-blue aurora bloom (contained to the top band) */
+    radial-gradient(66% 46% at 32% 2%, oklch(58% 0.12 248 / 0.5) 0%, transparent 58%),
+    /* pine-teal curtain, upper-right — softer so navy stays dominant */
+    radial-gradient(56% 48% at 82% 0%, oklch(60% 0.1 182 / 0.34) 0%, transparent 60%),
+    /* soft pale-yellow glow, mid-left */
+    radial-gradient(50% 42% at 8% 30%, oklch(88% 0.11 99 / 0.16) 0%, transparent 62%),
+    /* a right-side deepening so the hero never washes out to grey */
+    radial-gradient(70% 90% at 108% 60%, oklch(16% 0.05 252 / 0.85) 0%, transparent 60%),
+    /* deep navy base — kept dark end-to-end */
+    linear-gradient(165deg, var(--night-0) 0%, oklch(24% 0.062 251) 52%, var(--night-1) 100%);
 }
-/* Drifting aurora ribbons — animated background-position layer. */
+/* Drifting aurora ribbons — teal + a faint warm-yellow thread. */
 [data-brand="happy-clinic"] .aurora-fallback::before {
   content: "";
   position: absolute;
@@ -170,8 +250,8 @@
     repeating-linear-gradient(
       102deg,
       transparent 0px,
-      oklch(70% 0.16 300 / 0.05) 40px,
-      oklch(76% 0.13 200 / 0.09) 90px,
+      oklch(72% 0.11 182 / 0.07) 40px,
+      oklch(88% 0.1 99 / 0.06) 90px,
       transparent 150px,
       transparent 240px
     );
@@ -179,23 +259,23 @@
   mask-image: radial-gradient(120% 85% at 50% 0%, #000 35%, transparent 92%);
   -webkit-mask-image: radial-gradient(120% 85% at 50% 0%, #000 35%, transparent 92%);
 }
-/* Faint Rockies ridge silhouette anchored to the bottom. */
+/* Abstract horizon glow anchored to the bottom — soft navy light-pooling, NOT
+   a literal mountain ridge. "Luminous calm" for a female-luxury injectables
+   brand: a refined deep-navy floor with a faint teal/yellow horizon shimmer,
+   matching "Subtle is The New WOW" rather than a ski-resort silhouette. */
 [data-brand="happy-clinic"] .aurora-fallback::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: 34%;
+  height: 38%;
   background:
-    linear-gradient(180deg, transparent 0%, oklch(16% 0.04 285 / 0.85) 75%),
-    /* jagged peaks via stacked conic/linear seams */
-    conic-gradient(from 200deg at 18% 100%, transparent 0deg, var(--ridge) 12deg, transparent 26deg),
-    conic-gradient(from 200deg at 42% 100%, transparent 0deg, var(--ridge) 16deg, transparent 32deg),
-    conic-gradient(from 200deg at 68% 100%, transparent 0deg, var(--ridge) 14deg, transparent 28deg),
-    conic-gradient(from 200deg at 88% 100%, transparent 0deg, var(--ridge) 18deg, transparent 34deg);
-  opacity: 0.9;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+    linear-gradient(180deg, transparent 0%, oklch(17% 0.05 252 / 0.92) 80%),
+    radial-gradient(80% 120% at 30% 118%, oklch(60% 0.09 182 / 0.16) 0%, transparent 60%),
+    radial-gradient(70% 120% at 78% 122%, oklch(86% 0.1 99 / 0.1) 0%, transparent 58%);
+  opacity: 0.95;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 55%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 55%);
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="happy-clinic"] .aurora-fallback::before {
@@ -207,14 +287,44 @@
   to   { background-position: 90% 0; transform: translateY(-2%); }
 }
 
-/* Aurora rule used under eyebrow labels — violet→teal. */
+/* Mobile-only SECOND aurora ribbon — a slower, counter-angled pass so the hero
+   still feels alive on phones (where the WebGL scene is gated off). One curtain
+   gradient drifting on a different axis + cadence than the base ::before ribbon;
+   masked to the upper band so it reads as high aurora, never washing the copy.
+   Reduced-motion → it simply holds a calm static position (no animation). */
+[data-brand="happy-clinic"] .aurora-fallback__drift {
+  background:
+    repeating-linear-gradient(
+      78deg,
+      transparent 0px,
+      oklch(74% 0.1 184 / 0.06) 56px,
+      oklch(90% 0.1 99 / 0.05) 120px,
+      transparent 200px,
+      transparent 320px
+    );
+  background-size: 220% 100%;
+  background-position: 100% 0;
+  mask-image: radial-gradient(130% 70% at 60% 0%, #000 30%, transparent 88%);
+  -webkit-mask-image: radial-gradient(130% 70% at 60% 0%, #000 30%, transparent 88%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="happy-clinic"] .aurora-fallback__drift {
+    animation: hc-aurora-drift 30s ease-in-out infinite alternate;
+  }
+}
+@keyframes hc-aurora-drift {
+  from { background-position: 100% 0; transform: translateY(0); }
+  to   { background-position: 18% 0; transform: translateY(2.5%); }
+}
+
+/* Accent rule used under eyebrow labels — pine-teal → pale-yellow. */
 [data-brand="happy-clinic"] .rule-aurora::after {
   content: "";
   display: block;
   width: 2.75rem;
   height: 2px;
   margin-top: 0.55rem;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-teal), transparent);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-gold-deep), transparent);
 }
 
 /* A fine peak-tick row — altitude ruler motif. */
@@ -230,24 +340,33 @@
 
 /* ============================================================
    Brand photography placeholder treatment.
-   No external assets — aurora violet/teal gradient "plates" that read as one
-   cohesive shoot. Each is clearly marked "sample" in JSX.
+   The page now ships REAL client photography (Dr. Phil + before/afters via
+   next/image). These plates remain ONLY for the rare decorative slot — navy /
+   pine-teal gradients that read as one cohesive shoot. Any plate still used as
+   a stand-in is marked "sample" in JSX; real photos carry NO sample tag.
    ============================================================ */
 [data-brand="happy-clinic"] .hc-plate {
   position: relative;
   background:
-    radial-gradient(120% 120% at 28% 18%, oklch(72% 0.14 300 / 0.34), transparent 60%),
-    radial-gradient(110% 120% at 80% 88%, oklch(78% 0.1 198 / 0.34), transparent 62%),
-    linear-gradient(150deg, oklch(94% 0.025 300), oklch(88% 0.05 250));
+    radial-gradient(120% 120% at 28% 18%, oklch(66% 0.11 182 / 0.34), transparent 60%),
+    radial-gradient(110% 120% at 80% 88%, oklch(88% 0.1 99 / 0.26), transparent 62%),
+    linear-gradient(150deg, oklch(92% 0.02 200), oklch(86% 0.03 220));
 }
 [data-brand="happy-clinic"] .hc-plate--night {
   background:
-    radial-gradient(110% 110% at 70% 18%, oklch(66% 0.17 300 / 0.5), transparent 62%),
-    radial-gradient(90% 100% at 12% 96%, oklch(70% 0.12 198 / 0.4), transparent 64%),
+    radial-gradient(110% 110% at 70% 18%, oklch(58% 0.12 248 / 0.5), transparent 62%),
+    radial-gradient(90% 100% at 12% 96%, oklch(66% 0.1 182 / 0.42), transparent 64%),
     linear-gradient(160deg, var(--night-1), var(--night-0));
 }
-/* Faint topographic-contour overlay so plates read as designed, not empty. */
-[data-brand="happy-clinic"] .hc-plate::after {
+/* Near-black plate that matches the before/after images' own black backdrop so
+   the composited result cards bleed seamlessly into the tile. */
+[data-brand="happy-clinic"] .hc-plate--result {
+  background:
+    radial-gradient(120% 100% at 50% 0%, oklch(30% 0.05 250 / 0.6), transparent 60%),
+    linear-gradient(180deg, oklch(14% 0.02 250), oklch(8% 0.01 250));
+}
+/* Faint topographic-contour overlay so empty plates read as designed. */
+[data-brand="happy-clinic"] .hc-plate:not(.hc-plate--result)::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -260,6 +379,115 @@
       transparent 22px
     );
   mask-image: radial-gradient(120% 120% at 50% 0%, #000 30%, transparent 100%);
+}
+
+/* ============================================================
+   Brand wordmark — recreated Happy Clinic identity (HappyLogo component).
+   A rounded-square mark holding a white SWIRL/SPIRAL glyph, next to a two-line
+   wordmark: "HAPPY CLINIC" (bold) with ® + "DENVER" (letter-spaced caps).
+   Two tones via --on-dark: pine-teal on light, white-on-navy in the hero.
+   ============================================================ */
+[data-brand="happy-clinic"] .hc-mark {
+  display: grid;
+  place-items: center;
+  border-radius: 28%;
+  background: var(--mark-bg, var(--color-accent));
+  color: var(--mark-fg, #fff);
+  box-shadow: 0 8px 22px -10px oklch(28.1% 0.07 252 / 0.5);
+}
+[data-brand="happy-clinic"] .hc-wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+}
+[data-brand="happy-clinic"] .hc-wordmark__name {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--wm-name, var(--color-accent-deep));
+}
+[data-brand="happy-clinic"] .hc-wordmark__city {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  color: var(--wm-city, var(--color-fg-muted));
+}
+[data-brand="happy-clinic"] .hc-wordmark__reg {
+  font-size: 0.5em;
+  vertical-align: super;
+  font-weight: 600;
+}
+[data-brand="happy-clinic"] .hc-logo--on-dark {
+  --mark-bg: oklch(100% 0 0 / 0.1);
+  --mark-fg: #fff;
+  --wm-name: #fff;
+  --wm-city: oklch(100% 0 0 / 0.7);
+}
+
+/* ============================================================
+   Split-flap "Solari" review board — a manual departure-board panel that
+   mechanically flips (top leaf drops on rotateX) to reveal a new review.
+   Ported from the Darst gold-standard, colors mapped to the navy/teal palette.
+   Honors prefers-reduced-motion below (crossfade swap instead of flip).
+   ============================================================ */
+[data-brand="happy-clinic"] .flap-panel {
+  position: relative;
+  perspective: 1100px;
+}
+[data-brand="happy-clinic"] .flap-leaf {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+/* The center seam across the panel — the split-flap divider. */
+[data-brand="happy-clinic"] .flap-seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-1px);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0% 0 0 / 0.46) 12%,
+    oklch(0% 0 0 / 0.46) 88%,
+    transparent
+  );
+  z-index: 5;
+  pointer-events: none;
+}
+/* The top leaf drops on its bottom hinge; the new value sits beneath. */
+@keyframes flap-drop {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+[data-brand="happy-clinic"] .flap-top-anim {
+  transform-origin: bottom center;
+  animation: flap-drop 0.42s cubic-bezier(0.4, 0, 0.85, 0.4) forwards;
+}
+/* Reduced-motion: no 3D flip — a calm crossfade swap instead. */
+@keyframes flap-crossfade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="happy-clinic"] .flap-top-anim {
+    animation: none;
+  }
+  [data-brand="happy-clinic"] .flap-crossfade {
+    animation: flap-crossfade 0.5s ease forwards;
+  }
 }
 
 /* Respect reduced motion globally for decorative transforms. */

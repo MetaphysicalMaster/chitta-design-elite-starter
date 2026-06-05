@@ -16,6 +16,8 @@ type Service = {
   blurb: string;
   items: string[];
   featured?: boolean;
+  /** The cosmetic/aesthetic card — carries the warm coral note + chip. */
+  aesthetic?: boolean;
 };
 
 const SERVICES: Service[] = [
@@ -35,8 +37,9 @@ const SERVICES: Service[] = [
   {
     title: "Cosmetic dermatology",
     blurb:
-      "Evidence-led aesthetic care from a physician who treats the skin as an organ first.",
+      "Results that look like you — evidence-led aesthetic care from a physician who reads skin as an organ first, then refines how it looks and feels.",
     items: ["Medical-grade facials", "Chemical peels", "Skin rejuvenation"],
+    aesthetic: true,
   },
   {
     title: "Laser & injectables",
@@ -70,7 +73,7 @@ export function Services() {
               </span>
             </>
           }
-          lead="From a suspicious mole to a refined cosmetic result, every service is delivered under the same physician-led, evidence-first standard."
+          lead="Medical, surgical and cosmetic dermatology — held to one physician-led, evidence-first standard, with diagnosis read in-house rather than mailed away."
         />
 
         <RevealGroup className="mt-14 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,17 +84,24 @@ export function Services() {
               className={cn(
                 "group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7",
                 "transition-[transform,box-shadow,border-color] duration-300",
-                "hover:-translate-y-1 hover:border-[var(--color-accent-deep)] hover:shadow-[0_24px_60px_-30px_oklch(30%_0.05_58_/_0.4)]",
+                "hover:-translate-y-1 hover:shadow-[0_24px_60px_-30px_oklch(30%_0.05_58_/_0.4)]",
+                // aesthetic card warms to coral on hover; clinical cards to teal.
+                s.aesthetic
+                  ? "hover:border-[var(--color-coral-deep)]"
+                  : "hover:border-[var(--color-accent-deep)]",
                 s.featured && "lg:col-span-2",
               )}
             >
-              {/* depth-strata accent rail */}
+              {/* accent rail — the medical/clinical cards carry the depth-strata
+                  (corneum → dermis → teal vessel); the aesthetic card carries the
+                  warm coral note, the human/cosmetic register. */}
               <span
                 aria-hidden
                 className="absolute inset-y-0 left-0 w-1"
                 style={{
-                  background:
-                    "linear-gradient(180deg, var(--strata-corneum), var(--strata-dermis), var(--strata-vessel))",
+                  background: s.aesthetic
+                    ? "linear-gradient(180deg, var(--color-coral-subtle), var(--color-coral), var(--color-coral-deep))"
+                    : "linear-gradient(180deg, var(--strata-corneum), var(--strata-dermis), var(--strata-vessel))",
                 }}
               />
 
@@ -126,6 +136,11 @@ export function Services() {
               {s.featured && (
                 <span className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-[var(--color-accent-subtle)] px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-accent-deep)]">
                   In-house dermatopathology
+                </span>
+              )}
+              {s.aesthetic && (
+                <span className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-[var(--color-coral-subtle)] px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-coral-deep)]">
+                  Natural-looking results
                 </span>
               )}
             </RevealItem>

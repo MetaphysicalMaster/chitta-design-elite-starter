@@ -1,17 +1,17 @@
 "use client";
 
 /**
- * Legacy — THE CLOSER. Two movements:
+ * Story — the "Your Beauty Evolution" section. Two movements:
  *
- *  1. "Since 1995, River Oaks" — a vertical legacy timeline that turns 29 years
- *     of tenure into the brand's core asset (the thing the DIY WordPress site
- *     buries). Couture serif milestones on a gold-filet rail.
+ *  1. The evolution journey — a vertical, numbered path that frames every visit
+ *     as a step in a personal transformation (the live site's core promise:
+ *     "Embark on Your Beauty Evolution"). Bold editorial steps on a hot-pink
+ *     rail, monochrome with the one pink pop.
  *
- *  2. The single, clean NAP & branded-contact block — explicitly the fix for
- *     the trust gap: the live presence has a gmail business email and
- *     conflicting addresses scattered across directories. Here it's ONE
- *     authoritative address, ONE phone, ONE branded inbox. The "before/after"
- *     of the data itself, shown plainly so the prospect sees the problem solved.
+ *  2. The single, clean NAP & branded-contact block — ONE authoritative
+ *     address, ONE phone, ONE branded inbox, so the prospect knows exactly
+ *     where to find and how to reach the practice. (The address is a
+ *     representative Houston placeholder for the mockup.)
  */
 
 import { Reveal, RevealGroup, RevealItem, SectionHeading } from "./primitives";
@@ -19,34 +19,34 @@ import { NAP } from "./nap";
 
 const MILESTONES = [
   {
-    year: "1995",
-    title: "Sousan opens her doors",
-    body: "A single esthetician's chair in River Oaks, built on one belief: results, delivered personally.",
+    year: "01",
+    title: "Discovery consultation",
+    body: "We listen first. A thorough skin analysis and an honest conversation about your goals — no pressure, ever.",
   },
   {
-    year: "2004",
-    title: "A neighborhood standard",
-    body: "Word travels the corridor. Sousan becomes the name River Oaks passes between friends — never advertised, always referred.",
+    year: "02",
+    title: "Your bespoke plan",
+    body: "IPL, HydraFacial MD, the Deluxe Facial or a tailored series — a roadmap built around your skin, not a template.",
   },
   {
-    year: "2014",
-    title: "Medical-grade, on Montrose",
-    body: "HydraFacial MD, IPL and advanced devices join the menu — clinical results under the same trusted hand.",
+    year: "03",
+    title: "Transformative treatment",
+    body: "Medical-grade results delivered with an artist's eye and an obsession with looking natural, never overdone.",
   },
   {
-    year: "2025",
-    title: "Twenty-nine years, one address",
-    body: "Three decades of skin, refined into a destination. Same owner. Same standard. Same River Oaks.",
+    year: "04",
+    title: "Lasting glow",
+    body: "We refine as your skin evolves. The Sousan glow isn't a single visit — it's an evolution you'll keep.",
   },
 ];
 
 export function Legacy() {
   return (
     <section
-      id="legacy"
+      id="visit"
       className="relative overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
     >
-      {/* faint marble inlay rhythm */}
+      {/* faint neutral inlay rhythm */}
       <div
         aria-hidden
         className="ruler-ticks pointer-events-none absolute inset-x-0 top-0 h-px opacity-50"
@@ -54,14 +54,14 @@ export function Legacy() {
 
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
         <SectionHeading
-          eyebrow="Since 1995 · River Oaks"
+          eyebrow="Your Beauty Evolution"
           title={
             <>
-              A legacy you can&apos;t{" "}
-              <span className="font-display-em">start tomorrow.</span>
+              Transformation,{" "}
+              <span className="font-display-em">step by step.</span>
             </>
           }
-          lead="Twenty-nine years in one of America's most discerning zip codes is not a tagline — it is the entire proposition. Here is the timeline that earns it."
+          lead="Beauty isn't a single appointment — it's an evolution. Here's the path we walk with every client, from first consultation to lasting glow."
         />
 
         <div className="mt-16 grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
@@ -105,48 +105,38 @@ export function Legacy() {
           <Reveal delay={0.1} className="lg:pt-2">
             <div className="filet relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-8 shadow-[var(--glass-shadow)] sm:p-10">
               <p className="eyebrow rule-gold text-[var(--gold-ink)]">
-                One name · One address · One standard
+                Visit Sousan Medspa
               </p>
               <h3 className="font-display mt-5 text-2xl text-[var(--color-fg)]">
-                The record, set straight.
+                Your glow starts here.
               </h3>
               <p className="mt-3 max-w-[42ch] text-[0.95rem] leading-relaxed text-[var(--color-fg-muted)]">
-                Across the web today, Sousan&apos;s details conflict — a personal
-                gmail inbox, three different street addresses, an outdated suite.
-                For a 29-year institution, inconsistency reads as risk. So we
-                fixed it. Below is the single authoritative listing — the one
-                your clients, Google, and the directories should all see.
+                Conveniently located in Houston, Sousan Medspa is your home for
+                transformative, medical-grade aesthetics. Reach out, book a
+                consultation, and let&rsquo;s begin your beauty evolution.
               </p>
 
-              {/* before → after of the data */}
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-4">
-                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-                    Before
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-[0.82rem] text-[var(--color-fg-muted)]">
-                    <li className="line-through decoration-[var(--color-error)]/70">
-                      sousanspa1995@gmail.com
-                    </li>
-                    <li className="line-through decoration-[var(--color-error)]/70">
-                      3 conflicting addresses online
-                    </li>
-                    <li className="line-through decoration-[var(--color-error)]/70">
-                      DIY WordPress, no booking
-                    </li>
-                  </ul>
-                </div>
-                <div className="rounded-xl border border-[var(--color-accent)]/35 bg-[var(--color-accent-subtle)]/60 p-4">
-                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-deep)]">
-                    After
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-[0.82rem] font-medium text-[var(--color-fg)]">
-                    <li>hello@sousanmedspa.com</li>
-                    <li>One verified River Oaks address</li>
-                    <li>Native online booking</li>
-                  </ul>
-                </div>
-              </div>
+              {/* what to expect */}
+              <ul className="mt-7 grid gap-2.5">
+                {[
+                  "A personalized skin analysis on your first visit",
+                  "Honest guidance — only the treatments you'll benefit from",
+                  "Natural-looking, transformative results",
+                ].map((point) => (
+                  <li
+                    key={point}
+                    className="flex items-start gap-2.5 text-[0.9rem] text-[var(--color-fg-muted)]"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-0.5 text-[var(--color-accent)]"
+                    >
+                      ✦
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
 
               {/* the authoritative NAP */}
               <address className="mt-7 not-italic">

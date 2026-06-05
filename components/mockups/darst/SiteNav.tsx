@@ -14,12 +14,17 @@ import { cn } from "@/lib/utils";
 import { NAP } from "./nap";
 import { DarstLogo } from "./DarstLogo";
 
+// Each link maps to a REAL in-page anchor (verified against the section ids).
+// "Treatments" gives the high-ticket cosmetic buyer a scent trail to the full
+// range; "Visit" lands on the booking section (which carries the NAP + address
+// block) rather than dumping to the very bottom footer.
 const LINKS = [
   { href: "#credentials", label: "Credentials" },
   { href: "#services", label: "Services" },
+  { href: "#treatments", label: "Treatments" },
   { href: "#results", label: "Results" },
   { href: "#reviews", label: "Reviews" },
-  { href: "#visit", label: "Visit" },
+  { href: "#book", label: "Visit" },
 ];
 
 export function SiteNav() {

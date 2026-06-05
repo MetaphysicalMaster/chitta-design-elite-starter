@@ -6,9 +6,9 @@
  * has a horizontal center SEAM; on refresh its TOP LEAF mechanically drops
  * (CSS 3D `rotateX` on a bottom hinge) to reveal a NEW patient review beneath.
  *
- * Timing (per brief): one flip fires every 1.5s, round-robin across the 6
- * panels — so each individual panel refreshes every 9s. Continuous + tasteful,
- * styled in the brand's warm brown + teal.
+ * Timing: one flip fires every ~2.4s, round-robin across the 6 panels — so each
+ * individual panel rests ~14s between flips. Composed + tasteful (slower than
+ * the original 1.5s so it never strobes), styled in the brand's warm brown + teal.
  *
  * Accessibility / reduced motion:
  *  - prefers-reduced-motion → no 3D flip; the new review CROSSFADES in instead.
@@ -100,10 +100,25 @@ const POOL: Review[] = [
     name: "E. V.",
     context: "Annual skin check",
   },
+  {
+    body:
+      "My skin looks years calmer after the laser series — even tone, never overdone. He matched the plan to my skin, not a menu.",
+    name: "C. A.",
+    context: "Laser resurfacing",
+  },
+  {
+    body:
+      "I left the peel consult genuinely confident, not sold to. The result was subtle and exactly what I hoped for.",
+    name: "K. D.",
+    context: "Chemical peel",
+  },
 ];
 
 const PANELS = 6;
-const FLIP_INTERVAL_MS = 1500; // one flip every 1.5s, round-robin
+// One flip every ~2.4s, round-robin → each panel rests ~14.4s before its next
+// flip. Slower than the old 1.5s so the board reads composed and mechanical,
+// never strobing/busy.
+const FLIP_INTERVAL_MS = 2400;
 
 function initials(name: string) {
   return name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
@@ -139,9 +154,11 @@ function FlapPanel({
   return (
     <figure
       className={cn(
-        "flap-panel relative aspect-[4/5] overflow-hidden rounded-xl border",
+        // aspect-[3/4] (relaxed from the tall-narrow 4:5) + a min-height floor
+        // so the longest quotes seat above the 3-line caption without clipping
+        // the seam/bottom under overflow-hidden — at 375px and the lg 6-col width.
+        "flap-panel relative aspect-[3/4] min-h-[15rem] overflow-hidden rounded-xl border",
         "border-[oklch(40%_0.05_60_/_0.6)] bg-[var(--night-1)] text-[oklch(95%_0.014_72)]",
-        "shadow-[0_18px_44px_-26px_oklch(15%_0.03_54_/_0.8),inset_0_1px_0_oklch(80%_0.04_64_/_0.12)]",
       )}
     >
       {/* The resolved (new) face — split into top + bottom by the seam. */}
@@ -200,7 +217,7 @@ function PanelText({ review }: { review: Review }) {
       >
         &ldquo;
       </span>
-      <blockquote className="mt-1 flex-1 text-pretty text-[0.82rem] leading-snug text-[oklch(94%_0.014_72)]">
+      <blockquote className="flap-clamp mt-1 flex-1 text-pretty text-[0.82rem] leading-snug text-[oklch(94%_0.014_72)]">
         {review.body}
       </blockquote>
       <figcaption className="mt-3 flex items-center gap-2 border-t border-[oklch(70%_0.04_64_/_0.18)] pt-3">
@@ -278,7 +295,7 @@ export function SplitFlapBoard() {
               </span>
             </>
           }
-          lead="A live board of patient voices — curated to lead with clinical outcomes: catches made early, conditions finally explained, decades of continuity."
+          lead="Not a star average — the proof behind the credential: patient voices curated to the outcomes that matter, catches made early, conditions finally explained, decades of continuity."
         />
 
         <Reveal className="mt-14 sm:mt-16">
@@ -301,9 +318,9 @@ export function SplitFlapBoard() {
         <Reveal delay={0.05}>
           <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-[var(--color-fg-subtle)]">
             Reviews are representative samples for this mockup. The board flips a
-            new quote every 1.5 seconds; verified patient reviews would rotate
-            here, curated to lead with clinical outcomes rather than a single
-            aggregate score.
+            new quote every couple of seconds; verified patient reviews would
+            rotate here, curated to lead with clinical outcomes rather than a
+            single aggregate score.
           </p>
         </Reveal>
       </div>

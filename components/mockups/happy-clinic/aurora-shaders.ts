@@ -1,14 +1,20 @@
 /**
- * Aurora shaders — the volumetric "northern-lights" backdrop for Happy Clinic.
+ * Aurora shaders — the volumetric Colorado-night backdrop for Happy Clinic.
  *
  * An orthographic full-bleed plane renders:
- *  1. A night-sky vertical gradient (deep aurora-violet → indigo) with a faint
+ *  1. A navy night-sky vertical gradient (#0A2A4A → deep navy) with a faint
  *     star dusting.
- *  2. Drifting volumetric aurora curtains (violet → magenta → teal → cyan)
- *     built from layered domain-warped FBM noise, parallaxing on scroll and
- *     swaying with time + a gentle pull toward the cursor.
- *  3. A faint Rockies ridge silhouette on the horizon, with the aurora glowing
- *     just above it (altitude + optimism).
+ *  2. Drifting volumetric aurora curtains in the brand palette — a clinical-blue
+ *     bloom → pine-teal → bright teal → soft pale-yellow — built from layered
+ *     domain-warped FBM noise, parallaxing on scroll and swaying with time +
+ *     a gentle pull toward the cursor.
+ *  3. A soft abstract navy horizon (light-pooling, NOT a mountain ridge), with
+ *     the aurora glowing just above it — "luminous calm" for a female-luxury
+ *     injectables brand, matching "Subtle is The New WOW".
+ *
+ * NOTE: the uniform NAMES (u_violet / u_magenta / u_cyan) are retained so the
+ * GLSL is unchanged; their VALUES carry navy/teal/gold. Read u_violet as the
+ * clinical-blue bloom, u_magenta as pine-teal, u_cyan as the pale-yellow tip.
  *
  * Loaded ONLY via dynamic({ ssr:false }) from AuroraHero (a client component) —
  * WebGL/R3F is not SSR-safe. A static CSS aurora gradient covers SSR, mobile,
@@ -68,15 +74,14 @@ export const auroraFragmentShader = /* glsl */ `
     return v;
   }
 
-  // Rockies ridge silhouette height at horizontal coord x (0..1).
+  // Abstract horizon line at horizontal coord x (0..1).
+  // Deliberately NOT a jagged mountain ridge — a near-flat, gently undulating
+  // navy horizon so the hero reads as "luminous calm" (a female-luxury medspa),
+  // never a ski-resort silhouette. Just a whisper of low-frequency motion.
   float ridgeHeight(float x){
-    // layered low-frequency noise → jagged but believable peak line.
-    float h = 0.0;
-    h += 0.06 * noise(vec2(x * 3.0, 7.0));
-    h += 0.05 * noise(vec2(x * 6.0, 13.0));
-    h += 0.03 * noise(vec2(x * 12.0, 21.0));
-    h += 0.018 * noise(vec2(x * 24.0, 31.0));
-    return h * 1.15 + 0.05;
+    float h = 0.012 * noise(vec2(x * 1.6, 7.0));
+    h += 0.008 * noise(vec2(x * 2.4, 13.0));
+    return h + 0.05;
   }
 
   void main() {
@@ -120,22 +125,23 @@ export const auroraFragmentShader = /* glsl */ `
     aur = mix(aur, u_teal, smoothstep(0.35, 0.72, hueMix));
     aur = mix(aur, u_cyan, smoothstep(0.72, 1.0, hueMix));
 
-    // brighten the lower edge of the curtain (classic aurora glow)
+    // brighten the lower edge of the curtain (classic aurora glow) — kept
+    // restrained so the navy night sky stays dominant (no grey wash).
     float glow = smoothstep(0.0, 0.3, curtain);
-    col += aur * curtain * 1.35 * glow;
+    col += aur * curtain * 0.95 * glow;
 
     // soft cyan ground-glow just above the ridge
     float horizonGlow = smoothstep(0.32, 0.12, uv.y) * smoothstep(0.04, 0.18, uv.y);
     col += u_cyan * horizonGlow * 0.18;
 
-    // ---- Rockies ridge silhouette ----
+    // ---- abstract navy horizon (soft light-pooling, not a mountain ridge) ----
     float rh = ridgeHeight(uv.x + 0.02 * sin(u_time * 0.05));
-    float ridgeMask = smoothstep(rh + 0.004, rh - 0.004, uv.y);
-    // distant haze on the ridge so it doesn't read as a flat black cutout
+    // a soft, wide mask edge so the base reads as pooled navy light, not a cutout
+    float ridgeMask = smoothstep(rh + 0.05, rh - 0.02, uv.y);
     vec3 ridgeCol = mix(u_ridge, u_night0, 0.25);
     col = mix(col, ridgeCol, ridgeMask);
-    // rim light on the ridge crest from the aurora
-    float rim = smoothstep(0.012, 0.0, abs(uv.y - rh)) * 0.6;
+    // a soft teal/yellow horizon shimmer where the aurora meets the base
+    float rim = smoothstep(0.05, 0.0, abs(uv.y - rh)) * 0.5;
     col += aur * rim * (0.4 + 0.6 * bands);
 
     // faint grain to avoid banding

@@ -2,13 +2,32 @@
    Sousan Med Spa — Scoped Brand System (OKLch)
    Overrides shared --color-* tokens ONLY within [data-brand="sousan"].
 
-   Brand essence: OLD-MONEY RIVER OAKS COUTURE. Deep emerald jewel +
-   champagne-gold on cream marble. The voice of a 29-year River Oaks
-   institution — discreet, established, quietly affluent. An identity
-   correction for a med spa whose authority is undermined by a dated DIY
-   WordPress site, a gmail business address, and conflicting NAP data
-   scattered across directories. This is the AFTER: ONE clean authoritative
-   address, a credentialed luxury destination worthy of the zip code.
+   Brand essence (REBRANDED to the client's REAL identity): BOLD EDITORIAL
+   MONOCHROME with a single, fearless HOT-PINK/MAGENTA pop (#E6007E). Everything
+   that is not that one statement color is greyscale (white → soft grey → mid
+   grey → charcoal → near-black ink). The voice is a confident Houston beauty
+   destination: "Embark on Your Beauty Evolution." Magazine-spare, never busy.
+
+   HERO PHOTO NOTE (CANONICAL, pass 3 — supersedes all earlier dueling notes):
+   The real public/clients/sousan/hero.jpg is a FULL-COLOR, WARM founder headshot
+   of Sousan herself (blonde, warm skin, coral lip, white blazer, diamond jewelry,
+   warm gold-brown bokeh). The brand is a STRICT greyscale system with one hot-pink
+   pop. CHOSEN TREATMENT: the photo is graded to TRUE greyscale (.sn-grayscale =
+   grayscale(1)) so it joins the monochrome system and its warm background can't
+   fight the brand; the LONE PINK lives entirely on UI chrome (the frame + the
+   credential badge). This is the single canonical statement of the hero mechanic
+   — do NOT re-introduce a partial grade, a hue-rotate, or a "pink lipstick on the
+   subject" claim (the asset cannot carry that without re-shooting/compositing).
+
+   NOTE: the historical CSS var NAMES are retained so every consuming component
+   keeps working UNCHANGED — only their VALUES are re-tuned:
+     · the old EMERALD scale  → now a GREYSCALE charcoal scale
+     · the old CHAMPAGNE-GOLD ramp (--gold*, --sheen*, --facet-gold)
+                                → now the HOT-PINK accent ramp (the one pop)
+     · the old --night-* dark base → now near-black charcoal
+   Read the names as "the dark scale", "the accent ramp", "the dark base" —
+   not literally emerald or gold. This is the AFTER: kill the wrong green,
+   stretch the live greyscale+pink aesthetic site-wide.
 
    Deliberately distinct from siblings:
      · Avail        → cobalt slipstream (graphite + electric blue)
@@ -17,92 +36,106 @@
      · Timeless     → aubergine-ink + aged brass on warm ivory
      · Hanami       → sakura-pink + sumi-ink on rice-paper white
      · The Luxe     → molten liquid-GOLD membrane on deep green-black
-     · Sousan       → EMERALD JEWEL + champagne-gold on CREAM MARBLE —
-                      couture, refractive, light-through-a-gem. Where The
-                      Luxe is molten metal, Sousan is faceted jewel light
-                      (caustics) over a bright marble drawing room.
+     · Darst        → warm chocolate/sepia brown + teal on warm grey
+     · Sousan       → EDITORIAL MONOCHROME (white→charcoal→near-black) + ONE
+                      hot magenta-pink #E6007E pop. Greyscale everything (incl.
+                      the founder portrait, graded true-greyscale); the lone pink
+                      lives on UI chrome/accents. Inter throughout (Pinyon Script
+                      wordmark). Fashion-spread, not jewel-couture.
+
+   AA note: hot pink #E6007E on white is fine for large/bold but borderline for
+   small body text, so small-text pink uses #C80070 (--color-accent-deep / the
+   *-ink stops). Pink as a fill always pairs with white text (AA-safe).
 
    Does NOT touch app/globals.css.
    ============================================================ */
 
 [data-brand="sousan"] {
-  /* Surfaces — cream marble. Warm ivory with the faintest gold breath,
-     never a cold clinical white. */
-  --color-bg: oklch(97.6% 0.008 92);
-  --color-bg-subtle: oklch(95.6% 0.011 92);
-  --color-bg-elevated: oklch(99.2% 0.006 94);
-  --color-bg-warm: oklch(93.6% 0.016 90); /* deeper marble wash blocks */
+  /* Surfaces — clean greyscale. Pure paper white, with soft/mid grey washes.
+     No warm or green tint anywhere; this is a true neutral monochrome. */
+  --color-bg: oklch(100% 0 0); /* #FFFFFF */
+  --color-bg-subtle: oklch(97.2% 0 0); /* faint grey wash */
+  --color-bg-elevated: oklch(99.4% 0 0); /* card white */
+  --color-bg-warm: oklch(94.6% 0 0); /* deeper grey block (name kept) */
 
-  /* Foreground — deep forest-emerald ink. A jewel-green so dark it reads as
-     near-black, but carries the brand's green soul. AA-tuned on marble. */
-  --color-fg: oklch(25% 0.045 165);
-  --color-fg-muted: oklch(41% 0.04 165); /* AA on marble + bg-subtle */
-  --color-fg-subtle: oklch(49% 0.038 166); /* AA at small sizes on marble */
+  /* Foreground — near-black + greyscale ink. #121212 hero text → mid greys.
+     All neutral (chroma 0); the only color on the page is the pink accent. */
+  --color-fg: oklch(18% 0 0); /* ~#121212 near-black */
+  --color-fg-muted: oklch(43% 0 0); /* ~#404040-#5a5a5a, AA on white */
+  --color-fg-subtle: oklch(54% 0 0); /* ~#8a8a8a mid grey, AA small on white */
 
-  /* Accent — emerald jewel. The brand's gem. -deep clears AA for text. */
-  --color-accent: oklch(52% 0.13 162);
-  --color-accent-fg: oklch(98.5% 0.01 94);
-  --color-accent-subtle: oklch(92% 0.05 162);
-  --color-accent-deep: oklch(40% 0.105 164); /* AA links / labels on marble */
-  --color-accent-bright: oklch(64% 0.14 162); /* glints / on-emerald accents */
+  /* Accent — THE hot magenta-pink pop. #E6007E. The lone statement color.
+     -deep (#C80070) clears AA for small text on white; -bright is the vivid
+     glint stop used over dark charcoal. */
+  --color-accent: oklch(58% 0.245 358); /* ~#E6007E hot pink */
+  --color-accent-fg: oklch(100% 0 0); /* white on pink (AA-safe) */
+  --color-accent-subtle: oklch(94% 0.05 354); /* faint pink wash */
+  --color-accent-deep: oklch(51% 0.22 357); /* ~#C80070 AA pink text on white */
+  --color-accent-bright: oklch(66% 0.255 356); /* ~#F0338F glints on charcoal */
 
-  /* Emerald + gold scale — facets, hairlines, washes. */
-  --emerald: oklch(46% 0.12 163);
-  --emerald-deep: oklch(33% 0.085 164);
-  --emerald-night: oklch(23% 0.05 166); /* dark sections base */
-  --emerald-jewel: oklch(58% 0.15 161); /* the brightest gem face */
+  /* Greyscale "dark" scale — facets, hairlines, dark sections, washes.
+     (var names kept as --emerald* for compatibility; values are NEUTRAL grey.)
+     Read as: deep charcoal → mid charcoal → near-black → the brightest grey. */
+  --emerald: oklch(40% 0 0); /* mid charcoal */
+  --emerald-deep: oklch(30% 0 0); /* deep charcoal */
+  --emerald-night: oklch(20% 0 0); /* near-black section base */
+  --emerald-jewel: oklch(62% 0 0); /* brightest grey face */
 
-  /* Champagne-gold ramp — the couture metal. -ink clears AA on marble. */
-  --gold: oklch(80% 0.1 86);
-  --gold-bright: oklch(88% 0.085 90); /* champagne highlight */
-  --gold-mid: oklch(72% 0.12 80); /* molten core for sheen mids */
-  --gold-deep: oklch(58% 0.1 72); /* burnished — AA-ish on light, for rims */
-  --gold-ink: oklch(44% 0.08 70); /* AA gold-toned text on marble */
+  /* Hot-pink accent ramp — the couture metal slot, now the ONE pop color.
+     (var names kept as --gold* so components consume them unchanged; every
+     value is pink/magenta.) -ink clears AA for pink text on white. */
+  --gold: oklch(58% 0.245 358); /* hot pink #E6007E — the statement */
+  --gold-bright: oklch(66% 0.255 356); /* brighter pink for on-dark accents */
+  --gold-mid: oklch(60% 0.25 357); /* vivid pink core (stars, dots) */
+  --gold-deep: oklch(51% 0.22 357); /* deep pink — AA-ish on light, rims */
+  --gold-ink: oklch(48% 0.2 357); /* ~#C80070 AA pink text on white */
 
-  /* Borders — soft gold-tinted marble hairlines (couture signature). */
-  --color-border: oklch(89% 0.014 88);
-  --color-border-subtle: oklch(92.5% 0.01 90);
-  --color-hairline: oklch(84% 0.022 86);
+  /* Borders — neutral greyscale hairlines (no tint). */
+  --color-border: oklch(91% 0 0);
+  --color-border-subtle: oklch(94% 0 0);
+  --color-hairline: oklch(86% 0 0);
 
-  --color-success: oklch(60% 0.11 158);
-  --color-warning: oklch(80% 0.12 78);
-  --color-error: oklch(56% 0.17 25);
-  --color-info: oklch(60% 0.09 250);
+  --color-success: oklch(60% 0.13 150);
+  --color-warning: oklch(80% 0.14 80);
+  --color-error: oklch(56% 0.2 20);
+  --color-info: oklch(60% 0.1 250);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Emerald night scale — dark hero base + dark sections + booking field. */
-  --night-0: oklch(21% 0.045 166);
-  --night-1: oklch(26% 0.052 165);
-  --night-2: oklch(31% 0.058 164);
+  /* Near-black charcoal scale — dark hero base + dark sections + booking field.
+     (names kept; values neutral.) */
+  --night-0: oklch(15% 0 0); /* deepest near-black */
+  --night-1: oklch(19% 0 0);
+  --night-2: oklch(24% 0 0);
 
-  /* Jewel facet stops — used by the WebGL caustic material + CSS fallback.
-     A gem progression: deep emerald → jewel green → champagne caustic. */
-  --facet-deep: oklch(30% 0.08 166);
-  --facet-emerald: oklch(48% 0.13 162);
-  --facet-jewel: oklch(64% 0.15 160);
-  --facet-gold: oklch(82% 0.1 88);
+  /* Facet stops — used by the WebGL caustic material + CSS fallback.
+     A monochrome progression with the pink as the lone chromatic face:
+     deep charcoal → grey → light grey → HOT PINK glint. */
+  --facet-deep: oklch(26% 0 0);
+  --facet-emerald: oklch(45% 0 0); /* mid grey (name kept) */
+  --facet-jewel: oklch(70% 0 0); /* light grey */
+  --facet-gold: oklch(60% 0.25 357); /* the pink facet/glint */
 
-  /* Gold sheen for the rare highlighted hero word. Darkest stop clears AA on
-     the light marble. */
-  --sheen-a: oklch(50% 0.1 74);
-  --sheen-b: oklch(74% 0.12 84);
-  --sheen-c: oklch(58% 0.11 76);
+  /* Pink sheen for the rare highlighted statement word. Darkest stop clears AA
+     on the white surface. (names kept --sheen-*.) */
+  --sheen-a: oklch(50% 0.21 357); /* deep pink (AA on white) */
+  --sheen-b: oklch(62% 0.25 357); /* vivid pink */
+  --sheen-c: oklch(56% 0.235 357); /* mid pink */
 
-  /* Glass tokens — marble frosted nav + cards. */
-  --glass-bg: oklch(98% 0.01 92 / 0.55);
-  --glass-bg-strong: oklch(98% 0.01 92 / 0.85);
-  --glass-border: oklch(100% 0 0 / 0.62);
-  --glass-shadow: 0 16px 50px -24px oklch(33% 0.085 164 / 0.26);
+  /* Glass tokens — clean frosted white nav + cards (neutral, no tint). */
+  --glass-bg: oklch(100% 0 0 / 0.55);
+  --glass-bg-strong: oklch(100% 0 0 / 0.86);
+  --glass-border: oklch(100% 0 0 / 0.6);
+  --glass-shadow: 0 16px 50px -24px oklch(18% 0 0 / 0.22);
 
-  /* Glass tokens for the DARK hero nav state (over emerald). */
-  --glass-bg-dark: oklch(24% 0.05 166 / 0.5);
-  --glass-border-dark: oklch(82% 0.1 88 / 0.22);
+  /* Glass tokens for the DARK hero nav state (over charcoal). */
+  --glass-bg-dark: oklch(22% 0 0 / 0.5);
+  --glass-border-dark: oklch(100% 0 0 / 0.16);
 
-  /* Fonts wired from next/font on the layout wrapper */
-  --font-display: var(--font-display), "Playfair Display", Georgia, serif;
-  --font-sans: var(--font-body), "Jost", system-ui, sans-serif;
+  /* Fonts wired from next/font on the layout wrapper — Inter, two registers. */
+  --font-display: var(--font-display), "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-body), "Inter", system-ui, sans-serif;
 
-  /* Fluid type tokens (clamp) — couture, generous, high-contrast scale. */
+  /* Fluid type tokens (clamp) — bold, editorial, high-impact fashion scale. */
   --fluid-hero: clamp(2.7rem, 1rem + 7.1vw, 6.6rem);
   --fluid-h2: clamp(2rem, 1.2rem + 3.4vw, 3.5rem);
   --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.3rem);
@@ -114,20 +147,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings — couture Playfair Display, high-contrast serif. */
+/* Display headings — Inter pushed BOLD + TIGHT for the editorial fashion voice
+   (the live site's all-Inter masthead). Heavy weight, negative tracking. */
 [data-brand="sousan"] .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.005em;
-  font-weight: 500;
+  letter-spacing: -0.022em;
+  font-weight: 800;
   text-wrap: balance;
 }
 
-/* Lighter italic display variant for couture emphasis words. */
+/* Emphasis word variant — still Inter, kept bold; an italic lean for the rare
+   accented word. (No serif italic anymore — the brand is sans throughout.) */
 [data-brand="sousan"] .font-display-em {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 800;
   font-style: italic;
-  letter-spacing: 0.005em;
+  letter-spacing: -0.018em;
 }
 
 /* Tabular numerics for NAP / metrics / prices. */
@@ -147,22 +182,22 @@
 /* Refined letterspaced eyebrow label. */
 [data-brand="sousan"] .eyebrow {
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.3em;
   font-family: var(--font-sans);
 }
 
-/* Gold-leaf sheen — used ONLY on the rare hero highlight word.
-   A slow, soft champagne drift over emerald-ink; quiet luxe, never flashy.
-   On the LIGHT marble surface this needs the AA-safe ramp. */
+/* Pink statement sheen — used ONLY on the rare hero/section highlight word.
+   A bold hot-pink fill (the lipstick pop) with a soft brighter drift. On the
+   LIGHT white surface this uses the AA-safe deep-pink ramp. */
 [data-brand="sousan"] .gold-leaf {
   background: linear-gradient(
     100deg,
     var(--sheen-a) 0%,
-    var(--sheen-b) 42%,
-    var(--gold-bright) 52%,
-    var(--sheen-b) 62%,
+    var(--sheen-c) 42%,
+    var(--sheen-b) 52%,
+    var(--sheen-c) 62%,
     var(--sheen-a) 100%
   );
   background-size: 240% 100%;
@@ -170,7 +205,7 @@
   background-clip: text;
   color: transparent;
 }
-/* Brighter gold-leaf for use over the DARK emerald hero. */
+/* Brighter pink statement for use over the DARK charcoal sections. */
 [data-brand="sousan"] .gold-leaf--bright {
   background: linear-gradient(
     100deg,
@@ -185,47 +220,41 @@
   background-clip: text;
   color: transparent;
 }
-@media (prefers-reduced-motion: no-preference) {
-  [data-brand="sousan"] .gold-leaf-anim {
-    animation: sn-gold 14s linear infinite;
-  }
-}
-@keyframes sn-gold {
-  from {
-    background-position: 0% 0;
-  }
-  to {
-    background-position: 240% 0;
-  }
-}
+/* Statement words use the STATIC pink fill (.gold-leaf / .gold-leaf--bright).
+   Pass 3 removed the always-on 14s background-position shimmer (the old
+   .gold-leaf-anim / @keyframes sn-gold): a perpetually-travelling gradient sheen
+   reads dated/gimmicky on a high-ticket monochrome editorial brand and added
+   continuous idle repaint of large headings. The static pink already carries the
+   pop — quieter and more couture. (Both gradients keep background-size:240% so
+   the fill is still a rich off-center sweep, just not animated.) */
 
-/* Reusable glass surfaces — marble frost. */
+/* Reusable glass surfaces — clean white frost (neutral). */
 [data-brand="sousan"] .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(18px) saturate(1.18);
-  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.05);
+  backdrop-filter: blur(18px) saturate(1.05);
   border: 1px solid var(--glass-border);
 }
 [data-brand="sousan"] .glass-strong {
   background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(24px) saturate(1.28);
-  backdrop-filter: blur(24px) saturate(1.28);
+  -webkit-backdrop-filter: blur(24px) saturate(1.1);
+  backdrop-filter: blur(24px) saturate(1.1);
   border: 1px solid var(--glass-border);
 }
-/* Dark glass — for chips that sit over the emerald hero. */
+/* Dark glass — for chips that sit over the dark charcoal hero. */
 [data-brand="sousan"] .glass-dark {
   background: var(--glass-bg-dark);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.05);
+  backdrop-filter: blur(16px) saturate(1.05);
   border: 1px solid var(--glass-border-dark);
 }
 
-/* Hairline rule under eyebrow labels — quiet gold fade. */
+/* Hairline rule under eyebrow labels — a confident hot-pink fade (the pop). */
 [data-brand="sousan"] .rule-gold::after {
   content: "";
   display: block;
   width: 2.6rem;
-  height: 1px;
+  height: 2px;
   margin-top: 0.7rem;
   background: linear-gradient(
     90deg,
@@ -239,7 +268,7 @@
   margin-right: auto;
 }
 
-/* A fine measured-tick row — couture rhythm motif (marble inlay). */
+/* A fine measured-tick row — editorial rhythm motif (neutral grey inlay). */
 [data-brand="sousan"] .ruler-ticks {
   background-image: repeating-linear-gradient(
     90deg,
@@ -250,7 +279,7 @@
   );
 }
 
-/* Thin gold filet border — the couture frame motif. */
+/* Thin pink filet border — the editorial frame motif (the pop accent). */
 [data-brand="sousan"] .filet {
   position: relative;
 }
@@ -259,44 +288,45 @@
   position: absolute;
   inset: 0.5rem;
   border: 1px solid var(--gold-deep);
-  opacity: 0.4;
+  opacity: 0.32;
   pointer-events: none;
   border-radius: inherit;
 }
 
 /* ============================================================
-   Liquid-gold caustics FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand, layered CSS field: deep emerald drawing room lit by a slow
-   champagne-gold caustic sheen — like light moving through a precious gem.
-   Built from conic + radial gradients. NEVER a blank box. Zero CLS.
-   The slow drift is reduced-motion gated; static it still reads as a jewel.
+   Monochrome caustics FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS field: a deep near-black studio lit by a slow
+   HOT-PINK light sweep — the single statement color glinting across charcoal,
+   echoing the pink-on-greyscale hero. Built from conic + radial gradients.
+   NEVER a blank box. Zero CLS. The drift is reduced-motion gated; static it
+   still reads as a pink-lit monochrome stage.
    ============================================================ */
 [data-brand="sousan"] .caustics-fallback {
   position: relative;
   overflow: hidden;
   background:
-    /* champagne caustic bloom, upper-left key */
+    /* hot-pink key bloom, upper-left */
     radial-gradient(
       48% 54% at 26% 26%,
-      oklch(82% 0.1 88 / 0.55) 0%,
+      oklch(60% 0.25 357 / 0.45) 0%,
       transparent 60%
     ),
-    /* emerald jewel core glow, center-right */
+    /* soft grey lift, center-right */
     radial-gradient(
       60% 66% at 72% 56%,
-      oklch(52% 0.14 161 / 0.6) 0%,
+      oklch(46% 0 0 / 0.5) 0%,
       transparent 64%
     ),
-    /* deep emerald drawing-room field */
+    /* deep near-black studio field */
     linear-gradient(
       152deg,
       var(--night-1) 0%,
       var(--night-0) 56%,
-      oklch(18% 0.04 168) 100%
+      oklch(12% 0 0) 100%
     );
 }
-/* Caustic light layer — a conic champagne-on-emerald sweep that reads as
-   refracted gem light. Masked to a soft jewel shape. */
+/* Pink light layer — a conic hot-pink sweep over charcoal, the lone pop.
+   Masked to a soft shape. */
 [data-brand="sousan"] .caustics-fallback::before {
   content: "";
   position: absolute;
@@ -305,11 +335,11 @@
     conic-gradient(
       from 200deg at 56% 44%,
       transparent 0deg,
-      oklch(80% 0.1 86 / 0.32) 38deg,
-      oklch(64% 0.15 160 / 0.42) 96deg,
+      oklch(58% 0.245 358 / 0.28) 38deg,
+      oklch(66% 0.255 356 / 0.4) 96deg,
       transparent 150deg,
-      oklch(86% 0.085 90 / 0.28) 226deg,
-      oklch(52% 0.13 162 / 0.36) 300deg,
+      oklch(56% 0.235 357 / 0.22) 226deg,
+      oklch(60% 0.25 357 / 0.34) 300deg,
       transparent 360deg
     );
   -webkit-mask-image: radial-gradient(
@@ -320,7 +350,7 @@
   mask-image: radial-gradient(70% 70% at 56% 46%, #000 8%, transparent 78%);
   opacity: 0.9;
 }
-/* Caustic glints — fine champagne speckle catching the gem facets. */
+/* Glints — fine pink + white speckle catching the light. */
 [data-brand="sousan"] .caustics-fallback::after {
   content: "";
   position: absolute;
@@ -328,27 +358,27 @@
   background-image:
     radial-gradient(
       3px 3px at 30% 34%,
-      oklch(90% 0.07 90 / 0.85),
+      oklch(70% 0.24 356 / 0.9),
       transparent 70%
     ),
     radial-gradient(
       2px 2px at 62% 26%,
-      oklch(88% 0.08 88 / 0.7),
+      oklch(98% 0 0 / 0.7),
       transparent 70%
     ),
     radial-gradient(
       2.5px 2.5px at 50% 62%,
-      oklch(86% 0.09 86 / 0.75),
+      oklch(66% 0.255 356 / 0.85),
       transparent 70%
     ),
     radial-gradient(
       2px 2px at 74% 70%,
-      oklch(80% 0.1 84 / 0.6),
+      oklch(96% 0 0 / 0.55),
       transparent 70%
     ),
     radial-gradient(
       3px 3px at 40% 78%,
-      oklch(90% 0.07 90 / 0.6),
+      oklch(60% 0.25 357 / 0.7),
       transparent 70%
     );
   background-repeat: no-repeat;
@@ -358,7 +388,7 @@
     animation: sn-caustic 26s ease-in-out infinite alternate;
   }
 }
-/* Slow refractive sweep — the gem turning in the light. */
+/* Slow light sweep — the studio key turning. */
 @keyframes sn-caustic {
   from {
     transform: rotate(0deg) scale(1.02);
@@ -391,58 +421,282 @@
 
 /* ============================================================
    Brand photography placeholder treatment.
-   No external assets — emerald / marble / champagne gradient "plates" that
-   read as one cohesive couture shoot. Each marked "sample".
+   Where we must use placeholders, they are GREYSCALE plates (neutral charcoal
+   /grey) with the lone HOT-PINK glint — so every placeholder reads as one
+   cohesive monochrome-with-pink shoot. Each marked "sample". The real founder
+   hero.jpg (full-color at source) is grayscale-graded via .sn-grayscale so it
+   joins the same monochrome system.
    ============================================================ */
+/* Container context so the ghost-monogram sizes to the PLATE width (cqw),
+   not the viewport — every BrandImage host establishes an inline-size query. */
+[data-brand="sousan"] .sn-plate-host {
+  container-type: inline-size;
+}
 [data-brand="sousan"] .sn-plate {
   position: relative;
   background:
+    /* fine concentric contour motif — an editorial "studio plate" texture so an
+       empty state still reads as designed, never a flat grey box */
+    repeating-radial-gradient(
+      circle at 78% 22%,
+      oklch(100% 0 0 / 0.05) 0 1px,
+      transparent 1px 16px
+    ),
     radial-gradient(
       120% 120% at 26% 16%,
-      oklch(96% 0.02 92 / 0.9),
+      oklch(99% 0 0 / 0.95),
       transparent 60%
     ),
+    /* stronger, intentional pink raking light from the lower-right */
     radial-gradient(
-      110% 120% at 84% 90%,
-      oklch(58% 0.13 162 / 0.28),
-      transparent 62%
+      120% 130% at 88% 92%,
+      oklch(62% 0.25 357 / 0.26),
+      transparent 60%
     ),
-    linear-gradient(152deg, oklch(95% 0.016 90), oklch(89% 0.04 120));
+    linear-gradient(152deg, oklch(96% 0 0), oklch(80% 0 0));
 }
 [data-brand="sousan"] .sn-plate--emerald {
+  /* (name kept) — the "BEFORE" plate: flatter, cooler, lower-contrast dull grey
+     with faint uneven tone, deliberately LESS luminous so the reveal means
+     something against the brighter --gold "after" plate. Minimal pink. */
   background:
+    repeating-radial-gradient(
+      circle at 30% 30%,
+      oklch(100% 0 0 / 0.025) 0 1px,
+      transparent 1px 22px
+    ),
     radial-gradient(
-      110% 110% at 72% 18%,
-      oklch(60% 0.14 161 / 0.5),
+      90% 90% at 38% 30%,
+      oklch(46% 0 0 / 0.35),
+      transparent 70%
+    ),
+    radial-gradient(
+      80% 90% at 80% 84%,
+      oklch(30% 0 0 / 0.5),
+      transparent 66%
+    ),
+    linear-gradient(158deg, oklch(40% 0 0), oklch(27% 0 0));
+}
+[data-brand="sousan"] .sn-plate--gold {
+  /* (name kept) — the "AFTER" / HOT-PINK statement plate: brighter, cleaner,
+     higher luminance with a pink sheen + raking glow, so dragging the divider
+     reads as "dull skin -> luminous skin" even abstractly. Used boldly. */
+  background:
+    repeating-radial-gradient(
+      circle at 70% 26%,
+      oklch(100% 0 0 / 0.06) 0 1px,
+      transparent 1px 15px
+    ),
+    radial-gradient(
+      120% 120% at 26% 18%,
+      oklch(82% 0.13 356 / 0.65),
       transparent 62%
     ),
     radial-gradient(
-      96% 100% at 14% 96%,
-      oklch(80% 0.1 88 / 0.3),
-      transparent 64%
-    ),
-    linear-gradient(160deg, var(--night-1), var(--night-0));
-}
-[data-brand="sousan"] .sn-plate--gold {
-  background:
-    radial-gradient(
-      120% 110% at 28% 22%,
-      oklch(92% 0.06 90 / 0.85),
+      130% 130% at 82% 90%,
+      oklch(72% 0.24 356 / 0.6),
       transparent 60%
     ),
-    linear-gradient(150deg, oklch(90% 0.07 90), oklch(80% 0.11 84));
+    linear-gradient(150deg, oklch(64% 0.25 357), oklch(48% 0.2 357));
 }
-/* Faint champagne-glint overlay so plates read as designed, not empty. */
+/* Ghost script-S monogram + glint overlay so plates read as a designed editorial
+   studio plate, not an empty box. The monogram is the wordmark initial, masked
+   faintly into the plate; the speckle catches the raking light. */
 [data-brand="sousan"] .sn-plate::after {
+  content: "S";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-script), "Snell Roundhand", "Apple Chancery",
+    "Segoe Script", "Brush Script MT", cursive;
+  font-size: clamp(8rem, 36cqw, 22rem);
+  line-height: 1;
+  color: oklch(100% 0 0 / 0.07);
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 0 oklch(18% 0 0 / 0.06);
+  background-image:
+    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.32), transparent 70%),
+    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.26), transparent 70%),
+    radial-gradient(3px 3px at 80% 66%, oklch(100% 0 0 / 0.28), transparent 70%),
+    radial-gradient(2px 2px at 42% 78%, oklch(100% 0 0 / 0.22), transparent 70%);
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+/* On the dark "before" plate the ghost monogram is a touch fainter + neutral. */
+[data-brand="sousan"] .sn-plate--emerald::after {
+  content: "S";
+  color: oklch(100% 0 0 / 0.05);
+}
+/* On the pink "after" plate the monogram glows softly — the luminous side. */
+[data-brand="sousan"] .sn-plate--gold::after {
+  content: "S";
+  color: oklch(100% 0 0 / 0.16);
+}
+
+/* Founder editorial grade (canonical, pass 3). The real hero.jpg is a full-COLOR
+   WARM headshot — blonde, warm skin, coral lip, white blazer, diamond jewelry, on
+   a WARM GOLD-BROWN bokeh background. The brand is a STRICT greyscale system whose
+   lone accent is hot magenta #E6007E. Pass 2's half-grade (grayscale .62 +
+   hue-rotate -8deg) was wrong on two counts both counsels flagged: (1) at 38%
+   saturation the warm gold-brown BACKGROUND survives and reads "generic warm
+   corporate headshot," the single element most at war with the monochrome brand;
+   (2) a NEGATIVE hue-rotate moves red toward orange — AWAY from magenta — so it
+   never landed the pink on the lip anyway. The defensible, lowest-risk, most
+   on-brand move (the RECOMMENDED path from both reviews) is full monochrome: she
+   joins the system cleanly and the lone pink lives on the frame + credential badge
+   (already built). A slight contrast/brightness lift keeps her luminous, not flat. */
+[data-brand="sousan"] .sn-grayscale {
+  filter: grayscale(1) contrast(1.06) brightness(1.03);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] .sn-grayscale {
+    transition: filter 0.5s ease;
+  }
+}
+/* On hover the portrait gains a touch more presence (deeper contrast, a hair
+   brighter) — the human proof leaning in — while STAYING monochrome so the strict
+   greyscale system never breaks. Reduced-motion users get the resting state. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  [data-brand="sousan"] .filet:hover .sn-grayscale {
+    filter: grayscale(1) contrast(1.1) brightness(1.05);
+  }
+}
+/* Belt-and-suspenders: a soft neutral inner vignette over the founder frame so
+   the monochrome figure GROUNDS into the dark charcoal studio field rather than
+   floating as a separate plate — one cohesive editorial frame. CSS-only, neutral
+   (no tint), pointer-safe, decorative. */
+[data-brand="sousan"] .sn-portrait-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 70px 8px oklch(10% 0 0 / 0.55);
+  border-radius: inherit;
+}
+
+/* ============================================================
+   Awards strip — greyscale award badges with a hot-pink accent ring. The live
+   site features an Awards section directly under the hero; this renders proud,
+   real-looking sample badges (medallion + ribbon) in pure monochrome with the
+   lone pink pop on the rim/star. CSS-only; the medallion is a layered radial.
+   ============================================================ */
+[data-brand="sousan"] .sn-award {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  background:
+    radial-gradient(
+      120% 120% at 30% 20%,
+      oklch(100% 0 0) 0%,
+      oklch(92% 0 0) 44%,
+      oklch(78% 0 0) 100%
+    );
+  border: 1px solid var(--color-hairline);
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.9),
+    inset 0 -2px 6px oklch(70% 0 0 / 0.4),
+    0 14px 34px -16px oklch(18% 0 0 / 0.5);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* The hot-pink accent ring — the single statement color on each badge, now a
+   confident double-stroke (outer bold pink + faint inner). */
+[data-brand="sousan"] .sn-award::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 9999px;
+  border: 2px solid var(--gold);
+  box-shadow:
+    0 0 0 1px oklch(100% 0 0 / 0.5),
+    inset 0 0 10px -2px oklch(60% 0.25 357 / 0.45);
+  opacity: 0.95;
+  pointer-events: none;
+}
+/* Struck-metal sheen sweep on hover — a slow diagonal light passing across the
+   coin so the wall of recognition feels alive (reduced-motion + touch safe). */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  [data-brand="sousan"] .sn-award {
+    overflow: hidden;
+  }
+  [data-brand="sousan"] .sn-award::after {
+    transition: transform 0s;
+  }
+  [data-brand="sousan"] li:hover .sn-award,
+  [data-brand="sousan"] .sn-award:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 oklch(100% 0 0 / 0.9),
+      inset 0 -2px 6px oklch(70% 0 0 / 0.4),
+      0 20px 44px -16px oklch(18% 0 0 / 0.55);
+  }
+}
+/* A fine notched/coin edge so the medallion reads as struck metal in greyscale. */
+[data-brand="sousan"] .sn-award::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.3), transparent 70%),
-    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.24), transparent 70%),
-    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.26), transparent 70%),
-    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.2), transparent 70%);
-  background-repeat: no-repeat;
+  border-radius: 9999px;
+  background: repeating-conic-gradient(
+    from 0deg,
+    oklch(78% 0 0) 0deg 4deg,
+    oklch(88% 0 0) 4deg 8deg
+  );
+  -webkit-mask-image: radial-gradient(
+    circle,
+    transparent 0 calc(50% - 2px),
+    #000 calc(50% - 2px) 50%,
+    transparent 50%
+  );
+  mask-image: radial-gradient(
+    circle,
+    transparent 0 calc(50% - 2px),
+    #000 calc(50% - 2px) 50%,
+    transparent 50%
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Brand wordmark — recreated "Sousan" identity (SiteNav + footer).
+   The live mark is an elegant black SCRIPT "Sousan" with "MED SPA" in small
+   letter-spaced caps beneath. The script line is now DETERMINISTIC across every
+   platform: it renders in Pinyon Script (a refined calligraphic face wired via
+   next/font → --font-script), NOT an OS-dependent cursive stack — so the brand's
+   primary identity mark is identical on Mac/Windows/Linux/mobile (the OS cursive
+   stack remains only as a load-failure fallback). Pure greyscale ink; the lone
+   pink tints the "MED SPA" caps as the statement accent. Two tones via --wm-*
+   custom props: default (black on light) and --on-dark (white over the dark hero).
+   The real vector logo can drop straight into SiteNav/SiteFooter later.
+   ============================================================ */
+[data-brand="sousan"] .sn-wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+}
+[data-brand="sousan"] .sn-wordmark__script {
+  font-family: var(--font-script), "Snell Roundhand", "Apple Chancery",
+    "Segoe Script", "Brush Script MT", cursive;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--wm-script, var(--color-fg));
+  /* Pinyon Script has deep descenders/swashes — give them room so the tail of
+     the script never clips against the "MED SPA" caps line beneath. */
+  padding-bottom: 0.12em;
+}
+[data-brand="sousan"] .sn-wordmark__caps {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  color: var(--wm-caps, var(--gold-ink)); /* the pink statement, AA on white */
+}
+[data-brand="sousan"] .sn-wordmark--on-dark {
+  --wm-script: oklch(99% 0 0);
+  --wm-caps: var(--gold-bright); /* brighter pink over the dark hero */
 }
 
 /* Respect reduced motion globally for decorative transforms. */

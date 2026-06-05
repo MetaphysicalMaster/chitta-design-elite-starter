@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * Shared Hanami primitives — Reveal, SectionHeading, BrandImage
- * (self-contained placeholder "plate"), and shared CTA styles. Keeps section
- * files lean and the botanical brand system consistent. No external image
- * assets — placeholder plates are washi/sakura/sumi-ink gradients, each clearly
- * marked "sample".
+ * Shared Hanami primitives — Reveal, SectionHeading, BrandPhoto (REAL client
+ * photography via next/image, framed), BrandImage (gradient placeholder "plate"
+ * for any still-unsourced imagery, marked "sample"), and shared CTA styles.
+ * Keeps section files lean and the black + gold + sakura brand system consistent.
  */
 
 import { motion, useReducedMotion } from "motion/react";
 import { type ReactNode } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -32,8 +32,12 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y: prefersReduced ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
-      transition={{ duration: 0.85, ease: EASE, delay: prefersReduced ? 0 : delay }}
+      // Trigger a touch earlier (-8%) and resolve faster (0.6s) so copy is fully
+      // opaque by the time it reaches a comfortable reading position under Lenis
+      // smooth-scroll — no content caught translucent mid-fade. Reduced-motion
+      // hard-cuts to visible (no transform, no opacity ramp).
+      viewport={{ once: true, margin: "-8% 0px -8% 0px" }}
+      transition={{ duration: prefersReduced ? 0 : 0.6, ease: EASE, delay: prefersReduced ? 0 : delay }}
     >
       {children}
     </motion.div>
@@ -163,19 +167,130 @@ export function BrandImage({
   );
 }
 
-/* ---- Pill button styles, shared across CTAs ---- */
+/* ---- BrandPhoto: a REAL client photograph (next/image), framed ----
+   For the genuine assets in /public/clients/hanami. Uses next/image so it stays
+   static-export + basePath safe (the export config sets images.unoptimized and a
+   per-repo basePath, both of which next/image honors). aspect-ratio → zero CLS.
+   `fill` + a sized wrapper keeps the crop consistent; `priority` for above-fold.
+   `sample` marks stock-style ambiance imagery honestly; brand/real photos omit it. */
+export function BrandPhoto({
+  src,
+  alt,
+  aspect = "4 / 5",
+  radius = "2xl",
+  position = "center",
+  sample = false,
+  priority = false,
+  sizes = "(min-width: 1024px) 36rem, 100vw",
+  frame = false,
+  scrim = "none",
+  className,
+  children,
+}: {
+  src: string;
+  alt: string;
+  aspect?: string;
+  radius?: "lg" | "xl" | "2xl" | "3xl" | "full";
+  /** object-position for the crop, e.g. "center", "top", "50% 30%". */
+  position?: string;
+  sample?: boolean;
+  priority?: boolean;
+  sizes?: string;
+  /** add a thin inset gold rule (the luxe plate frame). */
+  frame?: boolean;
+  scrim?: "none" | "soft" | "strong";
+  className?: string;
+  children?: ReactNode;
+}) {
+  const RADIUS: Record<string, string> = {
+    lg: "rounded-2xl",
+    xl: "rounded-[1.25rem]",
+    "2xl": "rounded-[1.5rem]",
+    "3xl": "rounded-[1.75rem]",
+    full: "rounded-full",
+  };
+  return (
+    <div
+      className={cn(
+        "relative isolate overflow-hidden bg-[var(--color-bg-warm)]",
+        "border border-[var(--color-border)]",
+        RADIUS[radius],
+        className,
+      )}
+      style={{ aspectRatio: aspect }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+        style={{ objectPosition: position }}
+      />
+
+      {/* legibility scrim for overlaid copy */}
+      {scrim !== "none" && (
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0",
+            scrim === "soft"
+              ? "bg-gradient-to-t from-[oklch(16%_0.003_60_/_0.55)] via-[oklch(16%_0.003_60_/_0.1)] to-transparent"
+              : "bg-gradient-to-t from-[oklch(14%_0.003_60_/_0.82)] via-[oklch(16%_0.003_60_/_0.32)] to-[oklch(20%_0.004_60_/_0.06)]",
+          )}
+        />
+      )}
+
+      {/* thin inset gold rule — the trophy/plate frame */}
+      {frame && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-[0.6rem] rounded-[inherit] border border-[oklch(82%_0.09_88_/_0.4)]"
+        />
+      )}
+
+      {sample && (
+        <span className="pointer-events-none absolute bottom-3 right-3 z-[2] rounded-full bg-black/35 px-2.5 py-1 text-[0.54rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
+          Sample
+        </span>
+      )}
+
+      {children}
+    </div>
+  );
+}
+
+/* ---- Pill button styles, shared across CTAs ----
+   Primary is a black-tie SUMI-BLACK pill with a gold hairline ring — the brand's
+   black + gold luxury, consistent with the nav Book button. */
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-  "bg-[var(--color-accent-deep)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-  "shadow-[0_16px_44px_-18px_oklch(60%_0.15_356_/_0.55)]",
+  "bg-[var(--ink-deep)] text-[var(--color-bg)] font-medium tracking-tight",
+  "ring-1 ring-[oklch(82%_0.09_88_/_0.28)]",
+  "shadow-[0_16px_44px_-18px_oklch(16%_0.003_60_/_0.7)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(60%_0.15_356_/_0.72)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(16%_0.003_60_/_0.85)]",
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
+);
+
+/* The GOLD pill — the single, unmistakable "act now" affordance, mirroring the
+   hero + booking CTA. Use it for the primary BOOK action site-wide so the money
+   action is visually singular; keep btnPrimary's sumi-black for secondary
+   "explore" actions (never two dark pills where one is the booking action). */
+export const btnGold = cn(
+  "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+  "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
+  "ring-1 ring-[oklch(88%_0.08_90_/_0.4)]",
+  "shadow-[0_18px_50px_-18px_oklch(72%_0.11_86_/_0.6)]",
+  "transition-[transform,box-shadow] duration-300 ease-out",
+  "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(78%_0.11_86_/_0.78)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 
 export const btnGhost = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-  "border border-[var(--color-border)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
+  "border border-[var(--gold-hairline)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
   "transition-colors duration-300 hover:bg-[var(--color-bg-subtle)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );

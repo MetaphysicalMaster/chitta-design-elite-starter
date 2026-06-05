@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Libre_Baskerville, Inter } from "next/font/google";
 import "./brand.css";
 
-/* Fraunces — an editorial, high-contrast "old-style" serif with optical
-   sizing. Set light (340) it reads quiet-luxury and effortless-expert: the
-   "simple by design, elite by results" voice. Deliberately distinct from the
-   sibling builds' geometric sans (Avail → Space Grotesk, Happy Clinic → Sora). */
-const fraunces = Fraunces({
+/* Libre Baskerville — the live site's elegant, high-contrast old-style serif.
+   Set at 400 it reads understated and refined: the "Body & Skincare, Guided By
+   Medical Expertise" voice — quiet restraint, not couture flourish. Distinct
+   from the sibling builds' geometric sans (Avail → Space Grotesk, Happy Clinic
+   → Sora). */
+const libreBaskerville = Libre_Baskerville({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: ["400", "700"],
   style: ["normal", "italic"],
 });
 
-/* Inter — clean, neutral clinical sans for body copy, UI and fine print. */
+/* Inter — clean, neutral sans for body copy, UI and fine print, matching the
+   live site's clean sans pairing under the Baskerville headings. */
 const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
@@ -24,9 +26,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "SimplySkin MedSpa — Top 1% Allergan Injectables · Fishers & Carmel, Indiana | Holly Sheldon-Paquin",
+    "SimplySkin MedSpa — Body & Skincare, Guided By Medical Expertise · Fishers & Carmel, Indiana",
   description:
-    "Indianapolis-metro's quiet-luxury med spa, led by Holly Sheldon-Paquin — a Top 1% US Allergan / Top 10 Indiana injector with 20 years of artistry. Injectables-led premium care in Fishers, now expanding to Carmel. Simple by design, elite by results. Book in 30 seconds.",
+    "An understated, medical-grade med spa for body & skincare in the Indianapolis metro — Fishers and Carmel West / Zionsville. Allergan & Galderma award-winning injectable and skincare artistry, guided by medical expertise. Book your consultation.",
   robots: { index: false, follow: false },
 };
 
@@ -36,7 +38,7 @@ export default function SimplySkinLayout({
   return (
     <div
       data-brand="simplyskin"
-      className={`${fraunces.variable} ${inter.variable} min-h-screen`}
+      className={`${libreBaskerville.variable} ${inter.variable} min-h-screen`}
     >
       {children}
     </div>

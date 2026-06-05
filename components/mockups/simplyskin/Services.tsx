@@ -25,8 +25,8 @@ const SERVICES: Service[] = [
     id: "tox",
     name: "Neuromodulators",
     blurb: "BOTOX® · Dysport® · Daxxify®",
-    detail: "Wrinkle-relaxing tox, placed by the top 1%. Soft, never frozen.",
-    from: "from $12 / unit",
+    detail: "Wrinkle-relaxing tox by Allergan-trained injectors. Soft, never frozen.",
+    from: "by consultation",
     featured: true,
   },
   {
@@ -73,7 +73,7 @@ function ServiceCard({ s }: { s: Service }) {
         "group relative flex flex-col rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-300 sm:p-7",
         "hover:-translate-y-0.5",
         s.featured
-          ? "border-[var(--color-accent-subtle)] bg-[var(--color-bg-elevated)] shadow-[0_24px_70px_-44px_oklch(48%_0.072_196_/_0.42)] hover:shadow-[0_30px_80px_-40px_oklch(48%_0.072_196_/_0.5)]"
+          ? "border-[var(--color-accent-subtle)] bg-[var(--color-bg-elevated)] shadow-[0_24px_70px_-44px_oklch(58%_0.04_184_/_0.4)] hover:shadow-[0_30px_80px_-40px_oklch(58%_0.04_184_/_0.48)]"
           : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] hover:border-[var(--color-hairline)] hover:shadow-[var(--glass-shadow)]",
       )}
     >
@@ -107,7 +107,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="relative scroll-mt-20 bg-[var(--color-bg-subtle)] py-24 sm:py-28"
+      className="relative scroll-mt-28 bg-[var(--color-bg-subtle)] py-24 sm:py-28"
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -119,7 +119,7 @@ export function Services() {
                 <span className="font-display-em">Consult-driven, always.</span>
               </>
             }
-            lead="Every plan begins with a conversation, not a checkout. Pricing shown as a starting point — the right plan is the one Holly designs for your face."
+            lead="Every plan begins with a conversation, not a checkout. Pricing shown as a starting point — the right plan is the one our clinicians design for you."
           />
           <Reveal delay={0.08} className="lg:pb-2">
             <Link href="#book" className={cn(btnGhost, "whitespace-nowrap")}>

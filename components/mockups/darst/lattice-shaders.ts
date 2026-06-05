@@ -78,17 +78,26 @@ export const latticeVertexShader = /* glsl */ `
 
     // Depth-of-field: sharpest at the focal stratum, softening away from it.
     // Particles also have a little z, so combine dermal depth + view z.
+    // NARROWED falloff (0.12→0.20 .. 0.6→0.74) so a wider band of the lattice
+    // stays sharp — the signature resolve must be SEEN, not dissolved to haze.
     float focusDist = abs(aDepth - uFocus);
-    float sharp = 1.0 - smoothstep(0.12, 0.6, focusDist);
-    sharp = mix(0.35, 1.0, sharp); // never fully invisible
+    float sharp = 1.0 - smoothstep(0.20, 0.74, focusDist);
+    sharp = mix(0.5, 1.0, sharp); // raised floor: even out-of-focus reads
     vSharp = sharp;
+
+    // The lone capillary always stays in focus — the page's single chroma
+    // thread should never blur into the brown ground.
+    vSharp = max(vSharp, aVessel);
 
     // Point size: perspective attenuation + per-particle scale + dpr.
     // Blurred (out-of-focus) particles render LARGER + softer (bokeh).
-    float bokeh = mix(1.9, 1.0, sharp);
+    float bokeh = mix(1.7, 1.0, sharp);
     float size = uSize * aScale * (0.62 + 0.6 * aSeed) * bokeh;
+    // The teal capillary is drawn a touch larger so the thread reads as a
+    // continuous vessel, not a dotted line, against the dark dermis.
+    size *= mix(1.0, 1.5, aVessel);
     gl_PointSize = size * uDpr * (300.0 / -mvPosition.z);
-    gl_PointSize = clamp(gl_PointSize, 0.0, 16.0 * uDpr);
+    gl_PointSize = clamp(gl_PointSize, 0.0, 18.0 * uDpr);
 
     vDepth = aDepth;
     vVessel = aVessel;
@@ -125,19 +134,25 @@ export const latticeFragmentShader = /* glsl */ `
     col = mix(col, uDermis, smoothstep(0.3, 0.66, vDepth));
     col = mix(col, uDeep, smoothstep(0.62, 1.0, vDepth));
 
-    // The lone oxblood capillary thread.
-    col = mix(col, uVessel, vVessel);
+    // The lone TEAL capillary thread — lifted to a brighter, more saturated
+    // teal so the single chroma thread meanders visibly through the dermis
+    // (the named brand signature), not a muddy dot lost in the brown ground.
+    vec3 vesselCol = uVessel * 1.18;
+    col = mix(col, vesselCol, vVessel);
 
     // Cursor lens warms a faint highlight (clinical, restrained).
     col = mix(col, mix(col, uCorneum, 0.6), vGlow * 0.5);
 
-    // Sharp particles read crisper + a touch brighter; blurred ones dim.
-    float lum = mix(0.6, 1.0, vSharp);
+    // Sharp particles read crisper + a touch brighter; blurred ones dim — but
+    // the luminance floor is raised so the lattice survives over the dark ground.
+    float lum = mix(0.74, 1.06, vSharp);
     col *= lum;
 
-    // Alpha: in-focus particles are more opaque; bokeh stays faint.
-    float a = alpha * mix(0.32, 0.92, vSharp);
-    a *= 0.72 + 0.28 * vVessel; // vessel slightly punches through
+    // Alpha: in-focus particles are more opaque; bokeh stays present (raised
+    // floor 0.32→0.5, ceiling 0.92→0.98) so the resolved lattice actually reads
+    // against the espresso hero instead of washing out to a smooth gradient.
+    float a = alpha * mix(0.5, 0.98, vSharp);
+    a = mix(a, alpha * 0.99, vVessel); // vessel near-opaque — the thread reads
 
     gl_FragColor = vec4(col, a);
   }

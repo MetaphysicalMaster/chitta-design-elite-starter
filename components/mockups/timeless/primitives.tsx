@@ -3,9 +3,9 @@
 /**
  * Shared Timeless primitives — Reveal, SectionHeading, BrandImage
  * (self-contained placeholder "plate"), and shared CTA styles. Keeps section
- * files lean and the warm heirloom brand system consistent. No external image
- * assets — placeholder plates are warm ivory/brass/aubergine gradients, each
- * clearly marked "sample".
+ * files lean and the warm, friendly brand system consistent. No external image
+ * assets — placeholder plates are warm peach / apricot / orange-cream gradients
+ * washed with soft bokeh, each clearly marked "sample".
  */
 
 import { motion, useReducedMotion } from "motion/react";
@@ -96,9 +96,9 @@ export function SectionHeading({
   );
 }
 
-/* ---- BrandImage: self-contained heirloom placeholder plate ----
-   No network assets; a cohesive ivory/brass/aubergine gradient with an optional
-   "sample" tag and overlaid content. aspect-ratio → zero CLS. */
+/* ---- BrandImage: self-contained sample placeholder plate ----
+   No network assets; a cohesive peach / apricot / orange-cream bokeh gradient
+   with an optional "sample" tag and overlaid content. aspect-ratio → zero CLS. */
 export function BrandImage({
   aspect = "4 / 5",
   variant = "default",
@@ -167,9 +167,9 @@ export function BrandImage({
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-  "shadow-[0_16px_44px_-18px_oklch(58%_0.094_76_/_0.6)]",
+  "shadow-[0_16px_44px_-18px_oklch(60%_0.15_52_/_0.55)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(58%_0.094_76_/_0.78)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(60%_0.15_52_/_0.72)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 

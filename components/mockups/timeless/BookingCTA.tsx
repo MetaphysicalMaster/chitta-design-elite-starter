@@ -1,171 +1,113 @@
 "use client";
 
 /**
- * BookingCTA — the native "book in 30 seconds" scheduler. A self-contained,
- * accessible mini-flow (physician → treatment → time) that demonstrates a real
- * booking experience inside the page — the antithesis of an EMR "request
- * appointment" form-dump. No backend; selecting all three reveals a
- * confirmation affordance. Heirloom: an aubergine card with one brass accent,
- * generous spacing, fine type.
+ * BookingCTA — the in-page home of the signature GUIDED BOOKING experience.
+ *
+ * The program owner's directive was to elevate the live site's "CHAT LIVE NOW"
+ * bot into a guided booking walkthrough. That walkthrough lives in
+ * GuidedBooking.tsx and is reachable two ways: a floating launcher (mounted at
+ * the page root) AND embedded here as the page's conversion anchor, so #book
+ * always lands on the same friendly, on-brand flow — never a form-dump.
+ *
+ * This section is LIGHT and warm (sunlit peach), matching the live brand: an
+ * invitation on the left, the embedded guided-booking card on the right.
  */
 
-import { useState } from "react";
 import { Reveal } from "./primitives";
-import { cn } from "@/lib/utils";
+import { GuidedBookingInline } from "./GuidedBooking";
 
-const PHYSICIANS = ["Dr. McCarren", "Dr. Heuker", "First available"];
-const TREATMENTS = [
-  "Injectables",
-  "Dermal Filler",
-  "Secret RF",
-  "Laser & Energy",
-  "Medical Skin",
-  "Consultation",
-];
-const TIMES = ["Tomorrow AM", "Tomorrow PM", "This week", "Next available"];
-
-function Choice({
-  label,
-  options,
-  value,
-  onChange,
-  name,
-}: {
-  label: string;
-  options: string[];
-  value: string | null;
-  onChange: (v: string) => void;
-  name: string;
-}) {
-  // Roving tabindex: the group is one tab stop; arrows move + select within it.
-  const activeIndex = value ? options.indexOf(value) : -1;
-  const onKeyNav = (e: React.KeyboardEvent, i: number) => {
-    const last = options.length - 1;
-    let next = -1;
-    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = i >= last ? 0 : i + 1;
-    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = i <= 0 ? last : i - 1;
-    if (next === -1) return;
-    e.preventDefault();
-    onChange(options[next]);
-    (e.currentTarget.parentElement?.children[next] as HTMLElement | undefined)?.focus();
-  };
-  return (
-    <fieldset>
-      <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--brass-pale)]/70">
-        {label}
-      </legend>
-      <div role="radiogroup" aria-label={label} className="mt-3 flex flex-wrap gap-2">
-        {options.map((opt, i) => {
-          const active = value === opt;
-          // First option is the fallback tab stop until a choice is made.
-          const tabbable = active || (activeIndex === -1 && i === 0);
-          return (
-            <button
-              key={opt}
-              type="button"
-              role="radio"
-              aria-checked={active}
-              tabIndex={tabbable ? 0 : -1}
-              name={name}
-              onClick={() => onChange(opt)}
-              onKeyDown={(e) => onKeyNav(e, i)}
-              className={cn(
-                "rounded-full border px-4 py-2 text-sm transition-colors duration-200",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
-                active
-                  ? "border-[var(--color-accent-bright)] bg-[var(--color-accent-bright)]/18 text-[var(--color-bg)]"
-                  : "border-white/20 text-[var(--color-bg)]/75 hover:border-white/40 hover:text-[var(--color-bg)]",
-              )}
-            >
-              {opt}
-            </button>
-          );
-        })}
-      </div>
-    </fieldset>
-  );
-}
+const PHONE_DISPLAY = "(513) 451-9600";
+const PHONE_TEL = "+15134519600";
 
 export function BookingCTA() {
-  const [doc, setDoc] = useState<string | null>(null);
-  const [treat, setTreat] = useState<string | null>(null);
-  const [time, setTime] = useState<string | null>(null);
-  const ready = doc && treat && time;
-
   return (
     <section
       id="book"
+      aria-labelledby="book-title"
       className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
-      style={{ background: "linear-gradient(165deg, var(--ink-1), var(--ink-0))" }}
     >
-      {/* brass aura echoing the hero on the aubergine field */}
+      {/* warm sunlit field with soft bokeh, echoing the hero */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-55"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(55% 50% at 84% 4%, oklch(64% 0.09 78 / 0.6), transparent 70%), radial-gradient(50% 50% at 6% 100%, oklch(48% 0.1 52 / 0.5), transparent 72%)",
+            "radial-gradient(60% 60% at 14% 8%, oklch(94% 0.05 60), transparent 64%), radial-gradient(60% 70% at 92% 96%, oklch(88% 0.07 56 / 0.8), transparent 66%), linear-gradient(165deg, oklch(98% 0.016 62), oklch(95% 0.03 58))",
         }}
       />
-      <div className="relative mx-auto max-w-3xl px-6 text-center sm:px-8">
+      {/* a couple of large out-of-focus bokeh circles */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+        style={{
+          background:
+            "radial-gradient(circle at 22% 70%, oklch(74% 0.13 54 / 0.18) 0 7%, transparent 9%), radial-gradient(circle at 80% 22%, oklch(86% 0.08 60 / 0.3) 0 5%, transparent 7%)",
+          filter: "blur(2px)",
+        }}
+      />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 sm:px-8 lg:grid-cols-[0.95fr_1.05fr]">
+        {/* left: the invitation */}
         <Reveal>
-          <p className="eyebrow text-[var(--color-accent-bright)]">Reserve your visit</p>
+          <p className="rule-fine eyebrow inline-block text-accent-deep">
+            Book in 30 seconds
+          </p>
           <h2
-            className="font-display mx-auto mt-5 max-w-[18ch] text-balance text-[var(--color-bg)]"
-            style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.04 }}
+            id="book-title"
+            className="font-display mt-5 text-balance text-[var(--color-fg)]"
+            style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
           >
-            Book in 30 seconds.{" "}
-            <span className="font-display-em">No forms, no clutter.</span>
+            A friendlier way to book.{" "}
+            <span className="font-display-em text-[var(--color-accent-deep)]">
+              Just a few taps.
+            </span>
           </h2>
-          <p className="mx-auto mt-5 max-w-[46ch] font-light text-[var(--color-bg)]/78">
-            Choose a physician, a treatment, and a time — we&apos;ll confirm with a
-            real person. The effortless booking their EMR template never had.
+          <p className="mt-5 max-w-[44ch] text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
+            No phone tag, no portal maze. Our guided booking walks you through it
+            in plain language — tell us what you&rsquo;re after, choose your
+            physician and a time, and a real person confirms every request.
+          </p>
+
+          <ul className="mt-8 space-y-3">
+            {[
+              "Choose your treatment & physician",
+              "Pick a location and a time that works",
+              "We confirm by text — no obligation",
+            ].map((t) => (
+              <li key={t} className="flex items-start gap-3 text-sm text-[var(--color-fg-muted)]">
+                <span
+                  aria-hidden
+                  className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[var(--color-accent-fg)]"
+                  style={{
+                    background:
+                      "radial-gradient(130% 130% at 30% 22%, oklch(72% 0.15 58), oklch(58% 0.145 46))",
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden>
+                    <path d="M5 12.5 10 17 19 6.5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-8 text-sm text-[var(--color-fg-muted)]">
+            Prefer to talk?{" "}
+            <a
+              href={`tel:${PHONE_TEL}`}
+              className="tnum font-semibold text-[var(--color-accent-deep)] underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+            >
+              {PHONE_DISPLAY}
+            </a>
           </p>
         </Reveal>
 
+        {/* right: the embedded guided-booking flow */}
         <Reveal delay={0.1}>
-          <div className="mt-12 space-y-7 rounded-[1.75rem] border border-white/12 bg-white/[0.04] p-6 text-left backdrop-blur-md sm:p-8">
-            <Choice label="Physician" options={PHYSICIANS} value={doc} onChange={setDoc} name="tl-doc" />
-            <Choice label="Treatment" options={TREATMENTS} value={treat} onChange={setTreat} name="tl-treat" />
-            <Choice label="When" options={TIMES} value={time} onChange={setTime} name="tl-time" />
-
-            <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <p aria-live="polite" className="text-sm text-[var(--color-bg)]/72">
-                {ready ? (
-                  <>
-                    <span className="text-[var(--color-bg)]">{treat}</span> · {doc} ·{" "}
-                    <span className="tnum">{time}</span>
-                  </>
-                ) : (
-                  "Make your three selections to continue."
-                )}
-              </p>
-              <button
-                type="button"
-                disabled={!ready}
-                className={cn(
-                  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-medium transition-all duration-300",
-                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
-                  ready
-                    ? "bg-[var(--color-bg)] text-[var(--ink-0)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-16px_oklch(64%_0.09_78_/_0.7)]"
-                    : "cursor-not-allowed bg-white/15 text-white/45",
-                )}
-              >
-                {ready ? "Confirm request" : "Select to book"}
-                <span aria-hidden>→</span>
-              </button>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.16}>
-          <p className="mt-6 text-xs text-[var(--color-bg)]/45">
-            Demonstration scheduler · no booking is submitted. Prefer to talk?
-            Call{" "}
-            <a href="tel:+15134519600" className="tnum text-[var(--brass-pale)]/85 underline-offset-2 hover:underline">
-              (513) 451-9600
-            </a>
-            .
+          <GuidedBookingInline />
+          <p className="mt-4 text-center text-xs text-[var(--color-fg-subtle)]">
+            Demonstration scheduler · no booking is submitted.
           </p>
         </Reveal>
       </div>

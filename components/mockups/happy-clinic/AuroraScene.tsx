@@ -1,16 +1,17 @@
 "use client";
 
 /**
- * AuroraScene — the WebGL power element: a volumetric aurora (violet→teal)
- * drifting over a faint Rockies ridge silhouette. "Northern-lights" altitude
- * optimism for Colorado's #1 clinic.
+ * AuroraScene — the WebGL power element: a volumetric navy-night aurora
+ * (pine-teal + soft pale-yellow ribbons over a navy sky) blooming above a soft
+ * abstract horizon. "Luminous calm" — the brand's signature hero, refined and
+ * feminine, matching "Subtle is The New WOW".
  *
  * Two layers:
- *  1. An orthographic full-bleed shader backdrop — night sky, domain-warped
- *     aurora curtains, and a noise-driven mountain ridge horizon. Parallaxes
- *     with hero scroll progress and sways toward the cursor.
- *  2. An additive field of drifting aurora "motes" (instanced soft points) that
- *     rise like cold sparks, adding volumetric depth above the ridge.
+ *  1. An orthographic full-bleed shader backdrop — navy night sky, domain-warped
+ *     aurora curtains, and a soft navy horizon glow (NOT a mountain ridge).
+ *     Parallaxes with hero scroll progress and sways toward the cursor.
+ *  2. An additive field of soft luminous particles drifting gently upward,
+ *     adding volumetric depth to the aurora.
  *  Finished with subtle Bloom so the aurora blooms premium.
  *
  * Loaded ONLY via dynamic({ ssr:false }) from AuroraHero (a client component) —
@@ -19,6 +20,10 @@
  *
  * Perf: dpr={[1,2]}, instancing + additive (no per-mote draw calls), frameloop
  * pauses when the hero is offscreen or the tab is hidden.
+ *
+ * NOTE: the shader uniform NAMES are retained (u_violet / u_magenta) so the GLSL
+ * is untouched; their VALUES now carry the navy/teal/gold palette. Read u_violet
+ * as "the clinical-blue bloom" and u_magenta as "the pine-teal ribbon".
  */
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -28,14 +33,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { auroraFragmentShader, auroraVertexShader } from "./aurora-shaders";
 
+/* Navy night sky + pine-teal + soft pale-yellow — the live brand, by night. */
 const PALETTE = {
-  night0: "#1a1530", // top of sky (deep indigo-violet)
-  night1: "#241a3a", // horizon sky
-  violet: "#9a6bff",
-  magenta: "#d36bd0",
-  teal: "#5fe0cf",
-  cyan: "#7fe6ff",
-  ridge: "#2a2342",
+  night0: "#08172a", // top of sky (deepest navy)
+  night1: "#0a2a4a", // horizon sky — the canonical brand navy
+  violet: "#3f7fd6", // (reused name) clinical-blue bloom
+  magenta: "#2f9c86", // (reused name) pine-teal ribbon
+  teal: "#5fd8c4", // bright teal tip
+  cyan: "#ffe9a0", // (reused name) soft pale-yellow highlight
+  ridge: "#0c2138", // navy ridge silhouette
 };
 
 /* Shared reactive drive: pointer (-1..1) + hero scroll progress (0..1). */
@@ -103,7 +109,7 @@ function AuroraBackdrop({ drive }: { drive: React.RefObject<Drive> }) {
   );
 }
 
-/* ---- Instanced additive aurora motes (rising cold sparks) ---- */
+/* ---- Instanced additive aurora motes (soft luminous particles) ---- */
 const COUNT_FULL = 150;
 const COUNT_LITE = 80;
 
@@ -136,8 +142,9 @@ function AuroraMotes({
     return arr;
   }, [count]);
 
+  // Motes range pine-teal → soft pale-yellow (the two ribbon colors).
   const color = useMemo(() => new THREE.Color(), []);
-  const cViolet = useMemo(() => new THREE.Color(PALETTE.violet), []);
+  const cViolet = useMemo(() => new THREE.Color(PALETTE.teal), []);
   const cCyan = useMemo(() => new THREE.Color(PALETTE.cyan), []);
 
   useFrame(({ clock }, delta) => {
@@ -266,9 +273,9 @@ export default function AuroraScene({ lite = false }: AuroraSceneProps) {
         <AuroraMotes drive={drive} count={count} />
         <EffectComposer enableNormalPass={false}>
           <Bloom
-            intensity={lite ? 0.7 : 1.05}
-            luminanceThreshold={0.3}
-            luminanceSmoothing={0.32}
+            intensity={lite ? 0.5 : 0.75}
+            luminanceThreshold={0.42}
+            luminanceSmoothing={0.3}
             mipmapBlur
             kernelSize={lite ? KernelSize.MEDIUM : KernelSize.LARGE}
           />

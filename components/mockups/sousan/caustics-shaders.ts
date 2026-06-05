@@ -1,14 +1,17 @@
 /**
- * Caustic-light shaders for the Sousan "Liquid-Gold Caustics" hero.
+ * Caustic-light shaders for the Sousan monochrome + hot-pink hero.
  *
  * A full-bleed orthographic backdrop plane that renders slow, refractive
- * champagne-gold caustics rippling over a deep emerald drawing-room void —
- * like light moving through a precious gem and settling on a marble floor.
- * Kept luminance-additive so Bloom in the composer blooms the brightest
- * caustic cores. The faceted jewel mesh (MeshTransmissionMaterial) renders on
- * a second transparent canvas above this backdrop.
+ * HOT-PINK caustics rippling over a deep CHARCOAL void — one pink statement
+ * light moving across a near-black studio (mirroring the pink-on-greyscale hero
+ * portrait). Kept luminance-additive so Bloom in the composer blooms the
+ * brightest pink caustic cores. The faceted neutral-glass gem mesh
+ * (MeshTransmissionMaterial) renders on a second transparent canvas above.
  *
- * Palette matches app/mockups/sousan/brand.css (emerald night + champagne gold).
+ * The shader is palette-driven: u_void0/u_void1 (charcoal), u_gold (hot pink),
+ * u_jewel (neutral grey lift) are supplied from CausticsScene's PALETTE, which
+ * matches app/mockups/sousan/brand.css (greyscale base + the one pink pop).
+ * Variable names (u_gold/u_jewel) are retained; only their VALUES changed.
  */
 
 export const causticVertexShader = /* glsl */ `
@@ -28,10 +31,10 @@ export const causticFragmentShader = /* glsl */ `
   uniform vec2  u_resolution;
   uniform vec2  u_pointer;     // -1..1
   uniform float u_intensity;   // 0..1 reveal (gem "settles" as hero loads)
-  uniform vec3  u_void0;       // deep emerald void
-  uniform vec3  u_void1;       // raised emerald
-  uniform vec3  u_gold;        // champagne caustic
-  uniform vec3  u_jewel;       // emerald jewel highlight
+  uniform vec3  u_void0;       // deep charcoal void
+  uniform vec3  u_void1;       // raised charcoal
+  uniform vec3  u_gold;        // hot-pink caustic light (the pop)
+  uniform vec3  u_jewel;       // neutral-grey highlight lift
 
   // Hash + value noise (cheap, smooth) for the caustic field.
   float hash(vec2 p) {
@@ -81,7 +84,7 @@ export const causticFragmentShader = /* glsl */ `
     float t = u_time;
 
     // Caustic light source drifts subtly + leans toward the cursor (the gem's
-    // refraction point). Upper-left key, River Oaks morning light.
+    // refraction point). Upper-left key, soft studio light.
     vec2 src = vec2(-0.32 + u_pointer.x * 0.12, 0.30 + u_pointer.y * 0.07);
     float srcDist = length(p - src);
 
@@ -94,17 +97,17 @@ export const causticFragmentShader = /* glsl */ `
     float pool = exp(-srcDist * 1.15);
     float bed = smoothstep(1.3, 0.0, srcDist); // soft floor wash
 
-    // Base emerald void gradient (darker toward the lower-right shadow).
+    // Base charcoal void gradient (darker toward the lower-right shadow).
     float vgrad = smoothstep(1.05, -0.2, uv.y + (p.x - src.x) * 0.18);
     vec3 base = mix(u_void0, u_void1, vgrad * 0.9);
-    // Gentle emerald lift around the source (the jewel's green halo).
+    // Gentle neutral-grey lift around the source (the light's soft halo).
     base += u_jewel * pool * 0.22;
 
     vec3 col = base;
-    // Champagne caustic filaments (the gold light).
+    // Hot-pink caustic filaments (the one statement light).
     float goldAmt = (web * (0.35 + pool * 1.25)) ;
     col += u_gold * goldAmt * 1.35;
-    // Emerald inner refraction tint where caustics overlap densely.
+    // Neutral-grey inner lift where caustics overlap densely.
     col += u_jewel * pow(web, 1.6) * bed * 0.4;
 
     // Bright caustic cores (Bloom seeds) where the web peaks near the key.
@@ -120,7 +123,7 @@ export const causticFragmentShader = /* glsl */ `
     float vig = smoothstep(1.35, 0.25, length(p));
     col *= mix(0.74, 1.0, vig);
 
-    // Fine grain to avoid banding on the dark emerald gradient.
+    // Fine grain to avoid banding on the dark charcoal gradient.
     float grain = (hash(uv * u_resolution + t) - 0.5) * 0.012;
     col += grain;
 

@@ -1,11 +1,11 @@
 "use client";
 
 /**
- * Shared SimplySkin primitives — Reveal, SectionHeading, BrandImage
- * (self-contained placeholder "plate"), and shared CTA styles. Keeps section
- * files lean and the quiet-luxury brand system consistent. No external image
- * assets — placeholder plates are soft platinum/nude/teal gradients, each
- * clearly marked "sample".
+ * Shared SimplySkin primitives — Reveal, SectionHeading, Wordmark, BrandImage,
+ * and shared CTA styles. Keeps section files lean and the understated brand
+ * system consistent. BrandImage now supports a real `src` (e.g. the client's
+ * hero photo) and falls back to a soft warm-greige gradient "plate" when no
+ * src is given — placeholder plates are clearly marked "sample".
  */
 
 import { motion, useReducedMotion } from "motion/react";
@@ -13,6 +13,37 @@ import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/* ---- Wordmark: the recreated thin two-tone "SimplySkin" identity ----
+   A light, hairline wordmark where "Simply" (deep charcoal) and "Skin" (warm
+   grey) differ subtly in tone, with a smaller, quieter "MedSpa" beneath —
+   elegant and understated, matched to the live site. `onDark` flips the tones
+   for the rare dark section; `size` scales the lockup. */
+export function Wordmark({
+  onDark = false,
+  className,
+}: {
+  onDark?: boolean;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "ss-wordmark inline-flex flex-col leading-none",
+        onDark && "ss-wordmark--on-dark",
+        className,
+      )}
+    >
+      <span className="text-[1.35rem] tracking-tight sm:text-[1.5rem]">
+        <span className="ss-wordmark__simply">Simply</span>
+        <span className="ss-wordmark__skin">Skin</span>
+      </span>
+      <span className="ss-wordmark__medspa mt-1 text-[0.5rem] sm:text-[0.55rem]">
+        Med Spa
+      </span>
+    </span>
+  );
+}
 
 /* ---- Reveal: in-view fade/rise, reduced-motion safe ---- */
 export function Reveal({
@@ -96,15 +127,21 @@ export function SectionHeading({
   );
 }
 
-/* ---- BrandImage: self-contained quiet-luxury placeholder plate ----
-   No network assets; a cohesive platinum/nude/teal gradient with an optional
-   "sample" tag and overlaid content. aspect-ratio → zero CLS. */
+/* ---- BrandImage: real photo OR self-contained placeholder plate ----
+   When `src` is given it renders the real photograph (object-cover, with
+   optional `position`); otherwise it falls back to a cohesive warm-greige
+   gradient plate. The "sample" tag is shown only for placeholder plates by
+   default (a real wired photo is not "sample") — override with `sample`.
+   aspect-ratio → zero CLS. */
 export function BrandImage({
   aspect = "4 / 5",
   variant = "default",
   radius = "2xl",
-  sample = true,
+  sample,
   label,
+  src,
+  alt,
+  position = "center",
   className,
   children,
 }: {
@@ -113,6 +150,12 @@ export function BrandImage({
   radius?: "lg" | "xl" | "2xl" | "3xl" | "full";
   sample?: boolean;
   label?: string;
+  /** Real photo source. When omitted, a gradient placeholder plate renders. */
+  src?: string;
+  /** Accessible description of the real photo (required when `src` is set). */
+  alt?: string;
+  /** CSS object-position for the real photo, e.g. "68% 38%". */
+  position?: string;
   className?: string;
   children?: ReactNode;
 }) {
@@ -130,32 +173,48 @@ export function BrandImage({
     nude: "ss-plate ss-plate--nude",
   };
   const ink = variant === "ink";
+  const hasPhoto = Boolean(src);
+  // Placeholder plates default to showing the "sample" tag; real photos don't.
+  const showSample = sample ?? !hasPhoto;
   return (
     <div
       ref={wrapRef}
-      role="img"
-      aria-label={label ? `${label} (sample image)` : "Sample brand image"}
+      role={hasPhoto ? undefined : "img"}
+      aria-label={hasPhoto ? undefined : label ? `${label} (sample image)` : "Sample brand image"}
       className={cn(
         "relative isolate overflow-hidden border border-[var(--color-border)]",
-        PLATE[variant],
+        hasPhoto ? "bg-[var(--color-bg-warm)]" : PLATE[variant],
         RADIUS[radius],
         className,
       )}
       style={{ aspectRatio: aspect }}
     >
+      {hasPhoto && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={alt ?? label ?? ""}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: position }}
+          draggable={false}
+          loading="lazy"
+        />
+      )}
       {label && (
         <span
           className={cn(
             "absolute left-3 top-3 z-[2] rounded-full px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em]",
-            ink
-              ? "bg-white/12 text-white/85"
-              : "bg-[var(--color-fg)]/6 text-[var(--color-fg)]/75",
+            hasPhoto
+              ? "bg-[oklch(24%_0.01_66_/_0.45)] text-white/90 backdrop-blur-sm"
+              : ink
+                ? "bg-white/12 text-white/85"
+                : "bg-[var(--color-fg)]/6 text-[var(--color-fg)]/75",
           )}
         >
           {label}
         </span>
       )}
-      {sample && (
+      {showSample && (
         <span className="pointer-events-none absolute bottom-3 right-3 z-[2] rounded-full bg-black/30 px-2.5 py-1 text-[0.54rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
           Sample
         </span>
@@ -169,9 +228,9 @@ export function BrandImage({
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-  "shadow-[0_16px_44px_-18px_oklch(48%_0.072_196_/_0.55)]",
+  "shadow-[0_16px_44px_-20px_oklch(58%_0.04_184_/_0.5)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(48%_0.072_196_/_0.72)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-18px_oklch(58%_0.04_184_/_0.65)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 

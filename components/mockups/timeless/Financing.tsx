@@ -3,8 +3,9 @@
 /**
  * Financing — the rewards + financing callout. Reframes "value" the way a
  * premium, decade-established practice does: loyalty on the brands patients
- * already use, quiet flexible-pay, and member pricing — never a discount-bin
- * product feel. Warm ivory plate with a brass aura.
+ * already use, a quiet monthly-pay anchor that turns high-ticket plans into an
+ * easy "per month" decision, and member pricing — never a discount-bin feel.
+ * Warm peach-cream plate with a soft orange aura.
  */
 
 import Link from "next/link";
@@ -18,7 +19,7 @@ const PERKS = [
   },
   {
     title: "Flexible payment",
-    body: "Cherry & CareCredit options at checkout, so your plan fits your timeline, not the reverse.",
+    body: "Cherry & CareCredit at checkout — split a treatment into easy monthly payments, with 0% options for those who qualify.",
   },
   {
     title: "Member pricing",
@@ -32,13 +33,13 @@ export function Financing() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <Reveal>
           <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] p-8 sm:p-12 lg:p-16">
-            {/* warm brass glow plate */}
+            {/* warm peach glow plate (on-brand hue ~58–62, not brassy gold) */}
             <div
               aria-hidden
               className="absolute inset-0 -z-10"
               style={{
                 background:
-                  "radial-gradient(80% 100% at 12% 10%, oklch(94% 0.05 80), transparent 64%), radial-gradient(70% 90% at 92% 96%, var(--color-accent-subtle), transparent 66%), linear-gradient(160deg, oklch(97% 0.014 78), oklch(93% 0.026 70))",
+                  "radial-gradient(80% 100% at 12% 10%, oklch(94% 0.05 60), transparent 64%), radial-gradient(70% 90% at 92% 96%, var(--color-accent-subtle), transparent 66%), linear-gradient(160deg, oklch(97% 0.016 62), oklch(93% 0.03 58))",
               }}
             />
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
@@ -55,6 +56,15 @@ export function Financing() {
                 <p className="mt-5 max-w-[44ch] font-light leading-relaxed text-[var(--color-fg-muted)]">
                   A decade of premium care, kept within reach — loyalty rewards
                   earn automatically, and flexible-pay keeps your plan unhurried.
+                </p>
+                {/* Quiet monthly anchor — turns a high-ticket plan into an easy
+                    "per month" decision. Representative; confirmed at consult. */}
+                <p className="mt-6 inline-flex items-baseline gap-2 rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-bg-elevated)]/70 px-4 py-2 backdrop-blur-sm">
+                  <span className="text-sm text-[var(--color-fg-muted)]">Plans from</span>
+                  <span className="font-display tnum text-2xl text-[var(--color-fg)]">
+                    ~$45<span className="text-base font-light text-[var(--color-fg-muted)]">/mo</span>
+                  </span>
+                  <span className="text-xs text-[var(--color-fg-subtle)]">· 0% options · sample</span>
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link href="#book" className={btnPrimary}>

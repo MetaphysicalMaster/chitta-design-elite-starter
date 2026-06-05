@@ -1,22 +1,24 @@
 "use client";
 
 /**
- * CausticsScene — the WebGL power element ("Liquid-Gold Caustics").
+ * CausticsScene — the WebGL power element (monochrome studio + hot-pink light).
  *
- * Two layered canvases compose a precious-gem light study:
- *  1. An orthographic full-bleed backdrop renders slow refractive champagne-gold
- *     caustics rippling over a deep emerald drawing-room void (custom shader) —
- *     light moving through a jewel, settling on marble. It "settles" (brightens)
- *     as the hero loads via a reveal uniform.
- *  2. A perspective layer holds a slowly rotating faceted EMERALD JEWEL — a
- *     drei MeshTransmissionMaterial dodecahedron tinted with an emerald
- *     attenuation + gold-leaning chromatic dispersion, lit by emissive
- *     Lightformers (champagne key, emerald fill, gold rim). The gem tilts toward
- *     the cursor and breathes. Postprocessing Bloom adds the opulent glow.
+ * REBRANDED to the real Sousan identity: greyscale with a single hot-pink pop,
+ * mirroring the pink-on-greyscale hero portrait. Two layered canvases compose a
+ * light study:
+ *  1. An orthographic full-bleed backdrop renders slow refractive HOT-PINK
+ *     caustics rippling over a deep CHARCOAL void (custom shader) — one pink key
+ *     light moving across a near-black studio. It "settles" (brightens) as the
+ *     hero loads via a reveal uniform.
+ *  2. A perspective layer holds a slowly rotating faceted NEUTRAL-GLASS gem — a
+ *     drei MeshTransmissionMaterial dodecahedron with neutral-grey attenuation +
+ *     chromatic dispersion, lit by emissive Lightformers (cool-white key, grey
+ *     fill, HOT-PINK rim). The gem tilts toward the cursor and breathes;
+ *     postprocessing Bloom blooms the pink cores. No green/gold anywhere.
  *
  * Distinct from siblings: The Luxe is a molten liquid-GOLD membrane; Encore is
- * a clear white crystal in god-rays. Sousan is a refractive EMERALD jewel over
- * GOLD CAUSTICS — jewel light, not molten metal, not a clinical prism.
+ * a clear white crystal in god-rays. Sousan is a monochrome glass gem under
+ * HOT-PINK caustics — editorial pink-on-greyscale, not jewel-couture.
  *
  * Loaded ONLY via dynamic({ ssr:false }) from CausticsHero (a "use client"
  * module) — WebGL/R3F is not SSR-safe. A static CSS caustics gradient is shown
@@ -37,13 +39,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { causticFragmentShader, causticVertexShader } from "./caustics-shaders";
 
-/* Brand palette as THREE colors (kept in JS to mirror brand.css). */
+/* Brand palette as THREE colors (kept in JS to mirror brand.css).
+   REBRANDED to the real identity: greyscale studio + ONE hot-pink pop. All the
+   old emerald/gold stops are gone — the void is near-black charcoal, the caustic
+   "key" is hot pink (#E6007E / #F0338F), and the gem itself is neutral glass so
+   it reads monochrome with pink light playing across it. (var keys kept.) */
 const PALETTE = {
-  void0: "#0c2a22", // deep emerald shadow
-  void1: "#14463a", // raised emerald
-  gold: "#f0dca0", // champagne caustic
-  jewel: "#3fae84", // emerald jewel highlight
-  attenuation: "#2f8f6e", // emerald interior absorption of the gem
+  void0: "#0d0d0d", // deep charcoal shadow
+  void1: "#1f1f1f", // raised charcoal
+  gold: "#f0338f", // hot-pink caustic light (the pop)
+  jewel: "#cfcfcf", // light-grey highlight (neutral, no green)
+  attenuation: "#bdbdbd", // neutral grey interior absorption of the gem
 };
 
 /* ---- Caustic-light backdrop (orthographic, full-bleed) ---- */
@@ -102,7 +108,7 @@ function CausticBackdrop({
   );
 }
 
-/* ---- The refractive emerald jewel ---- */
+/* ---- The refractive neutral-glass gem ---- */
 function Jewel({
   pointer,
   lite,
@@ -152,7 +158,7 @@ function Jewel({
             temporalDistortion={0.05}
             clearcoat={1}
             clearcoatRoughness={0.05}
-            color="#eafff5"
+            color="#fdfdfd"
             attenuationColor={PALETTE.attenuation}
             attenuationDistance={1.4}
             background={new THREE.Color(PALETTE.void0)}
@@ -169,43 +175,43 @@ function StudioLights() {
     <>
       <ambientLight intensity={0.3} />
       <Environment resolution={256} frames={1}>
-        {/* Warm champagne key from upper-left */}
+        {/* Cool-white key from upper-left (neutral studio light) */}
         <Lightformer
           form="rect"
           intensity={3.6}
-          color="#f6e8c2"
+          color="#fafafa"
           position={[-3.4, 3.4, 2]}
           rotation={[-Math.PI / 5, 0, 0]}
           scale={[5, 9, 1]}
         />
-        {/* Emerald fill from the right — the brand's jewel undertone */}
+        {/* Neutral-grey fill from the right (no color cast) */}
         <Lightformer
           form="rect"
           intensity={2.2}
-          color="#2f9c76"
+          color="#9a9a9a"
           position={[4, 1.2, 1]}
           rotation={[0, -Math.PI / 2.4, 0]}
           scale={[6, 6, 1]}
         />
-        {/* Gold rim from behind to define the facets */}
+        {/* HOT-PINK rim from behind — the one statement color on the facets */}
         <Lightformer
           form="ring"
-          intensity={2.4}
-          color="#f0d79a"
+          intensity={2.6}
+          color="#f0338f"
           position={[1.5, 2.4, -3.5]}
           scale={[3.5, 3.5, 1]}
         />
-        {/* Deep emerald under-glow */}
+        {/* Deep charcoal under-glow */}
         <Lightformer
           form="circle"
-          intensity={1.6}
-          color="#1d6b53"
+          intensity={1.5}
+          color="#2a2a2a"
           position={[-1.5, -2.8, -3]}
           scale={[7, 7, 1]}
         />
       </Environment>
-      {/* Directional key to throw caustic glints across the facets */}
-      <directionalLight position={[-4, 5, 3]} intensity={1.1} color="#fff4d8" />
+      {/* Directional key to throw glints across the facets (cool white) */}
+      <directionalLight position={[-4, 5, 3]} intensity={1.1} color="#ffffff" />
     </>
   );
 }
@@ -264,7 +270,7 @@ export default function CausticsScene({ lite = false }: CausticsSceneProps) {
         pointer.current.y = 0;
       }}
     >
-      {/* Orthographic full-bleed gold caustics over emerald void */}
+      {/* Orthographic full-bleed hot-pink caustics over charcoal void */}
       <Canvas
         orthographic
         frameloop={frameloop}
@@ -297,8 +303,8 @@ export default function CausticsScene({ lite = false }: CausticsSceneProps) {
             scale={[6, 5, 3]}
             size={2.2}
             speed={0.26}
-            opacity={0.45}
-            color="#f2e3b8"
+            opacity={0.5}
+            color="#f0338f"
           />
         )}
         <EffectComposer enableNormalPass={false}>

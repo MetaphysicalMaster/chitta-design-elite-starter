@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 
 const PERKS = [
   {
-    title: "Allē by Allergan",
-    body: "Earn and redeem rewards on BOTOX® & JUVÉDERM® — the treatments you already love.",
+    title: "Allē & ASPIRE rewards",
+    body: "Earn and redeem on the Allergan & Galderma treatments you already trust.",
   },
   {
     title: "Flexible payment",
@@ -27,7 +27,7 @@ const PERKS = [
 
 export function Financing() {
   return (
-    <section id="financing" className="relative scroll-mt-20 py-24 sm:py-28">
+    <section id="financing" className="relative scroll-mt-28 py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <Reveal>
           <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] p-8 sm:p-12 lg:p-16">
@@ -52,8 +52,9 @@ export function Financing() {
                   Rewards on the brands you already trust.
                 </h2>
                 <p className="mt-5 max-w-[44ch] font-light leading-relaxed text-[var(--color-fg-muted)]">
-                  As a Top 1% Allergan partner, your treatments earn Allē rewards
-                  automatically — and flexible-pay keeps premium care within reach.
+                  Through Allē and ASPIRE, your treatments earn rewards
+                  automatically — and flexible-pay keeps considered care within
+                  reach.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link href="#book" className={btnPrimary}>

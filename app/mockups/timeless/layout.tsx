@@ -1,36 +1,40 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./brand.css";
 
-/* Cormorant Garamond — a high-contrast, editorial Garamond display with
-   generous ascenders and an unhurried, heirloom-luxury voice. Set in the
-   aubergine-ink + brass world it reads "trusted for a decade, ahead for the
-   next." Deliberately distinct from the sibling builds (Avail → Space Grotesk,
-   Happy Clinic → Sora, SimplySkin → Fraunces): older, warmer, more literary. */
-const cormorant = Cormorant_Garamond({
+/* Open Sans — the live brand's ACTUAL typeface. A friendly, highly legible
+   humanist sans that reads warm and optimistic at every weight. Wired twice
+   from one family: a LIGHT (300) axis drives the display wordmark + headings
+   (--font-display) for the clean, airy feel of the real site, and the regular
+   range (400/600/700) drives body, UI and fine print (--font-body). The whole
+   identity is Open Sans — no serif, no script — exactly as the client's own
+   site presents it. Deliberately distinct from the sibling builds' display
+   faces (Darst → Newsreader; SimplySkin → Fraunces; Sousan → Playfair). */
+const openSans = Open_Sans({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["300", "400", "600", "700"],
 });
 
-/* Inter — quiet, neutral clinical sans for body copy, UI and fine print. */
-const inter = Inter({
+/* Same family for body — Open Sans regular range. Two CSS var handles
+   (--font-display + --font-body) both point at Open Sans so brand.css can lean
+   light for headings and regular for text without a second typeface. */
+const openSansBody = Open_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  /* The identity correction in a single tag: the live site's Google title reads
-     "Family Medicine Physicians" — this reads as the luxury aesthetics
-     institution it actually is. */
+  /* The identity, true to the live brand's own warm, friendly voice — now
+     dressed in the genuinely-good ORANGE palette the client already owns,
+     and foregrounding the two real physicians + their actual Cincinnati NAP. */
   title:
-    "Timeless Aesthetics MedSpa — Luxury Injectables, Laser & Skin · Cincinnati, OH | Drs. McCarren & Heuker",
+    "Timeless Aesthetics MedSpa — Botox, Filler, Laser & Secret RF · Cincinnati, OH | Drs. Heuker & McCarren",
   description:
-    "Cincinnati's heirloom-luxury med spa — physician-led by Dr. Timothy McCarren & Dr. Sonja Heuker. 4.9★, 10+ years. Injectables, Secret RF & laser, and medical skin care at 3260 Westbourne Dr. Trusted for a decade, ahead for the next. Book in 30 seconds.",
+    "Cincinnati's friendly, physician-run medspa — led by Dr. Sonja Heuker, MD & Dr. Timothy McCarren, MD. Botox & Xeomin, filler, laser hair removal, Secret RF micro-needling and medical skin care at 3260 Westbourne Dr. Rejuvenate. Renew. Refresh. Book in 30 seconds.",
   robots: { index: false, follow: false },
 };
 
@@ -40,7 +44,7 @@ export default function TimelessLayout({
   return (
     <div
       data-brand="timeless"
-      className={`${cormorant.variable} ${inter.variable} min-h-screen`}
+      className={`${openSans.variable} ${openSansBody.variable} min-h-screen`}
     >
       {children}
     </div>

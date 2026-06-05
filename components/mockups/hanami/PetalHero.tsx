@@ -6,9 +6,13 @@
  * The drifting cherry-blossom petal field (R3F) is dynamically imported with
  * ssr:false (only legal inside a client component — Next 16). Until it mounts
  * (and on mobile / reduced-motion / no-WebGL), we render the static CSS layered
- * petal field (`.sakura-fallback`) so there is never a blank frame, no CLS, and
- * full graceful degradation. The hero is LIGHT (rice-paper dawn) so copy is
- * sumi-ink — airy, botanical, distinct from the dark Timeless sibling hero.
+ * petal field (`.sakura-fallback--ink`) so there is never a blank frame, no CLS,
+ * and full graceful degradation.
+ *
+ * REBRAND: the hero is now SUMI-BLACK luxury — real sakura-pink petals drift
+ * over a black-tie night with gold dawn glints; copy is rice-paper white + a
+ * gold sheen highlight. This is the real brand's black + gold + sakura world and
+ * ties straight into the gold awards rail below.
  *
  * The scroll progress drives a shared `flowRef` (1 = full petal storm at the
  * top → calm as you descend), passed into the scene so the field settles into
@@ -96,27 +100,55 @@ export function PetalHero() {
     [1, 1, prefersReduced ? 1 : 0],
   );
 
-  const container = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: prefersReduced ? 0 : 0.09, delayChildren: 0.12 },
+  // Hero entrance — FAIL-SAFE, STATE-DRIVEN PLAY ON MOUNT.
+  //
+  // The hero is ALWAYS above the fold, so its copy must be visible the instant
+  // the screen paints — never gated on an animation lifecycle. Two prior
+  // regressions proved this: whileInView's in-view callback never fired at mount
+  // during the R3F-canvas + Lenis-init race (black void), and the plain
+  // initial→animate spread ALSO stranded every element at its `initial`
+  // opacity:0/translateY(18px) on cold load when the play-on-mount keyframe
+  // failed to apply — the same race, just killing the mount path instead.
+  //
+  // The cure: visibility can NEVER depend on a JS animation completing.
+  //  1. `initial={false}` → Framer renders the element at its CURRENT animate
+  //     target on first paint (no opacity:0 initial frame to get stuck on); SSR
+  //     and a stalled JS runtime both leave the copy fully visible.
+  //  2. A post-mount `useEffect` flips `mounted` AFTER first paint, so the
+  //     entrance is a state transition from the (already-visible-as-fallback)
+  //     pre-mount target to the same visible resting state — independent of
+  //     scroll, IntersectionObserver, and the canvas race.
+  //  3. A CSS safety net (`.hn-hero-copy { opacity: 1 }`) guarantees the column
+  //     is opaque even if Framer never hydrates at all.
+  // Reduced-motion hard-cuts to visible (no transform, no ramp delay).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const item = (i: number) => ({
+    initial: false as const,
+    animate: mounted
+      ? { opacity: 1, y: 0 }
+      : { opacity: 1, y: prefersReduced ? 0 : 18 },
+    transition: {
+      duration: 0.85,
+      ease,
+      delay: prefersReduced ? 0 : 0.1 + i * 0.09,
     },
-  };
-  const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 18 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
-  };
+  });
 
   return (
     <section
       id="top"
       ref={sectionRef}
       aria-label="Hanami Medspa — the art of becoming, in bloom"
-      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden"
+      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden bg-[var(--night-0)]"
     >
-      {/* Layer 0: static rice-paper dawn + layered petal field — always painted
-          (SSR + fallback, zero CLS). */}
-      <div className="sakura-fallback absolute inset-0 -z-20" aria-hidden="true" />
+      {/* Layer 0: static sumi-black night + layered petal field — always painted
+          (SSR + fallback, zero CLS). The section itself carries the sumi-black
+          base so the hero is solid black-tie even before the canvas/fallback. */}
+      <div className="sakura-fallback sakura-fallback--ink absolute inset-0 -z-20" aria-hidden="true" />
 
       {/* Layer 1: WebGL petal field (desktop, motion-ok, webgl-ok only) */}
       {enabled && (
@@ -125,35 +157,36 @@ export function PetalHero() {
         </div>
       )}
 
-      {/* Legibility wash — the hero is LIGHT, so we LIGHTEN behind the copy
-          (left/bottom) to keep sumi-ink copy WCAG-AA over any frame. */}
+      {/* Legibility wash — the hero is DARK, so we DEEPEN behind the COPY COLUMN
+          only (left). Capped to ~60% width (where the copy sits) so the falling
+          sakura on the RIGHT read bright and pink instead of being muddied to
+          maroon by a full-width scrim. Copy stays WCAG-AA over any frame. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(99%_0.005_352_/_0.9)] via-[oklch(99%_0.005_352_/_0.5)] to-transparent"
+        className="absolute inset-y-0 left-0 -z-10 w-full max-w-[62%] bg-gradient-to-r from-[oklch(13%_0.003_60_/_0.86)] via-[oklch(14%_0.003_60_/_0.4)] to-transparent lg:max-w-[68%] lg:from-[oklch(13%_0.003_60_/_0.9)] lg:via-[oklch(14%_0.003_60_/_0.46)]"
       />
+      {/* a gentle bottom anchor for the stat rail — lightened so it scrims the
+          copy, not the petals (the densest near-layer reads sakura at the base). */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(99%_0.006_352_/_0.85)] via-transparent to-[oklch(99%_0.006_352_/_0.35)]"
+        className="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-[oklch(13%_0.003_60_/_0.62)] to-transparent"
       />
 
       <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
         style={{ y: copyY, opacity: copyOpacity }}
-        className="mx-auto w-full max-w-6xl px-6 pt-28 pb-16 sm:px-8 md:pt-32"
+        className="hn-hero-copy mx-auto w-full max-w-6xl px-6 pt-28 pb-16 sm:px-8 md:pt-32"
       >
         <motion.p
-          variants={item}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--sakura)]/55 bg-[oklch(99%_0.006_352_/_0.6)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[var(--color-accent-deep)] backdrop-blur-md"
+          {...item(0)}
+          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[oklch(82%_0.09_88_/_0.4)] bg-[oklch(20%_0.006_60_/_0.55)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-accent-bright)] backdrop-blur-md"
         >
           <span aria-hidden className="petal-mark h-2.5 w-2.5" />
-          Fort Worth, Texas · 花見 · Cherry-blossom viewing
+          DFW Favorites Winner · Fort Worth Top Doctor · 花見
         </motion.p>
 
         <motion.h1
-          variants={item}
-          className="font-display max-w-[16ch] text-balance text-[var(--color-fg)]"
+          {...item(1)}
+          className="font-display max-w-[15ch] text-balance text-[var(--color-bg)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.04 }}
         >
           The art of becoming —{" "}
@@ -161,13 +194,13 @@ export function PetalHero() {
         </motion.h1>
 
         <motion.p
-          variants={item}
-          className="mt-7 max-w-[52ch] text-pretty font-light text-[var(--color-fg-muted)]"
+          {...item(2)}
+          className="mt-7 max-w-[52ch] text-pretty font-light text-[var(--color-bg)]/78"
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.64 }}
         >
-          A botanical med spa in Fort Worth, where every face is shaped by one
-          set of hands —{" "}
-          <span className="font-medium text-[var(--color-fg)]">
+          Fort Worth&apos;s award-winning med spa, where every face is shaped by
+          one set of hands —{" "}
+          <span className="font-medium text-[var(--color-bg)]">
             Dr. Elaine Phuah
           </span>
           , DO, MBA. Injectables, laser &amp; IPL, held to the quiet patience of{" "}
@@ -176,51 +209,53 @@ export function PetalHero() {
         </motion.p>
 
         <motion.div
-          variants={item}
+          {...item(3)}
           className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
         >
           <Link
             href="#book"
             className={cn(
               "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "bg-[var(--color-accent-deep)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-              "shadow-[0_18px_50px_-18px_oklch(60%_0.15_356_/_0.6)]",
+              "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
+              "shadow-[0_18px_50px_-18px_oklch(72%_0.11_86_/_0.6)]",
               "transition-[transform,box-shadow] duration-300 ease-out",
-              "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(60%_0.15_356_/_0.78)]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
+              "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(78%_0.11_86_/_0.78)]",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
-            Book in 30 seconds
+            Book your consultation
             <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
           <Link
             href="#injector"
             className={cn(
               "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "border border-[var(--sakura)]/60 bg-[oklch(99%_0.006_352_/_0.55)] font-medium text-[var(--color-fg)] backdrop-blur-md",
-              "transition-colors duration-300 hover:bg-[oklch(96%_0.02_352_/_0.7)]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
+              "glass-dark font-medium text-[var(--color-bg)]",
+              "transition-colors duration-300 hover:bg-[oklch(26%_0.006_60_/_0.6)]",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
             Meet Dr. Phuah
           </Link>
         </motion.div>
 
+        {/* Hero stats lead with the OWNABLE differentiator (one injector — the
+            Seed Thought) and let the TrustBar + AwardsRail carry the honors, so
+            the same two awards aren't stated three times in the first screen. */}
         <motion.dl
-          variants={item}
+          {...item(4)}
           className="mt-14 flex flex-wrap gap-x-10 gap-y-5 sm:gap-x-14"
         >
           {[
-            { v: "4.9★", k: "Across 243 reviews" },
-            { v: "One", k: "Injector · Dr. Phuah, every face" },
+            { v: "One injector", k: "Dr. Phuah places every syringe" },
             { v: "DO · MBA", k: "Physician-led, in person" },
-            { v: "8th Ave", k: "800 8th Ave · Suite 508" },
+            { v: "Fort Worth", k: "8th Ave · by appointment" },
           ].map((s) => (
             <div key={s.k} className="flex flex-col">
-              <dt className="font-display text-[1.85rem] leading-none tnum text-[var(--color-fg)]">
+              <dt className="font-display text-[1.7rem] leading-none tnum text-[var(--color-accent-bright)] sm:text-[1.85rem]">
                 {s.v}
               </dt>
-              <dd className="mt-2 max-w-[18ch] text-xs uppercase tracking-[0.14em] text-[var(--color-fg-subtle)]">
+              <dd className="mt-2 max-w-[18ch] text-xs uppercase tracking-[0.14em] text-[var(--color-bg)]/68">
                 {s.k}
               </dd>
             </div>
@@ -228,17 +263,19 @@ export function PetalHero() {
         </motion.dl>
       </motion.div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue — same fail-safe pattern: initial:false so it can't freeze
+          invisible if the mount keyframe never applies; it simply fades in once
+          `mounted` flips (and is harmlessly visible if Framer never hydrates). */}
       <motion.div
         aria-hidden="true"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={false}
+        animate={{ opacity: mounted ? 1 : 0.0001 }}
         transition={{ delay: 1.2, duration: 0.9 }}
         className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center"
       >
-        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[var(--sakura)]/60 bg-[oklch(99%_0.006_352_/_0.45)] p-1 backdrop-blur-sm">
+        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[oklch(82%_0.09_88_/_0.45)] bg-[oklch(20%_0.006_60_/_0.45)] p-1 backdrop-blur-sm">
           <motion.span
-            className="block h-2 w-1 rounded-full bg-[var(--color-accent-deep)]"
+            className="block h-2 w-1 rounded-full bg-[var(--color-accent-bright)]"
             animate={prefersReduced ? {} : { y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />

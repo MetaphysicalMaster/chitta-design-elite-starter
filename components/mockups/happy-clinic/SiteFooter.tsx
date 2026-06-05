@@ -1,30 +1,31 @@
 "use client";
 
 /**
- * SiteFooter — night-aurora footer with ONE clean, semantic NAP (single
- * authoritative domain + single Denver address). The footer explicitly retires
- * the duplicate /homecopy page and the abandoned denverbotox.biz domain — the
- * whole SEO-consolidation story, made literal. Wordmark, links, legal.
+ * SiteFooter — navy-night footer with ONE clean, semantic NAP (single
+ * authoritative domain + the real Denver address + phone). Recreated Happy
+ * Clinic spiral logo (white-on-navy), links, hours, legal. Pale-yellow booking
+ * CTA, pine-teal directions link — the real brand by night.
  */
 
 import Link from "next/link";
+import { HappyLogo } from "./HappyLogo";
 
 const NAP = {
   name: "Happy Clinic Denver",
-  street: "1241 S Parker Rd, Ste 100",
+  street: "1241 S Parker Rd, STE 100",
   city: "Denver",
   state: "CO",
   zip: "80231",
-  phoneDisplay: "(720) 747-9999",
+  phoneDisplay: "720-747-9999",
   phoneTel: "+17207479999",
   domain: "happyclinicdenver.com",
 };
 
 const SERVICE_LINKS = [
-  "Botox & Injectables",
+  "Botox & Dysport",
   "Juvéderm & Filler",
-  "Lasers & Energy",
   "Skin & Facials",
+  "Lasers & Energy",
   "Body Contouring",
 ];
 
@@ -45,31 +46,19 @@ export function SiteFooter() {
         {/* Top: brand + booking nudge */}
         <div className="flex flex-col gap-8 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <Link href="#top" className="flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="grid h-9 w-9 place-items-center rounded-lg text-white"
-                style={{ background: "linear-gradient(140deg, var(--color-accent), var(--color-teal))" }}
-              >
-                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-                  <path d="M3 19 L9 8 L13 14 L16 9 L21 19 Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <span className="font-display text-xl font-semibold tracking-tight text-white">
-                Happy Clinic Denver
-              </span>
+            <Link href="#top" aria-label="Happy Clinic Denver — home" className="inline-flex">
+              <HappyLogo tone="dark" size="lg" />
             </Link>
-            <p className="mt-4 max-w-md text-sm text-white/60">
-              Colorado&rsquo;s #1 Botox &amp; Juvéderm clinic, led by Allergan
-              national trainer Dr. Phil Nguyen, MD. One flagship, one
-              authoritative home —{" "}
+            <p className="mt-5 max-w-md text-sm text-white/60">
+              <span className="font-display-em text-white/90">Subtle is The New WOW.</span>{" "}
+              Natural, physician-administered cosmetic injections led by Dr. Phil
+              Hong Nguyen, MD — one authoritative home at{" "}
               <span className="text-white/80">{NAP.domain}</span>.
             </p>
           </div>
           <Link
             href="#book"
-            className="inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 font-semibold text-[var(--color-accent-fg)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            style={{ background: "linear-gradient(120deg, var(--color-accent), var(--color-teal-deep))" }}
+            className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)] shadow-[0_14px_38px_-16px_oklch(52%_0.087_178_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Book in 30 seconds
             <span aria-hidden>→</span>
@@ -114,7 +103,7 @@ export function SiteFooter() {
                 href={`https://maps.google.com/?q=${encodeURIComponent(`${NAP.name} ${NAP.street} ${NAP.city} ${NAP.state}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm text-[var(--color-teal-bright)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm text-[var(--color-accent-bright)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Get directions
                 <span aria-hidden>→</span>
@@ -136,16 +125,15 @@ export function SiteFooter() {
             </dl>
           </div>
 
-          {/* The consolidation note — explicitly killing the amateur footprint */}
+          {/* Brand promise note */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">
-              One home, one search footprint
+              The Happy Clinic promise
             </h3>
             <p className="mt-4 text-sm leading-relaxed text-white/60">
-              This flagship replaces the old duplicate page and the abandoned
-              second domain — one canonical site at{" "}
-              <span className="text-white/80">{NAP.domain}</span>, so every search
-              result points to the same authoritative practice.
+              Results that look like you, only refreshed. Every treatment is
+              physician-administered by Dr. Phil — subtle by design, natural by
+              standard.
             </p>
           </div>
         </div>
@@ -154,8 +142,9 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Happy Clinic Denver. All rights reserved.</p>
           <p className="text-white/35">
-            Design mockup — illustrative pitch concept · sample imagery &amp; content.
-            BOTOX® &amp; JUVÉDERM® are registered trademarks of AbbVie/Allergan.
+            Design mockup — illustrative pitch concept · review copy is sample
+            content. BOTOX®, JUVÉDERM® &amp; Dysport® are registered trademarks of
+            their respective owners.
           </p>
         </div>
       </div>

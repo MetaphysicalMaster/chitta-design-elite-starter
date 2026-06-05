@@ -2,14 +2,15 @@
 
 /**
  * BrandImage — the single, consistent treatment for every piece of brand
- * "photography" on the page. There are NO external assets in this mockup, so
- * each slot renders an on-brand gradient PLATE (marble / emerald / gold) that
- * reads as one cohesive couture shoot, plus an explicit "sample" chip so the
- * prospect understands these are placeholders for their real imagery.
+ * "photography" on the page (apart from the real hero.jpg). Each slot renders
+ * an on-brand gradient PLATE in the GREYSCALE-with-hot-pink system (tone keys
+ * marble / emerald / gold are kept for compatibility but now map to light-grey
+ * / dark-grey / hot-pink plates), so all placeholders read as one cohesive
+ * monochrome-with-pink shoot, plus an explicit "sample" chip.
  *
  * Craft baked in:
  *  - CSS `aspect-ratio` → zero CLS, no width/height race
- *  - rounded corners + marble hairline border consistent with the system
+ *  - rounded corners + neutral hairline border consistent with the system
  *  - optional gentle scroll parallax on the plate (reduced-motion safe)
  *  - optional scrim so overlaid copy holds WCAG-AA contrast
  */
@@ -28,7 +29,8 @@ export type BrandImageProps = {
   /** alt text describing the intended photograph (for the sample caption). */
   alt: string;
   aspect: string;
-  /** plate tone — the cohesive couture grade. */
+  /** plate tone (names kept): marble = light grey, emerald = dark grey,
+      gold = hot-pink. The cohesive monochrome-with-pink grade. */
   tone?: "marble" | "emerald" | "gold";
   radius?: "lg" | "xl" | "2xl" | "3xl" | "full";
   /** bottom scrim strength for legibility of overlaid copy. */
@@ -83,9 +85,9 @@ export function BrandImage({
     <div
       ref={wrapRef}
       role="img"
-      aria-label={`${alt} (sample placeholder)`}
+      aria-label={sample ? `${alt} (sample placeholder)` : alt}
       className={cn(
-        "relative isolate overflow-hidden",
+        "sn-plate-host relative isolate overflow-hidden",
         RADIUS[radius],
         "border border-[var(--color-border)]",
         className,
@@ -110,15 +112,15 @@ export function BrandImage({
           className={cn(
             "pointer-events-none absolute inset-0",
             scrim === "soft"
-              ? "bg-gradient-to-t from-[oklch(18%_0.045_166_/_0.6)] via-[oklch(18%_0.045_166_/_0.12)] to-transparent"
-              : "bg-gradient-to-t from-[oklch(15%_0.04_166_/_0.82)] via-[oklch(18%_0.045_166_/_0.36)] to-[oklch(20%_0.045_166_/_0.08)]",
+              ? "bg-gradient-to-t from-[oklch(15%_0_0_/_0.6)] via-[oklch(15%_0_0_/_0.12)] to-transparent"
+              : "bg-gradient-to-t from-[oklch(12%_0_0_/_0.82)] via-[oklch(15%_0_0_/_0.36)] to-[oklch(18%_0_0_/_0.08)]",
           )}
         />
       )}
 
       {/* "sample" chip — honest placeholder marker */}
       {sample && (
-        <span className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-[oklch(100%_0_0_/_0.35)] bg-[oklch(18%_0.04_166_/_0.5)] px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-[oklch(95%_0.02_92)] backdrop-blur-sm">
+        <span className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-[oklch(100%_0_0_/_0.35)] bg-[oklch(15%_0_0_/_0.5)] px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-[oklch(96%_0_0)] backdrop-blur-sm">
           Sample
         </span>
       )}

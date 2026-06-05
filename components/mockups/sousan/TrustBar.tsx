@@ -1,32 +1,32 @@
 "use client";
 
 /**
- * TrustBar — the quiet authority band directly under the hero. Three pillars
- * (29 years · River Oaks · 5-star reputation) on a marble strip with gold
- * hairline dividers. Establishes credibility before any scroll.
+ * TrustBar — the quiet authority band under the awards strip. Three pillars
+ * (Houston · medical-grade · 5-star) on a clean white strip with hot-pink
+ * hairline dividers. Establishes credibility before the deeper scroll.
  */
 
 import { RevealGroup, RevealItem } from "./primitives";
 
 const PILLARS = [
   {
-    v: "29 years",
-    k: "A River Oaks institution since 1995",
+    v: "Houston, TX",
+    k: "Your neighborhood beauty destination",
   },
   {
-    v: "River Oaks",
-    k: "Houston's premier beauty corridor",
+    v: "Medical-grade",
+    k: "IPL, HydraFacial MD & advanced facials",
   },
   {
     v: "5-star",
-    k: "Reputation earned, not advertised",
+    k: "Loved for natural, transformative results",
   },
 ];
 
 export function TrustBar() {
   return (
     <section
-      aria-label="Why River Oaks trusts Sousan"
+      aria-label="Why Houston trusts Sousan"
       className="relative border-b border-[var(--color-border)] bg-[var(--color-bg-elevated)]"
     >
       <RevealGroup

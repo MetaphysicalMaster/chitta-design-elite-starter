@@ -1,10 +1,12 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Over the dark candy-night bubble hero it's
- * a near-transparent bar with cream text; once scrolled it frosts to a candy-
- * cream glass with plum-ink text. A glossy bubble monogram wordmark + native
- * "Book" CTA. Mobile: accessible disclosure menu with focus-visible rings + Esc.
+ * SiteNav — sticky glass navigation. Over the dark black bubble-bar hero it's a
+ * near-transparent bar with white text + the white martini-syringe mark; once
+ * scrolled it frosts to a blush-cream glass with ink text + the charcoal mark.
+ * The recreated Beautox Bar logo (martini glass with a syringe — the brand's
+ * whole "shots & beauty mingle" pun) anchors it, plus a native "Book" CTA.
+ * Mobile: accessible disclosure menu with focus-visible rings + Esc.
  */
 
 import Link from "next/link";
@@ -12,12 +14,18 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { PRIMARY_PHONE_DISPLAY, PRIMARY_PHONE_TEL } from "./nap";
+import { BeautoxLogo } from "./BeautoxLogo";
 
+/* Order mirrors the page flow: menu → proof → people → locations → book. The
+   team link reads "Our Injectors" (plain trust for the highest-anxiety
+   who-holds-the-needle surface) — the section eyebrow keeps the "Behind the
+   bar" charm. */
 const LINKS = [
-  { href: "#locations", label: "Locations" },
-  { href: "#services", label: "Menu" },
+  { href: "#services", label: "The Menu" },
   { href: "#results", label: "Results" },
   { href: "#reviews", label: "Reviews" },
+  { href: "#team", label: "Our Injectors" },
+  { href: "#locations", label: "Locations" },
   { href: "#book", label: "Book" },
 ];
 
@@ -39,7 +47,7 @@ export function SiteNav() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Cream over the dark hero; plum-ink once the candy-cream glass frosts in.
+  // White over the black hero; ink once the blush-cream glass frosts in.
   const overHero = !scrolled && !open;
 
   return (
@@ -58,39 +66,15 @@ export function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — a glossy candy bubble beside the Bricolage name. */}
+        {/* Wordmark — the recreated martini-syringe mark + BEAUTOX BAR serif
+            lockup. Tone flips with the surface: white over the black hero,
+            charcoal once the blush glass frosts in. */}
         <Link
           href="#top"
-          className="group flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          aria-label="Beautox Bar — home"
+          className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
-          <span
-            aria-hidden
-            className="css-bubble grid h-9 w-9 place-items-center shadow-[0_8px_20px_-10px_oklch(55%_0.2_352_/_0.7)]"
-          >
-            <span
-              className="font-display text-[1.05rem] leading-none"
-              style={{ color: "var(--color-accent-fg)" }}
-            >
-              B
-            </span>
-          </span>
-          <span
-            className={cn(
-              "font-display text-lg tracking-tight transition-colors",
-              overHero ? "text-[var(--color-bg)]" : "text-[var(--color-fg)]",
-            )}
-          >
-            Beautox
-            <span
-              className={cn(
-                "ml-1.5 align-middle text-[0.62rem] font-sans font-semibold uppercase tracking-[0.28em]",
-                overHero ? "text-[var(--candy-pink)]" : "text-[var(--color-accent-deep)]",
-              )}
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              Bar
-            </span>
-          </span>
+          <BeautoxLogo tone={overHero ? "light" : "ink"} size="sm" />
         </Link>
 
         {/* Desktop links */}
@@ -102,7 +86,7 @@ export function SiteNav() {
               className={cn(
                 "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 overHero
-                  ? "text-[oklch(92%_0.03_330_/_0.86)] hover:text-[var(--color-bg)]"
+                  ? "text-[oklch(92%_0.01_350_/_0.86)] hover:text-[var(--color-bg)]"
                   : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
               )}
@@ -119,7 +103,7 @@ export function SiteNav() {
             className={cn(
               "hidden rounded-full px-3.5 py-2 text-sm font-semibold tnum transition-colors sm:inline-flex",
               overHero
-                ? "text-[var(--color-bg)] hover:text-[var(--candy-pink)]"
+                ? "text-[var(--color-bg)] hover:text-[var(--color-accent-bright)]"
                 : "text-[var(--color-fg)] hover:text-[var(--color-accent-deep)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
@@ -130,11 +114,11 @@ export function SiteNav() {
             href="#book"
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full gloss-pill px-5 py-2.5 text-sm font-semibold text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-14px_oklch(58%_0.22_352_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_30px_-14px_oklch(60%_0.16_356_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
           >
-            Book
+            Book a pour
             <span
               aria-hidden
               className="transition-transform duration-300 group-hover:translate-x-0.5"

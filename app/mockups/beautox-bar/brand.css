@@ -2,100 +2,113 @@
    Beautox Bar — Scoped Brand System (OKLch)
    Overrides shared --color-* tokens ONLY within [data-brand="beautox-bar"].
 
-   Brand essence: PLAYFUL PREMIUM POP. Punchy candy magenta + electric lilac on
-   a soft warm cream, with candy-gloss highlights and a bubbly, witty Jester-
-   Everyman voice ("Botox without the boring"). This is the AFTER for a flat
-   Weebly-era builder that can't scale a 3-location brand. The reframe: one fun,
-   premium, growth-ready multi-location platform timed to the White Bear
-   Township opening — built to add location 4/5/6 without a rebuild.
+   Brand essence (RE-SKINNED to the client's REAL identity — beautoxbar.com,
+   Maple Grove + White Bear Lake, MN): a playful, witty, feminine COCKTAIL BAR
+   for injectables — "Where Shots And Beauty Mingle." The real palette is HOT
+   PINK (#F06BA8) as the signature, a PALE-PINK wash (#FCE8F3) for soft section
+   beds, and BLACK (#111111) for the bold sections / promo surfaces, on clean
+   white. Treatments are "the menu"; "Happy Hour" and the martini-glass-with-a-
+   syringe mark carry the whole "shots & beauty" pun. A GOLD note appears on the
+   black surfaces (lifted straight from the brand's June-specials / peptides
+   promos). Voice: bar puns, feminine confidence — fun, but premium.
 
-   Deliberately distinct from siblings:
-     · Avail        → cobalt slipstream (graphite + electric blue)
-     · Happy Clinic → aurora violet→teal, optimistic, saturated
-     · SimplySkin   → restrained platinum, warm nude, one teal note
-     · Timeless     → aubergine-ink + aged brass on warm ivory
-     · Hanami       → sakura-pink + sumi-ink on rice-paper white
-     · Sousan       → emerald jewel + champagne-gold on cream marble
-     · Darst        → deep clinical navy + a single oxblood on paper-white
-     · Beautox Bar  → CANDY MAGENTA + ELECTRIC LILAC on SOFT CREAM. Glossy,
-                      bubbly, fun-but-premium. Where Hanami's pink is delicate
-                      and washi-quiet, Beautox is LOUD, saturated, candy-gloss
-                      pop — bubble-bar energy, not blossom restraint.
+   NOTE: the historical CSS var NAMES are retained (--candy-*, --night-*, --lilac*)
+   so every consuming component keeps working unchanged — only their VALUES are
+   re-tuned to the REAL hot-pink / pale-pink / black / gold identity. Read
+   "--candy-*" as "the pink/gold spectrum" and "--night-*" as "the black scale".
 
    Does NOT touch app/globals.css.
    ============================================================ */
 
 [data-brand="beautox-bar"] {
-  /* Surfaces — soft warm cream. A confection backdrop, never clinical white:
-     the faintest peach-cream breath so the candy magenta reads juicy. */
-  --color-bg: oklch(98.6% 0.012 60);
-  --color-bg-subtle: oklch(97% 0.018 50);
-  --color-bg-elevated: oklch(99.6% 0.006 70);
-  --color-bg-wash: oklch(95% 0.03 350); /* faint candy wash blocks */
+  /* Surfaces — clean white with the faintest blush warmth so the hot pink reads
+     juicy, never clinical. -wash is the real pale-pink #FCE8F3 section bed. */
+  --color-bg: oklch(99.2% 0.004 350);
+  --color-bg-subtle: oklch(97.4% 0.012 350); /* whisper-blush section bg */
+  --color-bg-elevated: oklch(100% 0 0); /* clean white cards */
+  --color-bg-wash: oklch(95% 0.03 350); /* the pale-pink #FCE8F3 wash blocks */
 
-  /* Foreground — a deep plum-ink. Not pure black: a rich aubergine-leaning ink
-     that belongs to the magenta family, AA-tuned on cream. */
-  --color-fg: oklch(24% 0.06 350);
-  --color-fg-muted: oklch(42% 0.05 348); /* AA on cream + subtle */
-  --color-fg-subtle: oklch(50% 0.045 350); /* AA at small sizes on cream */
+  /* Foreground — the brand's near-black ink (#111111), a hair warm so it sits
+     with the pink rather than reading cold. AA-tuned everywhere on white. */
+  --color-fg: oklch(22% 0.006 350);
+  --color-fg-muted: oklch(42% 0.012 350); /* AA on white + subtle */
+  --color-fg-subtle: oklch(52% 0.016 350); /* AA at small sizes on white */
 
-  /* Accent — the punchy CANDY MAGENTA. -deep clears AA for text on cream;
-     -bright is the candy-gloss glint reserved for fills / on-dark accents. */
-  --color-accent: oklch(58% 0.245 354);
-  --color-accent-fg: oklch(99% 0.008 60);
-  --color-accent-subtle: oklch(93% 0.06 352);
-  --color-accent-deep: oklch(50% 0.225 356); /* AA links / labels on cream */
-  --color-accent-bright: oklch(66% 0.27 352); /* glossy glints on dark only */
+  /* Accent — the signature HOT PINK (#F06BA8). -deep clears AA for text/links on
+     white; -bright is the saturated fill reserved for buttons / on-black glints. */
+  --color-accent: oklch(70% 0.17 357); /* #F06BA8 — buttons, accents */
+  --color-accent-fg: oklch(100% 0 0); /* white on the hot-pink fill */
+  --color-accent-subtle: oklch(95% 0.04 352); /* pale-pink chip bg */
+  --color-accent-deep: oklch(55% 0.2 357); /* AA links / labels on white */
+  --color-accent-bright: oklch(74% 0.18 356); /* glints on black only */
 
-  /* Electric lilac — the second pop. The bubble-bar's secondary candy. */
-  --lilac: oklch(66% 0.18 300);
-  --lilac-deep: oklch(52% 0.2 302); /* AA on cream for text */
-  --lilac-bright: oklch(74% 0.19 298); /* glints / on-dark */
-  --lilac-subtle: oklch(94% 0.045 300);
+  /* Secondary — the GOLD note from the promos (June-specials / peptides). Lives
+     mostly on the black surfaces. (var names kept as --lilac* for compatibility;
+     values are GOLD now.) -deep is AA-on-white if ever needed. */
+  --lilac: oklch(80% 0.12 86); /* warm gold */
+  --lilac-deep: oklch(58% 0.1 80); /* darker gold — AA on white */
+  --lilac-bright: oklch(86% 0.13 88); /* bright gold glint / on-black */
+  --lilac-subtle: oklch(95% 0.04 88); /* pale gold chip bg */
 
-  /* Candy spectrum stops — used by the WebGL bubble field + CSS fallback.
-     A juicy gradient read across the bubbles: magenta → lilac → a tangerine
-     pop highlight + a mint sparkle, all candy-glossy. */
-  --candy-magenta: oklch(62% 0.26 352);
-  --candy-pink: oklch(72% 0.19 348);
-  --candy-lilac: oklch(68% 0.18 300);
-  --candy-grape: oklch(54% 0.2 308);
-  --candy-tangerine: oklch(78% 0.16 56); /* warm pop highlight */
-  --candy-mint: oklch(86% 0.1 168); /* cool sparkle */
+  /* THIRD brand note — LAVENDER/LILAC. This is a genuine, prominent real brand
+     secondary (the Happy Hour artwork is hot-pink with lavender lettering + a
+     cream smiley). The brand runs TWO accent stories: gold-on-black (specials /
+     peptides) AND lavender-on-pink (happy hour). Additive — gold stays reserved
+     for the black promo surfaces; lavender is deployed in the light, playful
+     zones (Happy Hour panel) so happy-hour.jpg sits natively. */
+  --bx-lavender: oklch(80% 0.085 305); /* the soft lilac lettering tone */
+  --bx-lavender-deep: oklch(52% 0.13 305); /* AA on white — labels / chips */
+  --bx-lavender-subtle: oklch(95% 0.035 305); /* pale lilac chip bg */
 
-  /* Borders — warm cream hairlines with a candy whisper. */
-  --color-border: oklch(90% 0.025 350);
-  --color-border-subtle: oklch(93.5% 0.018 352);
-  --color-hairline: oklch(86% 0.03 350);
+  /* Pink/gold spectrum stops — used by the WebGL champagne-fizz field + CSS
+     fallback + plates. A cohesive cocktail palette: hot pink, soft blush, a deep
+     rose, a martini gold, plus a clean white-pearl fizz highlight.
+     (var names kept as --candy-* for compatibility.) */
+  --candy-magenta: oklch(70% 0.17 357); /* hot pink — the signature */
+  --candy-pink: oklch(80% 0.1 350); /* soft blush */
+  --candy-lilac: oklch(80% 0.12 86); /* martini gold */
+  --candy-grape: oklch(58% 0.16 358); /* deep rose */
+  --candy-tangerine: oklch(83% 0.12 78); /* warm champagne gold */
+  --candy-mint: oklch(94% 0.02 350); /* pearl fizz sparkle */
+
+  /* Borders — soft blush hairlines. */
+  --color-border: oklch(91% 0.014 350);
+  --color-border-subtle: oklch(94% 0.01 350);
+  --color-hairline: oklch(88% 0.018 350);
 
   --color-success: oklch(64% 0.15 160);
-  --color-warning: oklch(78% 0.15 70);
+  --color-warning: oklch(80% 0.13 80);
   --color-error: oklch(58% 0.22 18);
-  --color-info: oklch(62% 0.16 300);
+  --color-info: oklch(70% 0.17 357);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Deep candy-night scale — dark hero base + dark sections + booking field.
-     A saturated plum-grape night so candy gloss + lilac glints sing on it. */
-  --night-0: oklch(20% 0.09 330);
-  --night-1: oklch(26% 0.1 328);
-  --night-2: oklch(32% 0.11 326);
+  /* Near-black scale (#111111) — the brand's bold surfaces: hero, promo bands,
+     booking module, footer. A true charcoal-black so hot pink + gold sing on it.
+     (var names kept as --night-* for compatibility.) */
+  --night-0: oklch(16% 0.004 350); /* deepest — #111111-ish */
+  --night-1: oklch(20% 0.006 350);
+  --night-2: oklch(26% 0.008 350);
 
-  /* Glass tokens — frosted candy-cream nav + cards. */
-  --glass-bg: oklch(99% 0.012 60 / 0.62);
-  --glass-bg-strong: oklch(99% 0.012 60 / 0.86);
+  /* Glass tokens — frosted blush-white nav + cards. */
+  --glass-bg: oklch(100% 0 0 / 0.62);
+  --glass-bg-strong: oklch(100% 0 0 / 0.86);
   --glass-border: oklch(100% 0 0 / 0.6);
-  --glass-shadow: 0 18px 54px -26px oklch(50% 0.2 352 / 0.32);
+  --glass-shadow: 0 18px 54px -26px oklch(60% 0.16 356 / 0.28);
 
-  /* Glass tokens for the DARK candy-night hero nav state. */
-  --glass-bg-dark: oklch(26% 0.1 328 / 0.5);
-  --glass-border-dark: oklch(74% 0.18 320 / 0.24);
+  /* Glass tokens for the DARK black-hero nav state. */
+  --glass-bg-dark: oklch(20% 0.006 350 / 0.55);
+  --glass-border-dark: oklch(80% 0.04 350 / 0.18);
 
-  /* Fonts wired from next/font on the layout wrapper. */
-  --font-display: var(--font-display), "Bricolage Grotesque", system-ui, sans-serif;
-  --font-sans: var(--font-body), "Outfit", system-ui, sans-serif;
+  /* Fonts wired from next/font on the layout wrapper.
+     Albert Sans for everything; a HIGH-CONTRAST engraved Roman (Playfair Display)
+     reserved for the wordmark — matching the REAL logo's thick-stem / hairline-
+     serif Trajan/Didone CAPS lockup in logo.png + specials.jpg. */
+  --font-display: var(--font-display), "Albert Sans", system-ui, sans-serif;
+  --font-sans: var(--font-body), "Albert Sans", system-ui, sans-serif;
+  --font-wordmark: var(--font-serif), "Playfair Display", "Times New Roman",
+    Georgia, serif;
 
-  /* Fluid type tokens (clamp) — bold, characterful, candy-pop scale. Chunkier
-     and more confident than the spa siblings' couture serifs. */
+  /* Fluid type tokens (clamp) — bold, confident, but Albert-Sans-clean. */
   --fluid-hero: clamp(2.6rem, 1.0rem + 7vw, 6rem);
   --fluid-h2: clamp(2rem, 1.2rem + 3.4vw, 3.5rem);
   --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.3rem);
@@ -107,7 +120,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings — Bricolage Grotesque, chunky candy-pop confidence. */
+/* Display headings — Albert Sans, bold + tight for a confident, modern voice. */
 [data-brand="beautox-bar"] .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.02em;
@@ -115,25 +128,24 @@
   text-wrap: balance;
 }
 
-/* The candy-gradient headline word — magenta → lilac, glossy. */
+/* The hot-pink gradient headline word — hot pink → deep rose, a touch of gloss. */
 [data-brand="beautox-bar"] .candy-text {
   background: linear-gradient(
     100deg,
     var(--candy-magenta) 0%,
-    var(--candy-grape) 48%,
-    var(--lilac-bright) 100%
+    var(--candy-grape) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
-/* On the dark candy-night, brighten the gloss so it pops off the plum. */
+/* On black, brighten the pink and let a gold edge warm it (the promo look). */
 [data-brand="beautox-bar"] .candy-text--bright {
   background: linear-gradient(
     100deg,
     var(--candy-pink) 0%,
-    var(--candy-magenta) 40%,
+    var(--candy-magenta) 52%,
     var(--lilac-bright) 100%
   );
   -webkit-background-clip: text;
@@ -156,7 +168,7 @@
   color: var(--lilac-deep);
 }
 
-/* Refined letterspaced eyebrow label — the candy kicker. */
+/* Refined letterspaced eyebrow label — the menu kicker. */
 [data-brand="beautox-bar"] .eyebrow {
   font-size: 0.7rem;
   font-weight: 700;
@@ -165,49 +177,52 @@
   font-family: var(--font-sans);
 }
 
-/* A bubbly little double-dot rule under eyebrow labels — the bubble motif. */
+/* A little martini-olive rule under eyebrow labels — the cocktail garnish motif:
+   a hot-pink dot + a gold dot on a thin pink stem, echoing the logo's olive. */
 [data-brand="beautox-bar"] .rule-bubble::after {
   content: "";
   display: block;
-  width: 2.6rem;
+  width: 2.8rem;
   height: 0.5rem;
   margin-top: 0.7rem;
   background-image: radial-gradient(
-      circle at 6px 50%,
+      circle at 5px 50%,
       var(--color-accent) 0 4px,
       transparent 5px
     ),
-    radial-gradient(circle at 18px 50%, var(--lilac) 0 3px, transparent 4px),
-    radial-gradient(circle at 27px 50%, var(--candy-tangerine) 0 2.5px, transparent 3px);
+    radial-gradient(circle at 16px 50%, var(--lilac) 0 3px, transparent 4px),
+    linear-gradient(90deg, transparent 22px, var(--color-accent) 22px 100%);
   background-repeat: no-repeat;
+  background-size: 100% 100%, 100% 100%, 100% 2px;
+  background-position: 0 0, 0 0, 0 50%;
 }
 [data-brand="beautox-bar"] .rule-bubble-center::after {
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Reusable glass surfaces — frosted candy-cream. */
+/* Reusable glass surfaces — frosted blush-white. */
 [data-brand="beautox-bar"] .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
   border: 1px solid var(--glass-border);
 }
 [data-brand="beautox-bar"] .glass-strong {
   background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--glass-border);
 }
-/* Dark glass — chips that sit over the candy-night hero. */
+/* Dark glass — chips that sit over the black hero. */
 [data-brand="beautox-bar"] .glass-dark {
   background: var(--glass-bg-dark);
-  -webkit-backdrop-filter: blur(14px) saturate(1.5);
-  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
   border: 1px solid var(--glass-border-dark);
 }
 
-/* Glossy candy pill — the signature playful chip with a gloss highlight. */
+/* Glossy hot-pink pill — the signature CTA chip with a soft gloss highlight. */
 [data-brand="beautox-bar"] .gloss-pill {
   position: relative;
   overflow: hidden;
@@ -223,7 +238,7 @@
   inset: 0 0 50% 0;
   background: linear-gradient(
     180deg,
-    oklch(100% 0 0 / 0.4),
+    oklch(100% 0 0 / 0.38),
     transparent
   );
   border-radius: inherit;
@@ -231,103 +246,184 @@
 }
 
 /* ============================================================
-   Bubble-field FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand, layered CSS field: a candy-night plum void with a confetti of
-   glossy magenta / lilac / tangerine bubbles of varied size, each with a soft
-   gloss highlight. Built from layered radial gradients. NEVER a blank box.
-   Zero CLS. The gentle bob is reduced-motion gated; static it still reads as a
-   bubble bar.
+   Brand wordmark — the recreated Beautox Bar identity (BeautoxLogo component).
+   "BEAUTOX BAR" set in the low-contrast engraved-Garamond serif, ALL-CAPS +
+   letter-spaced, with the brand's SIGNATURE center-dot divider rule (a thin
+   horizontal hairline broken by a filled dot — straight from logo.png) and an
+   optional letter-spaced "MEDSPA" descriptor (from the real specials lockup).
+   Two tones: default (ink, on light) + --on-dark (white/pink, over the black
+   hero). Typographic treatment here; the roundel mark is inline SVG in the
+   component.
+   ============================================================ */
+[data-brand="beautox-bar"] .bx-wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12em;
+  font-family: var(--font-wordmark);
+  /* engraved-cap register: Playfair 700 carries the real mark's heavy stems +
+     fine hairline serifs; slightly tighter tracking than the old airy Cormorant
+     so the high-contrast caps read tight + premium like logo.png. */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  color: var(--wm-ink, var(--color-fg));
+}
+[data-brand="beautox-bar"] .bx-wordmark__name {
+  display: inline-block;
+}
+/* The signature dot-divider rule under the name — a thin hairline broken by a
+   filled dot dead-center (the brand's separator beneath the roundel/wordmark).
+   Sized to the lockup; uses currentColor so it tracks the tone. */
+[data-brand="beautox-bar"] .bx-wordmark__rule {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0;
+  margin-top: 0.18em;
+  border-top: 1px solid currentColor;
+  opacity: 0.85;
+}
+[data-brand="beautox-bar"] .bx-wordmark__rule::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.34em;
+  height: 0.34em;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: currentColor;
+}
+/* Optional "MEDSPA" micro-descriptor (footer / larger sizes), from the real
+   specials lockup. Letter-spaced, in the hot-pink to echo the promo. */
+[data-brand="beautox-bar"] .bx-wordmark__descriptor {
+  font-family: var(--font-sans);
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  /* nudge so the wide tracking still optically centers under the name */
+  text-indent: 0.42em;
+  color: var(--color-accent);
+  line-height: 1;
+}
+[data-brand="beautox-bar"] .bx-wordmark--on-dark {
+  --wm-ink: oklch(98% 0.004 350);
+}
+/* The identity lockup is MONOCHROME to match the real logo.png (no pink in the
+   mark). This hook is kept neutral (currentColor) so the wordmark never diverges
+   from the real charcoal/white mark; the hot-pink lives in the page candy-text. */
+[data-brand="beautox-bar"] .bx-wordmark__tox {
+  color: inherit;
+}
+
+/* ============================================================
+   Champagne-fizz FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS field: a black bar-light void with a rising fizz of
+   glossy hot-pink / blush / champagne-gold bubbles of varied size, each with a
+   soft pearl gloss — effervescence in a cocktail glass. Built from layered
+   radial gradients. NEVER a blank box. Zero CLS. The gentle rise is reduced-
+   motion gated; static it still reads as champagne fizz.
+   (class names kept: .bubble-fallback / bx-bob.)
    ============================================================ */
 [data-brand="beautox-bar"] .bubble-fallback {
-  position: relative;
+  /* MUST be absolute: the hero mounts this with Tailwind `absolute inset-0 -z-20`
+     to (a) paint the static champagne-fizz on the no-WebGL/mobile/reduced-motion/
+     save-data path and (b) lay the deep-black bar surface BEHIND the transmissive
+     WebGL spheres. A `position: relative` here out-specifies the utility, collapses
+     the layer to height:0, and the live hero washes out to gray. Keep absolute. */
+  position: absolute;
   overflow: hidden;
   background:
+    /* warm hot-pink bar-light glow, upper right */
     radial-gradient(
-      70% 60% at 78% 18%,
-      oklch(40% 0.16 332 / 0.7) 0%,
+      72% 60% at 80% 16%,
+      oklch(50% 0.18 356 / 0.55) 0%,
       transparent 60%
     ),
+    /* soft gold under-glow, lower left (the candlelit bar) */
     radial-gradient(
-      60% 70% at 16% 88%,
-      oklch(38% 0.14 300 / 0.6) 0%,
+      60% 70% at 14% 90%,
+      oklch(44% 0.1 84 / 0.4) 0%,
       transparent 62%
     ),
-    linear-gradient(165deg, var(--night-1), var(--night-0) 78%);
+    linear-gradient(165deg, var(--night-1), var(--night-0) 80%);
 }
-/* The confetti of glossy bubbles — each a candy sphere with a top gloss. */
+/* The rising fizz — each a glossy bubble (pink / blush / gold) with a top gloss. */
 [data-brand="beautox-bar"] .bubble-fallback::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 36% 36%, oklch(100% 0 0 / 0.5) 0 8%, transparent 30%),
+    radial-gradient(circle at 36% 34%, oklch(100% 0 0 / 0.5) 0 7%, transparent 26%),
     radial-gradient(circle at 50% 50%, var(--candy-magenta) 0 48%, transparent 50%),
-    radial-gradient(circle at 36% 36%, oklch(100% 0 0 / 0.45) 0 7%, transparent 28%),
-    radial-gradient(circle at 50% 50%, var(--candy-lilac) 0 48%, transparent 50%),
-    radial-gradient(circle at 38% 36%, oklch(100% 0 0 / 0.5) 0 8%, transparent 30%),
-    radial-gradient(circle at 50% 50%, var(--candy-tangerine) 0 46%, transparent 48%),
-    radial-gradient(circle at 36% 38%, oklch(100% 0 0 / 0.4) 0 8%, transparent 30%),
-    radial-gradient(circle at 50% 50%, var(--candy-pink) 0 48%, transparent 50%);
+    radial-gradient(circle at 36% 34%, oklch(100% 0 0 / 0.5) 0 7%, transparent 26%),
+    radial-gradient(circle at 50% 50%, var(--candy-tangerine) 0 47%, transparent 49%),
+    radial-gradient(circle at 38% 34%, oklch(100% 0 0 / 0.55) 0 8%, transparent 28%),
+    radial-gradient(circle at 50% 50%, var(--candy-pink) 0 46%, transparent 48%),
+    radial-gradient(circle at 36% 36%, oklch(100% 0 0 / 0.45) 0 8%, transparent 28%),
+    radial-gradient(circle at 50% 50%, var(--candy-magenta) 0 48%, transparent 50%);
   background-repeat: no-repeat;
   background-size:
-    150px 150px, 150px 150px,
-    96px 96px, 96px 96px,
-    72px 72px, 72px 72px,
-    120px 120px, 120px 120px;
+    138px 138px, 138px 138px,
+    92px 92px, 92px 92px,
+    66px 66px, 66px 66px,
+    112px 112px, 112px 112px;
   background-position:
-    22% 30%, 22% 30%,
-    70% 64%, 70% 64%,
-    46% 78%, 46% 78%,
-    84% 38%, 84% 38%;
-  filter: drop-shadow(0 10px 24px oklch(20% 0.08 330 / 0.5));
+    24% 32%, 24% 32%,
+    72% 62%, 72% 62%,
+    48% 80%, 48% 80%,
+    84% 40%, 84% 40%;
+  filter: drop-shadow(0 10px 24px oklch(14% 0.02 350 / 0.55));
 }
-/* A few smaller sparkle bubbles + mint glints, upper field. */
+/* Smaller sparkle fizz + a couple of gold glints, upper field. */
 [data-brand="beautox-bar"] .bubble-fallback::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.5) 0 10%, transparent 32%),
+    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.6) 0 12%, transparent 32%),
     radial-gradient(circle at 50% 50%, var(--candy-mint) 0 46%, transparent 48%),
-    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.5) 0 10%, transparent 32%),
+    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.55) 0 12%, transparent 32%),
     radial-gradient(circle at 50% 50%, var(--lilac-bright) 0 46%, transparent 48%),
-    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.5) 0 10%, transparent 32%),
+    radial-gradient(circle at 40% 38%, oklch(100% 0 0 / 0.55) 0 12%, transparent 32%),
     radial-gradient(circle at 50% 50%, var(--candy-magenta) 0 46%, transparent 48%);
   background-repeat: no-repeat;
-  background-size: 44px 44px, 44px 44px, 34px 34px, 34px 34px, 54px 54px, 54px 54px;
-  background-position: 12% 20%, 12% 20%, 60% 22%, 60% 22%, 90% 78%, 90% 78%;
+  background-size: 42px 42px, 42px 42px, 30px 30px, 30px 30px, 52px 52px, 52px 52px;
+  background-position: 12% 22%, 12% 22%, 62% 20%, 62% 20%, 92% 80%, 92% 80%;
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="beautox-bar"] .bubble-fallback::before {
-    animation: bx-bob 14s ease-in-out infinite alternate;
+    animation: bx-bob 15s ease-in-out infinite alternate;
   }
   [data-brand="beautox-bar"] .bubble-fallback::after {
     animation: bx-bob 11s ease-in-out infinite alternate-reverse;
   }
 }
-/* Gentle bob — bubbles drifting up and settling. */
+/* Gentle rise — fizz drifting up and settling. */
 @keyframes bx-bob {
   from {
-    transform: translateY(2%);
+    transform: translateY(2.5%);
   }
   to {
-    transform: translateY(-2%);
+    transform: translateY(-2.5%);
   }
 }
 
-/* CSS-only floating bubble used as small decorative accents elsewhere. */
+/* CSS-only fizz bubble used as small decorative accents elsewhere. */
 [data-brand="beautox-bar"] .css-bubble {
   border-radius: 9999px;
   background:
     radial-gradient(circle at 34% 30%, oklch(100% 0 0 / 0.65) 0 14%, transparent 34%),
     radial-gradient(circle at 60% 64%, var(--candy-magenta), var(--candy-grape));
-  box-shadow: 0 12px 30px -10px oklch(50% 0.2 352 / 0.5),
-    inset 0 -6px 14px oklch(40% 0.16 330 / 0.4);
+  box-shadow: 0 12px 30px -10px oklch(60% 0.16 356 / 0.5),
+    inset 0 -6px 14px oklch(40% 0.12 356 / 0.4);
 }
 [data-brand="beautox-bar"] .css-bubble--lilac {
   background:
-    radial-gradient(circle at 34% 30%, oklch(100% 0 0 / 0.65) 0 14%, transparent 34%),
-    radial-gradient(circle at 60% 64%, var(--candy-lilac), var(--candy-grape));
+    radial-gradient(circle at 34% 30%, oklch(100% 0 0 / 0.7) 0 14%, transparent 34%),
+    radial-gradient(circle at 60% 64%, var(--candy-lilac), var(--lilac-deep));
 }
 
 /* Before/after range — invisible track, a wide invisible thumb so the whole
@@ -353,44 +449,64 @@
 
 /* ============================================================
    Brand photography placeholder treatment.
-   No external assets — candy magenta / lilac / cream gradient "plates" that read
-   as one cohesive, fun shoot (treatment rooms, glow portraits, details).
-   Each marked "sample".
+   Used only for slots without a real asset (e.g. the before/after sample plates
+   and location interiors). Hot-pink / blush / gold / black gradient "plates"
+   that read as one cohesive, fun shoot. Each marked "sample".
    ============================================================ */
+/* NOTE (pass 3 fidelity fix): the prior plates put a LIGHT blush/pearl radial at
+   ~110% radius over the saturated base, which blanketed the whole surface and
+   washed every large plate to flat grey/white (the flagship location card, the 3
+   team portraits, both B&A plates all read as empty loading-boxes — zero brand
+   color). For a brand whose signature IS hot pink #F06BA8, that was the single
+   biggest perceived-quality drag. Each plate is now retuned so the SATURATED base
+   dominates the field: the top highlight is shrunk to a single corner (~50-60%
+   radius) at partial alpha and uses a brighter tint of the SAME hue (not a light
+   wash), so every plate reads as a juicy on-brand pink (or champagne-gold for
+   --lilac) gradient — a real, designed surface, not grey. CSS-only; lifts all 7
+   placeholder surfaces at once with no component edits. */
 [data-brand="beautox-bar"] .bx-plate {
   position: relative;
   background:
-    radial-gradient(120% 120% at 22% 16%, oklch(99% 0.01 60 / 0.95), transparent 58%),
-    radial-gradient(110% 120% at 86% 90%, var(--candy-lilac) 0%, transparent 56%),
-    linear-gradient(155deg, oklch(95% 0.04 350), oklch(88% 0.07 348));
+    /* small top-left blush sheen, pulled to the corner + partial alpha so it
+       reads as a light catch, not a field-wide wash */
+    radial-gradient(58% 56% at 20% 14%, oklch(99% 0.012 350 / 0.55), transparent 60%),
+    /* warm hot-pink bloom anchoring the lower-right corner */
+    radial-gradient(70% 72% at 86% 90%, var(--candy-magenta) 0%, transparent 64%),
+    /* the saturated blush→hot-pink base now carries the field */
+    linear-gradient(155deg, oklch(86% 0.075 352), var(--candy-magenta));
 }
 [data-brand="beautox-bar"] .bx-plate--magenta {
   background:
-    radial-gradient(110% 110% at 70% 16%, var(--candy-pink) 0%, transparent 58%),
-    radial-gradient(96% 100% at 14% 96%, var(--lilac-bright) 0%, transparent 40%),
+    /* compact bright-pink hotspot in ONE corner (was a 110% light-blush wash) */
+    radial-gradient(56% 54% at 76% 14%, var(--candy-magenta) 0%, transparent 62%),
+    /* a small gold kiss lower-left for the cocktail warmth */
+    radial-gradient(48% 52% at 12% 94%, oklch(82% 0.12 84 / 0.6) 0%, transparent 46%),
+    /* saturated hot-pink → deep-rose base dominates */
     linear-gradient(160deg, var(--candy-magenta), var(--candy-grape));
 }
 [data-brand="beautox-bar"] .bx-plate--lilac {
   background:
-    radial-gradient(120% 110% at 28% 22%, var(--candy-mint) 0%, transparent 50%),
-    linear-gradient(150deg, var(--candy-lilac), var(--candy-grape));
+    /* compact pearl sheen in one corner instead of a half-plate mint wash */
+    radial-gradient(50% 50% at 26% 18%, oklch(98% 0.02 88 / 0.5) 0%, transparent 58%),
+    /* saturated champagne-gold field (true gold, not pale) */
+    linear-gradient(150deg, var(--candy-lilac), var(--lilac-deep));
 }
 [data-brand="beautox-bar"] .bx-plate--night {
   background:
-    radial-gradient(110% 110% at 74% 18%, oklch(46% 0.18 332 / 0.7), transparent 60%),
-    radial-gradient(96% 100% at 12% 96%, var(--lilac-deep) 0%, transparent 36%),
+    radial-gradient(110% 110% at 74% 18%, oklch(46% 0.16 356 / 0.6), transparent 60%),
+    radial-gradient(96% 100% at 12% 96%, oklch(44% 0.1 84 / 0.5) 0%, transparent 36%),
     linear-gradient(160deg, var(--night-1), var(--night-0));
 }
-/* Faint candy-glint overlay so plates read as designed, not empty. */
+/* A few small pearl glints so plates catch bar-light — kept sparse + lower-alpha
+   (pass 3) so they punctuate the now-saturated pink/gold field rather than
+   compounding a wash. */
 [data-brand="beautox-bar"] .bx-plate::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.55), transparent 70%),
-    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.4), transparent 70%),
-    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.5), transparent 70%),
-    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.35), transparent 70%);
+    radial-gradient(2.5px 2.5px at 24% 30%, oklch(100% 0 0 / 0.5), transparent 72%),
+    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.42), transparent 72%);
   background-repeat: no-repeat;
 }
 

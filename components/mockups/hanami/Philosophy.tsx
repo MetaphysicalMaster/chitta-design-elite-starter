@@ -56,13 +56,16 @@ export function Philosophy() {
       className="relative scroll-mt-20 overflow-hidden py-28 sm:py-36"
       style={{ background: "linear-gradient(168deg, var(--night-1), var(--night-0))" }}
     >
-      {/* soft sakura aura on the night field */}
+      {/* This room's OWN aura: a single low CORAL wash rising from the base
+          (a quiet sakura dusk under the philosophy), with the faintest gold breath
+          at the very top — deliberately NOT the corner-pair stamp the other night
+          sections share, so each dark room reads distinct. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-70"
         style={{
           background:
-            "radial-gradient(50% 46% at 82% 8%, oklch(72% 0.13 354 / 0.4), transparent 70%), radial-gradient(48% 50% at 8% 96%, oklch(60% 0.14 358 / 0.36), transparent 72%)",
+            "radial-gradient(80% 42% at 50% 108%, oklch(62% 0.15 9 / 0.32), transparent 72%), radial-gradient(60% 24% at 50% -6%, oklch(72% 0.11 86 / 0.16), transparent 70%)",
         }}
       />
 
@@ -97,7 +100,7 @@ export function Philosophy() {
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.1 }}
           >
             Hanami means to pause —{" "}
-            <span className="font-display-em italic">
+            <span className="font-display-em text-[var(--color-accent-bright)]">
               and watch beauty unfold.
             </span>
           </h2>

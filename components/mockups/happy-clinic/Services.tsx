@@ -2,8 +2,10 @@
 
 /**
  * Services — the menu, injectables-led. Injectables sits first as a featured,
- * spanning card (it's their #1 volume product), followed by lasers, skin,
- * body and wellness. Each card is book-able. Hover lifts + aurora edge tick.
+ * spanning card (Happy Clinic's signature), followed by skin, lasers, body and
+ * wellness. Each card is book-able. Hover lifts + a pine-teal edge tick.
+ * Bold-sans pine-teal headings + pale-yellow "signature" badge mirror the live
+ * site. Recolored from the prior violet guess to the real navy/teal/gold brand.
  */
 
 import Link from "next/link";
@@ -29,23 +31,16 @@ const CATEGORIES: Category[] = [
   {
     id: "injectables",
     name: "Injectables",
-    blurb: "Our #1 specialty — Botox & Juvéderm, placed by a national trainer's team.",
+    blurb: "Our signature — Botox, Dysport & Juvéderm, placed for a subtle, natural result.",
     treatments: [
       "BOTOX® Cosmetic",
+      "Dysport®",
       "JUVÉDERM® filler collection",
       "Lip enhancement & cheek volume",
       "Jawline & chin contouring",
-      "Sculptra & Kybella",
     ],
     icon: I("M14 4 4 14m0 0v4h4l10-10-4-4Zm6 2-2-2"),
     featured: true,
-  },
-  {
-    id: "lasers",
-    name: "Lasers & Energy",
-    blurb: "Resurfacing, tightening & hair removal.",
-    treatments: ["Laser hair removal", "IPL photofacial", "RF microneedling", "Laser resurfacing"],
-    icon: I("M12 3v3m0 12v3m9-9h-3M6 12H3m13.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"),
   },
   {
     id: "skin",
@@ -53,6 +48,13 @@ const CATEGORIES: Category[] = [
     blurb: "Medical-grade glow, texture & tone.",
     treatments: ["HydraFacial", "Chemical peels", "Microneedling + PRP", "Medical-grade skincare"],
     icon: I("M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-4-4 1 1 0 0 0-1-1Z"),
+  },
+  {
+    id: "lasers",
+    name: "Lasers & Energy",
+    blurb: "Resurfacing, tightening & hair removal.",
+    treatments: ["Laser hair removal", "IPL photofacial", "RF microneedling", "Laser resurfacing"],
+    icon: I("M12 3v3m0 12v3m9-9h-3M6 12H3m13.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"),
   },
   {
     id: "body",
@@ -64,7 +66,7 @@ const CATEGORIES: Category[] = [
   {
     id: "wellness",
     name: "Wellness",
-    blurb: "Feel as good as you look, at altitude.",
+    blurb: "Feel as good as you look.",
     treatments: ["IV vitamin therapy", "Medical weight loss", "B12 & NAD+", "Hormone optimization"],
     icon: I("M12 21s-7-4.4-9-9a5 5 0 0 1 9-2 5 5 0 0 1 9 2c-2 4.6-9 9-9 9Z"),
   },
@@ -81,7 +83,7 @@ function Card({ c, index }: { c: Category; index: number }) {
           "group relative flex h-full flex-col overflow-hidden rounded-[1.4rem] border p-6",
           "transition-[transform,box-shadow] duration-300 hover:-translate-y-1",
           c.featured
-            ? "border-[var(--color-accent)]/40 bg-[var(--color-bg-elevated)] shadow-[0_24px_64px_-30px_oklch(56%_0.2_300_/_0.5)]"
+            ? "border-[var(--color-accent)]/40 bg-[var(--color-bg-elevated)] shadow-[0_24px_64px_-30px_oklch(52%_0.087_178_/_0.5)]"
             : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)] hover:border-[var(--color-accent)]/40",
         )}
       >
@@ -92,23 +94,28 @@ function Card({ c, index }: { c: Category; index: number }) {
             style={{ background: "radial-gradient(circle, var(--color-accent-bright), transparent 70%)" }}
           />
         )}
-        {/* aurora edge tick that appears on hover */}
+        {/* pine-teal edge tick that appears on hover */}
         <span
           aria-hidden
           className="absolute left-0 top-6 h-8 w-1 origin-top rounded-r opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ background: "linear-gradient(var(--color-accent), var(--color-teal))" }}
+          style={{ background: "linear-gradient(var(--color-accent), var(--color-gold))" }}
         />
         <div className="relative flex items-center gap-3">
           <span className="grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-accent-subtle)] text-[var(--color-accent-deep)]">
             {c.icon}
           </span>
           {c.featured && (
-            <span className="rounded-full bg-[var(--color-accent)] px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-fg)]">
-              #1 Specialty
-            </span>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="rounded-full bg-[var(--color-gold)] px-2.5 py-1 text-[0.58rem] font-bold uppercase tracking-[0.16em] text-[var(--color-fg)]">
+                Signature
+              </span>
+              <span className="rounded-full border border-[var(--color-gold-deep)]/45 bg-[var(--color-gold)]/15 px-2.5 py-1 text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[var(--color-accent-deep)] tnum">
+                Botox from $9/unit
+              </span>
+            </div>
           )}
         </div>
-        <h3 className="font-display mt-5 text-xl font-semibold text-[var(--color-fg)]">
+        <h3 className="font-heading mt-5 text-xl text-[var(--color-fg)]">
           {c.name}
         </h3>
         <p className="mt-1.5 text-sm text-[var(--color-fg-muted)]">{c.blurb}</p>
@@ -144,10 +151,10 @@ export function Services() {
           title={
             <>
               Injectables first.{" "}
-              <span className="text-[var(--color-accent-deep)]">Everything else</span>, expertly.
+              <span className="font-display-em text-[var(--color-fg)]">Everything else</span>, expertly.
             </>
           }
-          lead="We built our name on Botox & Juvéderm — the highest volume in Colorado — and surround it with lasers, advanced skin, body contouring and wellness. One trainer-led standard across the entire menu."
+          lead="Happy Clinic is built on artful Botox, Dysport and Juvéderm — and surrounds them with advanced skin, lasers, body contouring and wellness. One standard across the entire menu: subtle, natural, physician-led."
         />
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {CATEGORIES.map((c, i) => (

@@ -1,24 +1,26 @@
 "use client";
 
 /**
- * BubbleScene — the WebGL power element ("Bubble Bar").
+ * BubbleScene — the WebGL power element ("Champagne Fizz Bar").
  *
- * A glossy candy bubble bar: a cluster of soft-body liquid spheres that bob,
- * jiggle and nudge each other in a shallow well of playful physics. Each bubble
- * is a drei MeshTransmissionMaterial sphere tinted across the candy spectrum
- * (magenta → lilac → tangerine → pink), with a clearcoat candy-gloss highlight.
- * They float in a soft column, gently repelling one another so they kiss and
- * almost-merge without overlapping — a metaball-ish "liquid bar" feel achieved
- * with cheap sphere physics (no marching cubes, so it holds 60fps). The cursor
- * is a repeller: bubbles squish away from the pointer and spring back.
- * Postprocessing Bloom adds the candy-gloss glow.
+ * A glossy champagne-fizz bar: a cluster of soft-body liquid spheres that bob,
+ * jiggle and nudge each other in a shallow well of playful physics — the
+ * effervescence of a cocktail on the brand's black bar surface. Each bubble is a
+ * drei MeshTransmissionMaterial sphere tinted across the brand spectrum (hot
+ * pink → blush → deep rose → champagne gold → pearl), with a clearcoat gloss
+ * highlight. They float in a soft column, gently repelling one another so they
+ * kiss and almost-merge without overlapping — a metaball-ish "liquid bar" feel
+ * achieved with cheap sphere physics (no marching cubes, so it holds 60fps). The
+ * cursor is a repeller: bubbles squish away from the pointer and spring back.
+ * Postprocessing Bloom adds the bar-light glow. It fits the "Where Shots &
+ * Beauty Mingle" cocktail concept — fizz rising in pink + gold on black.
  *
  * Distinct from siblings: Sousan is a faceted emerald jewel over gold caustics;
- * Darst is a clinical dermal lattice. Beautox is a playful candy BUBBLE BAR —
+ * Darst is a clinical dermal lattice. Beautox is a playful CHAMPAGNE-FIZZ BAR —
  * soft glossy liquid spheres with bouncy physics, not a gem and not a lattice.
  *
  * Loaded ONLY via dynamic({ ssr:false }) from BubbleHero (a "use client"
- * module) — WebGL/R3F is not SSR-safe. A static CSS bubble field is shown for
+ * module) — WebGL/R3F is not SSR-safe. A static CSS fizz field is shown for
  * SSR, mobile, no-WebGL and prefers-reduced-motion (the hero fallback).
  */
 
@@ -29,13 +31,15 @@ import { KernelSize } from "postprocessing";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-/* Brand candy palette as THREE colors (mirrors brand.css). */
+/* Brand champagne-fizz palette as THREE colors (mirrors brand.css):
+   hot pink, soft blush, deep rose, champagne gold, pearl — a cocktail in a
+   glass, not a candy bowl. */
 const CANDY = [
-  "#ff3fae", // magenta
-  "#c66bff", // grape-lilac
-  "#9b5bff", // electric lilac
-  "#ff6fc4", // pink
-  "#ffb14d", // tangerine pop (rare)
+  "#f06ba8", // hot pink — the signature
+  "#f7a6c8", // soft blush
+  "#e0568f", // deep rose
+  "#f0c987", // champagne gold (the martini olive note)
+  "#fff1f6", // pearl fizz (rare highlight)
 ];
 
 type BubbleSpec = {
@@ -132,18 +136,21 @@ function Bubble({
         clearcoatRoughness={0.04}
         color={spec.color}
         attenuationColor={spec.color}
-        attenuationDistance={1.1}
-        transmission={0.86}
+        /* Shorter attenuation + lower transmission so the hot-pink / deep-rose /
+           champagne-gold tints SATURATE through the glass — the spheres read as
+           colored cocktail fizz, not pale clear bubbles, against the black bar. */
+        attenuationDistance={0.7}
+        transmission={0.62}
       />
     </mesh>
   );
 }
 
-/* Soft candy studio lighting feeding the Bloom + gloss highlights. */
+/* Soft candle-lit bar lighting feeding the Bloom + gloss highlights. */
 function CandyLights() {
   return (
     <>
-      <ambientLight intensity={0.55} />
+      <ambientLight intensity={0.5} />
       <Environment resolution={256} frames={1}>
         {/* bright cream key from upper-left → the top gloss highlight */}
         <Lightformer
@@ -154,33 +161,33 @@ function CandyLights() {
           rotation={[-Math.PI / 5, 0, 0]}
           scale={[6, 9, 1]}
         />
-        {/* magenta fill from the right */}
+        {/* hot-pink fill from the right (the bar's pink glow) */}
         <Lightformer
           form="rect"
-          intensity={2.6}
-          color="#ff4fb6"
+          intensity={2.7}
+          color="#f06ba8"
           position={[4, 0.8, 1]}
           rotation={[0, -Math.PI / 2.4, 0]}
           scale={[6, 7, 1]}
         />
-        {/* lilac rim from behind to define the spheres */}
+        {/* champagne-gold rim from behind to define the spheres */}
         <Lightformer
           form="ring"
-          intensity={2.6}
-          color="#a26bff"
+          intensity={2.4}
+          color="#f0c987"
           position={[1.4, 2.2, -3.6]}
           scale={[4, 4, 1]}
         />
-        {/* warm tangerine under-glow */}
+        {/* warm gold under-glow (candlelight) */}
         <Lightformer
           form="circle"
-          intensity={1.6}
-          color="#ffb14d"
+          intensity={1.5}
+          color="#e8b86a"
           position={[-1.6, -2.6, -3]}
           scale={[7, 7, 1]}
         />
       </Environment>
-      <directionalLight position={[-4, 5, 3]} intensity={1.0} color="#fff0f8" />
+      <directionalLight position={[-4, 5, 3]} intensity={1.0} color="#fff0f6" />
     </>
   );
 }
@@ -380,8 +387,11 @@ export default function BubbleScene({ lite = false }: BubbleSceneProps) {
         <BubbleCluster pointer={pointer} lite={lite} />
         <EffectComposer enableNormalPass={false}>
           <Bloom
-            intensity={lite ? 0.7 : 1.05}
-            luminanceThreshold={0.55}
+            /* Higher threshold + slightly lower intensity: bar-light glow on the
+               brightest gloss highlights only, so the pink/gold tints don't get
+               washed to near-white on the right edge (kept the fizz, killed the blow-out). */
+            intensity={lite ? 0.62 : 0.9}
+            luminanceThreshold={0.64}
             luminanceSmoothing={0.22}
             mipmapBlur
             kernelSize={lite ? KernelSize.MEDIUM : KernelSize.LARGE}

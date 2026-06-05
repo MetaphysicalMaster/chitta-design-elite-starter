@@ -1,9 +1,20 @@
 # Darst Dermatology — Refinement Passes
 
+> ⚠ **PALETTE SUPERSEDE (read first).** Round 1 below (the "navy + oxblood on
+> cool paper-white" identity) was authored before the client's REAL brand was
+> discovered, and is **fully superseded** by the Round-2 rebrand: **warm
+> chocolate/sepia BROWN primary + a TEAL/AQUA accent (+ a reserved coral note)
+> on warm-paper/white** — the practice's own colors. The CSS variable *names*
+> (`--navy*`, `--strata-*`, oxblood-era stops) were intentionally retained for
+> compatibility, but their **values are warm brown + teal**. Where older passes
+> or comments say "navy"/"oxblood", read "warm brown"/"teal". Do **not**
+> reintroduce navy/oxblood — that was the wrong palette.
+
 Pitch homepage mockup at `/mockups/darst` — the "AFTER" for Dr. Marc A. Darst,
 MD (Charlotte, NC): board-certified in **Dermatology AND Dermatopathology**.
-Brand: **clinical-minimal academic authority** — deep clinical navy + a single
-oxblood accent on cool paper-white. All tokens scoped to `[data-brand="darst"]`.
+Brand (CURRENT): **warm clinical academic authority** — warm chocolate/sepia
+brown ink + a teal/aqua accent (+ a reserved coral note for the aesthetic
+register) on warm-paper/white. All tokens scoped to `[data-brand="darst"]`.
 
 Each pass below is ONE genuine improvement. No filler.
 
@@ -300,3 +311,124 @@ split-flap "Solari" review board + a treatment marquee). Edited ONLY
 | Code quality / scoping | 9.5 | Tokens stay scoped; var-name reuse avoided churn; tsc + build green; only darst dirs touched. |
 
 **Round 2 average ≈ 9.47.**
+
+---
+
+# PASS 4 — CO-COUNSEL ELEVATION (DesignGod + DistroGod)
+
+Two counsels reviewed the gold-standard reference. This pass takes their highest-
+leverage findings only — additive, no rewrites, tsc green. Edited ONLY
+`app/mockups/darst/**` + `components/mockups/darst/**`.
+
+73. **Split-flap legibility fixed (the one concrete functional flaw, on the
+    signature element).** Relaxed the panels from the tall-narrow `aspect-[4/5]`
+    to `aspect-[3/4]` + a `min-h-[15rem]` floor, added a `.flap-clamp`
+    (`-webkit-line-clamp:5`) backstop on the blockquote, and trimmed the two
+    over-budget POOL quotes (C.A. laser, K.D. peel) so the tallest reviews no
+    longer clip the seam/bottom caption under `overflow-hidden` at 375px or the
+    lg 6-col width.
+74. **Teal accent chroma lifted toward the client's true vivid aqua** (the
+    highest-leverage brand-fidelity gain). `--color-accent` 0.085→0.108,
+    `--color-accent-deep` 0.082→0.105 (L48% held → AA on paper unchanged, since
+    the lift is saturation not lightness), `-bright`/`-subtle`/`--color-info`/
+    `--teal-swoosh`/`--strata-vessel` raised in step so the whole teal story
+    (eyebrows, links, Book button, logo swoosh, the lone capillary) reads as
+    confident aqua, not teal-grey, on the warm paper.
+75. **Let the WebGL lattice breathe.** Lightened the hero's right-third scrim
+    end-stop (0.18→0.08) and tightened the radial to a copy-column ellipse
+    (`58% 82% at 22%`), so the dermal resolve / DoF / teal capillary reads
+    brighter on first paint where the eye lands after reading — copy keeps its
+    strong left wash + base anchor + own drop-shadow (AA intact).
+76. **Aesthetics value hierarchy (the high-ticket conversion lever both counsels
+    flagged).** Added a named SIGNATURE-treatments rail (Wrinkle relaxers /
+    Dermal fillers / Laser resurfacing, each a one-line outcome in her language,
+    coral keyline) above the generic chips, and a cost-confidence cue at the
+    aesthetic CTA ("Unhurried, quoted up front — a consult, not a sales table"),
+    mirroring Booking's elective reassurance at the decision point.
+77. **Journeys interleaved earlier.** Moved Aesthetics + BeforeAfter to sit
+    immediately after Services (before the TreatmentMarquee) so the female-luxury
+    register arrives before the dense medical stack, honoring the hero's "two
+    paths, one physician" promise in the body flow (one-block reorder in
+    page.tsx; all anchors/IDs unchanged).
+78. **Hero stat de-dup + Solari bevel.** Swapped the hero's third "Physician-led
+    / Independent, sole owner" stat (a back-to-back echo of TrustBar) for an
+    "In-house / Every biopsy read by your doctor" figure quantifying the seed
+    thought; differentiated the Aesthetics headshot quote from the Credentials
+    "reads the slide" beat (restraint promise, not a duplicate); added a
+    whisper-quiet inset vertical bevel on each flap panel so the slats read as
+    seated leaves in a housing.
+79. **Gate green.** `npx tsc --noEmit` clean (whole repo, exit 0); only darst
+    dirs touched; honest "sample" tags kept where imagery is still placeholder
+    (no real aesthetic portrait added this pass — the honest plate stays until a
+    licensed/real asset exists, per both counsels).
+
+## Pass 5 — co-counsel synthesis (DesignGod + DistroGod)
+
+80. **The signature lattice is now actually SEEN.** Both the WebGL exposure and
+    the scrims were drowning the named power element to a featureless gradient
+    bloom. In `lattice-shaders.ts`: raised the resolved-particle alpha floor
+    (0.32→0.5, ceiling →0.98) and luminance floor (0.6→0.74), NARROWED the
+    depth-of-field band (focus falloff 0.12–0.6 → 0.20–0.74, sharp floor →0.5)
+    so a wide swath stays crisp, and made the lone TEAL capillary always-in-focus
+    + brighter + larger + near-opaque so the page's single chroma thread reads as
+    a continuous vessel. `LatticeScene.tsx`: base point size 4.2→5.2 (lite
+    3.6→4.4) and vessel density 5%→7%. `LatticeHero.tsx`: eased the right scrim
+    fully clear (right end-stop →transparent) and the bottom scrim 0.82→0.6 so
+    the resolve + capillary survive on first paint — copy keeps its strong left
+    wash + drop-shadow (AA intact).
+81. **Hero→TrustBar stat duplication killed (both counsels).** Dropped the hero's
+    numeric `<dl>` entirely — "2 boards" and "20+ yrs" were restated verbatim one
+    section down in TrustBar, the most-scrutinized fold repeating two numbers a
+    row apart. The headline + lead already carry both in prose; TrustBar now owns
+    the figures. Bonus: the hero breathes and the lattice gets the lower-right
+    real estate. Dual-path chips still carry the scent trail.
+82. **NAP two-city fidelity (DistroGod #1).** The practice is REAL in Charlotte
+    AND Monroe NC; the page showed one city. `nap.ts` now models BOTH offices in
+    a `LOCATIONS` array (real cities + phones; street stays a flagged placeholder)
+    with flat fields aliased to the primary for back-compat + a `CITIES_LINE`
+    helper. `SiteFooter` surfaces both as a two-column "Two North Carolina
+    offices" block + per-city "Directions to …". `Booking` gains a "1 · Which
+    office?" chip row (same chip mechanics, zero new patterns), the address block
+    + summary + tel now reflect the chosen office, and the lead carries the
+    "Charlotte · Monroe" locator. Single-city NAP on a two-city practice was the
+    #1 "is this us" failure — now resolved.
+83. **Dark-tone logo swoosh retuned to the REAL mark (DistroGod #2).** Verified
+    against `logo.png`: the dark recreation drew a thin teal arc spanning the
+    FULL width of "Darst" and omitted the signature brown tail. `DarstLogo.tsx`
+    now draws a SHORT tapered teal brushstroke over the left third (the "Da"),
+    and adds the long sweeping BROWN script tail flicking right off the final
+    "t" (a second aria-hidden SVG along the baseline, `overflow-visible`). The
+    nav renders this as the literal first brand impression — the most-checked
+    element now reads true.
+84. **Aesthetic plates elevated to read as PHOTOGRAPHY (both counsels' top
+    conversion lever).** With no licensed portrait available this pass, the CRAFT
+    on `.dt-plate--skin / --warm / --muted` was pushed hard: a modelled
+    three-quarter face (forehead/temple key-light, lit cheek plane, turned cheek
+    in form-shadow, jaw/neck core shadow, hair/shoulder mass), a subsurface
+    warm/cool skin sheen, dewy specular catches, and a darkroom edge vignette —
+    so HER outcome + the before/after read as a complexion shot, not a color
+    field. The 4 big "sparkle" glints on these three plates were swapped for a
+    real fine FILM-GRAIN (tiled `feTurbulence` SVG, overlay blend, ~13% opacity).
+    `--muted` now mirrors the same face geometry but flatter/cooler/uneven so the
+    slider wipe lands as a believable tired-skin → glow transformation. Honest
+    "sample" tags stay; real photography would drop straight into these slots.
+85. **Credentials cert-strip legible at REST + Top Doctor warmed (DistroGod
+    medium + DesignGod medium).** `RealProof.tsx`: the board-cert marks (the
+    conversion argument on a credentials pitch) no longer hide behind a hover
+    touch users never trigger — rest state dropped to a light `grayscale(0.32)`
+    (no sepia muddying), full color stays as a hover/focus delight. The cool-gray
+    Top Doctor lockup got a DEEPER warm-paper mat band + a warm inner-glow
+    edge-bleed vignette at the art's perimeter (pixels untouched) so it reads as
+    a framed clipping on the sepia system, and the top spacing tightened
+    (mt-12→mt-8) so it sits close to its heading.
+86. **BeforeAfter handle craft (DesignGod low).** The most-interacted control was
+    a plain flat white circle; gave it brand finish — a warm-paper disc with a
+    teal ring + ring-offset hairline and a teal chevron, matching the Solari
+    bevels / strata rails / swoosh detailing elsewhere.
+87. **Gate green.** `npx tsc --noEmit` clean (whole repo, exit 0); only darst
+    dirs touched. Live dev server (:3000) recompiled the route + brand.css with
+    no errors (new rules confirmed present in the served chunk). Accessibility
+    preserved: lattice changes are exposure-only (reduced-motion / static SVG
+    fallback paths unchanged), new office chips use the existing labelled-fieldset
+    pattern, decorative logo tail + plate modelling are aria-hidden, honest
+    "sample" tags kept where imagery is still placeholder.

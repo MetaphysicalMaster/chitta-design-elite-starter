@@ -44,8 +44,9 @@ export function Financing() {
               Expert care, made straightforward to access.
             </h2>
             <p className="mt-5 max-w-[44ch] text-pretty font-light text-[var(--color-fg-muted)]">
-              Medical dermatology is healthcare, not a luxury. We keep coverage
-              and cost clear so the only thing to weigh is getting seen.
+              Coverage and cost are spelled out up front — insurance for medical
+              care, plain quotes for elective work — so the only thing left to
+              weigh is getting seen.
             </p>
             <Link href="#book" className={`mt-7 ${ctaGhost}`}>
               Ask about coverage

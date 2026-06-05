@@ -3,7 +3,7 @@
 /**
  * Shared playful-premium primitives for the Beautox Bar mockup:
  * - Reveal / RevealGroup / RevealItem  (scroll choreography, reduced-motion safe)
- * - SectionHeading                     (eyebrow + candy-pop display title + lead)
+ * - SectionHeading                     (eyebrow + bold display title + lead)
  * - Magnetic                           (cursor-magnetic wrapper for CTAs)
  * - ctaPrimary / ctaGhost              (consistent button system)
  *
@@ -151,7 +151,7 @@ export function SectionHeading({
           className={cn(
             "eyebrow rule-bubble inline-block",
             align === "center" && "rule-bubble-center",
-            tone === "dark" ? "text-[var(--candy-pink)]" : "text-[var(--color-accent-deep)]",
+            tone === "dark" ? "text-[var(--color-accent-bright)]" : "text-[var(--color-accent-deep)]",
           )}
         >
           {eyebrow}
@@ -176,7 +176,7 @@ export function SectionHeading({
             className={cn(
               "mt-5 text-pretty",
               tone === "dark"
-                ? "text-[oklch(92%_0.03_330_/_0.86)]"
+                ? "text-[oklch(92%_0.008_350_/_0.86)]"
                 : "text-[var(--color-fg-muted)]",
             )}
             style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.6 }}
@@ -235,9 +235,9 @@ export function Magnetic({
 export const ctaPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "gloss-pill font-semibold tracking-tight text-[var(--color-accent-fg)]",
-  "shadow-[0_18px_48px_-16px_oklch(55%_0.22_352_/_0.6)]",
+  "shadow-[0_18px_48px_-16px_oklch(58%_0.16_356_/_0.6)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-14px_oklch(58%_0.24_352_/_0.74)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-14px_oklch(62%_0.18_356_/_0.74)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 

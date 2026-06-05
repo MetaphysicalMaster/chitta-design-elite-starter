@@ -2,91 +2,120 @@
    Timeless Aesthetics MedSpa — Scoped Brand System (OKLch)
    Overrides shared --color-* tokens ONLY within [data-brand="timeless"].
 
-   Brand essence: WARM EDITORIAL HEIRLOOM. Deep aubergine-ink + aged-brass
-   accent on warm ivory. Assured, generational, unhurried voice — "trusted for
-   a decade, ahead for the next." An instant identity correction for a premium
-   med spa currently mis-branded by a "Family Medicine Physicians" EMR template.
+   Brand essence (REBRANDED to the client's REAL identity): WARM, FRIENDLY,
+   OPTIMISTIC. A family-medicine-physician-run medspa whose live identity is
+   built on a single confident ORANGE (#E0701A) warming a field of peach,
+   apricot and cream, with soft out-of-focus BOKEH light dots as the signature
+   texture. Clean and light throughout — set entirely in Open Sans, the live
+   brand's true typeface. The voice: approachable, sunny, "Rejuvenate. Renew.
+   Refresh. Look your best." — not couture-cold, not clinical-blue.
+
+   NOTE: the historical CSS var NAMES are retained (--brass*, --aubergine*,
+   --ink-*, --ring-*, --foil-*) so every consuming component keeps working
+   unchanged — only their VALUES are re-tuned. Read the names as:
+     · --brass*      → "the warm ORANGE metal" (orange / deep-orange / pale-peach)
+     · --aubergine*  → "the warm deep tone" (toasted terracotta, NOT purple)
+     · --ink-*       → "the warm orange-cream hero field" (sunlit, NOT dark)
+     · --ring-*      → "the bokeh / glow stops"
+     · --foil-*      → "the orange sheen stops"
+
+   PALETTE (verified live):
+     · Primary ORANGE  #E0701A  → oklch(64% 0.15 52)
+     · Peach / cream   #FBE9D9  → oklch(94% 0.022 58)
+     · Soft apricot    #F6C9A0  → oklch(85% 0.055 58)
+     · Warm grey       #8A8A8A  → oklch(62% 0.004 60)  (secondary buttons)
+     · Warm charcoal   #333333  → oklch(33% 0.004 60)  (body text)
+     · White background.
 
    Deliberately distinct from siblings:
      · Avail        → cobalt slipstream (graphite + electric blue)
      · Happy Clinic → aurora violet→teal, optimistic, saturated
      · SimplySkin   → restrained platinum, warm nude, one teal note
-     · Timeless     → aubergine-ink + aged brass on warm ivory — literary,
-                      heirloom, candlelit-warm. The "AFTER" that corrects a
-                      family-medicine template into an aesthetics institution.
+     · Darst        → warm chocolate/sepia brown + a teal accent
+     · Timeless     → WARM ORANGE (#E0701A) + peach/apricot/cream + soft
+                      bokeh light, all Open Sans. The friendly, sunlit medspa
+                      its own brand already is.
 
    Does NOT touch app/globals.css.
    ============================================================ */
 
 [data-brand="timeless"] {
-  /* Surfaces — warm ivory / aged-paper, never cold white. Candle-lit. */
-  --color-bg: oklch(97.4% 0.012 78);
-  --color-bg-subtle: oklch(95.2% 0.016 74);
-  --color-bg-elevated: oklch(98.8% 0.008 82);
-  --color-bg-warm: oklch(93.5% 0.022 70); /* deeper ivory wash blocks */
+  /* Surfaces — white + the faintest warm peach breath. Never cold, never grey. */
+  --color-bg: oklch(99.2% 0.004 60);
+  --color-bg-subtle: oklch(97.4% 0.01 58);
+  --color-bg-elevated: oklch(100% 0 0);
+  --color-bg-warm: oklch(95.2% 0.02 58); /* peach-cream wash blocks (#FBE9D9-ish) */
 
-  /* Foreground — deep aubergine ink (a purpled near-black), AA-tuned warm. */
-  --color-fg: oklch(22% 0.05 340);
-  --color-fg-muted: oklch(40% 0.04 342); /* AA on ivory + bg-subtle */
-  --color-fg-subtle: oklch(48% 0.035 344); /* AA at small sizes on ivory */
+  /* Foreground — warm CHARCOAL (#333), AA-tuned warm on white + peach. */
+  --color-fg: oklch(33% 0.004 60);
+  --color-fg-muted: oklch(46% 0.006 58); /* AA on white + bg-subtle */
+  --color-fg-subtle: oklch(52% 0.008 56); /* AA at small sizes on white */
 
-  /* Accent — aged brass. The brand's one metal. */
-  --color-accent: oklch(58% 0.094 76);
-  --color-accent-fg: oklch(98.5% 0.01 84);
-  --color-accent-subtle: oklch(91% 0.05 80);
-  --color-accent-deep: oklch(46% 0.082 70); /* AA links / prices on ivory */
-  --color-accent-bright: oklch(74% 0.1 82); /* glints / on-aubergine accents */
+  /* Accent — the brand ORANGE (#E0701A). The one confident hue. */
+  --color-accent: oklch(64% 0.15 52);
+  --color-accent-fg: oklch(99.5% 0.004 80); /* white text on orange */
+  --color-accent-subtle: oklch(92% 0.04 58); /* peach chips / tint fills */
+  --color-accent-deep: oklch(53% 0.135 47); /* AA links / prices on white */
+  --color-accent-bright: oklch(74% 0.135 58); /* glints / accents on dark/orange */
 
-  /* Brass + aubergine metals — hairlines, foil, plates. */
-  --brass: oklch(70% 0.09 80);
-  --brass-deep: oklch(52% 0.085 72);
-  --brass-pale: oklch(86% 0.06 82);
-  --aubergine: oklch(34% 0.09 338);
-  --aubergine-deep: oklch(26% 0.07 340);
+  /* Warm "metal" scale — renamed orange/peach. (var names kept for compat.)
+     --brass = ORANGE family; --aubergine = toasted-terracotta deep tone. */
+  --brass: oklch(68% 0.145 54); /* bright orange */
+  --brass-deep: oklch(54% 0.135 48); /* deep orange (AA-capable) */
+  --brass-pale: oklch(90% 0.05 60); /* pale peach highlight */
+  --aubergine: oklch(46% 0.11 44); /* toasted terracotta */
+  --aubergine-deep: oklch(38% 0.085 42); /* deep terracotta */
 
-  /* Borders — warm aged-brass-tinted hairlines (heirloom signature). */
-  --color-border: oklch(88% 0.018 76);
-  --color-border-subtle: oklch(92% 0.013 78);
-  --color-hairline: oklch(82% 0.026 76);
+  /* Borders — warm peach-tinted hairlines (friendly, soft). */
+  --color-border: oklch(91% 0.014 58);
+  --color-border-subtle: oklch(94.5% 0.009 58);
+  --color-hairline: oklch(86% 0.022 56);
 
-  --color-success: oklch(58% 0.1 150);
-  --color-warning: oklch(78% 0.12 78);
-  --color-error: oklch(56% 0.17 25);
-  --color-info: oklch(52% 0.08 280);
+  --color-success: oklch(64% 0.12 150);
+  --color-warning: oklch(78% 0.13 70);
+  --color-error: oklch(58% 0.18 28);
+  --color-info: oklch(60% 0.1 240);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Aubergine ink scale — dark sections + the WebGL backdrop (warm, purpled). */
-  --ink-0: oklch(19% 0.055 338);
-  --ink-1: oklch(24% 0.062 340);
-  --ink-2: oklch(29% 0.066 342);
+  /* Warm orange-cream hero field — the SUNLIT gradient base + bokeh backdrop.
+     (var names kept as --ink-* for compatibility; values are LIGHT + warm.) */
+  --ink-0: oklch(96% 0.03 60); /* lightest cream-peach */
+  --ink-1: oklch(90% 0.06 58); /* soft apricot */
+  --ink-2: oklch(82% 0.09 56); /* warm apricot-orange */
 
-  /* Horology brass stops — used by the WebGL ring material + CSS fallback.
-     A candlelit brass progression: pale highlight → brass → deep brass → ember. */
-  --ring-pale: oklch(90% 0.06 84);
-  --ring-brass: oklch(72% 0.095 80);
-  --ring-deep: oklch(54% 0.088 72);
-  --ring-ember: oklch(46% 0.1 56);
+  /* Bokeh / glow stops — used by the WebGL field + CSS fallback.
+     A sunlit progression: pale cream → peach → apricot → orange glow. */
+  --ring-pale: oklch(96% 0.03 64);
+  --ring-brass: oklch(86% 0.07 60);
+  --ring-deep: oklch(74% 0.12 56);
+  --ring-ember: oklch(64% 0.15 52);
 
-  /* Brass foil sheen for the rare highlighted hero word. Darkest stop ~44% L
-     clears WCAG AA on the light hero; lighter brass only passes mid-stroke. */
-  --foil-a: oklch(44% 0.078 68);
-  --foil-b: oklch(64% 0.07 84);
-  --foil-c: oklch(48% 0.088 64);
+  /* Orange sheen stops for the rare highlighted hero word. The darkest stop
+     (~50% L) clears WCAG AA on the light hero; lighter orange is mid-stroke. */
+  --foil-a: oklch(50% 0.135 46);
+  --foil-b: oklch(68% 0.15 56);
+  --foil-c: oklch(56% 0.14 50);
 
-  /* Glass tokens — warm frosted nav + cards. */
-  --glass-bg: oklch(98.5% 0.01 82 / 0.55);
-  --glass-bg-strong: oklch(98.5% 0.01 82 / 0.84);
-  --glass-border: oklch(100% 0 0 / 0.55);
-  --glass-shadow: 0 16px 50px -22px oklch(30% 0.06 340 / 0.26);
+  /* Glass tokens — warm frosted nav + cards (light). */
+  --glass-bg: oklch(100% 0 0 / 0.6);
+  --glass-bg-strong: oklch(100% 0 0 / 0.85);
+  --glass-border: oklch(100% 0 0 / 0.7);
+  --glass-shadow: 0 16px 50px -24px oklch(60% 0.12 52 / 0.22);
 
-  /* Fonts wired from next/font on the layout wrapper */
-  --font-display: var(--font-display), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
+  /* Glass tokens for the bokeh hero nav state (over the bright peach field). */
+  --glass-bg-dark: oklch(98% 0.02 60 / 0.62);
+  --glass-border-dark: oklch(70% 0.12 54 / 0.3);
 
-  /* Fluid type tokens (clamp) — editorial, generous heirloom scale. */
-  --fluid-hero: clamp(2.9rem, 1.15rem + 7.4vw, 7rem);
-  --fluid-h2: clamp(2.05rem, 1.25rem + 3.5vw, 3.7rem);
-  --fluid-lead: clamp(1.05rem, 0.98rem + 0.52vw, 1.3rem);
+  /* Fonts wired from next/font on the layout wrapper. The live brand is all
+     Open Sans — light for display, regular for body. */
+  --font-display: var(--font-display), "Open Sans", system-ui, sans-serif;
+  --font-sans: var(--font-body), "Open Sans", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — clean, friendly, light. Open Sans runs even,
+     so the hero is confident without being couture-extreme. */
+  --fluid-hero: clamp(2.6rem, 1.1rem + 6.6vw, 6rem);
+  --fluid-h2: clamp(1.95rem, 1.2rem + 3.2vw, 3.4rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.3rem);
 
   background-color: var(--color-bg);
   color: var(--color-fg);
@@ -95,20 +124,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings — editorial Cormorant Garamond, light & literary.
-   Higher weight than its sibling because Cormorant runs visually lighter. */
+/* Display headings — Open Sans REGULAR (400). Clean, friendly and optimistic,
+   but with real presence at hero scale: at the ~6rem hero clamp a 300 weight
+   read thin/under-confident, and left a visible gap to the 600 emphasis word.
+   400 keeps the airy live-brand feel while reading present and inviting. A touch
+   of negative tracking keeps large sizes tidy. */
 [data-brand="timeless"] .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.005em;
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
 
-/* Higher-contrast italic display variant for editorial emphasis words. */
+/* Emphasis display variant — the orange word. Open Sans semibold (no italic;
+   the live brand never sets script/italic display). Color applied by callers. */
 [data-brand="timeless"] .font-display-em {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.014em;
 }
 
 /* Tabular numerics for NAP / metrics / prices. */
@@ -122,17 +155,17 @@
   color: var(--color-accent-deep);
 }
 
-/* Refined letterspaced eyebrow label. */
+/* Refined letterspaced eyebrow label — friendly, not severe. */
 [data-brand="timeless"] .eyebrow {
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.24em;
   font-family: var(--font-sans);
 }
 
-/* Brass foil sheen — used ONLY on the rare hero highlight word.
-   A slow, candlelit metallic drift; warm, not flashy. */
+/* Orange sheen — used ONLY on the rare hero highlight word. A slow, warm,
+   sunlit drift; friendly, never flashy. */
 [data-brand="timeless"] .foil-sheen {
   background: linear-gradient(
     100deg,
@@ -149,7 +182,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="timeless"] .foil-sheen {
-    animation: tl-foil 12s linear infinite;
+    animation: tl-foil 11s linear infinite;
   }
 }
 @keyframes tl-foil {
@@ -157,7 +190,7 @@
   to   { background-position: 240% 0; }
 }
 
-/* Reusable glass surfaces — warm frost. */
+/* Reusable glass surfaces — warm frost (light). */
 [data-brand="timeless"] .glass {
   background: var(--glass-bg);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
@@ -172,82 +205,83 @@
 }
 
 /* ============================================================
-   Horology fallback — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand candlelit brass-aura with fine concentric rings: a minimalist
-   orrery / clock-field implying TIMELESS without a literal clock. NEVER a
-   blank box. Zero CLS.
-   Layers: aubergine field → warm brass aura → concentric ring set → slow drift.
-   The drift is reduced-motion gated below.
+   Bokeh hero fallback — SSR + reduced-motion + mobile + no-WebGL.
+   A warm orange→peach gradient washed with soft, out-of-focus light DOTS
+   (the brand's signature bokeh) — friendly, sunlit, never a blank box.
+   Zero CLS. Layers: peach→cream field → orange glow → scattered bokeh
+   circles → slow drift (reduced-motion gated below).
+   (Class name kept as .horology-fallback so HorologyHero keeps consuming it.)
    ============================================================ */
 [data-brand="timeless"] .horology-fallback {
   position: relative;
+  overflow: hidden;
   background:
-    /* warm brass aura, upper-right light source */
-    radial-gradient(60% 60% at 72% 30%, oklch(60% 0.09 78 / 0.55) 0%, transparent 60%),
-    /* deep ember undertone, lower-left */
-    radial-gradient(58% 60% at 22% 88%, oklch(40% 0.09 50 / 0.45) 0%, transparent 64%),
-    /* aubergine candlelit field */
-    radial-gradient(120% 120% at 70% 28%, oklch(28% 0.07 340) 0%, oklch(20% 0.06 338) 56%, oklch(16% 0.05 338) 100%);
+    /* warm orange glow, upper-right light source */
+    radial-gradient(60% 62% at 78% 22%, oklch(72% 0.14 56 / 0.55) 0%, transparent 60%),
+    /* soft apricot mid */
+    radial-gradient(70% 70% at 30% 18%, oklch(88% 0.07 60 / 0.6) 0%, transparent 64%),
+    /* peach→cream sunlit field */
+    radial-gradient(130% 130% at 72% 24%, oklch(94% 0.045 60) 0%, oklch(96% 0.03 62) 52%, oklch(98% 0.018 64) 100%);
 }
-/* Concentric brass rings — the orrery, drawn as fine repeating circles. */
+/* Scattered soft bokeh circles — out-of-focus light dots (orange + peach). */
 [data-brand="timeless"] .horology-fallback::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    repeating-radial-gradient(
-      circle at 70% 38%,
-      transparent 0,
-      transparent 38px,
-      oklch(74% 0.09 80 / 0.16) 38px,
-      oklch(74% 0.09 80 / 0.16) 39px,
-      transparent 40px,
-      transparent 78px
-    );
-  mask-image: radial-gradient(70% 70% at 70% 38%, #000 12%, transparent 82%);
-  -webkit-mask-image: radial-gradient(70% 70% at 70% 38%, #000 12%, transparent 82%);
-  transform-origin: 70% 38%;
+  inset: -10%;
+  background-image:
+    radial-gradient(circle at 16% 30%, oklch(72% 0.14 54 / 0.34) 0 6%, transparent 7%),
+    radial-gradient(circle at 82% 20%, oklch(86% 0.08 60 / 0.4) 0 4.5%, transparent 6%),
+    radial-gradient(circle at 68% 64%, oklch(74% 0.13 56 / 0.3) 0 5.5%, transparent 7%),
+    radial-gradient(circle at 38% 78%, oklch(90% 0.06 60 / 0.42) 0 3.5%, transparent 5%),
+    radial-gradient(circle at 92% 70%, oklch(70% 0.14 52 / 0.26) 0 4%, transparent 6%),
+    radial-gradient(circle at 8% 66%, oklch(88% 0.07 62 / 0.36) 0 3%, transparent 5%),
+    radial-gradient(circle at 52% 12%, oklch(80% 0.1 58 / 0.3) 0 3%, transparent 5%),
+    radial-gradient(circle at 26% 50%, oklch(92% 0.05 60 / 0.3) 0 2.4%, transparent 4%);
+  filter: blur(2px);
+  transform-origin: 60% 40%;
 }
-/* A second, finer ring family + a bright rim catch. */
+/* A second, finer bokeh family + a few crisp glints. */
 [data-brand="timeless"] .horology-fallback::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 70% 38%, transparent 0, transparent 168px, oklch(82% 0.1 84 / 0.4) 169px, transparent 171px),
-    radial-gradient(circle at 70% 38%, transparent 0, transparent 116px, oklch(76% 0.09 80 / 0.3) 117px, transparent 119px),
-    radial-gradient(circle at 70% 38%, transparent 0, transparent 230px, oklch(66% 0.085 74 / 0.28) 231px, transparent 233px);
-  transform-origin: 70% 38%;
+  inset: -10%;
+  background-image:
+    radial-gradient(circle at 60% 36%, oklch(98% 0.02 70 / 0.55) 0 1.2%, transparent 2.4%),
+    radial-gradient(circle at 30% 24%, oklch(98% 0.02 70 / 0.45) 0 0.9%, transparent 2%),
+    radial-gradient(circle at 78% 52%, oklch(98% 0.02 70 / 0.4) 0 1%, transparent 2.2%),
+    radial-gradient(circle at 46% 60%, oklch(76% 0.13 54 / 0.4) 0 1.4%, transparent 2.6%);
   opacity: 0.9;
+  transform-origin: 40% 60%;
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="timeless"] .horology-fallback::before {
-    animation: tl-orrery 64s linear infinite;
+    animation: tl-bokeh 26s ease-in-out infinite alternate;
   }
   [data-brand="timeless"] .horology-fallback::after {
-    animation: tl-orrery-rev 92s linear infinite;
+    animation: tl-bokeh-rev 34s ease-in-out infinite alternate;
   }
 }
-@keyframes tl-orrery {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes tl-bokeh {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(2%, -1.5%, 0) scale(1.06); }
 }
-@keyframes tl-orrery-rev {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
+@keyframes tl-bokeh-rev {
+  from { transform: translate3d(0, 0, 0) scale(1.04); }
+  to   { transform: translate3d(-1.6%, 1.4%, 0) scale(1); }
 }
 
-/* Hairline rule under eyebrow labels — quiet brass fade. */
+/* Hairline rule under eyebrow labels — quiet orange fade. */
 [data-brand="timeless"] .rule-fine::after {
   content: "";
   display: block;
   width: 2.5rem;
-  height: 1px;
+  height: 2px;
   margin-top: 0.65rem;
+  border-radius: 2px;
   background: linear-gradient(90deg, var(--color-accent), var(--brass-deep), transparent);
 }
 
-/* A fine measured-tick row — horology precision motif (clock-face ticks). */
+/* A fine measured-tick row — kept for any consumer; warm hairline ticks. */
 [data-brand="timeless"] .ruler-ticks {
   background-image: repeating-linear-gradient(
     90deg,
@@ -260,42 +294,113 @@
 
 /* ============================================================
    Brand photography placeholder treatment.
-   No external assets — warm ivory / brass / aubergine gradient "plates"
-   that read as one cohesive editorial heirloom shoot. Each marked "sample".
+   No external assets — warm peach / apricot / orange-cream gradient "plates"
+   washed with soft bokeh, reading as one cohesive sunlit medspa shoot. Each
+   marked "sample".
+   (Class names kept: .tl-plate / .tl-plate--ink / .tl-plate--brass.)
    ============================================================ */
 [data-brand="timeless"] .tl-plate {
   position: relative;
   background:
-    radial-gradient(120% 120% at 28% 14%, oklch(94% 0.04 78 / 0.8), transparent 60%),
-    radial-gradient(110% 120% at 84% 90%, oklch(72% 0.09 76 / 0.32), transparent 62%),
-    linear-gradient(152deg, oklch(94% 0.026 76), oklch(88% 0.04 66));
+    radial-gradient(120% 120% at 26% 16%, oklch(98% 0.02 62 / 0.9), transparent 60%),
+    radial-gradient(110% 120% at 86% 90%, oklch(82% 0.09 56 / 0.5), transparent 62%),
+    linear-gradient(152deg, oklch(95% 0.035 60), oklch(88% 0.06 56));
 }
+/* "ink" plate is now the warm SUNLIT plate (light, peach→apricot). */
 [data-brand="timeless"] .tl-plate--ink {
   background:
-    radial-gradient(110% 110% at 72% 16%, oklch(60% 0.09 78 / 0.42), transparent 62%),
-    radial-gradient(96% 100% at 12% 96%, oklch(46% 0.1 52 / 0.4), transparent 64%),
-    linear-gradient(160deg, var(--ink-1), var(--ink-0));
+    radial-gradient(110% 110% at 74% 18%, oklch(74% 0.13 56 / 0.45), transparent 62%),
+    radial-gradient(96% 100% at 14% 96%, oklch(88% 0.07 60 / 0.6), transparent 64%),
+    linear-gradient(160deg, oklch(90% 0.06 58), oklch(82% 0.095 54));
 }
+/* "brass" plate — the most saturated peach-orange plate. */
 [data-brand="timeless"] .tl-plate--brass {
   background:
-    radial-gradient(120% 110% at 26% 20%, oklch(90% 0.06 84 / 0.8), transparent 60%),
-    linear-gradient(150deg, oklch(86% 0.06 80), oklch(76% 0.085 70));
+    radial-gradient(120% 110% at 28% 20%, oklch(92% 0.05 62 / 0.85), transparent 60%),
+    linear-gradient(150deg, oklch(86% 0.08 58), oklch(76% 0.12 52));
 }
-/* Faint concentric-ring overlay so plates read as designed, not empty. */
+/* Faint bokeh-dot overlay so plates read as designed, not empty. */
 [data-brand="timeless"] .tl-plate::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    repeating-radial-gradient(
-      circle at 72% 28%,
-      oklch(100% 0 0 / 0.05) 0px,
-      oklch(100% 0 0 / 0.05) 1px,
-      transparent 1px,
-      transparent 22px
-    );
-  mask-image: radial-gradient(120% 120% at 72% 22%, #000 22%, transparent 100%);
-  -webkit-mask-image: radial-gradient(120% 120% at 72% 22%, #000 22%, transparent 100%);
+    radial-gradient(circle at 24% 28%, oklch(100% 0 0 / 0.5) 0 2.4%, transparent 3.4%),
+    radial-gradient(circle at 70% 22%, oklch(100% 0 0 / 0.4) 0 1.8%, transparent 2.8%),
+    radial-gradient(circle at 80% 68%, oklch(100% 0 0 / 0.42) 0 2.2%, transparent 3.2%),
+    radial-gradient(circle at 40% 76%, oklch(100% 0 0 / 0.34) 0 1.6%, transparent 2.6%);
+  background-repeat: no-repeat;
+  filter: blur(0.5px);
+}
+
+/* ============================================================
+   Brand wordmark — recreated "timeless aesthetics medspa" identity
+   (TimelessLogo / inline in SiteNav + SiteFooter).
+   A lowercase three-line wordmark — "timeless" / "aesthetics" / "medspa"
+   (medspa smaller + orange) — beside a decorative cluster of scattered
+   bokeh dots (orange + warm grey) forming the abstract mark. CSS-only
+   typographic treatment; the dot cluster is an inline SVG in the component.
+   Two tones: default (on light) + --on-dark (over the bright bokeh hero,
+   where text stays charcoal because the hero is LIGHT).
+   ============================================================ */
+[data-brand="timeless"] .tl-wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 0.98;
+}
+[data-brand="timeless"] .tl-wordmark__l1,
+[data-brand="timeless"] .tl-wordmark__l2 {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  color: var(--wm-ink, var(--color-fg));
+}
+[data-brand="timeless"] .tl-wordmark__l3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.22em;
+  color: var(--color-accent-deep);
+}
+[data-brand="timeless"] .tl-wordmark--on-dark {
+  --wm-ink: var(--color-fg);
+}
+
+/* ============================================================
+   Booking chip flow — the guided-booking widget's option chips + the soft
+   bokeh launcher pulse. Honors reduced motion below.
+   ============================================================ */
+[data-brand="timeless"] .tl-launch-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  opacity: 0.45;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="timeless"] .tl-launch-pulse {
+    animation: tl-pulse 2.6s ease-out infinite;
+  }
+}
+@keyframes tl-pulse {
+  0%   { transform: scale(1); opacity: 0.45; }
+  70%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Step progress dots for the guided flow. */
+[data-brand="timeless"] .tl-step-dot {
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: var(--color-border);
+  transition: background-color 0.3s ease, width 0.3s ease;
+}
+[data-brand="timeless"] .tl-step-dot[data-state="done"] {
+  background: var(--color-accent);
+}
+[data-brand="timeless"] .tl-step-dot[data-state="current"] {
+  background: var(--color-accent);
 }
 
 /* Respect reduced motion globally for decorative transforms. */

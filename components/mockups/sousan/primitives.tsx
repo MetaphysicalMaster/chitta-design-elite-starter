@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * Shared couture primitives for the Sousan mockup:
+ * Shared editorial primitives for the Sousan mockup:
  * - Reveal / RevealGroup / RevealItem  (scroll choreography, reduced-motion safe)
- * - SectionHeading                     (eyebrow + couture display title + lead)
+ * - SectionHeading                     (eyebrow + bold display title + lead)
  * - Magnetic                           (cursor-magnetic wrapper for CTAs)
  *
  * All motion honors prefers-reduced-motion (no transforms, instant show).
@@ -132,7 +132,7 @@ export function SectionHeading({
   lead?: ReactNode;
   align?: "left" | "center";
   className?: string;
-  /** "dark" = sits on the emerald night sections. */
+  /** "dark" = sits on the dark charcoal sections. */
   tone?: "light" | "dark";
 }) {
   return (
@@ -172,7 +172,7 @@ export function SectionHeading({
             className={cn(
               "mt-5 text-pretty font-light",
               tone === "dark"
-                ? "text-[oklch(90%_0.02_120_/_0.86)]"
+                ? "text-[oklch(88%_0_0_/_0.86)]"
                 : "text-[var(--color-fg-muted)]",
             )}
             style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.6 }}
@@ -231,8 +231,8 @@ export function Magnetic({
 export const ctaPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent-deep)] font-medium tracking-tight text-[var(--color-accent-fg)]",
-  "shadow-[0_18px_46px_-16px_oklch(40%_0.1_164_/_0.6)]",
+  "shadow-[0_18px_46px_-16px_oklch(51%_0.22_357_/_0.55)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-14px_oklch(40%_0.1_164_/_0.72)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-14px_oklch(51%_0.22_357_/_0.65)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
 );

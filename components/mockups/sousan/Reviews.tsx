@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * Reviews — the proof wall. A masonry-ish set of couture review cards plus a
- * rating summary band. Establishes the "5-star reputation" pillar with real
- * voice. Sample reviews representative of a 29-year River Oaks clientele.
+ * Reviews — the proof wall. A masonry-ish set of editorial review cards plus a
+ * rating summary band. Establishes the "5-star, client-loved" pillar with real
+ * voice. Sample reviews representative of a beloved Houston medspa clientele.
  */
 
 import { Reveal, RevealGroup, RevealItem, SectionHeading } from "./primitives";
@@ -18,9 +18,9 @@ type Review = {
 const REVIEWS: Review[] = [
   {
     quote:
-      "I have followed Sousan from her first little room. Twenty years later, my skin still answers to no one else. This is River Oaks' best-kept secret — except it isn't a secret.",
+      "Sousan changed my relationship with my own skin. She listens, she's honest, and the results speak for themselves. I won't trust my face to anyone else in Houston.",
     name: "Margaret L.",
-    meta: "Client since 2003 · River Oaks",
+    meta: "Client · Houston",
     span: true,
   },
   {
@@ -33,7 +33,7 @@ const REVIEWS: Review[] = [
     quote:
       "Natural, never overdone. Sousan has an eye you simply cannot teach.",
     name: "Caroline V.",
-    meta: "Injectables",
+    meta: "Deluxe Facial",
   },
   {
     quote:
@@ -43,9 +43,9 @@ const REVIEWS: Review[] = [
   },
   {
     quote:
-      "Discreet, immaculate, and the only place I trust with my face. Worth every minute of the drive.",
+      "Immaculate, welcoming, and the only place I trust with my skin. Truly a beauty evolution — worth every minute.",
     name: "Anne-Marie T.",
-    meta: "Client since 2011",
+    meta: "Loyal client",
     span: true,
   },
 ];
@@ -73,35 +73,43 @@ export function Reviews() {
           eyebrow="Reviews"
           title={
             <>
-              The corridor{" "}
-              <span className="font-display-em">talks.</span>
+              Houston is{" "}
+              <span className="font-display-em">glowing.</span>
             </>
           }
-          lead="A reputation built one referral at a time — the way River Oaks has always chosen its names."
+          lead="A reputation built one transformation at a time. Here's what clients across Houston say about their beauty evolution."
         />
 
-        {/* rating summary band */}
+        {/* rating summary band — proud, but the specific figures are marked
+            representative so the credibility claims stay consistent with the
+            rest of the build's honesty discipline (verified numbers slot in). */}
         <Reveal delay={0.08} className="mt-10">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-5 text-center shadow-[0_1px_0_oklch(100%_0_0/0.6)]">
-            <div className="flex items-center gap-3">
-              <span className="font-display text-3xl text-[var(--color-fg)] tnum">
-                5.0
-              </span>
-              <Stars />
+          <div className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-5 text-center shadow-[0_1px_0_oklch(100%_0_0/0.6)]">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              <div className="flex items-center gap-3">
+                <span className="font-display text-3xl text-[var(--color-fg)] tnum">
+                  5.0
+                </span>
+                <Stars />
+              </div>
+              <span aria-hidden className="hidden h-6 w-px bg-[var(--color-hairline)] sm:block" />
+              <p className="text-sm text-[var(--color-fg-muted)]">
+                <span className="font-medium text-[var(--color-fg)] tnum">
+                  400+
+                </span>{" "}
+                five-star reviews across Google
+              </p>
+              <span aria-hidden className="hidden h-6 w-px bg-[var(--color-hairline)] sm:block" />
+              <p className="text-sm text-[var(--color-fg-muted)]">
+                Loved across{" "}
+                <span className="font-medium text-[var(--color-fg)]">
+                  Houston, TX
+                </span>
+              </p>
             </div>
-            <span aria-hidden className="hidden h-6 w-px bg-[var(--color-hairline)] sm:block" />
-            <p className="text-sm text-[var(--color-fg-muted)]">
-              <span className="font-medium text-[var(--color-fg)] tnum">
-                400+
-              </span>{" "}
-              five-star reviews across Google &amp; the corridor
-            </p>
-            <span aria-hidden className="hidden h-6 w-px bg-[var(--color-hairline)] sm:block" />
-            <p className="text-sm text-[var(--color-fg-muted)]">
-              Trusted since{" "}
-              <span className="font-medium text-[var(--color-fg)] tnum">
-                1995
-              </span>
+            <p className="mt-3 border-t border-[var(--color-border)] pt-3 text-[0.72rem] text-[var(--color-fg-subtle)]">
+              Representative figures for this mockup — the practice&rsquo;s
+              verified ratings slot in here.
             </p>
           </div>
         </Reveal>

@@ -2,57 +2,48 @@
 
 /**
  * SiteFooter — per-location NAP footer (the local-SEO backbone), brand sign-off,
- * the co-founder credit (Nurse Liz + Nicole Langer), and honest sample/mock
- * disclaimers. Semantic <address> per bar so each location is independently
+ * and honest sample/mock disclaimers. The recreated martini-syringe mark anchors
+ * the brand block. Semantic <address> per bar so each location is independently
  * crawlable. Reduced-motion safe (static).
  */
 
 import Link from "next/link";
 import { BRAND, LOCATIONS } from "./nap";
+import { BeautoxLogo } from "./BeautoxLogo";
 
 const NAV = [
-  { href: "#locations", label: "Locations" },
-  { href: "#services", label: "Menu" },
+  { href: "#services", label: "The Menu" },
   { href: "#results", label: "Results" },
   { href: "#reviews", label: "Reviews" },
-  { href: "#financing", label: "Financing" },
+  { href: "#team", label: "Our Injectors" },
+  { href: "#locations", label: "Locations" },
+  { href: "#financing", label: "Specials" },
   { href: "#book", label: "Book" },
 ];
 
 export function SiteFooter() {
   const year = 2026;
   return (
-    <footer className="border-t border-[var(--glass-border-dark)] bg-[var(--night-0)] text-[oklch(92%_0.03_330_/_0.86)]">
+    <footer className="border-t border-[var(--glass-border-dark)] bg-[var(--night-0)] text-[oklch(92%_0.008_350_/_0.86)]">
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.1fr_2fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1.4fr]">
           {/* Brand block */}
           <div>
             <Link
               href="#top"
-              className="group inline-flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--candy-pink)]"
+              aria-label="Beautox Bar — home"
+              className="group inline-flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-bright)]"
             >
-              <span
-                aria-hidden
-                className="css-bubble grid h-10 w-10 place-items-center text-lg font-bold text-[var(--color-accent-fg)]"
-              >
-                B
-              </span>
-              <span className="font-display text-xl text-[var(--color-bg)]">
-                Beautox Bar
-              </span>
+              <BeautoxLogo tone="light" size="md" descriptor />
             </Link>
-            <p className="mt-4 max-w-xs text-pretty leading-relaxed text-[oklch(88%_0.03_330_/_0.8)]">
-              {BRAND.tagline} The Twin Cities&apos; fun, nurse-founded Botox bar —
-              now in three neighborhoods.
+            <p className="mt-5 max-w-xs text-pretty leading-relaxed text-[oklch(88%_0.008_350_/_0.8)]">
+              {BRAND.tagline}{" "}A playful Botox bar &amp; med spa in Maple Grove
+              and White Bear Lake — tox, filler, lips, peptides &amp; the glow,
+              served with a wink.
             </p>
             <p className="mt-5 text-sm">
-              <span className="text-[oklch(82%_0.03_330_/_0.7)]">Founded by</span>{" "}
-              <span className="font-semibold text-[var(--color-bg)]">
-                Nurse Liz
-              </span>{" "}
-              &amp;{" "}
-              <span className="font-semibold text-[var(--color-bg)]">
-                Nicole Langer
+              <span className="rounded-full bg-[oklch(28%_0.04_356_/_0.4)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-accent-bright)]">
+                Woman-owned · Nurse-led
               </span>
             </p>
             <nav aria-label="Footer" className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
@@ -60,7 +51,7 @@ export function SiteFooter() {
                 <Link
                   key={n.href}
                   href={n.href}
-                  className="text-sm text-[oklch(88%_0.03_330_/_0.8)] transition-colors hover:text-[var(--candy-pink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--candy-pink)]"
+                  className="text-sm text-[oklch(88%_0.008_350_/_0.8)] transition-colors hover:text-[var(--color-accent-bright)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]"
                 >
                   {n.label}
                 </Link>
@@ -69,18 +60,16 @@ export function SiteFooter() {
           </div>
 
           {/* Per-location NAP */}
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2">
             {LOCATIONS.map((l) => (
               <div key={l.id}>
                 <h3 className="font-display text-base text-[var(--color-bg)]">
                   {l.city}
-                  {l.status === "coming-soon" && (
-                    <span className="ml-2 align-middle rounded-full bg-[var(--lilac-deep)] px-2 py-0.5 text-[0.5rem] font-semibold uppercase tracking-[0.14em] text-[oklch(98%_0.01_300)]">
-                      Soon
-                    </span>
-                  )}
                 </h3>
-                <address className="mt-3 space-y-1 text-sm not-italic text-[oklch(88%_0.03_330_/_0.82)]">
+                <p className="mt-1 text-xs font-semibold tnum text-[var(--color-accent-bright)]">
+                  {l.happyHour}
+                </p>
+                <address className="mt-3 space-y-1 text-sm not-italic text-[oklch(88%_0.008_350_/_0.82)]">
                   <p>{l.street}</p>
                   <p>
                     {l.city}, {l.state} {l.zip}
@@ -88,27 +77,27 @@ export function SiteFooter() {
                   <p className="pt-1">
                     <a
                       href={`tel:${l.tel}`}
-                      className="font-semibold tnum text-[var(--candy-pink)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--candy-pink)]"
+                      className="font-semibold tnum text-[var(--color-accent-bright)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]"
                     >
                       {l.phone}
                     </a>
                   </p>
-                  <p className="text-xs text-[oklch(80%_0.03_330_/_0.7)]">{l.hours}</p>
+                  <p className="text-xs text-[oklch(80%_0.008_350_/_0.7)]">{l.hours}</p>
                 </address>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-[var(--glass-border-dark)] pt-7 text-xs text-[oklch(78%_0.03_330_/_0.66)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-[var(--glass-border-dark)] pt-7 text-xs text-[oklch(78%_0.008_350_/_0.66)] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {BRAND.name}. Sample pitch mockup — imagery, pricing &amp;
-            NAP are placeholders for illustration.
+            © {year} {BRAND.name}. Sample pitch mockup — imagery &amp; pricing are
+            placeholders for illustration.
           </p>
           <p className="flex flex-wrap gap-x-4">
-            <span>Reach Nicole Langer via LinkedIn</span>
+            <span>Results vary</span>
             <span aria-hidden>·</span>
-            <span>Results vary · Licensed medical providers</span>
+            <span>Licensed medical providers</span>
           </p>
         </div>
       </div>
