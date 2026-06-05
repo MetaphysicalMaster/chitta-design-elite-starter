@@ -75,21 +75,21 @@ export function BrandImage({
           className={cn(
             "pointer-events-none absolute inset-0",
             scrim === "soft"
-              ? "bg-gradient-to-t from-[oklch(18%_0.035_254_/_0.55)] via-[oklch(18%_0.035_254_/_0.12)] to-transparent"
-              : "bg-gradient-to-t from-[oklch(16%_0.03_255_/_0.8)] via-[oklch(18%_0.035_254_/_0.34)] to-[oklch(20%_0.04_254_/_0.08)]",
+              ? "bg-gradient-to-t from-[oklch(20%_0.035_56_/_0.55)] via-[oklch(20%_0.035_56_/_0.12)] to-transparent"
+              : "bg-gradient-to-t from-[oklch(18%_0.03_54_/_0.8)] via-[oklch(20%_0.035_56_/_0.34)] to-[oklch(24%_0.04_57_/_0.08)]",
           )}
         />
       )}
 
       {/* "sample" tag — honest about the placeholder */}
       {showSample && (
-        <span className="pointer-events-none absolute right-2.5 top-2.5 z-10 rounded-full bg-[oklch(18%_0.035_254_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.01_250)] backdrop-blur-sm">
+        <span className="pointer-events-none absolute right-2.5 top-2.5 z-10 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
           Sample
         </span>
       )}
 
       {label && (
-        <span className="absolute bottom-3 left-3.5 z-10 text-[0.8rem] font-medium tracking-tight text-[oklch(97%_0.01_250)]">
+        <span className="absolute bottom-3 left-3.5 z-10 text-[0.8rem] font-medium tracking-tight text-[oklch(97%_0.012_72)]">
           {label}
         </span>
       )}

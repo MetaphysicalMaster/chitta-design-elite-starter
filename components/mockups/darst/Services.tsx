@@ -81,7 +81,7 @@ export function Services() {
               className={cn(
                 "group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7",
                 "transition-[transform,box-shadow,border-color] duration-300",
-                "hover:-translate-y-1 hover:border-[var(--color-accent-deep)] hover:shadow-[0_24px_60px_-30px_oklch(27%_0.05_253_/_0.4)]",
+                "hover:-translate-y-1 hover:border-[var(--color-accent-deep)] hover:shadow-[0_24px_60px_-30px_oklch(30%_0.05_58_/_0.4)]",
                 s.featured && "lg:col-span-2",
               )}
             >

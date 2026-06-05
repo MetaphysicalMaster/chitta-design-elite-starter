@@ -143,15 +143,15 @@ export function LatticeHero() {
           Left wash anchors the copy column; vertical seats nav + base. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(16%_0.03_255_/_0.92)] via-[oklch(18%_0.035_254_/_0.55)] to-[oklch(20%_0.04_254_/_0.18)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(18%_0.032_54_/_0.92)] via-[oklch(21%_0.038_56_/_0.55)] to-[oklch(24%_0.042_57_/_0.18)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(16%_0.03_255_/_0.72)] via-transparent to-[oklch(15%_0.03_255_/_0.82)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-[oklch(18%_0.032_54_/_0.72)] via-transparent to-[oklch(17%_0.03_54_/_0.82)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_92%_at_26%_56%,oklch(15%_0.03_255_/_0.5),transparent_62%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_92%_at_26%_56%,oklch(17%_0.03_54_/_0.5),transparent_62%)]"
       />
 
       <motion.div
@@ -162,7 +162,7 @@ export function LatticeHero() {
       >
         <motion.p
           variants={item}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--glass-border-dark)] bg-[var(--glass-bg-dark)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[oklch(94%_0.012_250)] backdrop-blur-md"
+          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[var(--glass-border-dark)] bg-[var(--glass-bg-dark)] px-4 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[oklch(95%_0.014_72)] backdrop-blur-md"
         >
           <span aria-hidden className="text-[var(--color-accent-bright)]">
             ✦
@@ -172,11 +172,11 @@ export function LatticeHero() {
 
         <motion.h1
           variants={item}
-          className="font-display max-w-[19ch] text-balance text-[oklch(98%_0.008_250)] drop-shadow-[0_2px_30px_oklch(12%_0.03_255_/_0.6)]"
+          className="font-display max-w-[19ch] text-balance text-[oklch(98%_0.01_74)] drop-shadow-[0_2px_30px_oklch(14%_0.03_54_/_0.6)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.02 }}
         >
           Board-certified in dermatology — and{" "}
-          <span className="font-display-em text-[oklch(99%_0.006_250)]">
+          <span className="font-display-em text-[var(--color-accent-bright)]">
             dermatopathology.
           </span>{" "}
           Few are.
@@ -184,12 +184,12 @@ export function LatticeHero() {
 
         <motion.p
           variants={item}
-          className="mt-7 max-w-[52ch] text-pretty font-light text-[oklch(93%_0.012_250_/_0.92)]"
+          className="mt-7 max-w-[52ch] text-pretty font-light text-[oklch(93%_0.014_72_/_0.92)]"
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.58 }}
         >
           Most dermatologists send your biopsy to a lab they&rsquo;ll never
           meet.{" "}
-          <span className="font-medium text-[oklch(99%_0.008_250)]">
+          <span className="font-medium text-[oklch(99%_0.01_74)]">
             Dr. Marc A. Darst, MD reads it himself
           </span>{" "}
           — board-certified in both disciplines, caring for Charlotte for over
@@ -205,10 +205,10 @@ export function LatticeHero() {
               href="#book"
               className={cn(
                 "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-                "bg-[oklch(98%_0.008_250)] font-semibold tracking-tight text-[var(--navy-ink)]",
-                "shadow-[0_16px_44px_-16px_oklch(15%_0.03_255_/_0.8)]",
+                "bg-[oklch(98%_0.01_74)] font-semibold tracking-tight text-[var(--navy-ink)]",
+                "shadow-[0_16px_44px_-16px_oklch(17%_0.03_54_/_0.8)]",
                 "transition-[transform,box-shadow] duration-300 ease-out",
-                "hover:-translate-y-0.5 hover:shadow-[0_22px_58px_-14px_oklch(15%_0.03_255_/_0.9)]",
+                "hover:-translate-y-0.5 hover:shadow-[0_22px_58px_-14px_oklch(17%_0.03_54_/_0.9)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
               )}
             >
@@ -225,8 +225,8 @@ export function LatticeHero() {
             href="#credentials"
             className={cn(
               "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "border border-[var(--glass-border-dark)] bg-[var(--glass-bg-dark)] font-medium text-[oklch(96%_0.01_250)] backdrop-blur-md",
-              "transition-colors duration-300 hover:bg-[oklch(34%_0.05_252_/_0.5)]",
+              "border border-[var(--glass-border-dark)] bg-[var(--glass-bg-dark)] font-medium text-[oklch(96%_0.012_72)] backdrop-blur-md",
+              "transition-colors duration-300 hover:bg-[oklch(38%_0.05_60_/_0.5)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
@@ -236,7 +236,7 @@ export function LatticeHero() {
 
         <motion.dl
           variants={item}
-          className="mt-14 flex flex-wrap gap-x-10 gap-y-5 text-[oklch(97%_0.01_250)]"
+          className="mt-14 flex flex-wrap gap-x-10 gap-y-5 text-[oklch(97%_0.012_72)]"
         >
           {[
             { v: "2 boards", k: "Dermatology + dermatopathology" },
@@ -245,7 +245,7 @@ export function LatticeHero() {
           ].map((s) => (
             <div key={s.k} className="flex flex-col">
               <dt className="font-display text-2xl leading-none tnum">{s.v}</dt>
-              <dd className="mt-1.5 text-xs uppercase tracking-[0.14em] text-[oklch(86%_0.02_250_/_0.74)]">
+              <dd className="mt-1.5 text-xs uppercase tracking-[0.14em] text-[oklch(86%_0.025_70_/_0.74)]">
                 {s.k}
               </dd>
             </div>
@@ -261,7 +261,7 @@ export function LatticeHero() {
         transition={{ delay: 1.2, duration: 0.8 }}
         className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center"
       >
-        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[oklch(80%_0.04_250_/_0.4)] p-1">
+        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-[oklch(80%_0.04_66_/_0.4)] p-1">
           <motion.span
             className="block h-2 w-1 rounded-full bg-[var(--color-accent-bright)]"
             animate={prefersReduced ? {} : { y: [0, 8, 0] }}

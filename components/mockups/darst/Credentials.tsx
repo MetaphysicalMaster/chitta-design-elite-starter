@@ -50,7 +50,7 @@ export function Credentials() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(56% 80% at 16% 22%, oklch(46% 0.07 250 / 0.22), transparent 60%), radial-gradient(60% 90% at 88% 80%, oklch(45% 0.15 22 / 0.16), transparent 62%)",
+            "radial-gradient(56% 80% at 16% 22%, oklch(50% 0.055 62 / 0.22), transparent 60%), radial-gradient(60% 90% at 88% 80%, oklch(58% 0.085 196 / 0.18), transparent 62%)",
         }}
       />
       {/* faint strata hairlines — the anatomy-plate motif */}
@@ -73,7 +73,7 @@ export function Credentials() {
               style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.07 }}
             >
               Why a{" "}
-              <span className="font-display-em text-[oklch(80%_0.07_250)]">
+              <span className="font-display-em text-[var(--color-accent-bright)]">
                 dermatopathologist
               </span>{" "}
               sees what others miss.
@@ -81,7 +81,7 @@ export function Credentials() {
           </Reveal>
           <Reveal delay={0.12}>
             <p
-              className="mt-6 max-w-[58ch] text-pretty font-light text-[oklch(88%_0.02_250_/_0.88)]"
+              className="mt-6 max-w-[58ch] text-pretty font-light text-[oklch(88%_0.025_70_/_0.88)]"
               style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.62 }}
             >
               When a spot is biopsied, the diagnosis is made not in the exam room
@@ -106,7 +106,7 @@ export function Credentials() {
             <RevealItem
               as="li"
               key={s.n}
-              className="relative flex flex-col rounded-2xl border border-[var(--glass-border-dark)] bg-[oklch(27%_0.048_252_/_0.5)] p-6 backdrop-blur-sm"
+              className="relative flex flex-col rounded-2xl border border-[var(--glass-border-dark)] bg-[oklch(30%_0.048_58_/_0.5)] p-6 backdrop-blur-sm"
             >
               <span
                 aria-hidden
@@ -117,7 +117,7 @@ export function Credentials() {
               <h3 className="font-display mt-3 text-xl text-[var(--color-bg)]">
                 {s.t}
               </h3>
-              <p className="mt-2.5 text-[0.92rem] leading-relaxed text-[oklch(86%_0.02_250_/_0.82)]">
+              <p className="mt-2.5 text-[0.92rem] leading-relaxed text-[oklch(86%_0.025_70_/_0.82)]">
                 {s.d}
               </p>
               {i < LOOP.length - 1 && (
@@ -135,11 +135,11 @@ export function Credentials() {
         {/* Reputation reframe — addresses the 3.5★ narrative head-on, with
             credentials, not defensiveness. */}
         <Reveal delay={0.1}>
-          <div className="mt-12 flex flex-col gap-5 rounded-2xl border border-[var(--glass-border-dark)] bg-[oklch(22%_0.042_253_/_0.6)] p-7 sm:flex-row sm:items-center sm:gap-8 sm:p-9">
+          <div className="mt-12 flex flex-col gap-5 rounded-2xl border border-[var(--glass-border-dark)] bg-[oklch(25%_0.044_57_/_0.6)] p-7 sm:flex-row sm:items-center sm:gap-8 sm:p-9">
             <p className="font-display text-2xl leading-snug text-[var(--color-bg)] sm:max-w-[20ch]">
               Choose your dermatologist on credentials, not just star counts.
             </p>
-            <p className="text-[0.95rem] leading-relaxed text-[oklch(86%_0.02_250_/_0.84)] sm:border-l sm:border-[var(--glass-border-dark)] sm:pl-8">
+            <p className="text-[0.95rem] leading-relaxed text-[oklch(86%_0.025_70_/_0.84)] sm:border-l sm:border-[var(--glass-border-dark)] sm:pl-8">
               Online reviews capture wait times and front-desk moods. They
               can&rsquo;t capture a margin read correctly the first time, or a
               melanoma caught early because one physician saw both the skin and

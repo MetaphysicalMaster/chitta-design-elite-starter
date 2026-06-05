@@ -83,7 +83,7 @@ export function Reviews() {
               <figcaption className="mt-5 flex items-center gap-3 border-t border-[var(--color-border)] pt-5">
                 <span
                   aria-hidden
-                  className="grid h-9 w-9 place-items-center rounded-full bg-[var(--navy)] text-[0.8rem] font-semibold text-[oklch(96%_0.01_250)]"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-[var(--navy)] text-[0.8rem] font-semibold text-[oklch(96%_0.012_72)]"
                 >
                   {q.name.replace(/\s/g, "")}
                 </span>

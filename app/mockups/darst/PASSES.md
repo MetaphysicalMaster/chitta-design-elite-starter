@@ -167,3 +167,136 @@ Each pass below is ONE genuine improvement. No filler.
 | Conversion design | 9.5 | Credentials-forward closer reframes 3.5★; dual hero CTA, native 30-sec scheduler, financing reassurance. |
 
 **Average ≈ 9.46** (target ≥ 9.4 met).
+
+---
+
+# ROUND 2 — REBRAND + DYNAMIC ELEMENTS
+
+The first round mis-read the brand as navy + oxblood. This round re-tunes the
+ENTIRE scoped palette to the practice's REAL identity — a warm chocolate/sepia
+**brown** primary + a **teal/aqua** accent on soft warm-grey + white — recreates
+their logo as an inline wordmark, and adds two shared dynamic elements (a
+split-flap "Solari" review board + a treatment marquee). Edited ONLY
+`app/mockups/darst/**` + `components/mockups/darst/**`; tokens stay scoped to
+`[data-brand="darst"]`. No git run.
+
+## Brown + teal rebrand (the client's true tones)
+
+47. **Palette re-anchored brown + teal.** Re-tuned every scoped `--color-*`
+    token in `brand.css`: surfaces → soft WARM-GREY + white (hue ~70, not cool
+    240); `--color-fg` → warm chocolate/sepia brown ink (AA tiers preserved);
+    `--color-accent` family → teal/aqua (the practice's secondary signature).
+    Navy + oxblood dropped entirely.
+48. **Var NAMES kept, VALUES re-toned.** `--navy*` / `--strata-*` / `--night-*`
+    retain their names (every consuming component keeps working untouched) but
+    their values shift navy→warm-brown and the strata vessel oxblood→teal —
+    documented inline so the names read as "the dark/brown scale", not literal
+    navy. Minimal, safe, no churn across 13 components.
+49. **Sibling-differentiation note rewritten.** The `brand.css` header now
+    documents Darst as warm-brown + teal on warm paper (vs the cobalt / aurora /
+    platinum / aubergine / sakura / emerald siblings) — still unmistakably apart.
+50. **AA contrast re-verified for the new hues.** `--color-fg`/`-muted`/`-subtle`
+    and `--color-accent-deep` chosen to clear AA on the warm paper; the on-dark
+    tiers (`-bright`, the cream whites) re-toned warm over the brown sections.
+51. **Inline literal sweep.** Every hard-coded `oklch(... 25x)` navy and
+    `oklch(... 2x)` oxblood literal across the hero scrims, BrandImage scrims +
+    tags, BeforeAfter handle/scrim, Credentials + Booking washes/cards, Services
+    hover shadow, Reviews avatar, primitives `ctaPrimary`, SiteNav/Footer was
+    re-toned to brown/teal — grepped to zero remaining cool-navy/oxblood literals.
+52. **Teal emphasis words.** The hero "dermatopathology", Credentials
+    "dermatopathologist" and Booking "thirty seconds" emphasis spans now use the
+    bright-teal accent (were near-white / pale-navy) — the accent earns its place.
+
+## Recreated logo (their identity, refined)
+
+53. **`DarstLogo` inline wordmark.** New CSS/SVG component recreating the live
+    mark: an elegant brown brush-script/serif-script "Darst" (display serif true
+    italic) over "DERMATOLOGY" in teal letter-spaced caps, with a thin teal
+    SWOOSH arc (inline SVG) curving above the name. No raster asset.
+54. **Two tones + two sizes.** `tone="dark"` (cream script + bright-teal caps)
+    for use over the brown hero; default (brown script + deep-teal caps) on
+    light surfaces. `size` sm/md. Swoosh is `aria-hidden`; text carries the name.
+55. **Wired into nav + footer.** SiteNav swaps the old "D" monogram for the
+    wordmark, flipping tone with the scroll surface (dark over hero → light when
+    frosted); SiteFooter uses the light md wordmark. Old monogram markup removed.
+
+## Recolored WebGL hero + fallback
+
+56. **Lattice shader palette → brown + teal.** `LatticeScene` PALETTE re-toned:
+    warm-pale corneum → tan epidermis → ochre-brown dermis → espresso
+    hypodermis, with the lone capillary now TEAL (was navy strata + oxblood
+    vessel). Lattice concept, resolve, DoF, vessel thread all kept.
+57. **`DermalFallback` SVG recolored.** Strata gradient stops shifted to warm
+    earth tones; the capillary paths recolored teal; cell dots / hairlines /
+    follicle / labels warmed (hue ~70) so the static plate matches the live
+    scene. SVG path coordinates left untouched.
+58. **CSS strata field + plates warmed.** `.lattice-fallback` bands, `.dt-plate*`
+    placeholder gradients re-toned warm-brown + teal so SSR / reduced-motion /
+    no-WebGL states read in-brand.
+
+## Split-flap "Solari" review board
+
+59. **Six mechanical flip panels.** New `SplitFlapBoard` replaces the static
+    reviews wall: 6 panels styled as an old split-flap departure board, each with
+    a center SEAM, set in warm-brown + teal on the night surface.
+60. **Round-robin flip timing per brief.** One `setInterval` fires every 1.5s;
+    `tick % 6` selects the panel, so each individual panel refreshes every 9s —
+    smooth, continuous, never all-at-once.
+61. **True 3D split-flap mechanic.** The new review is painted as the resting
+    face (top+bottom split by the seam); on refresh the OLD top leaf drops on a
+    bottom hinge (`rotateX(0→-90deg)`, `transform-origin: bottom`) revealing the
+    new top beneath — with a sheen gradient on the leaf for a mechanical read.
+62. **No-duplicate guard.** When advancing a panel, the picker skips any value
+    currently shown on another panel, so the board never displays a visible
+    duplicate quote.
+63. **Reduced-motion = crossfade.** Under `prefers-reduced-motion` the 3D flip is
+    disabled (CSS) and the new face CROSSFADES in instead; pool still rotates,
+    calmly.
+64. **A11y.** An `aria-live="polite"` sr-only region announces each freshly
+    flipped review for AT users; panels carry real review text as content; the
+    grid is a labelled group; honest "sample" framing line beneath.
+65. **Responsive grid.** 2-col (mobile) → 3-col (sm) → 6-col (lg); panels hold a
+    4:5 aspect so the seam + flip stay proportional at every width.
+
+## Treatment marquee (the "Karma" element)
+
+66. **Auto-scrolling treatment ribbon.** New `TreatmentMarquee` — a horizontal
+    bar of treatment cards (Skin cancer screening, Mohs surgery,
+    Dermatopathology, Botox, Fillers, Laser, Vein, Acne/eczema, Peels), each a
+    BrandImage placeholder plate (marked "sample") + label + blurb.
+67. **Seamless CSS loop.** The track holds the cards twice and translates -50%
+    via a `linear infinite` keyframe — no JS, no seam; masked edges fade cards
+    in/out.
+68. **Pause on hover/focus.** `:hover` and `:focus-within` set
+    `animation-play-state: paused` so a prospect can stop and read.
+69. **Reduced-motion safe.** Under `prefers-reduced-motion` the scroll animation
+    is disabled and the row becomes a normal horizontally-scrollable / swipeable
+    strip; the duplicate half is `aria-hidden` so SR hears each treatment once.
+70. **Placed as the offering bridge.** Sits between Services and the
+    before/after — infusing the lively "range" ribbon without disrupting the
+    credentials-forward narrative.
+
+## Kept + gates
+
+71. **Differentiator + authority kept.** Credentials closer (double board-
+    certified / in-house dermatopathology), the academic framing, the 3.5★
+    reputation reframe, the keyboard before/after slider (sample B&A) and the
+    placeholder provider imagery all retained — only recolored.
+72. **Gates green.** `npx tsc --noEmit` clean; `npx next build` succeeds and
+    `/mockups/darst` still prerenders as static content. `cn()` used for all new
+    conditional classes; AGENTS.md heeded (lazy-loading guide read; the WebGL
+    `dynamic(ssr:false)` boundary untouched).
+
+## Self-score — Round 2 (each /10)
+
+| Criterion | Score | Notes |
+|---|---:|---|
+| Brand accuracy (rebrand) | 9.6 | Warm brown + teal on warm paper now matches the client's real wordmark + tones; navy/oxblood fully gone. |
+| Logo recreation | 9.4 | Brush-script "Darst" + teal letter-spaced caps + teal swoosh arc, two tones, in nav + footer — faithful + refined. |
+| Split-flap board | 9.5 | True 3D rotateX flip on a seam, 1.5s round-robin → 9s/panel, no-dup guard, aria-live, reduced-motion crossfade. |
+| Treatment marquee | 9.4 | Seamless CSS loop, pause-on-hover, masked edges, reduced-motion fallback to a swipe strip, honest sample plates. |
+| WebGL recolor | 9.4 | Lattice + SVG + CSS fallback all retoned to warm strata + teal vessel; concept + fallback intact. |
+| A11y + reduced motion | 9.5 | Both new elements fully reduced-motion safe + AT-announced; AA contrast re-verified on the new hues. |
+| Code quality / scoping | 9.5 | Tokens stay scoped; var-name reuse avoided churn; tsc + build green; only darst dirs touched. |
+
+**Round 2 average ≈ 9.47.**

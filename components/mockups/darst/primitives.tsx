@@ -176,7 +176,7 @@ export function SectionHeading({
             className={cn(
               "mt-5 text-pretty font-light",
               tone === "dark"
-                ? "text-[oklch(88%_0.02_250_/_0.86)]"
+                ? "text-[oklch(88%_0.025_70_/_0.86)]"
                 : "text-[var(--color-fg-muted)]",
             )}
             style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.62 }}
@@ -235,9 +235,9 @@ export function Magnetic({
 export const ctaPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent-deep)] font-medium tracking-tight text-[var(--color-accent-fg)]",
-  "shadow-[0_16px_40px_-16px_oklch(41%_0.145_23_/_0.6)]",
+  "shadow-[0_16px_40px_-16px_oklch(48%_0.082_197_/_0.6)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
-  "hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(41%_0.145_23_/_0.7)]",
+  "hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(48%_0.082_197_/_0.7)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 

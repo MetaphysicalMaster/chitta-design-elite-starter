@@ -9,6 +9,7 @@
 
 import Link from "next/link";
 import { NAP } from "./nap";
+import { DarstLogo } from "./DarstLogo";
 
 const NAV = [
   { href: "#credentials", label: "Credentials" },
@@ -30,27 +31,10 @@ export function SiteFooter() {
           <div>
             <Link
               href="#top"
-              className="group inline-flex items-center gap-2.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-deep)]"
+              aria-label="Darst Dermatology — home"
+              className="group inline-flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-deep)]"
             >
-              <span
-                aria-hidden
-                className="grid h-9 w-9 place-items-center rounded-[0.6rem]"
-                style={{
-                  background:
-                    "linear-gradient(150deg, oklch(34% 0.06 252), oklch(20% 0.04 254))",
-                  border: "1px solid oklch(70% 0.05 250 / 0.4)",
-                }}
-              >
-                <span
-                  className="font-display text-[1.05rem] leading-none"
-                  style={{ color: "oklch(96% 0.01 250)" }}
-                >
-                  D
-                </span>
-              </span>
-              <span className="font-display text-lg tracking-tight text-[var(--color-fg)]">
-                Darst Dermatology
-              </span>
+              <DarstLogo tone="light" size="md" />
             </Link>
 
             <p className="mt-4 max-w-[40ch] text-[0.92rem] leading-relaxed text-[var(--color-fg-muted)]">

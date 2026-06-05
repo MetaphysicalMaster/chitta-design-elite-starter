@@ -22,13 +22,16 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { latticeFragmentShader, latticeVertexShader } from "./lattice-shaders";
 
-/* Brand strata palette as THREE colors (mirrors brand.css --strata-* stops). */
+/* Brand strata palette as THREE colors (mirrors brand.css --strata-* stops).
+   Rebranded to the practice's warm BROWN + TEAL identity: warm earth-tone
+   strata resolving from a pale warm surface to a deep espresso hypodermis,
+   threaded by one lone TEAL capillary (was navy + oxblood). */
 const PALETTE = {
-  corneum: "#dce4ee", // pale surface
-  epidermis: "#8fa3c0",
-  dermis: "#46577a",
-  deep: "#1d2740", // deep navy hypodermis
-  vessel: "#a23645", // the lone oxblood capillary
+  corneum: "#ece2d4", // warm pale surface
+  epidermis: "#c2a886",
+  dermis: "#8a6a4c",
+  deep: "#3a2c20", // deep espresso hypodermis
+  vessel: "#2f9fa6", // the lone TEAL capillary
 };
 
 const COUNT = 7200; // particle budget — generous but one draw call

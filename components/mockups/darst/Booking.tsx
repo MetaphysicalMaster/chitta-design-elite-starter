@@ -49,7 +49,7 @@ export function Booking() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(54% 80% at 18% 24%, oklch(46% 0.07 250 / 0.18), transparent 60%), radial-gradient(60% 90% at 86% 78%, oklch(45% 0.15 22 / 0.14), transparent 62%)",
+            "radial-gradient(54% 80% at 18% 24%, oklch(50% 0.055 62 / 0.18), transparent 60%), radial-gradient(60% 90% at 86% 78%, oklch(58% 0.085 196 / 0.16), transparent 62%)",
         }}
       />
 
@@ -65,11 +65,11 @@ export function Booking() {
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.07 }}
           >
             Book in{" "}
-            <span className="font-display-em text-[oklch(80%_0.07_250)]">
+            <span className="font-display-em text-[var(--color-accent-bright)]">
               thirty seconds.
             </span>
           </h2>
-          <p className="mt-5 max-w-[44ch] text-pretty font-light text-[oklch(88%_0.02_250_/_0.88)]">
+          <p className="mt-5 max-w-[44ch] text-pretty font-light text-[oklch(88%_0.025_70_/_0.88)]">
             No phone tag, no portal maze. Tell us why you&rsquo;re coming, pick a
             day, and we&rsquo;ll confirm your Charlotte appointment by text.
           </p>
@@ -78,10 +78,10 @@ export function Booking() {
             <p className="font-display text-lg text-[var(--color-bg)]">
               {NAP.name}
             </p>
-            <p className="mt-1 text-[0.95rem] text-[oklch(86%_0.02_250_/_0.82)] tnum">
+            <p className="mt-1 text-[0.95rem] text-[oklch(86%_0.025_70_/_0.82)] tnum">
               {NAP.street} · {NAP.city}, {NAP.state} {NAP.zip}
             </p>
-            <p className="mt-0.5 text-[0.9rem] text-[oklch(82%_0.02_250_/_0.7)]">
+            <p className="mt-0.5 text-[0.9rem] text-[oklch(82%_0.025_70_/_0.7)]">
               {NAP.hours}
             </p>
             <a
@@ -95,7 +95,7 @@ export function Booking() {
 
         {/* right: the scheduler card */}
         <Reveal delay={0.1}>
-          <div className="rounded-[1.5rem] border border-[var(--glass-border-dark)] bg-[oklch(99%_0.004_240_/_0.98)] p-6 shadow-[0_30px_80px_-30px_oklch(15%_0.03_255_/_0.7)] sm:p-8">
+          <div className="rounded-[1.5rem] border border-[var(--glass-border-dark)] bg-[oklch(99%_0.004_72_/_0.98)] p-6 shadow-[0_30px_80px_-30px_oklch(17%_0.03_54_/_0.7)] sm:p-8">
             {done ? (
               <div
                 role="status"
@@ -203,7 +203,7 @@ export function Booking() {
                   className={cn(
                     "group inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5",
                     "bg-[var(--color-accent-deep)] font-semibold text-[var(--color-accent-fg)]",
-                    "shadow-[0_16px_44px_-16px_oklch(41%_0.145_23_/_0.6)] transition-transform duration-300 hover:-translate-y-0.5",
+                    "shadow-[0_16px_44px_-16px_oklch(48%_0.082_197_/_0.6)] transition-transform duration-300 hover:-translate-y-0.5",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
                   )}
                 >

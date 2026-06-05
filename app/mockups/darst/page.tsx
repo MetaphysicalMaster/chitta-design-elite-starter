@@ -4,8 +4,9 @@ import { LatticeHero } from "@/components/mockups/darst/LatticeHero";
 import { TrustBar } from "@/components/mockups/darst/TrustBar";
 import { Credentials } from "@/components/mockups/darst/Credentials";
 import { Services } from "@/components/mockups/darst/Services";
+import { TreatmentMarquee } from "@/components/mockups/darst/TreatmentMarquee";
 import { BeforeAfter } from "@/components/mockups/darst/BeforeAfter";
-import { Reviews } from "@/components/mockups/darst/Reviews";
+import { SplitFlapBoard } from "@/components/mockups/darst/SplitFlapBoard";
 import { Financing } from "@/components/mockups/darst/Financing";
 import { Booking } from "@/components/mockups/darst/Booking";
 import { SiteFooter } from "@/components/mockups/darst/SiteFooter";
@@ -31,8 +32,13 @@ export default function DarstPage() {
             3.5★ narrative around rare senior expertise. */}
         <Credentials />
         <Services />
+        {/* Treatment marquee — the auto-scrolling "Karma" ribbon of the
+            practice's full range (pause-on-hover, reduced-motion safe). */}
+        <TreatmentMarquee />
         <BeforeAfter />
-        <Reviews />
+        {/* Split-flap "Solari" review board — six panels flip round-robin
+            (one flip / 1.5s → each panel refreshes every 9s). */}
+        <SplitFlapBoard />
         <Financing />
         <Booking />
       </main>

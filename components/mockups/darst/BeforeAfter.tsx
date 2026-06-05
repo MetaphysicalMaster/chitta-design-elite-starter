@@ -37,7 +37,7 @@ export function BeforeAfter() {
 
         <Reveal className="mt-12 sm:mt-14">
           <figure className="mx-auto max-w-3xl">
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] shadow-[0_30px_80px_-40px_oklch(27%_0.05_253_/_0.4)]">
+            <div className="relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] shadow-[0_30px_80px_-40px_oklch(30%_0.05_58_/_0.4)]">
               {/* AFTER (base layer, full) */}
               <BrandImage
                 alt="After treatment — clearer, healthier skin"
@@ -77,10 +77,10 @@ export function BeforeAfter() {
               {/* divider handle */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[oklch(98%_0.01_250)]"
+                className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[oklch(98%_0.012_72)]"
                 style={{ left: `${pos}%` }}
               >
-                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[oklch(98%_0.01_250)] text-[var(--navy-ink)] shadow-[0_6px_20px_-8px_oklch(15%_0.03_255_/_0.7)]">
+                <span className="absolute top-1/2 left-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[oklch(98%_0.012_72)] text-[var(--navy-ink)] shadow-[0_6px_20px_-8px_oklch(17%_0.03_54_/_0.7)]">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
                     <path
                       d="M9 7l-4 5 4 5M15 7l4 5-4 5"
@@ -94,7 +94,7 @@ export function BeforeAfter() {
               </div>
 
               {/* "sample" tag for the whole comparison */}
-              <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-[oklch(18%_0.035_254_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.01_250)] backdrop-blur-sm">
+              <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
                 Sample
               </span>
 
