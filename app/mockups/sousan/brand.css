@@ -1,0 +1,453 @@
+/* ============================================================
+   Sousan Med Spa — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="sousan"].
+
+   Brand essence: OLD-MONEY RIVER OAKS COUTURE. Deep emerald jewel +
+   champagne-gold on cream marble. The voice of a 29-year River Oaks
+   institution — discreet, established, quietly affluent. An identity
+   correction for a med spa whose authority is undermined by a dated DIY
+   WordPress site, a gmail business address, and conflicting NAP data
+   scattered across directories. This is the AFTER: ONE clean authoritative
+   address, a credentialed luxury destination worthy of the zip code.
+
+   Deliberately distinct from siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Happy Clinic → aurora violet→teal, optimistic, saturated
+     · SimplySkin   → restrained platinum, warm nude, one teal note
+     · Timeless     → aubergine-ink + aged brass on warm ivory
+     · Hanami       → sakura-pink + sumi-ink on rice-paper white
+     · The Luxe     → molten liquid-GOLD membrane on deep green-black
+     · Sousan       → EMERALD JEWEL + champagne-gold on CREAM MARBLE —
+                      couture, refractive, light-through-a-gem. Where The
+                      Luxe is molten metal, Sousan is faceted jewel light
+                      (caustics) over a bright marble drawing room.
+
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="sousan"] {
+  /* Surfaces — cream marble. Warm ivory with the faintest gold breath,
+     never a cold clinical white. */
+  --color-bg: oklch(97.6% 0.008 92);
+  --color-bg-subtle: oklch(95.6% 0.011 92);
+  --color-bg-elevated: oklch(99.2% 0.006 94);
+  --color-bg-warm: oklch(93.6% 0.016 90); /* deeper marble wash blocks */
+
+  /* Foreground — deep forest-emerald ink. A jewel-green so dark it reads as
+     near-black, but carries the brand's green soul. AA-tuned on marble. */
+  --color-fg: oklch(25% 0.045 165);
+  --color-fg-muted: oklch(41% 0.04 165); /* AA on marble + bg-subtle */
+  --color-fg-subtle: oklch(49% 0.038 166); /* AA at small sizes on marble */
+
+  /* Accent — emerald jewel. The brand's gem. -deep clears AA for text. */
+  --color-accent: oklch(52% 0.13 162);
+  --color-accent-fg: oklch(98.5% 0.01 94);
+  --color-accent-subtle: oklch(92% 0.05 162);
+  --color-accent-deep: oklch(40% 0.105 164); /* AA links / labels on marble */
+  --color-accent-bright: oklch(64% 0.14 162); /* glints / on-emerald accents */
+
+  /* Emerald + gold scale — facets, hairlines, washes. */
+  --emerald: oklch(46% 0.12 163);
+  --emerald-deep: oklch(33% 0.085 164);
+  --emerald-night: oklch(23% 0.05 166); /* dark sections base */
+  --emerald-jewel: oklch(58% 0.15 161); /* the brightest gem face */
+
+  /* Champagne-gold ramp — the couture metal. -ink clears AA on marble. */
+  --gold: oklch(80% 0.1 86);
+  --gold-bright: oklch(88% 0.085 90); /* champagne highlight */
+  --gold-mid: oklch(72% 0.12 80); /* molten core for sheen mids */
+  --gold-deep: oklch(58% 0.1 72); /* burnished — AA-ish on light, for rims */
+  --gold-ink: oklch(44% 0.08 70); /* AA gold-toned text on marble */
+
+  /* Borders — soft gold-tinted marble hairlines (couture signature). */
+  --color-border: oklch(89% 0.014 88);
+  --color-border-subtle: oklch(92.5% 0.01 90);
+  --color-hairline: oklch(84% 0.022 86);
+
+  --color-success: oklch(60% 0.11 158);
+  --color-warning: oklch(80% 0.12 78);
+  --color-error: oklch(56% 0.17 25);
+  --color-info: oklch(60% 0.09 250);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Emerald night scale — dark hero base + dark sections + booking field. */
+  --night-0: oklch(21% 0.045 166);
+  --night-1: oklch(26% 0.052 165);
+  --night-2: oklch(31% 0.058 164);
+
+  /* Jewel facet stops — used by the WebGL caustic material + CSS fallback.
+     A gem progression: deep emerald → jewel green → champagne caustic. */
+  --facet-deep: oklch(30% 0.08 166);
+  --facet-emerald: oklch(48% 0.13 162);
+  --facet-jewel: oklch(64% 0.15 160);
+  --facet-gold: oklch(82% 0.1 88);
+
+  /* Gold sheen for the rare highlighted hero word. Darkest stop clears AA on
+     the light marble. */
+  --sheen-a: oklch(50% 0.1 74);
+  --sheen-b: oklch(74% 0.12 84);
+  --sheen-c: oklch(58% 0.11 76);
+
+  /* Glass tokens — marble frosted nav + cards. */
+  --glass-bg: oklch(98% 0.01 92 / 0.55);
+  --glass-bg-strong: oklch(98% 0.01 92 / 0.85);
+  --glass-border: oklch(100% 0 0 / 0.62);
+  --glass-shadow: 0 16px 50px -24px oklch(33% 0.085 164 / 0.26);
+
+  /* Glass tokens for the DARK hero nav state (over emerald). */
+  --glass-bg-dark: oklch(24% 0.05 166 / 0.5);
+  --glass-border-dark: oklch(82% 0.1 88 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper */
+  --font-display: var(--font-display), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-body), "Jost", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — couture, generous, high-contrast scale. */
+  --fluid-hero: clamp(2.7rem, 1rem + 7.1vw, 6.6rem);
+  --fluid-h2: clamp(2rem, 1.2rem + 3.4vw, 3.5rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.3rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — couture Playfair Display, high-contrast serif. */
+[data-brand="sousan"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.005em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+/* Lighter italic display variant for couture emphasis words. */
+[data-brand="sousan"] .font-display-em {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.005em;
+}
+
+/* Tabular numerics for NAP / metrics / prices. */
+[data-brand="sousan"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent text meeting AA on light surfaces (links, prices, labels). */
+[data-brand="sousan"] .text-accent-deep {
+  color: var(--color-accent-deep);
+}
+[data-brand="sousan"] .text-gold-ink {
+  color: var(--gold-ink);
+}
+
+/* Refined letterspaced eyebrow label. */
+[data-brand="sousan"] .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-family: var(--font-sans);
+}
+
+/* Gold-leaf sheen — used ONLY on the rare hero highlight word.
+   A slow, soft champagne drift over emerald-ink; quiet luxe, never flashy.
+   On the LIGHT marble surface this needs the AA-safe ramp. */
+[data-brand="sousan"] .gold-leaf {
+  background: linear-gradient(
+    100deg,
+    var(--sheen-a) 0%,
+    var(--sheen-b) 42%,
+    var(--gold-bright) 52%,
+    var(--sheen-b) 62%,
+    var(--sheen-a) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Brighter gold-leaf for use over the DARK emerald hero. */
+[data-brand="sousan"] .gold-leaf--bright {
+  background: linear-gradient(
+    100deg,
+    var(--gold-deep) 0%,
+    var(--gold) 40%,
+    var(--gold-bright) 52%,
+    var(--gold) 64%,
+    var(--gold-deep) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] .gold-leaf-anim {
+    animation: sn-gold 14s linear infinite;
+  }
+}
+@keyframes sn-gold {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 240% 0;
+  }
+}
+
+/* Reusable glass surfaces — marble frost. */
+[data-brand="sousan"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
+  backdrop-filter: blur(18px) saturate(1.18);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="sousan"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(24px) saturate(1.28);
+  backdrop-filter: blur(24px) saturate(1.28);
+  border: 1px solid var(--glass-border);
+}
+/* Dark glass — for chips that sit over the emerald hero. */
+[data-brand="sousan"] .glass-dark {
+  background: var(--glass-bg-dark);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border-dark);
+}
+
+/* Hairline rule under eyebrow labels — quiet gold fade. */
+[data-brand="sousan"] .rule-gold::after {
+  content: "";
+  display: block;
+  width: 2.6rem;
+  height: 1px;
+  margin-top: 0.7rem;
+  background: linear-gradient(
+    90deg,
+    var(--gold-deep),
+    var(--gold),
+    transparent
+  );
+}
+[data-brand="sousan"] .rule-gold-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A fine measured-tick row — couture rhythm motif (marble inlay). */
+[data-brand="sousan"] .ruler-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-hairline) 0,
+    var(--color-hairline) 1px,
+    transparent 1px,
+    transparent 18px
+  );
+}
+
+/* Thin gold filet border — the couture frame motif. */
+[data-brand="sousan"] .filet {
+  position: relative;
+}
+[data-brand="sousan"] .filet::after {
+  content: "";
+  position: absolute;
+  inset: 0.5rem;
+  border: 1px solid var(--gold-deep);
+  opacity: 0.4;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ============================================================
+   Liquid-gold caustics FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS field: deep emerald drawing room lit by a slow
+   champagne-gold caustic sheen — like light moving through a precious gem.
+   Built from conic + radial gradients. NEVER a blank box. Zero CLS.
+   The slow drift is reduced-motion gated; static it still reads as a jewel.
+   ============================================================ */
+[data-brand="sousan"] .caustics-fallback {
+  position: relative;
+  overflow: hidden;
+  background:
+    /* champagne caustic bloom, upper-left key */
+    radial-gradient(
+      48% 54% at 26% 26%,
+      oklch(82% 0.1 88 / 0.55) 0%,
+      transparent 60%
+    ),
+    /* emerald jewel core glow, center-right */
+    radial-gradient(
+      60% 66% at 72% 56%,
+      oklch(52% 0.14 161 / 0.6) 0%,
+      transparent 64%
+    ),
+    /* deep emerald drawing-room field */
+    linear-gradient(
+      152deg,
+      var(--night-1) 0%,
+      var(--night-0) 56%,
+      oklch(18% 0.04 168) 100%
+    );
+}
+/* Caustic light layer — a conic champagne-on-emerald sweep that reads as
+   refracted gem light. Masked to a soft jewel shape. */
+[data-brand="sousan"] .caustics-fallback::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    conic-gradient(
+      from 200deg at 56% 44%,
+      transparent 0deg,
+      oklch(80% 0.1 86 / 0.32) 38deg,
+      oklch(64% 0.15 160 / 0.42) 96deg,
+      transparent 150deg,
+      oklch(86% 0.085 90 / 0.28) 226deg,
+      oklch(52% 0.13 162 / 0.36) 300deg,
+      transparent 360deg
+    );
+  -webkit-mask-image: radial-gradient(
+    70% 70% at 56% 46%,
+    #000 8%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(70% 70% at 56% 46%, #000 8%, transparent 78%);
+  opacity: 0.9;
+}
+/* Caustic glints — fine champagne speckle catching the gem facets. */
+[data-brand="sousan"] .caustics-fallback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      3px 3px at 30% 34%,
+      oklch(90% 0.07 90 / 0.85),
+      transparent 70%
+    ),
+    radial-gradient(
+      2px 2px at 62% 26%,
+      oklch(88% 0.08 88 / 0.7),
+      transparent 70%
+    ),
+    radial-gradient(
+      2.5px 2.5px at 50% 62%,
+      oklch(86% 0.09 86 / 0.75),
+      transparent 70%
+    ),
+    radial-gradient(
+      2px 2px at 74% 70%,
+      oklch(80% 0.1 84 / 0.6),
+      transparent 70%
+    ),
+    radial-gradient(
+      3px 3px at 40% 78%,
+      oklch(90% 0.07 90 / 0.6),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] .caustics-fallback::before {
+    animation: sn-caustic 26s ease-in-out infinite alternate;
+  }
+}
+/* Slow refractive sweep — the gem turning in the light. */
+@keyframes sn-caustic {
+  from {
+    transform: rotate(0deg) scale(1.02);
+  }
+  to {
+    transform: rotate(26deg) scale(1.08);
+  }
+}
+
+/* Before/after range — invisible track, a wide invisible thumb so the whole
+   width is a drag surface while the visible handle is the styled divider. */
+[data-brand="sousan"] .ba-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="sousan"] .ba-range::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="sousan"] .ba-range::-moz-range-track {
+  background: transparent;
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — emerald / marble / champagne gradient "plates" that
+   read as one cohesive couture shoot. Each marked "sample".
+   ============================================================ */
+[data-brand="sousan"] .sn-plate {
+  position: relative;
+  background:
+    radial-gradient(
+      120% 120% at 26% 16%,
+      oklch(96% 0.02 92 / 0.9),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 120% at 84% 90%,
+      oklch(58% 0.13 162 / 0.28),
+      transparent 62%
+    ),
+    linear-gradient(152deg, oklch(95% 0.016 90), oklch(89% 0.04 120));
+}
+[data-brand="sousan"] .sn-plate--emerald {
+  background:
+    radial-gradient(
+      110% 110% at 72% 18%,
+      oklch(60% 0.14 161 / 0.5),
+      transparent 62%
+    ),
+    radial-gradient(
+      96% 100% at 14% 96%,
+      oklch(80% 0.1 88 / 0.3),
+      transparent 64%
+    ),
+    linear-gradient(160deg, var(--night-1), var(--night-0));
+}
+[data-brand="sousan"] .sn-plate--gold {
+  background:
+    radial-gradient(
+      120% 110% at 28% 22%,
+      oklch(92% 0.06 90 / 0.85),
+      transparent 60%
+    ),
+    linear-gradient(150deg, oklch(90% 0.07 90), oklch(80% 0.11 84));
+}
+/* Faint champagne-glint overlay so plates read as designed, not empty. */
+[data-brand="sousan"] .sn-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.3), transparent 70%),
+    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.24), transparent 70%),
+    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.26), transparent 70%),
+    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.2), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="sousan"] * {
+    scroll-behavior: auto !important;
+  }
+}

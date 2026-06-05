@@ -1,0 +1,43 @@
+import { SmoothScroll } from "@/components/mockups/sousan/SmoothScroll";
+import { SiteNav } from "@/components/mockups/sousan/SiteNav";
+import { CausticsHero } from "@/components/mockups/sousan/CausticsHero";
+import { TrustBar } from "@/components/mockups/sousan/TrustBar";
+import { Legacy } from "@/components/mockups/sousan/Legacy";
+import { Services } from "@/components/mockups/sousan/Services";
+import { BeforeAfter } from "@/components/mockups/sousan/BeforeAfter";
+import { Reviews } from "@/components/mockups/sousan/Reviews";
+import { Financing } from "@/components/mockups/sousan/Financing";
+import { Booking } from "@/components/mockups/sousan/Booking";
+import { SiteFooter } from "@/components/mockups/sousan/SiteFooter";
+
+export default function SousanPage() {
+  return (
+    <SmoothScroll>
+      {/* Skip link — first focusable element for keyboard/AT users */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-[var(--color-accent-deep)] focus:px-5 focus:py-2.5 focus:font-semibold focus:text-[var(--color-accent-fg)] focus:outline-2 focus:outline-offset-2 focus:outline-white"
+      >
+        Skip to content
+      </a>
+
+      <SiteNav />
+
+      <main id="main">
+        <CausticsHero />
+        <TrustBar />
+        {/* The closer — the "Since 1995, River Oaks" legacy timeline + the
+            single clean NAP & branded-contact block that fixes the
+            gmail/conflicting-address trust gap. */}
+        <Legacy />
+        <Services />
+        <BeforeAfter />
+        <Reviews />
+        <Financing />
+        <Booking />
+      </main>
+
+      <SiteFooter />
+    </SmoothScroll>
+  );
+}
