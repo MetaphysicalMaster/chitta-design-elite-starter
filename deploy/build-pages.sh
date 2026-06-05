@@ -1,51 +1,62 @@
 #!/usr/bin/env bash
-# Build each client mockup as a standalone GitHub Pages static site.
-# Each output folder is self-contained: the client's homepage at root (/),
-# the _next asset bundle, a .nojekyll (so Pages serves the _next dir), and a
-# README. Mirrors the Pure Silk flow (static files -> repo -> GitHub Pages).
+# Build each client mockup as a standalone, SLIMMED GitHub Pages static site.
+# Each output folder = the client's homepage at root + a .nojekyll + only the
+# JS/CSS chunks (all, so the lazy-loaded WebGL chunk is included) and only THAT
+# route's fonts (next/font media) — keeping bundles ~6MB instead of ~31MB (the
+# full export bundles every brand's fonts). Mirrors the Pure Silk flow
+# (static files -> repo -> GitHub Pages).
 #
 # Usage:  bash deploy/build-pages.sh
 # Output: deploy/<repo-slug>/  (one per client)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# slug(repo name) | route under /mockups | display name
+# repo-slug | route under /mockups | display name
 CLIENTS=(
   "blue-sky-rebrand|blue-sky|Blue Sky Med Spa"
   "encore-rebrand|encore|Encore Dermatology"
   "beyond-skin-rebrand|beyond-skin|Beyond Skin Aesthetics"
   "the-luxe-rebrand|the-luxe|The Luxe MedSpa"
+  "avail-rebrand|avail|Avail Aesthetics"
+  "happy-clinic-rebrand|happy-clinic|Happy Clinic Denver"
+  "simplyskin-rebrand|simplyskin|SimplySkin MedSpa"
+  "timeless-rebrand|timeless|Timeless Aesthetics MedSpa"
+  "hanami-rebrand|hanami|Hanami Medspa"
+  "sousan-rebrand|sousan|Sousan Med Spa"
+  "darst-rebrand|darst|Darst Dermatology"
+  "beautox-bar-rebrand|beautox-bar|Beautox Bar"
+  "karma-rebrand|karma|Karma Beauty & Wellness"
+  "eternity-rebrand|eternity|Eternity Med Spa"
 )
 
 for entry in "${CLIENTS[@]}"; do
   IFS="|" read -r slug route name <<< "$entry"
-  echo "==> Building $name  ->  deploy/$slug  (basePath /$slug)"
+  echo "==> $name  ->  deploy/$slug  (basePath /$slug)"
   rm -rf out "deploy/$slug"
   DEPLOY_EXPORT=1 DEPLOY_BASEPATH="/$slug" npx next build >/dev/null 2>&1
-
   dest="deploy/$slug"
-  mkdir -p "$dest"
+  mkdir -p "$dest/_next/static/media"
   cp out/mockups/"$route"/index.html "$dest/index.html"
-  cp -r out/_next "$dest/_next"
   cp out/404.html "$dest/404.html" 2>/dev/null || true
-  # root static assets the pages may reference
   cp out/favicon.ico "$dest/" 2>/dev/null || true
   touch "$dest/.nojekyll"
   cat > "$dest/README.md" <<EOF
 # ${name} — Homepage Rebrand (Owner Preview)
 
-Proposed homepage rebuild for **${name}** (Columbus, OH metro), by CHITTA DesignGod.
-
-- **Live preview:** https://metaphysicalmaster.github.io/${slug}/ (after GitHub Pages is enabled)
-- **Status:** Mockup v1 — owner preview phase
+Proposed homepage rebuild by CHITTA DesignGod.
+- **Live preview:** https://metaphysicalmaster.github.io/${slug}/
 - **Tech:** Next.js static export · Three.js / React Three Fiber power-element hero · Tailwind v4 · Framer Motion
-- Self-contained static site (\`.nojekyll\` keeps the \`_next/\` asset dir intact on Pages).
-
-> Built as a pitch preview. Sample/placeholder imagery is marked as such.
+- Self-contained static site (\`.nojekyll\` keeps the \`_next/\` dir intact on Pages). Sample imagery marked as such.
 EOF
-  pages=$(find "$dest" -name '*.html' | wc -l | tr -d ' ')
-  size=$(du -sh "$dest" | cut -f1)
-  echo "    packaged: $size, $pages html file(s)"
+  # all chunks (keeps the dynamic WebGL chunk) + the build-id manifest dir
+  cp -r out/_next/static/chunks "$dest/_next/static/chunks"
+  for d in out/_next/static/*/; do [ -f "$d/_buildManifest.js" ] && cp -r "$d" "$dest/_next/static/"; done
+  # only THIS route's fonts (from its css + html preloads) — strict pattern avoids escaped-quote artifacts
+  cssf=$(grep -oE "_next/static/chunks/[A-Za-z0-9_.~-]+\.css" "$dest/index.html" | sed 's#_next/static/##' | sort -u || true)
+  { grep -oE "media/[A-Za-z0-9_.~-]+\.(woff2|woff|ttf|otf)" "$dest/index.html" || true;
+    for c in $cssf; do grep -oE "media/[A-Za-z0-9_.~-]+\.(woff2|woff|ttf|otf)" "out/_next/static/$c" 2>/dev/null || true; done; } \
+    | sed 's#media/##' | sort -u | while read -r f; do [ -n "$f" ] && cp "out/_next/static/media/$f" "$dest/_next/static/media/$f" 2>/dev/null || true; done
+  echo "    packaged: $(du -sh "$dest" | cut -f1)"
 done
 
 rm -rf out
