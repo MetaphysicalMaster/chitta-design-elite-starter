@@ -1,0 +1,452 @@
+/* ============================================================
+   Hanami Medspa — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="hanami"].
+
+   Brand essence: BOTANICAL JAPANESE SERENITY. Soft blossom-pink (sakura) +
+   sumi-ink charcoal on rice-paper white, with a deeper plum-blossom accent.
+   The voice is poetic, calm, intentional — mono no aware, the gentle awareness
+   that beauty is fleeting. An instant identity correction for a med spa whose
+   beautiful name (Hanami 花見 — cherry-blossom viewing) is wasted by a generic
+   healthcare-SEO template with broken/duplicate title tags.
+
+   Deliberately distinct from siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Happy Clinic → aurora violet→teal, optimistic, saturated
+     · SimplySkin   → restrained platinum, warm nude, one teal note
+     · Timeless     → aubergine-ink + aged brass on warm ivory, heirloom
+     · Hanami       → sakura-pink + sumi-ink on rice-paper white — airy,
+                      botanical, poetic. A serene Japanese garden, not a
+                      medical template.
+
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="hanami"] {
+  /* Surfaces — rice-paper white (washi), the faintest warm-pink breath.
+     Never a cold clinical white. */
+  --color-bg: oklch(98.6% 0.005 350);
+  --color-bg-subtle: oklch(97% 0.008 348);
+  --color-bg-elevated: oklch(99.4% 0.004 352);
+  --color-bg-warm: oklch(95.4% 0.014 350); /* deeper washi wash blocks */
+
+  /* Foreground — sumi ink (墨), a warm charcoal with the faintest plum cast.
+     AA-tuned on washi at body sizes. */
+  --color-fg: oklch(26% 0.014 340);
+  --color-fg-muted: oklch(42% 0.018 342); /* AA on washi + bg-subtle */
+  --color-fg-subtle: oklch(50% 0.02 344); /* AA at small sizes on washi */
+
+  /* Accent — plum-blossom / deep sakura. The brand's one bloom. The base
+     accent is a true sakura pink; -deep clears AA for text on washi. */
+  --color-accent: oklch(72% 0.13 352);
+  --color-accent-fg: oklch(99% 0.004 352);
+  --color-accent-subtle: oklch(93% 0.045 352);
+  --color-accent-deep: oklch(50% 0.16 358); /* AA links / labels on washi */
+  --color-accent-bright: oklch(82% 0.12 350); /* glints / on-ink accents */
+
+  /* Sakura + ink scale — petals, hairlines, washes. */
+  --sakura: oklch(84% 0.085 350);
+  --sakura-soft: oklch(90% 0.055 352);
+  --sakura-deep: oklch(64% 0.15 356);
+  --blossom: oklch(78% 0.12 352);
+  --ink: oklch(26% 0.014 340);
+  --ink-deep: oklch(20% 0.012 338);
+
+  /* Borders — soft sakura-tinted hairlines (botanical signature). */
+  --color-border: oklch(91% 0.012 350);
+  --color-border-subtle: oklch(94% 0.008 350);
+  --color-hairline: oklch(86% 0.02 352);
+
+  --color-success: oklch(60% 0.1 150);
+  --color-warning: oklch(80% 0.12 78);
+  --color-error: oklch(56% 0.17 25);
+  --color-info: oklch(60% 0.09 280);
+
+  /* ---- Brand-specific vars (not in shared system) ---- */
+  /* Sumi-ink night scale — dark sections + the booking field (warm charcoal). */
+  --night-0: oklch(22% 0.018 338);
+  --night-1: oklch(27% 0.022 340);
+  --night-2: oklch(32% 0.026 342);
+
+  /* Petal stops — used by the WebGL petal material + CSS fallback.
+     A blossom progression: pale rim → sakura → deep sakura → plum heart. */
+  --petal-pale: oklch(95% 0.03 352);
+  --petal-sakura: oklch(86% 0.085 350);
+  --petal-deep: oklch(74% 0.13 354);
+  --petal-plum: oklch(60% 0.15 358);
+
+  /* Bloom sheen for the rare highlighted hero word. Darkest stop ~50% L
+     clears WCAG AA on the light hero. */
+  --sheen-a: oklch(50% 0.16 358);
+  --sheen-b: oklch(72% 0.13 352);
+  --sheen-c: oklch(56% 0.155 356);
+
+  /* Glass tokens — rice-paper frosted nav + cards. */
+  --glass-bg: oklch(99% 0.006 352 / 0.55);
+  --glass-bg-strong: oklch(99% 0.006 352 / 0.84);
+  --glass-border: oklch(100% 0 0 / 0.6);
+  --glass-shadow: 0 16px 50px -24px oklch(58% 0.12 354 / 0.22);
+
+  /* Fonts wired from next/font on the layout wrapper */
+  --font-display: var(--font-display), "Shippori Mincho", "Zen Old Mincho",
+    Georgia, serif;
+  --font-sans: var(--font-body), "Zen Kaku Gothic New", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — airy, poetic, generous scale. */
+  --fluid-hero: clamp(2.8rem, 1.05rem + 7.3vw, 6.8rem);
+  --fluid-h2: clamp(2rem, 1.2rem + 3.5vw, 3.6rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.52vw, 1.3rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — literary Shippori Mincho, calm & authored. */
+[data-brand="hanami"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.002em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+/* Lighter, poetic display variant for the quiet emphasis words. */
+[data-brand="hanami"] .font-display-em {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.01em;
+}
+
+/* Tabular numerics for NAP / metrics / prices. */
+[data-brand="hanami"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent text meeting AA on light surfaces (links, prices, labels). */
+[data-brand="hanami"] .text-accent-deep {
+  color: var(--color-accent-deep);
+}
+
+/* Refined letterspaced eyebrow label. */
+[data-brand="hanami"] .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-family: var(--font-sans);
+}
+
+/* Bloom sheen — used ONLY on the rare hero highlight word.
+   A slow, soft blossom drift; gentle, never flashy. */
+[data-brand="hanami"] .bloom-sheen {
+  background: linear-gradient(
+    100deg,
+    var(--sheen-a) 0%,
+    var(--sheen-b) 40%,
+    var(--sheen-c) 52%,
+    var(--sheen-b) 64%,
+    var(--sheen-a) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="hanami"] .bloom-sheen {
+    animation: hn-bloom 13s linear infinite;
+  }
+}
+@keyframes hn-bloom {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 240% 0;
+  }
+}
+
+/* Reusable glass surfaces — rice-paper frost. */
+[data-brand="hanami"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="hanami"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(24px) saturate(1.25);
+  backdrop-filter: blur(24px) saturate(1.25);
+  border: 1px solid var(--glass-border);
+}
+
+/* ============================================================
+   Sakura petal fallback — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand, layered CSS petal field: a soft dawn-pink sky with depth-layered
+   drifting petals drawn as radial-gradient blooms. NEVER a blank box. Zero CLS.
+   The drift is reduced-motion gated below; static it still reads as a serene
+   blossom sky, never empty.
+   ============================================================ */
+[data-brand="hanami"] .sakura-fallback {
+  position: relative;
+  overflow: hidden;
+  background:
+    /* soft sun-through-blossom glow, upper-right */
+    radial-gradient(
+      52% 56% at 76% 22%,
+      oklch(94% 0.05 352 / 0.85) 0%,
+      transparent 62%
+    ),
+    /* deeper sakura wash, lower-left */
+    radial-gradient(
+      54% 58% at 18% 90%,
+      oklch(88% 0.08 354 / 0.6) 0%,
+      transparent 64%
+    ),
+    /* rice-paper dawn field */
+    linear-gradient(
+      168deg,
+      oklch(98% 0.012 350) 0%,
+      oklch(95.5% 0.03 352) 52%,
+      oklch(93% 0.05 354) 100%
+    );
+}
+/* Far petal layer — small, soft, dense. Drawn as a tiled field of petal blooms
+   via layered radial gradients; masked to soften toward the edges. */
+[data-brand="hanami"] .sakura-fallback::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background-image:
+    radial-gradient(
+      6px 9px at 12% 18%,
+      oklch(84% 0.09 350 / 0.9),
+      transparent 70%
+    ),
+    radial-gradient(
+      5px 8px at 34% 42%,
+      oklch(88% 0.07 352 / 0.8),
+      transparent 70%
+    ),
+    radial-gradient(
+      7px 10px at 58% 12%,
+      oklch(80% 0.11 354 / 0.85),
+      transparent 70%
+    ),
+    radial-gradient(
+      4px 7px at 72% 36%,
+      oklch(90% 0.05 350 / 0.75),
+      transparent 70%
+    ),
+    radial-gradient(
+      6px 9px at 88% 24%,
+      oklch(82% 0.1 352 / 0.8),
+      transparent 70%
+    ),
+    radial-gradient(
+      5px 8px at 24% 72%,
+      oklch(86% 0.08 350 / 0.8),
+      transparent 70%
+    ),
+    radial-gradient(
+      7px 10px at 46% 84%,
+      oklch(78% 0.12 356 / 0.85),
+      transparent 70%
+    ),
+    radial-gradient(
+      4px 7px at 66% 66%,
+      oklch(90% 0.05 352 / 0.7),
+      transparent 70%
+    ),
+    radial-gradient(
+      6px 9px at 82% 78%,
+      oklch(83% 0.09 352 / 0.8),
+      transparent 70%
+    ),
+    radial-gradient(
+      5px 8px at 8% 52%,
+      oklch(87% 0.07 350 / 0.75),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(
+    120% 110% at 60% 30%,
+    #000 30%,
+    transparent 96%
+  );
+  mask-image: radial-gradient(120% 110% at 60% 30%, #000 30%, transparent 96%);
+}
+/* Near petal layer — larger, fewer, with a soft directional drift. */
+[data-brand="hanami"] .sakura-fallback::after {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  background-image:
+    radial-gradient(
+      12px 17px at 20% 30%,
+      oklch(82% 0.11 352 / 0.85),
+      transparent 68%
+    ),
+    radial-gradient(
+      14px 20px at 50% 64%,
+      oklch(78% 0.13 356 / 0.8),
+      transparent 68%
+    ),
+    radial-gradient(
+      11px 16px at 78% 20%,
+      oklch(85% 0.09 350 / 0.8),
+      transparent 68%
+    ),
+    radial-gradient(
+      13px 18px at 64% 88%,
+      oklch(80% 0.12 354 / 0.82),
+      transparent 68%
+    ),
+    radial-gradient(
+      10px 15px at 36% 8%,
+      oklch(88% 0.07 352 / 0.7),
+      transparent 68%
+    );
+  background-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 50% 40%,
+    #000 20%,
+    transparent 92%
+  );
+  mask-image: radial-gradient(120% 120% at 50% 40%, #000 20%, transparent 92%);
+  opacity: 0.92;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="hanami"] .sakura-fallback::before {
+    animation: hn-drift-far 38s linear infinite;
+  }
+  [data-brand="hanami"] .sakura-fallback::after {
+    animation: hn-drift-near 26s linear infinite;
+  }
+}
+/* Gentle breeze drift — petals ease down-and-across like a falling blossom. */
+@keyframes hn-drift-far {
+  from {
+    transform: translate3d(0, -3%, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(4%, 6%, 0) rotate(6deg);
+  }
+}
+@keyframes hn-drift-near {
+  from {
+    transform: translate3d(0, -4%, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-5%, 7%, 0) rotate(-5deg);
+  }
+}
+
+/* Single decorative petal glyph (SVG-free) — a soft sakura shape via clip-path,
+   used as quiet section ornament. */
+[data-brand="hanami"] .petal-mark {
+  width: 1rem;
+  height: 1rem;
+  background: linear-gradient(160deg, var(--sakura-soft), var(--blossom));
+  clip-path: path(
+    "M8 0 C10 4 16 6 16 10 C16 14 12 16 8 16 C4 16 0 14 0 10 C0 6 6 4 8 0 Z"
+  );
+}
+
+/* Hairline rule under eyebrow labels — quiet sakura fade. */
+[data-brand="hanami"] .rule-fine::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  margin-top: 0.65rem;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--sakura-deep),
+    transparent
+  );
+}
+
+/* A fine measured-tick row — quiet botanical rhythm motif. */
+[data-brand="hanami"] .ruler-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-hairline) 0,
+    var(--color-hairline) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — washi / sakura / sumi-ink gradient "plates" that read as
+   one cohesive botanical shoot. Each marked "sample".
+   ============================================================ */
+[data-brand="hanami"] .hn-plate {
+  position: relative;
+  background:
+    radial-gradient(
+      120% 120% at 28% 14%,
+      oklch(96% 0.03 352 / 0.85),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 120% at 84% 90%,
+      oklch(82% 0.1 354 / 0.34),
+      transparent 62%
+    ),
+    linear-gradient(152deg, oklch(95% 0.022 350), oklch(89% 0.055 354));
+}
+[data-brand="hanami"] .hn-plate--ink {
+  background:
+    radial-gradient(
+      110% 110% at 72% 16%,
+      oklch(72% 0.12 352 / 0.4),
+      transparent 62%
+    ),
+    radial-gradient(
+      96% 100% at 12% 96%,
+      oklch(60% 0.13 358 / 0.36),
+      transparent 64%
+    ),
+    linear-gradient(160deg, var(--night-1), var(--night-0));
+}
+[data-brand="hanami"] .hn-plate--sakura {
+  background:
+    radial-gradient(
+      120% 110% at 26% 20%,
+      oklch(95% 0.04 352 / 0.85),
+      transparent 60%
+    ),
+    linear-gradient(150deg, oklch(91% 0.06 352), oklch(82% 0.11 354));
+}
+/* Faint blossom-scatter overlay so plates read as designed, not empty. */
+[data-brand="hanami"] .hn-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(6px 9px at 22% 28%, oklch(100% 0 0 / 0.22), transparent 70%),
+    radial-gradient(5px 8px at 64% 18%, oklch(100% 0 0 / 0.18), transparent 70%),
+    radial-gradient(7px 10px at 78% 64%, oklch(100% 0 0 / 0.2), transparent 70%),
+    radial-gradient(4px 7px at 40% 76%, oklch(100% 0 0 / 0.16), transparent 70%);
+  background-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 60% 30%,
+    #000 22%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(120% 120% at 60% 30%, #000 22%, transparent 100%);
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="hanami"] * {
+    scroll-behavior: auto !important;
+  }
+}
