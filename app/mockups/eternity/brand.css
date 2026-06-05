@@ -1,0 +1,453 @@
+/* ============================================================
+   Eternity Med Spa — Scoped Brand System (OKLch)
+   Overrides shared --color-* tokens ONLY within [data-brand="eternity"].
+
+   Brand essence: TIMELESS NOIR-LUXE. A midnight-plum near-black ground lit by
+   liquid-silver and a single cool amethyst. Enduring, refined, devotional —
+   "results that last." The voice is quiet luxury: eighteen years of mastery,
+   not noise. This is the AFTER for a blog-themed WordPress site living on a
+   leftover free `eternitymedspa.wordpress.com` subdomain with phone-only
+   booking. The reframe: a polished flagship on ONE branded domain with real
+   online booking that ends the phone-tag era.
+
+   Deliberately distinct from ALL nine siblings:
+     · Avail        → cobalt slipstream (graphite + electric blue)
+     · Happy Clinic → aurora violet→teal, optimistic, saturated
+     · SimplySkin   → restrained platinum, warm nude (Fraunces)
+     · Timeless     → aubergine-ink + aged brass on warm IVORY (light)
+     · Hanami       → sakura-pink + sumi-ink on rice-paper white
+     · Sousan       → emerald jewel + champagne-gold on cream marble
+     · Darst        → deep clinical navy + a single oxblood on paper-white
+     · Beautox Bar  → candy magenta + electric lilac on soft cream
+     · Karma        → sage + terracotta + warm sand on oat
+     · The Luxe     → molten champagne gold on warm dark
+     · ETERNITY     → MIDNIGHT-PLUM near-black + LIQUID-SILVER + a cool
+                      AMETHYST glint. Where The Luxe is warm molten gold and
+                      Timeless is a LIGHT ivory+brass, Eternity is a COLD,
+                      dark, mirror-silver noir — chrome on midnight, not warm.
+
+   Power element: a Möbius "eternity ribbon" — a chrome/transmission ribbon
+   endlessly turning, with mirrored highlights + soft bloom. Endless, hypnotic.
+
+   Does NOT touch app/globals.css.
+   ============================================================ */
+
+[data-brand="eternity"] {
+  /* Surfaces — a deep midnight-plum night scale. Never flat black: a cool,
+     slightly violet near-black so the silver chrome and amethyst glint read
+     as liquid metal on a jewel ground. */
+  --color-bg: oklch(16% 0.028 300);
+  --color-bg-subtle: oklch(20% 0.03 300);
+  --color-bg-elevated: oklch(23.5% 0.034 300);
+  --color-bg-wash: oklch(26% 0.04 300);
+
+  /* Night scale — the layered plum-black stack the whole page is cut from. */
+  --night-0: oklch(13% 0.024 300); /* deepest base / hero floor */
+  --night-1: oklch(17.5% 0.03 300); /* section base */
+  --night-2: oklch(22% 0.036 302); /* elevated card */
+  --night-3: oklch(27% 0.042 303); /* raised field / input */
+
+  /* Foreground — liquid silver. A cool near-white with a faint violet whisper,
+     tuned for WCAG AA on the midnight ground. -muted / -subtle stay AA. */
+  --color-fg: oklch(96% 0.006 300);
+  --color-fg-muted: oklch(82% 0.012 300); /* AA on night */
+  --color-fg-subtle: oklch(72% 0.014 300); /* AA at body sizes on night */
+
+  /* Accent — the cool AMETHYST glint. -bright is the lit chrome highlight
+     (on-dark only); -deep clears AA where it must carry small text. */
+  --color-accent: oklch(72% 0.11 300);
+  --color-accent-fg: oklch(15% 0.026 300); /* ink on a silver/amethyst fill */
+  --color-accent-bright: oklch(82% 0.1 300); /* glints / on-dark accents */
+  --color-accent-deep: oklch(64% 0.12 300); /* AA-ish links on night */
+  --color-accent-subtle: oklch(34% 0.06 300);
+
+  /* Liquid-silver — the signature mirror metal. A cool platinum ramp used for
+     chrome fills, hairline sheens and the wordmark. */
+  --silver-bright: oklch(96% 0.008 290);
+  --silver: oklch(86% 0.01 295);
+  --silver-mid: oklch(72% 0.014 298);
+  --silver-deep: oklch(54% 0.018 300);
+
+  /* Ribbon spectrum stops — drive the WebGL Möbius chrome + CSS fallback.
+     A cold mirror read: silver crest → platinum → amethyst glint → plum shadow. */
+  --ribbon-crest: oklch(97% 0.01 290); /* mirror highlight */
+  --ribbon-silver: oklch(84% 0.012 296);
+  --ribbon-amethyst: oklch(70% 0.13 300); /* cool jewel glint */
+  --ribbon-violet: oklch(52% 0.12 298);
+  --ribbon-shadow: oklch(26% 0.05 300); /* plum shadow trough */
+
+  /* Borders — fine liquid-silver hairlines on the night. */
+  --color-border: oklch(40% 0.03 300 / 0.5);
+  --color-border-subtle: oklch(36% 0.026 300 / 0.4);
+  --color-hairline: oklch(60% 0.02 300 / 0.32);
+
+  --color-success: oklch(74% 0.12 160);
+  --color-warning: oklch(80% 0.13 80);
+  --color-error: oklch(64% 0.18 18);
+  --color-info: oklch(74% 0.1 250);
+
+  /* Glass tokens — frosted plum-mirror nav + cards over the night. */
+  --glass-bg: oklch(20% 0.03 300 / 0.55);
+  --glass-bg-strong: oklch(17% 0.028 300 / 0.82);
+  --glass-border: oklch(80% 0.02 300 / 0.16);
+  --glass-shadow: 0 24px 70px -34px oklch(6% 0.02 300 / 0.7);
+
+  /* Dark glass — chips that sit over the hero ribbon. */
+  --glass-bg-dark: oklch(22% 0.03 300 / 0.42);
+  --glass-border-dark: oklch(80% 0.04 300 / 0.18);
+
+  /* Fonts wired from next/font on the layout wrapper. */
+  --font-display: var(--font-display), "Bodoni Moda", "Didot", Georgia, serif;
+  --font-sans: var(--font-body), "Jost", system-ui, sans-serif;
+
+  /* Fluid type tokens (clamp) — a tall, high-contrast didone scale. Grander
+     and cooler than the siblings; the serif carries the timeless devotion. */
+  --fluid-hero: clamp(2.6rem, 1.0rem + 7.1vw, 5.85rem);
+  --fluid-h2: clamp(2rem, 1.25rem + 3.1vw, 3.4rem);
+  --fluid-lead: clamp(1.05rem, 0.98rem + 0.5vw, 1.3rem);
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display headings — Bodoni Moda didone, extreme stroke contrast. Tight,
+   editorial, devotional. */
+[data-brand="eternity"] .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.005em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+/* Italic editorial emphasis — the refined didone flourish. */
+[data-brand="eternity"] .font-display-em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* The liquid-silver headline word — a brushed mirror gradient with a faint
+   amethyst breath. Reads as chrome lettering on the midnight ground. */
+[data-brand="eternity"] .silver-text {
+  background: linear-gradient(
+    104deg,
+    var(--silver-bright) 0%,
+    var(--silver) 34%,
+    var(--ribbon-amethyst) 66%,
+    var(--silver-bright) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* A slow mirror-sheen drift across the silver word (reduced-motion gated). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="eternity"] .silver-text--sheen {
+    animation: et-silver-sheen 9s ease-in-out infinite alternate;
+  }
+}
+@keyframes et-silver-sheen {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+/* Tabular numerics for NAP / metrics / prices / years / phone. */
+[data-brand="eternity"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Accent + silver text helpers. */
+[data-brand="eternity"] .text-accent-bright {
+  color: var(--color-accent-bright);
+}
+[data-brand="eternity"] .text-silver {
+  color: var(--silver);
+}
+
+/* Refined letterspaced eyebrow label — the timeless kicker. */
+[data-brand="eternity"] .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-family: var(--font-sans);
+}
+
+/* A small infinity rule under eyebrow labels — the eternity motif drawn as a
+   thin chrome lemniscate from two overlapping arcs. */
+[data-brand="eternity"] .rule-infinity::after {
+  content: "∞";
+  display: block;
+  width: max-content;
+  margin-top: 0.55rem;
+  font-size: 1.15rem;
+  line-height: 0.6;
+  letter-spacing: 0;
+  background: linear-gradient(100deg, var(--silver), var(--ribbon-amethyst));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.9;
+}
+[data-brand="eternity"] .rule-infinity-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Reusable glass surfaces — frosted plum-mirror. */
+[data-brand="eternity"] .glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="eternity"] .glass-strong {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35);
+  backdrop-filter: blur(24px) saturate(1.35);
+  border: 1px solid var(--glass-border);
+}
+[data-brand="eternity"] .glass-dark {
+  background: var(--glass-bg-dark);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--glass-border-dark);
+}
+
+/* Liquid-silver fill pill — the signature chrome chip with a mirror top sheen.
+   A brushed platinum gradient that catches light like the ribbon. */
+[data-brand="eternity"] .silver-pill {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    150deg,
+    var(--silver-bright) 0%,
+    var(--silver) 42%,
+    var(--silver-mid) 100%
+  );
+}
+[data-brand="eternity"] .silver-pill--amethyst {
+  background: linear-gradient(
+    150deg,
+    var(--ribbon-amethyst),
+    var(--ribbon-violet)
+  );
+}
+[data-brand="eternity"] .silver-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 52% 0;
+  background: linear-gradient(180deg, oklch(100% 0 0 / 0.55), transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* A diagonal mirror glint that sweeps the pill on hover. */
+[data-brand="eternity"] .silver-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    oklch(100% 0 0 / 0.55) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+[data-brand="eternity"] .silver-pill:hover::after {
+  transform: translateX(130%);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="eternity"] .silver-pill:hover::after {
+    transform: translateX(-130%);
+  }
+}
+
+/* A hairline chrome rule — a 1px liquid-silver divider with a center bloom. */
+[data-brand="eternity"] .chrome-rule {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-hairline) 18%,
+    var(--silver) 50%,
+    var(--color-hairline) 82%,
+    transparent
+  );
+}
+
+/* ============================================================
+   Eternity-ribbon FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   An on-brand layered field: a midnight-plum night with a soft amethyst bloom
+   behind a chrome infinity/Möbius loop (the SVG sits in RibbonFallback). The
+   gentle drift is reduced-motion gated; static it still reads as an endless
+   silver ribbon on a jewel night. NEVER a blank box. Zero CLS.
+   ============================================================ */
+[data-brand="eternity"] .ribbon-fallback {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      62% 64% at 50% 46%,
+      oklch(30% 0.08 300 / 0.6) 0%,
+      transparent 64%
+    ),
+    radial-gradient(
+      72% 60% at 82% 18%,
+      oklch(40% 0.1 300 / 0.36) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      70% 70% at 14% 88%,
+      oklch(34% 0.07 280 / 0.32) 0%,
+      transparent 58%
+    ),
+    linear-gradient(168deg, var(--night-1), var(--night-0) 82%);
+}
+/* Faint mirror-light streaks behind the ribbon — chrome ambience. */
+[data-brand="eternity"] .ribbon-fallback::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 24% 30%, oklch(100% 0 0 / 0.35), transparent 70%),
+    radial-gradient(1.5px 1.5px at 66% 22%, oklch(100% 0 0 / 0.28), transparent 70%),
+    radial-gradient(2px 2px at 80% 64%, oklch(90% 0.06 300 / 0.4), transparent 70%),
+    radial-gradient(1.5px 1.5px at 40% 76%, oklch(100% 0 0 / 0.22), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Mirror-sheen sweep that travels the static ribbon path in the fallback SVG. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="eternity"] .ribbon-sheen {
+    animation: et-ribbon-sheen 7s ease-in-out infinite;
+  }
+  [data-brand="eternity"] .ribbon-breathe {
+    transform-origin: 50% 50%;
+    animation: et-breathe 11s ease-in-out infinite alternate;
+  }
+}
+@keyframes et-ribbon-sheen {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -1600;
+    opacity: 0;
+  }
+}
+@keyframes et-breathe {
+  from {
+    transform: scale(0.985) rotate(-0.6deg);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.015) rotate(0.6deg);
+    opacity: 1;
+  }
+}
+
+/* CSS-only chrome bead — small decorative mirror accent used elsewhere. */
+[data-brand="eternity"] .css-bead {
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 32% 28%, oklch(100% 0 0 / 0.7) 0 18%, transparent 40%),
+    radial-gradient(circle at 62% 66%, var(--silver), var(--silver-deep));
+  box-shadow: 0 10px 26px -10px oklch(8% 0.02 300 / 0.7);
+}
+[data-brand="eternity"] .css-bead--amethyst {
+  background:
+    radial-gradient(circle at 32% 28%, oklch(100% 0 0 / 0.6) 0 18%, transparent 40%),
+    radial-gradient(circle at 62% 66%, var(--ribbon-amethyst), var(--ribbon-violet));
+}
+
+/* Before/after range — invisible track, a wide invisible thumb so the whole
+   width is a drag surface while the visible handle is the styled divider. */
+[data-brand="eternity"] .ba-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="eternity"] .ba-range::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+[data-brand="eternity"] .ba-range::-moz-range-track {
+  background: transparent;
+}
+
+/* ============================================================
+   Brand photography placeholder treatment.
+   No external assets — midnight / silver / amethyst gradient "plates" that read
+   as one cohesive noir-luxe shoot (mirror-lit treatment suites, chrome detail,
+   refined portraits). Each marked "sample".
+   ============================================================ */
+[data-brand="eternity"] .et-plate {
+  position: relative;
+  background:
+    radial-gradient(120% 120% at 24% 16%, oklch(40% 0.05 300 / 0.75), transparent 58%),
+    radial-gradient(110% 120% at 86% 90%, oklch(30% 0.06 300 / 0.7) 0%, transparent 56%),
+    linear-gradient(155deg, var(--night-3), var(--night-1));
+}
+[data-brand="eternity"] .et-plate--silver {
+  background:
+    radial-gradient(110% 110% at 70% 14%, var(--silver-bright) 0%, transparent 52%),
+    radial-gradient(96% 100% at 14% 96%, var(--silver-mid) 0%, transparent 46%),
+    linear-gradient(160deg, var(--silver), var(--silver-deep));
+}
+[data-brand="eternity"] .et-plate--amethyst {
+  background:
+    radial-gradient(120% 110% at 28% 20%, oklch(78% 0.08 300) 0%, transparent 52%),
+    linear-gradient(150deg, var(--ribbon-amethyst), var(--ribbon-violet));
+}
+[data-brand="eternity"] .et-plate--night {
+  background:
+    radial-gradient(110% 110% at 74% 16%, oklch(40% 0.09 300 / 0.7), transparent 60%),
+    radial-gradient(96% 100% at 12% 96%, oklch(34% 0.08 280 / 0.55) 0%, transparent 40%),
+    linear-gradient(160deg, var(--night-2), var(--night-0));
+}
+/* Faint mirror-glint overlay so plates read as designed, not empty. */
+[data-brand="eternity"] .et-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(3px 3px at 24% 30%, oklch(100% 0 0 / 0.5), transparent 70%),
+    radial-gradient(2px 2px at 66% 20%, oklch(100% 0 0 / 0.34), transparent 70%),
+    radial-gradient(3px 3px at 78% 66%, oklch(100% 0 0 / 0.4), transparent 70%),
+    radial-gradient(2px 2px at 42% 76%, oklch(100% 0 0 / 0.28), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Respect reduced motion globally for decorative transforms. */
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="eternity"] * {
+    scroll-behavior: auto !important;
+  }
+}
