@@ -56,6 +56,17 @@ EOF
   { grep -oE "media/[A-Za-z0-9_.~-]+\.(woff2|woff|ttf|otf)" "$dest/index.html" || true;
     for c in $cssf; do grep -oE "media/[A-Za-z0-9_.~-]+\.(woff2|woff|ttf|otf)" "out/_next/static/$c" 2>/dev/null || true; done; } \
     | sed 's#media/##' | sort -u | while read -r f; do [ -n "$f" ] && cp "out/_next/static/media/$f" "$dest/_next/static/media/$f" 2>/dev/null || true; done
+  # this client's REAL images (public/clients/<route>) + basePath-prefix every
+  # root-absolute /clients/ reference. next/image AND raw <img> emit /clients/...
+  # with NO basePath, which 404s on a Pages project site served under /<slug>/.
+  if [ -d "out/clients/$route" ]; then
+    mkdir -p "$dest/clients"
+    cp -r "out/clients/$route" "$dest/clients/$route"
+    grep -rl "/clients/" "$dest/index.html" "$dest/_next" 2>/dev/null | while read -r f; do
+      sed -i "s#/clients/#/$slug/clients/#g" "$f"
+    done
+    echo "    + clients/$route ($(du -sh "$dest/clients/$route" | cut -f1)) basePath-fixed"
+  fi
   echo "    packaged: $(du -sh "$dest" | cut -f1)"
 done
 
