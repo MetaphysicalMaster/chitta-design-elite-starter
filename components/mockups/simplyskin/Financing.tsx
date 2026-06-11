@@ -8,6 +8,7 @@
 
 import Link from "next/link";
 import { Reveal, btnPrimary, btnGhost } from "./primitives";
+import { Magnetic, SplitLines } from "./experience";
 import { cn } from "@/lib/utils";
 
 const PERKS = [
@@ -45,21 +46,25 @@ export function Financing() {
                 <p className="rule-fine eyebrow inline-block text-accent-deep">
                   Value, the premium way
                 </p>
-                <h2
+                <SplitLines
+                  as="h2"
+                  delay={0.1}
                   className="font-display mt-5 text-balance text-[var(--color-fg)]"
                   style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
                 >
                   Rewards on the brands you already trust.
-                </h2>
+                </SplitLines>
                 <p className="mt-5 max-w-[44ch] font-light leading-relaxed text-[var(--color-fg-muted)]">
                   Through Allē and ASPIRE, your treatments earn rewards
                   automatically — and flexible-pay keeps considered care within
                   reach.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="#book" className={btnPrimary}>
-                    Start your plan
-                  </Link>
+                  <Magnetic strength={0.16}>
+                    <Link href="#book" className={btnPrimary}>
+                      Start your plan
+                    </Link>
+                  </Magnetic>
                   <Link href="#services" className={btnGhost}>
                     View the menu
                   </Link>

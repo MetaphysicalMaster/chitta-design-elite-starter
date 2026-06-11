@@ -1,4 +1,5 @@
 import { SmoothScroll } from "@/components/mockups/simplyskin/SmoothScroll";
+import { LightSweep } from "@/components/mockups/simplyskin/experience";
 import { SiteNav } from "@/components/mockups/simplyskin/SiteNav";
 import { SkinGlowHero } from "@/components/mockups/simplyskin/SkinGlowHero";
 import { TrustBar } from "@/components/mockups/simplyskin/TrustBar";
@@ -21,6 +22,12 @@ export default function SimplySkinPage() {
       >
         Skip to content
       </a>
+
+      {/* EDITORIAL LIGHT-ON-SKIN — a soft luminance band that travels down
+          the viewport with scroll: the page's light source follows the
+          reader. Fixed, blend-mode soft-light, transform-only, GSAP-scrubbed
+          (hidden entirely under prefers-reduced-motion). */}
+      <LightSweep />
 
       <SiteNav />
 

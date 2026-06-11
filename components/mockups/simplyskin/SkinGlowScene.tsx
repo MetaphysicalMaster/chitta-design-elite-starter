@@ -33,7 +33,7 @@ import {
 } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { KernelSize } from "postprocessing";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { glowFragmentShader, glowVertexShader } from "./skin-glow-shaders";
 
@@ -212,13 +212,40 @@ function StudioLights() {
 export interface SkinGlowSceneProps {
   /** Lower transmission resolution + lighter Bloom on smaller / high-DPI tiers. */
   lite?: boolean;
+  /**
+   * Fired when either canvas loses its WebGL context AFTER a successful
+   * mount (GPU-process reset, driver crash, context-limit eviction). The
+   * hero uses this to permanently downgrade to the static glow layer for
+   * the session instead of letting three.js crash-loop the tab.
+   */
+  onContextLost?: () => void;
 }
 
-export default function SkinGlowScene({ lite = false }: SkinGlowSceneProps) {
+export default function SkinGlowScene({
+  lite = false,
+  onContextLost,
+}: SkinGlowSceneProps) {
   const pointer = useRef({ x: 0, y: 0 });
   const wrapRef = useRef<HTMLDivElement>(null);
   // Pause both render loops when the hero scrolls offscreen (perf + battery).
   const [visible, setVisible] = useState(true);
+
+  // Attach a context-lost listener to each canvas at creation. preventDefault
+  // stops the browser/three from attempting a doomed auto-restore; the parent
+  // then unmounts us (static fallback layer takes over, visually seamless).
+  const handleCreated = useCallback(
+    ({ gl }: { gl: THREE.WebGLRenderer }) => {
+      gl.domElement.addEventListener(
+        "webglcontextlost",
+        (e: Event) => {
+          e.preventDefault();
+          onContextLost?.();
+        },
+        { once: true },
+      );
+    },
+    [onContextLost],
+  );
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -255,13 +282,22 @@ export default function SkinGlowScene({ lite = false }: SkinGlowSceneProps) {
         pointer.current.y = 0;
       }}
     >
-      {/* Orthographic full-bleed caustic skin-glow backdrop */}
+      {/* Orthographic full-bleed caustic skin-glow backdrop.
+          failIfMajorPerformanceCaveat: a software-rasterized context (e.g.
+          Microsoft Basic Render Driver) is refused outright — the resulting
+          throw is absorbed by the hero's GlowSceneBoundary → static glow. */}
       <Canvas
         orthographic
         frameloop={frameloop}
         camera={{ zoom: 1, position: [0, 0, 1] }}
         dpr={[1, 2]}
-        gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
+        gl={{
+          antialias: false,
+          alpha: false,
+          powerPreference: "high-performance",
+          failIfMajorPerformanceCaveat: true,
+        }}
+        onCreated={handleCreated}
         style={{ position: "absolute", inset: 0 }}
       >
         <GlowBackdrop pointer={pointer} />
@@ -277,7 +313,9 @@ export default function SkinGlowScene({ lite = false }: SkinGlowSceneProps) {
           alpha: true,
           powerPreference: "high-performance",
           toneMapping: THREE.ACESFilmicToneMapping,
+          failIfMajorPerformanceCaveat: true,
         }}
+        onCreated={handleCreated}
         style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
       >
         <StudioLights />

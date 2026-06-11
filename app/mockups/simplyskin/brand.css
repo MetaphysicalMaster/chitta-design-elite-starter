@@ -109,7 +109,7 @@
 
   /* Fonts wired from next/font on the layout wrapper.
      Headings = Libre Baskerville (elegant serif); body = Inter (clean sans). */
-  --font-display: var(--font-display), "Libre Baskerville", Georgia, serif;
+  --font-display: var(--font-display-src), "Libre Baskerville", Georgia, serif;
   --font-sans: var(--font-body), system-ui, -apple-system, sans-serif;
 
   /* Fluid type tokens (clamp) — editorial, restrained scale. Libre Baskerville
@@ -405,7 +405,10 @@
    — so the mint outlier is gone and the whole gallery stays on-palette.
    ============================================================ */
 [data-brand="simplyskin"] .ss-skin {
-  position: relative;
+  /* absolute, NOT relative: every consumer is an `absolute inset-0` fill layer,
+     and this rule's 0-2-0 specificity beats Tailwind's .absolute — relative here
+     knocked the plates out of the slider stack (blank white cards). */
+  position: absolute;
   background:
     /* soft warm key light, upper-left */
     radial-gradient(80% 75% at 32% 22%, oklch(88% 0.026 56 / 0.92), transparent 60%),
@@ -472,6 +475,103 @@
   mask-image: radial-gradient(110% 120% at 40% 26%, #000 30%, transparent 92%);
   -webkit-mask-image: radial-gradient(110% 120% at 40% 26%, #000 30%, transparent 92%);
   pointer-events: none;
+}
+
+/* ============================================================
+   EDITORIAL LIGHT-ON-SKIN — the signature experience layer
+   (companion CSS for components/mockups/simplyskin/experience.tsx)
+   ============================================================ */
+
+/* Word-mask primitives for the hand-rolled line reveals. The padding gives
+   serif descenders + italic overhang room inside the clip; the negative
+   margins cancel the layout cost exactly (zero CLS). */
+[data-brand="simplyskin"] .ss-w {
+  display: inline-block;
+  overflow: clip;
+  padding: 0.1em 0.06em 0.16em;
+  margin: -0.1em -0.06em -0.16em;
+}
+[data-brand="simplyskin"] .ss-wi {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* The travelling light — a fixed, soft-light-blended luminance band that
+   follows the reader down the page (GSAP-scrubbed, transform-only). It sits
+   above section paint, below the nav (z-50). Whisper subtle by design. */
+[data-brand="simplyskin"] .ss-lightsweep {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  mix-blend-mode: soft-light;
+}
+[data-brand="simplyskin"] .ss-lightsweep__band {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 50%;
+  height: 95vh;
+  margin-top: -47.5vh;
+  background: radial-gradient(
+    60% 52% at 50% 50%,
+    oklch(100% 0 0 / 0.5) 0%,
+    oklch(98% 0.01 80 / 0.26) 42%,
+    transparent 74%
+  );
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="simplyskin"] .ss-lightsweep {
+    display: none;
+  }
+}
+
+/* Hero "print develop" — the photograph settles from an overexposed,
+   under-fixed state into its full warmth on load. One-shot, on the media
+   container only; reduced-motion renders the finished print immediately. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="simplyskin"] .ss-develop {
+    animation: ss-develop 2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@keyframes ss-develop {
+  from {
+    filter: brightness(1.28) saturate(0.7) sepia(0.1);
+  }
+  to {
+    filter: brightness(1) saturate(1) sepia(0);
+  }
+}
+
+/* Quiet editorial nav underline — a hairline grows from the left on
+   hover/focus. Insets match the link's own padding so the rule sits under
+   the label, not the pill. */
+[data-brand="simplyskin"] .ss-navlink {
+  position: relative;
+}
+[data-brand="simplyskin"] .ss-navlink::after {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  right: 0.875rem;
+  bottom: 0.42rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-brand="simplyskin"] .ss-navlink:hover::after,
+[data-brand="simplyskin"] .ss-navlink:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="simplyskin"] .ss-navlink::after {
+    transition: none;
+  }
 }
 
 /* Respect reduced motion globally for decorative transforms. */

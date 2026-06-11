@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Wordmark } from "./primitives";
+import { Magnetic } from "./experience";
 
 const PHONE_DISPLAY = "(317) 348-1313";
 const PHONE_TEL = "+13173481313";
@@ -76,7 +77,9 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                // ss-navlink: a quiet hairline grows from the left on hover —
+                // the editorial micro-signature, not a pill fill.
+                "ss-navlink rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
               )}
@@ -98,17 +101,20 @@ export function SiteNav() {
           >
             {PHONE_DISPLAY}
           </a>
-          <Link
-            href="#book"
-            className={cn(
-              "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-16px_oklch(58%_0.04_184_/_0.7)] transition-transform duration-300 hover:-translate-y-0.5",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
-            )}
-          >
-            Book
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-          </Link>
+          <Magnetic strength={0.14}>
+            <Link
+              href="#book"
+              className={cn(
+                "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
+                "shadow-[0_10px_30px_-16px_oklch(58%_0.04_184_/_0.7)] transition-transform duration-300 hover:-translate-y-0.5",
+                "active:translate-y-0 active:scale-[0.97] active:duration-150",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+              )}
+            >
+              Book
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            </Link>
+          </Magnetic>
 
           {/* Mobile toggle */}
           <button

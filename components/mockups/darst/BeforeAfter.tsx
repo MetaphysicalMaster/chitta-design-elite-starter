@@ -9,7 +9,7 @@
  */
 
 import { useState } from "react";
-import { Reveal, SectionHeading } from "./primitives";
+import { FigureTag, Reveal, SectionHeading } from "./primitives";
 import { BrandImage } from "./BrandImage";
 
 export function BeforeAfter() {
@@ -22,6 +22,11 @@ export function BeforeAfter() {
       className="bg-[var(--color-bg-subtle)] py-24 sm:py-32"
     >
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
+        <FigureTag
+          n="05"
+          label="Representative comparison"
+          className="mb-6 justify-end"
+        />
         <SectionHeading
           eyebrow="Results"
           title={

@@ -12,6 +12,7 @@
  */
 
 import { Reveal, BrandPhoto, btnGold, btnGhost } from "./primitives";
+import { InkStroke } from "./InkStroke";
 import Link from "next/link";
 
 const CREDS = [
@@ -84,6 +85,9 @@ export function SoleInjector() {
               Every face here is shaped by{" "}
               <span className="font-display-em text-[var(--color-accent-deep)]">one person.</span>
             </h2>
+            {/* the truest sumi-e moment — black ink pulled across rice-paper,
+                under the line about one set of hands. */}
+            <InkStroke tone="ink" className="mt-5 w-48 opacity-80 sm:w-56" />
             <p className="mt-6 max-w-[52ch] text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
               <span className="font-medium text-[var(--color-fg)]">
                 For women who want to look rested, not &ldquo;done.&rdquo;

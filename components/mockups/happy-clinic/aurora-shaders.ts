@@ -11,6 +11,11 @@
  *  3. A soft abstract navy horizon (light-pooling, NOT a mountain ridge), with
  *     the aurora glowing just above it — "luminous calm" for a female-luxury
  *     injectables brand, matching "Subtle is The New WOW".
+ *  4. A NIGHT→DAWN resolve (u_dawn, 0..1) — the signature scroll choreography.
+ *     GSAP ScrollTrigger scrubs u_dawn across the whole page (0 at the hero,
+ *     1 by the booking section): stars fade, the aurora curtains dissolve and
+ *     warm toward pale-yellow, and a soft dawn glow pools at the horizon. The
+ *     page reads as one continuous Colorado night sky you descend through.
  *
  * NOTE: the uniform NAMES (u_violet / u_magenta / u_cyan) are retained so the
  * GLSL is unchanged; their VALUES carry navy/teal/gold. Read u_violet as the
@@ -39,8 +44,11 @@ export const auroraFragmentShader = /* glsl */ `
   uniform vec2  u_pointer;     // -1..1
   uniform float u_scroll;      // 0..1 hero scroll progress (parallax)
   uniform float u_intensity;   // mount fade-in 0..1
+  uniform float u_dawn;        // 0 night → 1 pre-dawn warmth (page scrub)
   uniform vec3  u_night0;       // top of sky
   uniform vec3  u_night1;       // horizon sky
+  uniform vec3  u_dawnSky;      // lifted pre-dawn twilight blue
+  uniform vec3  u_dawnWarm;     // warm pale-yellow dawn light
   uniform vec3  u_violet;
   uniform vec3  u_magenta;
   uniform vec3  u_teal;
@@ -91,9 +99,17 @@ export const auroraFragmentShader = /* glsl */ `
     // ---- night sky base (vertical) ----
     vec3 col = mix(u_night1, u_night0, smoothstep(0.0, 1.0, uv.y));
 
-    // faint star dusting in the upper sky
+    // ---- dawn resolve (scroll-choreographed): the sky lifts toward a
+    // pre-dawn twilight blue while warmth pools low at the horizon. Kept
+    // deliberately PRE-dawn (never daylight) so white copy in the night
+    // sections stays AA over their navy veils.
+    float dawn = clamp(u_dawn, 0.0, 1.0);
+    vec3 dawnCol = mix(u_dawnWarm, u_dawnSky, smoothstep(0.03, 0.7, uv.y));
+    col = mix(col, dawnCol, dawn * 0.6);
+
+    // faint star dusting in the upper sky — stars dissolve as dawn rises
     float stars = step(0.9975, hash(floor(uv * vec2(420.0, 320.0))));
-    col += stars * smoothstep(0.35, 1.0, uv.y) * 0.5;
+    col += stars * smoothstep(0.35, 1.0, uv.y) * 0.5 * (1.0 - 0.85 * dawn);
 
     // ---- aurora curtains ----
     // parallax: scroll pushes the aurora up + softens it; cursor sways it.
@@ -119,11 +135,16 @@ export const auroraFragmentShader = /* glsl */ `
     float rays = fbm(vec2(ap.x * 14.0 + warp.x * 2.0, uv.y * 2.0 - t));
     curtain *= mix(0.7, 1.25, rays);
 
+    // the aurora softly dissolves into the brightening sky
+    curtain *= (1.0 - 0.5 * dawn);
+
     // ---- aurora color ramp: violet → magenta → teal → cyan across x + noise --
     float hueMix = clamp(uv.x * 0.8 + bands * 0.5 + u_pointer.x * 0.1, 0.0, 1.0);
     vec3 aur = mix(u_violet, u_magenta, smoothstep(0.0, 0.35, hueMix));
     aur = mix(aur, u_teal, smoothstep(0.35, 0.72, hueMix));
     aur = mix(aur, u_cyan, smoothstep(0.72, 1.0, hueMix));
+    // ...and what remains of it warms toward the dawn light
+    aur = mix(aur, u_dawnWarm, 0.45 * dawn);
 
     // brighten the lower edge of the curtain (classic aurora glow) — kept
     // restrained so the navy night sky stays dominant (no grey wash).
@@ -133,12 +154,18 @@ export const auroraFragmentShader = /* glsl */ `
     // soft cyan ground-glow just above the ridge
     float horizonGlow = smoothstep(0.32, 0.12, uv.y) * smoothstep(0.04, 0.18, uv.y);
     col += u_cyan * horizonGlow * 0.18;
+    // dawn warmth pools at the horizon — the sun is coming, never arrived
+    col += u_dawnWarm * horizonGlow * 0.62 * dawn;
+    float dawnBloom = smoothstep(0.55, 0.05, uv.y);
+    col += u_dawnWarm * dawnBloom * dawnBloom * 0.26 * dawn;
 
     // ---- abstract navy horizon (soft light-pooling, not a mountain ridge) ----
     float rh = ridgeHeight(uv.x + 0.02 * sin(u_time * 0.05));
     // a soft, wide mask edge so the base reads as pooled navy light, not a cutout
     float ridgeMask = smoothstep(rh + 0.05, rh - 0.02, uv.y);
     vec3 ridgeCol = mix(u_ridge, u_night0, 0.25);
+    // first light brushes the horizon floor
+    ridgeCol = mix(ridgeCol, u_dawnSky * 0.55, 0.35 * dawn);
     col = mix(col, ridgeCol, ridgeMask);
     // a soft teal/yellow horizon shimmer where the aurora meets the base
     float rim = smoothstep(0.05, 0.0, abs(uv.y - rh)) * 0.5;

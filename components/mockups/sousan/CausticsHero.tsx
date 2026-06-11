@@ -87,6 +87,45 @@ export function CausticsHero() {
     show: { opacity: 1, y: 0, transition: { duration: 0.85, ease } },
   };
 
+  // Hand-rolled word-mask reveal for the headline (no paid plugins): each word
+  // rises out of its own overflow-hidden slot — fashion-editorial cadence.
+  const headline = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: prefersReduced ? 0 : 0.075,
+        delayChildren: 0.18,
+      },
+    },
+  };
+  const word = {
+    hidden: { y: prefersReduced ? "0%" : "115%" },
+    show: {
+      y: "0%",
+      transition: { duration: 0.95, ease },
+    },
+  };
+  /** A masked word slot — padding keeps descenders unclipped at line-height 1. */
+  const Word = ({
+    children,
+    className,
+  }: {
+    children: string;
+    className?: string;
+  }) => (
+    <span
+      aria-hidden
+      className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-top"
+    >
+      <motion.span
+        variants={word}
+        className={cn("inline-block will-change-transform", className)}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+
   return (
     <section
       id="top"
@@ -137,14 +176,14 @@ export function CausticsHero() {
         </motion.p>
 
         <motion.h1
-          variants={item}
+          variants={headline}
+          aria-label="Embark on your beauty evolution."
           className="font-display max-w-[15ch] text-balance text-[var(--color-bg)] drop-shadow-[0_2px_44px_oklch(8%_0_0_/_0.7)]"
-          style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.0 }}
+          style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.04 }}
         >
-          Embark on your{" "}
-          <span className="gold-leaf--bright font-display-em">
-            beauty evolution.
-          </span>
+          <Word>Embark</Word> <Word>on</Word> <Word>your</Word>{" "}
+          <Word className="gold-leaf--bright font-display-em">beauty</Word>{" "}
+          <Word className="gold-leaf--bright font-display-em">evolution.</Word>
         </motion.h1>
 
         <motion.p
@@ -172,7 +211,10 @@ export function CausticsHero() {
             className="h-px w-7 shrink-0 bg-[var(--gold-bright)]"
           />
           Led personally by{" "}
-          <span className="font-medium text-[var(--color-bg)]">Sousan</span>
+          {/* The literal signature — the pink thread spills from its tail. */}
+          <span className="sn-signature" data-thread="start">
+            Sousan
+          </span>
           &nbsp;— Houston&rsquo;s artist of natural results.
         </motion.p>
 
@@ -184,7 +226,7 @@ export function CausticsHero() {
             <Link
               href="#book"
               className={cn(
-                "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+                "sn-press group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
                 "bg-[var(--gold)] font-semibold tracking-tight text-[oklch(100%_0_0)]",
                 "shadow-[0_18px_50px_-16px_oklch(58%_0.245_358_/_0.6)]",
                 "transition-[transform,box-shadow] duration-300 ease-out",
@@ -204,7 +246,7 @@ export function CausticsHero() {
           <Link
             href="#services"
             className={cn(
-              "glass-dark inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+              "sn-press glass-dark inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
               "font-medium text-[var(--color-bg)]",
               "transition-colors duration-300 hover:bg-[oklch(30%_0_0_/_0.6)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",
@@ -260,7 +302,11 @@ export function CausticsHero() {
           variants={item}
           className="relative order-1 mx-auto w-full max-w-[24rem] md:order-2 md:max-w-none"
         >
-          <div className="filet relative overflow-hidden rounded-[1.75rem] border border-[oklch(100%_0_0_/_0.16)] shadow-[0_40px_90px_-40px_oklch(0%_0_0_/_0.85)]">
+          <div
+            data-thread="frame"
+            data-pop
+            className="filet relative overflow-hidden rounded-[1.75rem] border border-[oklch(100%_0_0_/_0.16)] shadow-[0_40px_90px_-40px_oklch(0%_0_0_/_0.85)]"
+          >
             <Image
               src="/clients/sousan/hero.jpg"
               alt="Sousan, founder and lead aesthetic provider at Sousan Medspa, Houston"

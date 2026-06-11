@@ -3,14 +3,26 @@
 /**
  * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
  * Wires anchor (#hash) clicks to glide instead of jump, offset for the sticky
- * nav. The bubble-bar WebGL has its own internal frameloop; Lenis just gives the
- * page a buoyant, unhurried cadence that suits the fun-but-premium tone. Slightly
- * springier easing than the couture siblings to read playful.
+ * nav. Slightly springier easing than the couture siblings to read playful.
+ *
+ * CRITICAL integration (the Lenis gotcha): every GSAP ScrollTrigger on the page
+ * relies on this file. Lenis is driven from gsap.ticker (single rAF owner) and
+ * ScrollTrigger.update is pumped on every Lenis scroll event, so triggers fire
+ * at the smoothed position, not the raw one. lagSmoothing(0) keeps the two
+ * clocks honest. The live Lenis velocity is also published to fizz-bus each
+ * tick — that's what makes the hero champagne fizz surge when you scroll.
  */
 
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { useReducedMotion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { fizzBus } from "./fizz-bus";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const prefersReduced = useReducedMotion();
@@ -24,12 +36,18 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
+    // Lenis ↔ ScrollTrigger handshake: triggers re-measure on the SMOOTHED
+    // scroll, and GSAP's ticker is the one true rAF driving Lenis.
+    const onLenisScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onLenisScroll);
+
+    const tick = (time: number) => {
+      lenis.raf(time * 1000);
+      // Publish velocity for the champagne-fizz physics (decays to 0 at rest).
+      fizzBus.velocity = lenis.velocity;
     };
-    raf = requestAnimationFrame(loop);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     const onClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest(
@@ -46,9 +64,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove(tick);
       document.removeEventListener("click", onClick);
       lenis.destroy();
+      fizzBus.velocity = 0;
     };
   }, [prefersReduced]);
 

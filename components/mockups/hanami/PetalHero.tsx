@@ -27,15 +27,41 @@ import {
   useTransform,
   useMotionValueEvent,
 } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { Component, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { InkStroke } from "./InkStroke";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
 const PetalScene = dynamic(() => import("./PetalScene"), {
   ssr: false,
   loading: () => null,
 });
+
+/**
+ * SceneErrorBoundary — the WebGL fail-safe. THREE.WebGLRenderer can throw at
+ * construction even when a bare probe context succeeded (attribute mismatches,
+ * per-tab context limits, flaky ANGLE/GPU process). R3F surfaces that as a
+ * render-phase exception; without a boundary it bubbles as an uncaught error
+ * and strands an orphaned 300×150 <canvas> in the DOM. This boundary catches
+ * it, reports up (so the hero unmounts the whole canvas wrapper — no orphan),
+ * and the always-painted CSS petal field simply carries on. Never retried.
+ */
+class SceneErrorBoundary extends Component<
+  { onFail: () => void; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onFail();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 function useEnableWebGL() {
   const prefersReduced = useReducedMotion();
@@ -50,10 +76,23 @@ function useEnableWebGL() {
       // @ts-expect-error — connection is non-standard but widely supported
       navigator.connection?.saveData === true;
 
+    // Probe with the SAME attributes the R3F renderer will request — a bare
+    // getContext("webgl") succeeding does NOT guarantee the antialias +
+    // high-performance context THREE asks for will (observed in QA: manual
+    // probe OK, WebGLRenderer constructor threw). Free the probe context
+    // immediately so it never counts against the per-tab context budget.
     let hasWebGL = false;
     try {
       const c = document.createElement("canvas");
-      hasWebGL = !!(c.getContext("webgl2") || c.getContext("webgl"));
+      const attrs: WebGLContextAttributes = {
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      };
+      const ctx = (c.getContext("webgl2", attrs) ||
+        c.getContext("webgl", attrs)) as WebGLRenderingContext | null;
+      hasWebGL = !!ctx;
+      ctx?.getExtension("WEBGL_lose_context")?.loseContext();
     } catch {
       hasWebGL = false;
     }
@@ -80,6 +119,11 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export function PetalHero() {
   const prefersReduced = useReducedMotion();
   const { enabled, lite } = useEnableWebGL();
+
+  // If the renderer still throws past the probe, fail CLOSED for the session:
+  // unmount the canvas wrapper (no orphaned <canvas>) and never remount.
+  const [sceneFailed, setSceneFailed] = useState(false);
+  const onSceneFail = useCallback(() => setSceneFailed(true), []);
 
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -150,10 +194,14 @@ export function PetalHero() {
           base so the hero is solid black-tie even before the canvas/fallback. */}
       <div className="sakura-fallback sakura-fallback--ink absolute inset-0 -z-20" aria-hidden="true" />
 
-      {/* Layer 1: WebGL petal field (desktop, motion-ok, webgl-ok only) */}
-      {enabled && (
+      {/* Layer 1: WebGL petal field (desktop, motion-ok, webgl-ok only) —
+          boundary-guarded so a renderer-construction failure degrades cleanly
+          to the CSS petal field above (no orphaned canvas, no uncaught error). */}
+      {enabled && !sceneFailed && (
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <PetalScene lite={lite} flowRef={flowRef} />
+          <SceneErrorBoundary onFail={onSceneFail}>
+            <PetalScene lite={lite} flowRef={flowRef} />
+          </SceneErrorBoundary>
         </div>
       )}
 
@@ -191,6 +239,15 @@ export function PetalHero() {
         >
           The art of becoming —{" "}
           <span className="font-display-em bloom-sheen">in bloom.</span>
+          {/* the sumi-e signature — a brush stroke pulled under the headline
+              once the copy settles (mount-drawn: the hero is above the fold).
+              Decorative + fail-safe: SSR/no-JS/reduced-motion ship it drawn. */}
+          <InkStroke
+            tone="champagne"
+            draw="mount"
+            delay={1.15}
+            className="mt-4 w-44 opacity-90 sm:w-56"
+          />
         </motion.h1>
 
         <motion.p
@@ -215,11 +272,12 @@ export function PetalHero() {
           <Link
             href="#book"
             className={cn(
-              "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+              "hn-sheen group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
               "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
               "shadow-[0_18px_50px_-18px_oklch(72%_0.11_86_/_0.6)]",
-              "transition-[transform,box-shadow] duration-300 ease-out",
+              "transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
               "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(78%_0.11_86_/_0.78)]",
+              "active:translate-y-0 active:scale-[0.98]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
@@ -231,7 +289,8 @@ export function PetalHero() {
             className={cn(
               "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
               "glass-dark font-medium text-[var(--color-bg)]",
-              "transition-colors duration-300 hover:bg-[oklch(26%_0.006_60_/_0.6)]",
+              "transition-[background-color,transform] duration-300 hover:bg-[oklch(26%_0.006_60_/_0.6)]",
+              "active:scale-[0.98]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >

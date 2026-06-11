@@ -11,6 +11,7 @@
 
 import { useId, useState } from "react";
 import { Reveal } from "./primitives";
+import { Magnetic, SplitLines } from "./experience";
 import { cn } from "@/lib/utils";
 
 const LOCATIONS = ["Fishers", "Carmel"];
@@ -70,7 +71,9 @@ function Choice({
               onClick={() => onChange(opt)}
               onKeyDown={(e) => onKeyNav(e, i)}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm transition-colors duration-200",
+                "rounded-full border px-4 py-2 text-sm",
+                "transition-[color,border-color,background-color,transform] duration-200",
+                "active:scale-[0.96] active:duration-100",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
                 active
                   ? "border-[var(--color-accent-bright)] bg-[var(--color-accent-bright)]/18 text-white"
@@ -110,13 +113,18 @@ export function BookingCTA() {
       <div className="relative mx-auto max-w-3xl px-6 text-center sm:px-8">
         <Reveal>
           <p className="eyebrow text-[var(--color-accent-bright)]">Reserve your visit</p>
-          <h2
-            className="font-display mx-auto mt-5 max-w-[18ch] text-balance text-white"
-            style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
-          >
-            Reserve your{" "}
-            <span className="font-display-em">consultation</span>.
-          </h2>
+        </Reveal>
+        {/* Line-masked title on the ink field — the mask reveal carries the
+            moment alone (no container fade fighting it). */}
+        <SplitLines
+          as="h2"
+          className="font-display mx-auto mt-5 max-w-[18ch] text-balance text-white"
+          style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
+        >
+          Reserve your{" "}
+          <span className="font-display-em">consultation</span>.
+        </SplitLines>
+        <Reveal delay={0.14}>
           <p className="mx-auto mt-5 max-w-[46ch] font-light text-white/75">
             Choose a location, a treatment, and a time that suits you — a member
             of our team will confirm with you personally.
@@ -146,18 +154,22 @@ export function BookingCTA() {
               </p>
               {ready ? (
                 // Highest-intent moment gets a LIVE next action (a real call),
-                // never a dead-end demo button.
-                <a
-                  href="tel:+13173481313"
-                  className={cn(
-                    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 font-medium transition-all duration-300",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
-                    "bg-white text-[var(--ink-0)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-18px_oklch(70%_0.035_184_/_0.6)]",
-                  )}
-                >
-                  Call to confirm
-                  <span aria-hidden>→</span>
-                </a>
+                // never a dead-end demo button — with the page's restrained
+                // magnetic pull on the final commit.
+                <Magnetic strength={0.16}>
+                  <a
+                    href="tel:+13173481313"
+                    className={cn(
+                      "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 font-medium transition-all duration-300",
+                      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
+                      "bg-white text-[var(--ink-0)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-18px_oklch(70%_0.035_184_/_0.6)]",
+                      "active:translate-y-0 active:scale-[0.985] active:duration-150",
+                    )}
+                  >
+                    Call to confirm
+                    <span aria-hidden>→</span>
+                  </a>
+                </Magnetic>
               ) : (
                 <button
                   type="button"

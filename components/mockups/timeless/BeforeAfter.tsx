@@ -122,7 +122,7 @@ function SliderHandle({
         className={cn(
           "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
           "border border-white bg-white text-[var(--color-accent)] shadow-lg backdrop-blur",
-          "transition-transform duration-200 hover:scale-105",
+          "transition-transform duration-200 hover:scale-105 active:scale-95",
           "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
         )}
         style={{ left: `${pos}%` }}

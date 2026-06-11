@@ -71,8 +71,8 @@ function ServiceCard({ s }: { s: Service }) {
   return (
     <article
       className={cn(
-        "group relative isolate flex flex-col overflow-hidden rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-300 sm:p-7",
-        "hover:-translate-y-0.5",
+        "group relative isolate flex flex-col overflow-hidden rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-7",
+        "hover:-translate-y-1",
         s.featured
           ? "border-[var(--gold-hairline)] bg-[var(--color-bg-elevated)] shadow-[0_24px_70px_-44px_oklch(72%_0.11_86_/_0.45)] hover:shadow-[0_30px_80px_-40px_oklch(72%_0.11_86_/_0.55)]"
           : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] hover:border-[var(--gold-hairline)] hover:shadow-[var(--glass-shadow)]",

@@ -73,8 +73,10 @@ export function SiteNav() {
             <Link
               key={l.href}
               href={l.href}
+              // hc-navlink: underline grows from the left on enter, exits to
+              // the right on leave — directional, not a flat fade (brand.css).
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                "hc-navlink rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
                 scrolled
                   ? "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
@@ -101,8 +103,8 @@ export function SiteNav() {
           <Link
             href="#book"
             className={cn(
-              "group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight",
-              "transition-[transform,background-color,border-color] duration-300 hover:-translate-y-0.5",
+              "hc-press group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight",
+              "hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
               // At the TOP (over the navy hero) keep exactly ONE filled CTA — the
               // yellow hero button — by demoting this to a glass/outline pill so

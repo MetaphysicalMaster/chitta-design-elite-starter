@@ -159,26 +159,29 @@ export function BrandImage({
   );
 }
 
-/* ---- Pill button styles, shared across CTAs ---- */
+/* ---- Pill button styles, shared across CTAs ----
+   All carry .hc-press (brand.css): a unified quick 3% press compress on
+   :active, plus a normalized transition-property list that includes the
+   native `translate`/`scale` props Tailwind v4 emits — so hover lifts ease
+   smoothly instead of snapping. */
 export const btnPrimary = cn(
-  "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+  "hc-press group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
   "shadow-[0_16px_44px_-16px_oklch(52%_0.087_178_/_0.6)]",
-  "transition-[transform,box-shadow] duration-300 ease-out",
   "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-14px_oklch(52%_0.087_178_/_0.78)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGhost = cn(
-  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+  "hc-press inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "border border-[var(--color-border)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
-  "transition-colors duration-300 hover:bg-[var(--color-bg-subtle)]",
+  "hover:bg-[var(--color-bg-subtle)]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGlass = cn(
-  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+  "hc-press inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "glass font-medium text-white backdrop-blur-md",
-  "transition-colors duration-300 hover:bg-white/15",
+  "hover:bg-white/15",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
 );

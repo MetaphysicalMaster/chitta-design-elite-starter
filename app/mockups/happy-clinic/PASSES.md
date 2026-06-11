@@ -346,3 +346,71 @@ Authority section was still a dark field. No rewrites — five high-impact moves
 | Code quality            | 9.5   | Additive, scoped tokens, typed props, `cn()`, documented; `tsc --noEmit` clean (exit 0). |
 
 **Average ≈ 9.50** (target ≥ 9.4 ✔ — honest, against the REAL brand)
+
+---
+
+## Pass 4 — Signature experience: SCROLL-CHOREOGRAPHED AURORA NIGHT→DAWN
+
+The Awwwards-bar pass: the aurora stops being a hero decoration and becomes
+the page's spine — ONE continuous Colorado night sky you descend through,
+resolving from deep night to first light exactly where the visitor books.
+
+62. **Fixed-canvas aurora conductor (`AuroraConductor.tsx`).** The R3F scene
+    moved out of the hero onto a page-level `position:fixed` canvas behind all
+    content. The dark sections (hero · Real Results · Booking · footer) are
+    now `[data-sky-window]`s: when the sky is live (`[data-aurora-live]`,
+    brand.css) their opaque navy gradients become translucent navy VEILS, so
+    the SAME living aurora (motes, curtains, bloom) bleeds through every dark
+    chapter. Without WebGL / on mobile / reduced-motion nothing changes — the
+    original opaque night holds, zero CLS.
+63. **GSAP night→dawn scrub (`u_dawn`).** ScrollTrigger (scrub 0.8) drives a
+    new shader uniform from `#main` top → `#book` bottom: stars dissolve,
+    aurora curtains soften + warm toward pale-yellow, and a dawn glow pools at
+    the horizon (deliberately PRE-dawn — veil alphas keep white copy AA).
+    Booking happens at first light; the page is a single night-sky descent.
+64. **Lenis ⇄ ScrollTrigger clock sync (`SmoothScroll.tsx`).**
+    `lenis.on('scroll', ScrollTrigger.update)` + `gsap.ticker` driving
+    `lenis.raf` + `lagSmoothing(0)` — one rAF owns both, so every trigger
+    fires at the smoothed position (the documented Lenis gotcha, wired).
+65. **Pinned hero descend + hand-rolled SplitText.** The hero pins for +45vh
+    (`anticipatePin:1`, desktop+motion only) while the copy scrubs up and
+    fades — leaving the hero feels like sinking through the sky. Entrance:
+    "Subtle is" cascades per-character (word-wrapped spans, expo ease, 0.035
+    stagger — no Club plugins); "The New WOW." rises as ONE piece through an
+    overflow mask so its foil sweep never fragments. h1 keeps an aria-label;
+    chars are aria-hidden.
+66. **Magnetic pale-yellow CTA (`Magnetic.tsx`).** The one loud button leans
+    toward the cursor (gsap quickTo) and settles home on an elastic — fine
+    pointers only, reduced-motion inert, transform-only.
+67. **First-frame handoff (no white flash).** `[data-aurora-live]` flips only
+    after the scene PRESENTS its first frame (FirstFrame hook in the Canvas),
+    so the static CSS night never drops before real aurora pixels exist —
+    robust on slow chunks, cold GPUs and occluded tabs.
+68. **FOUND + FIXED a latent brand-killer: the foil headline rendered as a
+    solid gradient BAR.** Lightning CSS emits a lab()-fallback duplicate of
+    `.foil-sheen` that re-declares the `background:` shorthand WITHOUT
+    `background-clip:text`, resetting the clip to border-box. Fix: longhand
+    `background-image` (nothing left to reset the clip), plus the GSAP
+    transform target separated from the clipped element (will-change/transform
+    on a clipped element also breaks the clip in Chrome).
+69. **Micro-interaction sweep.** `.hc-navlink` — nav underline grows from the
+    left, exits to the right (directional, not a fade). `.hc-press` — unified
+    3% press compress on every pill CTA/chip/carousel control, which ALSO
+    normalizes transition-property to Tailwind v4's native `translate`/`scale`
+    props so hover lifts ease instead of snapping. Carousel dots ease
+    width/color on a custom cubic-bezier.
+70. **Scroll-cue ownership fixed.** CSS owns the cue's delayed entrance
+    (fill:backwards) and bob; the pin scrub is the only GSAP owner of its
+    opacity (`fromTo` + `immediateRender:false`) — two lazy tweens on one
+    property could wedge it invisible.
+71. **Perf discipline.** IntersectionObserver pauses the frameloop whenever
+    every sky window is off screen (no rAF-visibility seeding — browsers
+    already freeze hidden tabs and mount-while-hidden wedged the canvas
+    blank); pointer sway gated to `(pointer:fine)`; transform/opacity-only
+    choreography; will-change only on the ~9 hero chars + foil mover.
+
+Verified in Chrome (desktop): tsc clean, zero console errors (only the benign
+THREE.Clock deprecation), pin + scrub + veils + funnel all fire; live-sky
+screenshots confirmed at hero, Results and Booking. NOTE for future agents:
+in an OCCLUDED tab Chrome never presents WebGL frames — the page correctly
+holds its static-night fallback there (that is #67 working, not a bug).

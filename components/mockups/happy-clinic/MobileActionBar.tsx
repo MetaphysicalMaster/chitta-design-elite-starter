@@ -52,7 +52,7 @@ export function MobileActionBar() {
         <Link
           href="#book"
           className={cn(
-            "group flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-bold tracking-tight",
+            "hc-press group flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-bold tracking-tight",
             "bg-[var(--color-gold)] text-[var(--color-fg)] shadow-[0_12px_32px_-14px_oklch(86%_0.15_96_/_0.9)]",
             "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
           )}
@@ -66,7 +66,7 @@ export function MobileActionBar() {
           href={`tel:${PHONE_TEL}`}
           aria-label="Call Happy Clinic Denver"
           className={cn(
-            "flex shrink-0 items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-semibold",
+            "hc-press flex shrink-0 items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-semibold",
             "border border-[var(--color-accent)] text-[var(--color-accent-deep)]",
             "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
           )}

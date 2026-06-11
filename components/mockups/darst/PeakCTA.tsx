@@ -51,7 +51,7 @@ export function PeakCTA() {
               <div className="flex shrink-0 flex-col gap-3 sm:items-end">
                 <Link
                   href="#book"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent-deep)] px-7 py-3.5 font-medium text-[var(--color-accent-fg)] shadow-[0_16px_40px_-16px_oklch(48%_0.082_197_/_0.6)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(48%_0.082_197_/_0.7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent-deep)] px-7 py-3.5 font-medium text-[var(--color-accent-fg)] shadow-[0_16px_40px_-16px_oklch(48%_0.082_197_/_0.6)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(48%_0.082_197_/_0.7)] active:translate-y-0 active:scale-[0.98] active:duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]"
                 >
                   Book your visit
                   <span

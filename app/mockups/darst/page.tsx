@@ -1,4 +1,5 @@
 import { SmoothScroll } from "@/components/mockups/darst/SmoothScroll";
+import { PrecisionCursor } from "@/components/mockups/darst/PrecisionCursor";
 import { SiteNav } from "@/components/mockups/darst/SiteNav";
 import { LatticeHero } from "@/components/mockups/darst/LatticeHero";
 import { TrustBar } from "@/components/mockups/darst/TrustBar";
@@ -17,6 +18,10 @@ import { SiteFooter } from "@/components/mockups/darst/SiteFooter";
 export default function DarstPage() {
   return (
     <SmoothScroll>
+      {/* Precision-instrument micro-cursor — teal crosshair reticle easing
+          after the pointer (desktop fine-pointer only; native cursor kept). */}
+      <PrecisionCursor />
+
       {/* Skip link — first focusable element for keyboard / AT users */}
       <a
         href="#main"

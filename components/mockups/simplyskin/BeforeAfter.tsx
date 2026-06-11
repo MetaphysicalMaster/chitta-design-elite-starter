@@ -15,6 +15,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { SectionHeading, Reveal } from "./primitives";
+import { PrintReveal } from "./experience";
 import { cn } from "@/lib/utils";
 
 type Case = {
@@ -128,7 +129,7 @@ function SliderHandle({
         className={cn(
           "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
           "border border-white bg-white text-[var(--color-accent)] shadow-lg backdrop-blur",
-          "transition-transform duration-200 hover:scale-105",
+          "transition-transform duration-200 hover:scale-105 active:scale-95",
           "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
         )}
         style={{ left: `${pos}%` }}
@@ -146,6 +147,10 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
 
   return (
     <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
+      {/* The comparison plate develops like a print (wipe only — no scale or
+          filter so the slider's own before/after grades and pointer math stay
+          untouched). */}
+      <PrintReveal>
       <div
         ref={ref}
         className="relative w-full cursor-ew-resize touch-none select-none"
@@ -206,6 +211,7 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
         </span>
         <SliderHandle pos={pos} label={data.treatment} onKeyDown={onKeyDown} />
       </div>
+      </PrintReveal>
       <figcaption className="flex items-center justify-between gap-3 px-5 py-4">
         <span className="font-display text-lg text-[var(--color-fg)]">{data.treatment}</span>
         <span className="text-xs text-[var(--color-fg-subtle)]">{data.detail}</span>

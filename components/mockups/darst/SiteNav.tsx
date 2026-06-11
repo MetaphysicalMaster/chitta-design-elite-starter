@@ -83,10 +83,10 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300",
                 overHero
-                  ? "text-[oklch(90%_0.018_70_/_0.86)] hover:text-[var(--color-bg)]"
-                  : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
+                  ? "text-[oklch(90%_0.018_70_/_0.86)] hover:bg-[var(--glass-bg-dark)] hover:text-[var(--color-bg)]"
+                  : "text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
               )}
             >
@@ -113,7 +113,7 @@ export function SiteNav() {
             href="#book"
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_28px_-14px_oklch(48%_0.082_197_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_28px_-14px_oklch(48%_0.082_197_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] active:duration-100",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
             )}
           >

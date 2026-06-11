@@ -1,4 +1,5 @@
 import { SmoothScroll } from "@/components/mockups/happy-clinic/SmoothScroll";
+import { AuroraConductor } from "@/components/mockups/happy-clinic/AuroraConductor";
 import { SiteNav } from "@/components/mockups/happy-clinic/SiteNav";
 import { AuroraHero } from "@/components/mockups/happy-clinic/AuroraHero";
 import { TrustBar } from "@/components/mockups/happy-clinic/TrustBar";
@@ -21,6 +22,14 @@ export default function HappyClinicPage() {
       >
         Skip to content
       </a>
+
+      {/* THE SIGNATURE EXPERIENCE — one continuous Colorado night sky behind
+          the whole page (fixed WebGL canvas). GSAP ScrollTrigger scrubs it
+          from deep night at the hero to pre-dawn warmth by the booking
+          section, and the dark sections become translucent "sky windows"
+          ([data-sky-window]) the same living aurora bleeds through. Renders
+          nothing on mobile / reduced-motion / no-WebGL (static night holds). */}
+      <AuroraConductor />
 
       <SiteNav />
 

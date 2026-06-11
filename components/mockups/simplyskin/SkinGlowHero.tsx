@@ -29,9 +29,10 @@
 
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { Component, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Magnetic, SplitLines } from "./experience";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
 const SkinGlowScene = dynamic(() => import("./SkinGlowScene"), {
@@ -39,29 +40,89 @@ const SkinGlowScene = dynamic(() => import("./SkinGlowScene"), {
   loading: () => null,
 });
 
+// One failure anywhere in the WebGL pipeline (context creation throw inside
+// R3F/three, GPU-process reset, context loss) flips this for the rest of the
+// session — we never remount the canvases into a crash/reload loop. The
+// always-painted static .glow-fallback layer carries the visual instead.
+let webglFailedThisSession = false;
+
+/**
+ * GlowSceneBoundary — absorbs any runtime throw from the R3F canvas tree.
+ * The probe in useEnableWebGL only proves a context COULD be created; when
+ * R3F's own context creation later returns null (GPU reset, blocklisted or
+ * flaky GPU, context limit), three.js throws ("Cannot read properties of
+ * null (reading 'alpha')") and — without this — white-screens the page.
+ * Fallback is null: the static glow layer underneath makes failure invisible.
+ */
+class GlowSceneBoundary extends Component<
+  { onError: () => void; children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onError();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 function useEnableWebGL() {
   const prefersReduced = useReducedMotion();
   const [ok, setOk] = useState(false);
   const [lite, setLite] = useState(false);
 
+  // Permanent (per-session) downgrade to the static glow layer — called by
+  // the error boundary and the canvases' webglcontextlost handlers.
+  const disable = useCallback(() => {
+    webglFailedThisSession = true;
+    setOk(false);
+  }, []);
+
   useEffect(() => {
-    if (prefersReduced) return;
+    if (prefersReduced || webglFailedThisSession) return;
     const mq = window.matchMedia("(min-width: 768px)");
     const mqLite = window.matchMedia("(min-width: 1280px)");
     const saveData =
       // @ts-expect-error — connection is non-standard but widely supported
       navigator.connection?.saveData === true;
 
+    // Capability probe — context EXISTENCE is not enough. Software
+    // rasterizers (SwiftShader, Microsoft Basic Render Driver, llvmpipe)
+    // create a context happily, then stall the main thread 300-700ms per
+    // frame under the two-canvas pipeline. Two gates:
+    //   1. failIfMajorPerformanceCaveat — the browser itself refuses a
+    //      software-backed context, and
+    //   2. an UNMASKED_RENDERER blocklist as belt-and-suspenders where the
+    //      caveat flag is not honoured.
+    // Failing either lands on the static .glow-fallback tier — by design.
     let hasWebGL = false;
     try {
       const c = document.createElement("canvas");
-      hasWebGL = !!(c.getContext("webgl2") || c.getContext("webgl"));
+      const attrs: WebGLContextAttributes = { failIfMajorPerformanceCaveat: true };
+      const gl = (c.getContext("webgl2", attrs) ||
+        c.getContext("webgl", attrs)) as WebGLRenderingContext | null;
+      if (gl) {
+        const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+        const renderer = String(
+          (dbg && gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) ||
+            gl.getParameter(gl.RENDERER) ||
+            "",
+        );
+        hasWebGL = !/swiftshader|basic render|llvmpipe|software/i.test(renderer);
+        // Release the probe context immediately so it never counts against
+        // the browser's live-context cap (a real cause of later null GLs).
+        gl.getExtension("WEBGL_lose_context")?.loseContext();
+      }
     } catch {
       hasWebGL = false;
     }
 
     const update = () => {
-      setOk(mq.matches && hasWebGL && !saveData);
+      setOk(mq.matches && hasWebGL && !saveData && !webglFailedThisSession);
       // Use the heavier transmission/Bloom tier only on large viewports.
       setLite(!mqLite.matches);
     };
@@ -74,7 +135,7 @@ function useEnableWebGL() {
     };
   }, [prefersReduced]);
 
-  return { enabled: ok, lite };
+  return { enabled: ok, lite, disable };
 }
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -141,7 +202,10 @@ function HeroMedia({ drift }: { drift: boolean }) {
   const framing = "object-[58%_28%] md:object-[74%_38%]";
 
   return (
-    <div className="absolute inset-0 -z-20 overflow-hidden bg-[var(--color-bg-warm)]">
+    // ss-develop: the hero photograph "develops" on load — settling from an
+    // overexposed, under-fixed grade into its full warmth (reduced-motion
+    // gated in brand.css; the finished print renders immediately there).
+    <div className="ss-develop absolute inset-0 -z-20 overflow-hidden bg-[var(--color-bg-warm)]">
       {/* Still fallback — guarantees a perfect frame with NO mp4. Shown until
           the video is actually playing; always present underneath. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -187,7 +251,7 @@ function HeroMedia({ drift }: { drift: boolean }) {
 
 export function SkinGlowHero() {
   const prefersReduced = useReducedMotion();
-  const { enabled, lite } = useEnableWebGL();
+  const { enabled, lite, disable } = useEnableWebGL();
 
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -233,14 +297,19 @@ export function SkinGlowHero() {
 
       {/* Layer -1b: WebGL skin-glow (desktop, motion-ok, webgl-ok) — kept to a
           true whisper (low opacity + soft-light) so the photograph stays the
-          hero and the opaque backdrop canvas never washes it out. */}
+          hero and the opaque backdrop canvas never washes it out. Wrapped in
+          an error boundary: if WebGL fails at runtime the layer vanishes
+          silently and the static glow above carries the visual — the page
+          itself must NEVER white-screen over a decorative whisper. */}
       {enabled && (
-        <div
-          className="absolute inset-0 -z-10 opacity-25 mix-blend-soft-light"
-          aria-hidden="true"
-        >
-          <SkinGlowScene lite={lite} />
-        </div>
+        <GlowSceneBoundary onError={disable}>
+          <div
+            className="absolute inset-0 -z-10 opacity-25 mix-blend-soft-light"
+            aria-hidden="true"
+          >
+            <SkinGlowScene lite={lite} onContextLost={disable} />
+          </div>
+        </GlowSceneBoundary>
       )}
 
       {/* Legibility scrims — warm, anchoring the dark copy on the left/bottom so
@@ -274,15 +343,25 @@ export function SkinGlowHero() {
           Fishers &amp; Carmel · Zionsville, Indiana
         </motion.p>
 
-        <motion.h1
-          variants={item}
+        {/* The signature typographic moment — the serif headline rises
+            line-by-line through hand-rolled word masks (SplitLines). The
+            foil-sheen word stays atomic so its background-clip:text gradient
+            keeps painting on its own box while it travels. */}
+        <SplitLines
+          as="h1"
+          mode="mount"
+          delay={0.25}
           className="font-display max-w-[16ch] text-balance text-[var(--color-fg)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 1.06 }}
         >
-          Body &amp; <span className="font-display-em foil-sheen">skincare</span>,
+          Body &amp;{" "}
+          <span data-split-atomic className="font-display-em foil-sheen">
+            skincare
+          </span>
+          ,
           <br />
           guided by medical expertise.
-        </motion.h1>
+        </SplitLines>
 
         <motion.p
           variants={item}
@@ -299,31 +378,38 @@ export function SkinGlowHero() {
           variants={item}
           className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
         >
-          <Link
-            href="#book"
-            className={cn(
-              "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
-              "shadow-[0_18px_50px_-20px_oklch(58%_0.04_184_/_0.55)]",
-              "transition-[transform,box-shadow] duration-300 ease-out",
-              "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-18px_oklch(58%_0.04_184_/_0.7)]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
-            )}
-          >
-            Book a consultation
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </Link>
-          <Link
-            href="#authority"
-            className={cn(
-              "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
-              "border border-[var(--color-border)] bg-[oklch(99%_0.004_78_/_0.65)] font-medium text-[var(--color-fg)] backdrop-blur-md",
-              "transition-colors duration-300 hover:bg-[oklch(99%_0.004_78_/_0.88)]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
-            )}
-          >
-            Our approach
-          </Link>
+          {/* Ultra-restrained magnetic pull (≤6px, fine pointers only). */}
+          <Magnetic strength={0.16}>
+            <Link
+              href="#book"
+              className={cn(
+                "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+                "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
+                "shadow-[0_18px_50px_-20px_oklch(58%_0.04_184_/_0.55)]",
+                "transition-[transform,box-shadow] duration-300 ease-out",
+                "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-18px_oklch(58%_0.04_184_/_0.7)]",
+                "active:translate-y-0 active:scale-[0.985] active:duration-150",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+              )}
+            >
+              Book a consultation
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </Magnetic>
+          <Magnetic strength={0.12}>
+            <Link
+              href="#authority"
+              className={cn(
+                "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+                "border border-[var(--color-border)] bg-[oklch(99%_0.004_78_/_0.65)] font-medium text-[var(--color-fg)] backdrop-blur-md",
+                "transition-[color,background-color,transform] duration-300 hover:bg-[oklch(99%_0.004_78_/_0.88)]",
+                "active:scale-[0.985] active:duration-150",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+              )}
+            >
+              Our approach
+            </Link>
+          </Magnetic>
         </motion.div>
 
         <motion.dl

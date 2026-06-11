@@ -4,6 +4,7 @@ import { HorologyHero } from "@/components/mockups/timeless/HorologyHero";
 import { TrustBar } from "@/components/mockups/timeless/TrustBar";
 import { DualPhysicians } from "@/components/mockups/timeless/DualPhysicians";
 import { Services } from "@/components/mockups/timeless/Services";
+import { VisitJourney } from "@/components/mockups/timeless/VisitJourney";
 import { BeforeAfter } from "@/components/mockups/timeless/BeforeAfter";
 import { ProofWall } from "@/components/mockups/timeless/ProofWall";
 import { Financing } from "@/components/mockups/timeless/Financing";
@@ -30,6 +31,9 @@ export default function TimelessPage() {
         {/* The closer — "Two physicians, one standard" dual-MD credibility split */}
         <DualPhysicians />
         <Services />
+        {/* The scroll-told signature: a pinned journey where one orange light-dot
+            walks consult → plan → treat → glow along a drawn path. */}
+        <VisitJourney />
         <BeforeAfter />
         <ProofWall />
         <Financing />

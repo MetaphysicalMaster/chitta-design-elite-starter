@@ -426,7 +426,7 @@ function GuidedFlow({
                 "group inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
                 canAdvance
-                  ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_12px_30px_-14px_oklch(60%_0.15_52_/_0.85)] hover:-translate-y-0.5"
+                  ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_12px_30px_-14px_oklch(60%_0.15_52_/_0.85)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]"
                   : "cursor-not-allowed bg-[var(--color-bg-subtle)] text-[var(--color-fg-subtle)]/60",
               )}
             >
@@ -498,6 +498,7 @@ function ChipGroupWithRef({
               onKeyDown={(e) => onKeyNav(e, i)}
               className={cn(
                 "flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-200",
+                "active:scale-[0.99] motion-reduce:active:scale-100",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
                 active
                   ? "border-[var(--color-accent)] bg-[var(--color-accent-subtle)] shadow-[0_10px_28px_-18px_oklch(60%_0.15_52_/_0.7)]"
@@ -665,7 +666,7 @@ export function GuidedBooking() {
         className={cn(
           "group fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 rounded-full pl-4 pr-5 py-3.5 sm:bottom-6 sm:right-6",
           "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold",
-          "shadow-[0_18px_44px_-14px_oklch(60%_0.15_52_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5",
+          "shadow-[0_18px_44px_-14px_oklch(60%_0.15_52_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.96]",
           "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
           open && "pointer-events-none opacity-0",
         )}

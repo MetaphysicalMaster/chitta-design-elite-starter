@@ -74,7 +74,7 @@ function Choice({
               onClick={() => onChange(opt)}
               onKeyDown={(e) => onKeyNav(e, i)}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm transition-colors duration-200",
+                "rounded-full border px-4 py-2 text-sm transition-[border-color,background-color,color,transform] duration-200 active:scale-95",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
                 active
                   ? "border-[var(--color-accent-bright)] bg-[var(--color-accent-bright)]/22 text-[var(--color-bg)]"
@@ -138,7 +138,15 @@ export function BookingCTA() {
             <Choice label="Treatment" options={TREATMENTS} value={treat} onChange={setTreat} name="hn-treat" />
             <Choice label="When" options={TIMES} value={time} onChange={setTime} name="hn-time" />
 
-            <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            {/* STACKED, not side-by-side: the status line gets the full row, the
+                three pills get their own full-width row beneath. The previous
+                row layout made the paragraph and the pills fight over one line
+                inside a max-w-3xl card — flex-shrink crushed the gold pill until
+                "Call (817) 808-8938" wrapped across four lines and read as a
+                broken circle at the PRIMARY conversion moment. Stacking +
+                whitespace-nowrap guarantees each label renders on one line at
+                every breakpoint. */}
+            <div className="flex flex-col gap-5 border-t border-white/10 pt-6">
               <p aria-live="polite" className="text-sm text-[var(--color-bg)]/72">
                 {ready ? (
                   <>
@@ -159,14 +167,15 @@ export function BookingCTA() {
                   be the single biggest after-hours leak. The demo "Request this
                   slot" drops to the quiet supporting role. (sm:order keeps the gold
                   pill leftmost.) */}
-              <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
                 {/* The phone line — a REAL working conversion (GOLD primary). */}
                 <a
                   href="tel:+18178088938"
                   className={cn(
-                    "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold transition-all duration-300 sm:order-1",
+                    "hn-sheen inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 font-semibold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:order-1",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
                     "bg-[var(--color-accent)] text-[var(--color-accent-fg)] ring-1 ring-[oklch(88%_0.08_90_/_0.4)] hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-16px_oklch(78%_0.11_86_/_0.7)]",
+                    "active:translate-y-0 active:scale-[0.98]",
                   )}
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
@@ -186,7 +195,7 @@ export function BookingCTA() {
                       : "sms:+18178088938"
                   }
                   className={cn(
-                    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-semibold transition-all duration-300 sm:order-2",
+                    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3.5 font-semibold transition-all duration-300 active:scale-[0.98] sm:order-2",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
                     "border border-[var(--color-accent-bright)]/60 text-[var(--color-accent-bright)] hover:border-[var(--color-accent-bright)] hover:bg-[var(--color-accent-bright)]/10",
                   )}
@@ -201,7 +210,7 @@ export function BookingCTA() {
                   type="button"
                   disabled={!ready}
                   className={cn(
-                    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-medium transition-all duration-300 sm:order-3",
+                    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3.5 font-medium transition-all duration-300 active:scale-[0.98] sm:order-3",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
                     ready
                       ? "border border-white/25 text-[var(--color-bg)] hover:border-white/50 hover:bg-white/10"

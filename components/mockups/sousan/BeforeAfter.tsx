@@ -31,7 +31,14 @@ export function BeforeAfter() {
 
         <Reveal delay={0.1} className="mt-12">
           <figure className="mx-auto max-w-3xl">
-            <div className="relative select-none overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] shadow-[var(--glass-shadow)]">
+            {/* data-thread="pass": the pink thread runs straight through the
+                divider handle. data-pop: the "after" plate waits in greyscale
+                and DEVELOPS to pink as it crosses center (saturate sweep). */}
+            <div
+              data-thread="pass"
+              data-pop
+              className="relative select-none overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] shadow-[var(--glass-shadow)]"
+            >
               {/* AFTER (base layer) */}
               <BrandImage
                 alt="Skin after a HydraFacial MD and IPL series — clearer, even tone"

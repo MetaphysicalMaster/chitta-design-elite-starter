@@ -24,9 +24,10 @@ export function SiteFooter() {
     <footer
       className="relative overflow-hidden bg-[var(--night-0)] text-[oklch(88%_0_0_/_0.86)]"
     >
-      {/* gold hairline top */}
+      {/* pink hairline top — draws itself in as the footer arrives */}
       <div
         aria-hidden
+        data-rule
         className="h-px w-full"
         style={{
           background:
@@ -102,7 +103,7 @@ export function SiteFooter() {
           <Link
             href="#book"
             className={cn(
-              "mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3",
+              "sn-press mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3",
               "bg-[var(--gold)] font-semibold text-[oklch(100%_0_0)]",
               "shadow-[0_16px_44px_-16px_oklch(58%_0.245_358_/_0.5)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",

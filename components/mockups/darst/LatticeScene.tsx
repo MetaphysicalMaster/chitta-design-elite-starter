@@ -123,11 +123,18 @@ function buildLattice(n: number, rng: () => number) {
   return { lattice, cloud, depth, vessel, seed, scale };
 }
 
+/** Shared smoothing constant for the scroll-descent value (frame-rate safe). */
+function smoothToward(current: number, target: number, dt: number) {
+  return current + (target - current) * (1 - Math.pow(0.004, dt));
+}
+
 function DermalLattice({
   pointer,
+  descent,
   lite,
 }: {
   pointer: React.RefObject<{ x: number; y: number; active: number }>;
+  descent: React.RefObject<{ p: number }>;
   lite: boolean;
 }) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
@@ -135,6 +142,7 @@ function DermalLattice({
   const resolveRef = useRef(0);
   const smoothPtr = useRef({ x: 0, y: 0, s: 0 });
   const focusRef = useRef(0.5);
+  const descentRef = useRef(0);
 
   const { geometry, uniforms } = useMemo(() => {
     const n = lite ? Math.floor(COUNT * 0.55) : COUNT;
@@ -189,9 +197,17 @@ function DermalLattice({
     resolveRef.current += (1 - resolveRef.current) * Math.min(1, dt * 0.5);
     m.uniforms.uResolve.value = resolveRef.current;
 
-    // Focal stratum slowly sweeps through depth — a clinician scanning the
-    // section. Gentle, cosine-eased, never distracting.
-    focusRef.current = 0.5 + Math.sin(t * 0.16) * 0.32;
+    // Focal stratum. At rest it slowly sweeps through depth — a clinician
+    // scanning the section. Once the scroll DESCENT engages, the focal plane
+    // instead TRACKS the descent (corneum → epidermis → dermis): the literal
+    // "he reads deeper" — what is sharp is the stratum you've scrolled to.
+    const dTarget = descent.current?.p ?? 0;
+    descentRef.current = smoothToward(descentRef.current, dTarget, dt);
+    const dp = descentRef.current;
+    const idleFocus = 0.5 + Math.sin(t * 0.16) * 0.32;
+    const descentFocus = 0.06 + dp * 0.86; // surface → deep dermis
+    const engaged = Math.min(1, dp * 7); // hand over as soon as descent starts
+    focusRef.current = THREE.MathUtils.lerp(idleFocus, descentFocus, engaged);
     m.uniforms.uFocus.value = focusRef.current;
 
     // Smooth the cursor (frame-rate independent).
@@ -221,26 +237,73 @@ function DermalLattice({
   );
 }
 
-/* Slow group sway so the whole section breathes — restrained, almost still. */
-function SwayRig({ children }: { children: React.ReactNode }) {
+/* Slow group sway so the whole section breathes — restrained, almost still.
+   The sway eases out as the descent engages: a clinician steadies the stage
+   before driving the objective down. */
+function SwayRig({
+  descent,
+  children,
+}: {
+  descent: React.RefObject<{ p: number }>;
+  children: React.ReactNode;
+}) {
   const g = useRef<THREE.Group>(null);
-  useFrame(({ clock }) => {
+  const dRef = useRef(0);
+  useFrame(({ clock }, delta) => {
     const grp = g.current;
     if (!grp) return;
+    const dt = Math.min(delta, 1 / 30);
     const t = clock.getElapsedTime();
-    grp.rotation.y = Math.sin(t * 0.12) * 0.1;
-    grp.rotation.x = Math.sin(t * 0.09) * 0.035;
+    dRef.current = smoothToward(dRef.current, descent.current?.p ?? 0, dt);
+    const steady = 1 - Math.min(1, dRef.current * 4) * 0.85;
+    grp.rotation.y = Math.sin(t * 0.12) * 0.1 * steady;
+    grp.rotation.x = Math.sin(t * 0.09) * 0.035 * steady;
   });
   return <group ref={g}>{children}</group>;
+}
+
+/**
+ * DescentRig — THE SIGNATURE. GSAP ScrollTrigger (in LatticeHero) scrubs
+ * `descent.p` 0→1 while the hero is pinned; this rig translates that into the
+ * microscope move: the camera tracks DOWN through the strata (corneum →
+ * epidermis → dermis) while dollying IN — descending magnification, the
+ * literal "he reads deeper". Values are smoothed per-frame so the move stays
+ * silky regardless of scroll-event cadence.
+ */
+function DescentRig({ descent }: { descent: React.RefObject<{ p: number }> }) {
+  const dRef = useRef(0);
+  useFrame(({ camera }, delta) => {
+    const dt = Math.min(delta, 1 / 30);
+    dRef.current = smoothToward(dRef.current, descent.current?.p ?? 0, dt);
+    // Ease the raw progress so the descent starts gently and lands softly.
+    const p = dRef.current;
+    const e = p * p * (3 - 2 * p); // smoothstep
+    camera.position.y = THREE.MathUtils.lerp(0.52, -0.82, e);
+    camera.position.z = THREE.MathUtils.lerp(4.2, 3.15, e);
+    camera.lookAt(0, camera.position.y * 0.94, 0);
+  });
+  return null;
 }
 
 export interface LatticeSceneProps {
   /** Drop particle count + point size on smaller/slower tiers. */
   lite?: boolean;
+  /**
+   * Scroll-descent progress (0 surface .. 1 deep dermis), written by the GSAP
+   * ScrollTrigger in LatticeHero. A mutable ref so scroll → GPU never touches
+   * React state.
+   */
+  descent?: React.RefObject<{ p: number }>;
 }
 
-export default function LatticeScene({ lite = false }: LatticeSceneProps) {
+const DESCENT_ZERO = { current: { p: 0 } };
+
+export default function LatticeScene({
+  lite = false,
+  descent,
+}: LatticeSceneProps) {
   const pointer = useRef({ x: 0, y: 0, active: 0 });
+  const descentRef = descent ?? DESCENT_ZERO;
 
   const handlePointer = (e: React.PointerEvent) => {
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -267,8 +330,9 @@ export default function LatticeScene({ lite = false }: LatticeSceneProps) {
         }}
         style={{ position: "absolute", inset: 0 }}
       >
-        <SwayRig>
-          <DermalLattice pointer={pointer} lite={lite} />
+        <DescentRig descent={descentRef} />
+        <SwayRig descent={descentRef}>
+          <DermalLattice pointer={pointer} descent={descentRef} lite={lite} />
         </SwayRig>
       </Canvas>
     </div>

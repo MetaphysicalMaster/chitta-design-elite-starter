@@ -842,6 +842,36 @@
   }
 }
 
+/* ============================================================
+   Precision-instrument micro-cursor — a small teal crosshair reticle that
+   eases after the native pointer (which is NEVER hidden). The white halo
+   drop-shadow keeps the hairlines legible over both the warm paper and the
+   espresso dark rooms. Desktop/fine-pointer only; reduced-motion disabled.
+   ============================================================ */
+[data-brand="darst"] .dt-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  pointer-events: none;
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 1px oklch(100% 0 0 / 0.8))
+    drop-shadow(0 0 7px oklch(48% 0.105 197 / 0.3));
+  will-change: transform;
+}
+[data-brand="darst"] .dt-cursor__reticle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  [data-brand="darst"] .dt-cursor {
+    display: none;
+  }
+}
+
 /* Respect reduced motion globally for decorative transforms. */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="darst"] * {

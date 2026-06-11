@@ -252,7 +252,10 @@
    static it still reads as a serene blossom sky, never empty.
    ============================================================ */
 [data-brand="hanami"] .sakura-fallback {
-  position: relative;
+  /* absolute, NOT relative: the only consumer is an `absolute inset-0 -z-20`
+     hero backdrop, and this rule's specificity beats Tailwind's .absolute —
+     relative here collapsed the layer (no petal atmosphere on mobile). */
+  position: absolute;
   overflow: hidden;
   background:
     /* soft sun-through-blossom glow, upper-right — a touch of gold warmth */
@@ -404,6 +407,70 @@
   );
 }
 
+/* ============================================================
+   MICRO-INTERACTIONS — the quiet personality layer.
+   ============================================================ */
+
+/* Nav links — a petal-gold hairline grows under the label on hover/focus,
+   sweeping left → right like a small brush stroke. Transform-only (no layout),
+   and gated to motion-ok so reduced-motion gets an instant state change. */
+[data-brand="hanami"] .hn-navlink {
+  position: relative;
+}
+[data-brand="hanami"] .hn-navlink::after {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  right: 0.875rem;
+  bottom: 0.4rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--sakura-deep));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="hanami"] .hn-navlink::after {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+[data-brand="hanami"] .hn-navlink:hover::after,
+[data-brand="hanami"] .hn-navlink:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Gold pill sheen — a soft band of light crosses the booking CTAs on hover,
+   the same glint language as the awards foil. Transform-only; the band lives
+   on a clipped pseudo so no layout or paint outside the pill. */
+[data-brand="hanami"] .hn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+[data-brand="hanami"] .hn-sheen::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -45%;
+  width: 38%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    oklch(100% 0 0 / 0.42),
+    transparent
+  );
+  transform: translateX(0) skewX(-16deg);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="hanami"] .hn-sheen::before {
+    transition: transform 0.8s cubic-bezier(0.3, 0.1, 0.2, 1);
+  }
+  [data-brand="hanami"] .hn-sheen:hover::before,
+  [data-brand="hanami"] .hn-sheen:focus-visible::before {
+    transform: translateX(420%) skewX(-16deg);
+  }
+}
+
 /* Hairline rule under eyebrow labels — quiet GOLD fade (the luxe rule). */
 [data-brand="hanami"] .rule-fine::after {
   content: "";
@@ -494,6 +561,7 @@
   display: flex;
   width: max-content;
   animation: hn-marquee-scroll 44s linear infinite;
+  will-change: transform; /* continuous loop — keep it on the compositor */
 }
 @keyframes hn-marquee-scroll {
   from {

@@ -107,7 +107,7 @@ export function ProofWall() {
               delay={(i % 3) * 0.07}
               className={cn(r.span && "sm:col-span-2 lg:col-span-1")}
             >
-              <figure className="flex h-full flex-col rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7 shadow-[var(--glass-shadow)]">
+              <figure className="flex h-full flex-col rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7 shadow-[var(--glass-shadow)] transition-[transform,border-color] duration-500 ease-out hover:-translate-y-0.5 hover:border-[var(--color-hairline)]">
                 <Stars />
                 <blockquote className="mt-4 flex-1">
                   <p className="font-display text-lg italic leading-relaxed text-[var(--color-fg)]">

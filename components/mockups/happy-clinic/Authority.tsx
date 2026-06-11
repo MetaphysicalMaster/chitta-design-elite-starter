@@ -92,11 +92,11 @@ export function Authority() {
 
         <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           {/* Real, framed portrait of Dr. Phil + signature credential badge.
-              The cell carries internal bottom/right padding so the negative-
-              offset "25 years" badge is never clipped by the section's
-              overflow-hidden (verified 1024–1280px where the column hits the
-              container edge). */}
-          <Reveal className="pb-7 pr-1 sm:pr-4 lg:pr-6">
+              The cell carries internal bottom/right padding (sm+ only — where
+              the badge floats with a negative offset) so the badge is never
+              clipped by the section's overflow-hidden (verified 1024–1280px
+              where the column hits the container edge). */}
+          <Reveal className="pr-1 sm:pb-7 sm:pr-4 lg:pr-6">
             <div className="relative">
               {/* soft pale-teal/yellow halo behind the portrait card — warm
                   framing on the light field (decorative). */}
@@ -147,12 +147,16 @@ export function Authority() {
                 </div>
               </figure>
 
-              {/* floating proof badge — white card on the light field; sits
-                  within the cell's bottom/right padding so it renders fully
-                  inside the clip box. Carries a DIFFERENT proof from the heading
-                  + credential cards (which already state "25 years") so the
-                  closer reads as LAYERED credibility, not one fact thrice. */}
-              <div className="absolute -bottom-4 -right-1 max-w-[15rem] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/95 p-4 shadow-[0_18px_44px_-22px_oklch(28.1%_0.07_252_/_0.5)] backdrop-blur-md sm:-right-3">
+              {/* proof badge — white card on the light field. Below sm it sits
+                  in STATIC flow under the photo card (right-aligned) so it can
+                  never overlap the figcaption (mobile-QA fix: the floating chip
+                  was hiding "Dr. Phil Hong Nguyen, MD" at 390px). From sm+ it
+                  floats at the card's bottom-right within the cell's
+                  bottom/right padding so it renders fully inside the clip box.
+                  Carries a DIFFERENT proof from the heading + credential cards
+                  (which already state "25 years") so the closer reads as
+                  LAYERED credibility, not one fact thrice. */}
+              <div className="ml-auto mt-4 w-fit max-w-[15rem] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/95 p-4 shadow-[0_18px_44px_-22px_oklch(28.1%_0.07_252_/_0.5)] backdrop-blur-md sm:absolute sm:-bottom-4 sm:-right-3 sm:ml-0 sm:mt-0 sm:w-auto">
                 <div className="flex items-center gap-2.5">
                   <span
                     aria-hidden
@@ -245,9 +249,9 @@ export function Authority() {
                 <Link
                   href="#book"
                   className={cn(
-                    "inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)]",
+                    "hc-press inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)]",
                     "shadow-[0_14px_38px_-16px_oklch(52%_0.087_178_/_0.9)]",
-                    "transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+                    "hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                   )}
                 >
                   Book with Dr. Phil

@@ -281,3 +281,55 @@ section is authoritative.
   scrubs/gloves), is **deprecated/UNUSED**, and must NOT be wired (it would
   genericize the luxury aesthetic). The rebrand note's claim that it appears in the
   before/after intro is obsolete — that area is now the press strip.
+
+---
+
+## SIGNATURE-EXPERIENCE PASS — "Wind through the blossoms" (GSAP layer)
+
+The dedicated motion-craft pass: the page now BREATHES with the visitor.
+
+- **Scroll-velocity wind (the signature).** New `wind.ts` module singleton
+  (`windBus`) carries Lenis's signed scroll velocity into the WebGL petal field
+  with zero React re-renders. `PetalScene` eases it into two new shader
+  uniforms — `uGust` (0..1; widens sway, deepens the flutter billow, and
+  accelerates a CPU-accumulated time-warped clock so the whole field speeds up
+  continuously, never teleporting) and `uSweep` (signed; lifts + shears the
+  field with the scroll direction, parallax preserved via the depth factor,
+  per-petal phase bias keeps it organic). Attack fast / release slow + per-frame
+  velocity decay = a gust that always dies back to the gentle fall (mono no
+  aware). `BreezeRig` leans the whole field a few degrees under gust.
+- **Lenis ↔ GSAP sync (the critical wiring).** `SmoothScroll` now drives Lenis
+  FROM `gsap.ticker` (one shared rAF; `lagSmoothing(0)`) and calls
+  `ScrollTrigger.update()` on every Lenis scroll event — without this every
+  trigger fires at the wrong position under smooth scroll. Reduced-motion skips
+  Lenis entirely (native scroll; ScrollTrigger still correct).
+- **Sumi-e ink strokes.** New `InkStroke.tsx`: a FILLED, tapered brush swash
+  (thin entry → swelling belly → rising flick + a lift-off ink fleck) revealed
+  by an animated spine stroke inside an SVG mask (`pathLength=1`,
+  dashoffset 1→0) — the taper appears progressively like ink pulled across
+  paper. Four placements: hero (champagne, mount-drawn after the copy settles),
+  Philosophy (coral-blush), SoleInjector (true sumi ink on rice-paper), Awards
+  (champagne). FAIL-SAFE: SSR ships the stroke fully drawn; the hidden dash
+  state is only applied by JS when motion is allowed — no-JS/reduced-motion/GSAP
+  failure all land on the elegant static mark. Decorative `aria-hidden`.
+- **Awards gold-leaf glint.** As the trophy wall enters, a band of light sweeps
+  across every `.gold-foil` text (GSAP fromTo on backgroundSize/Position with
+  `clearProps` restoring the pristine static foil), and the 2024→2025→2026
+  year-spine assembles left-to-right (years rise, hairline rules scaleX from 0).
+  TWO precisely-anchored triggers (the spine itself at top 86%; the rail at top
+  82%) — anchoring on the section top would have played the choreography below
+  the fold on a slow scroll. `gsap.matchMedia` gates all of it to motion-ok.
+- **Micro-interaction sweep.** Nav links: petal-gold hairline grows under the
+  label (transform-only, motion-gated). All gold pills: `.hn-sheen` — a skewed
+  light band crosses on hover/focus (same glint language as the awards foil;
+  transform-only, clipped, motion-gated). Every button/chip: press states
+  (`active:scale-[0.98]`, translate reset) + the spring-out cubic-bezier
+  (0.22, 1, 0.36, 1) on hovers; service cards lift a full -1 with the same ease.
+  Marquee track gets `will-change: transform`.
+- **Verified in Chrome** (cold load + scroll-through): console clean (only the
+  benign THREE.Clock deprecation), all four strokes draw at their beats
+  (dashoffset probes: hero 0 / below-fold 1 until triggered), the awards beat
+  fires fully in view, the petal field visibly sweeps + leans under a fast
+  scroll vs. the calm rest state, nav underline + sheen + press states live.
+  `npx tsc --noEmit` clean for the slug (the lone repo error is in the sibling
+  `happy-clinic`, untouched).

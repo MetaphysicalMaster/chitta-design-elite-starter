@@ -91,6 +91,7 @@ function LocationCard({ loc }: { loc: Location }) {
     <article
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-[1.75rem] border bg-[var(--color-bg-elevated)]",
+        "transition-transform duration-500 ease-out hover:-translate-y-0.5",
         loc.launch
           ? "border-[var(--color-accent-subtle)] shadow-[0_30px_80px_-40px_oklch(58%_0.04_184_/_0.38)]"
           : "border-[var(--color-border)] shadow-[var(--glass-shadow)]",

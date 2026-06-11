@@ -60,7 +60,10 @@ export function Booking() {
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
           >
             Book in{" "}
-            <span className="gold-leaf--bright font-display-em">
+            <span
+              className="gold-leaf--bright font-display-em"
+              data-thread="underline"
+            >
               thirty seconds.
             </span>
           </h2>
@@ -206,10 +209,13 @@ export function Booking() {
                   ever.
                 </p>
 
+                {/* data-thread="knot": the pink thread's final act — it loops
+                    around this button and ties off against its edge. */}
                 <button
                   type="submit"
+                  data-thread="knot"
                   className={cn(
-                    "group inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5",
+                    "sn-press group inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5",
                     "bg-[var(--color-accent-deep)] font-semibold text-[var(--color-accent-fg)]",
                     "shadow-[0_18px_46px_-16px_oklch(51%_0.22_357_/_0.55)] transition-transform duration-300 hover:-translate-y-0.5",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
@@ -250,7 +256,7 @@ function Chip({
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        "rounded-full border px-4 py-2 text-sm font-medium transition-colors tnum",
+        "sn-press rounded-full border px-4 py-2 text-sm font-medium transition-colors tnum",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
         active
           ? "border-[var(--color-accent-deep)] bg-[var(--color-accent-deep)] text-[var(--color-accent-fg)]"

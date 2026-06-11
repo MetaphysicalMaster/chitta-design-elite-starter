@@ -77,8 +77,12 @@ function ServiceCard({ s }: { s: Service }) {
           : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] hover:border-[var(--color-hairline)] hover:shadow-[var(--glass-shadow)]",
       )}
     >
+      {/* In-flow eyebrow pill (not absolute): the corner treatment overlapped
+          the serif title on narrow cards (390px mobile / small 2-col tiers)
+          where ~180px of "Neuromodulators" + ~125px of badge exceed the inner
+          width. In flow it can never collide, at any breakpoint. */}
       {s.featured && (
-        <span className="absolute right-5 top-5 rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-accent-subtle)] px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)]">
+        <span className="mb-3 self-start rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-accent-subtle)] px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)]">
           Most requested
         </span>
       )}

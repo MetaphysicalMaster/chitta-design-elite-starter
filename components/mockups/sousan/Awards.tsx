@@ -44,6 +44,7 @@ function Medallion({ stat, tag }: { stat: string; tag: string }) {
   return (
     <span
       aria-hidden
+      data-pop
       className="sn-award h-24 w-24 shrink-0 sm:h-28 sm:w-28"
     >
       <span className="relative z-10 flex flex-col items-center leading-none">
@@ -75,8 +76,10 @@ export function Awards() {
           title={
             <>
               Proof Houston{" "}
-              <span className="gold-leaf font-display-em">trusts</span>, not
-              just claims.
+              <span className="gold-leaf font-display-em" data-thread="underline">
+                trusts
+              </span>
+              , not just claims.
             </>
           }
           lead="The signals that matter to a discerning client: a 5.0 rating, hundreds of reviews, certified expertise, and thousands of treatments delivered with an artist's eye."
@@ -84,9 +87,12 @@ export function Awards() {
 
         {/* The wall of recognition — framed top + bottom by a thin pink rule so
             the strip registers as a confident, deliberate band, not loose stamps. */}
-        <div className="relative mt-14">
+        {/* data-thread="passv": the pink thread weaves VERTICALLY through the
+            gap between the medallions — sewing the proof together. */}
+        <div className="relative mt-14" data-thread="passv">
           <span
             aria-hidden
+            data-rule
             className="block h-px w-full"
             style={{
               background:
@@ -118,6 +124,7 @@ export function Awards() {
           </RevealGroup>
           <span
             aria-hidden
+            data-rule
             className="block h-px w-full"
             style={{
               background:

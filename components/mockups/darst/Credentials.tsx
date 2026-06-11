@@ -12,7 +12,7 @@
  * not with a star average.
  */
 
-import { Reveal, RevealGroup, RevealItem } from "./primitives";
+import { FigureTag, Reveal, RevealGroup, RevealItem } from "./primitives";
 
 const LOOP = [
   {
@@ -60,6 +60,12 @@ export function Credentials() {
       />
 
       <div className="relative mx-auto max-w-6xl px-6 sm:px-8">
+        <FigureTag
+          n="03"
+          label="The diagnosis loop"
+          tone="dark"
+          className="mb-6 justify-end"
+        />
         <div className="max-w-3xl">
           <Reveal>
             <p className="eyebrow rule-accent text-[var(--color-accent-bright)]">

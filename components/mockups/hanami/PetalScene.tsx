@@ -18,6 +18,19 @@
  * scroll progress) gently reduces drift speed and fades the densest near layer,
  * so the storm settles into stillness as the reader descends — mono no aware.
  *
+ * WIND THROUGH THE BLOSSOMS (signature): the visitor's SCROLL VELOCITY is the
+ * breeze. Lenis publishes its signed velocity to the shared `windBus`
+ * (SmoothScroll.tsx); each frame the field eases it into
+ *   · `uGust`  — 0..1 gust strength: widens the sway, deepens the flutter
+ *                billow, and ACCELERATES the field's own clock (we accumulate a
+ *                time-warped `windTime` on the CPU so the speed-up is perfectly
+ *                continuous — no teleporting petals),
+ *   · `uSweep` — a signed impulse that lifts and shears the whole field with
+ *                the scroll direction (near petals travel furthest — parallax
+ *                preserved under wind).
+ * Attack is fast, release is slow, and the raw velocity decays every frame —
+ * a gust always dies back to the gentle fall once the reader pauses.
+ *
  * Loaded ONLY via dynamic({ ssr:false }) from PetalHero (a client component) —
  * WebGL/R3F is not SSR-safe. A static CSS layered-petal field covers SSR,
  * mobile, reduced-motion and no-WebGL (see PetalHero + brand.css sakura-fallback).
@@ -29,6 +42,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { windBus } from "./wind";
 
 /* TWO-TONE cherry-blossom palette as THREE colors — matched to the REAL logo,
    whose blossoms are a coral/cherry-RED (~#E8504D), not a soft pink. A pale rim
@@ -61,6 +75,8 @@ const vertex = /* glsl */ `
   uniform float uFlow;     // 1 = full storm, eases toward calm as you scroll
   uniform vec2  uPointer;  // -1..1, gentle breeze deflection
   uniform float uPointerStr;
+  uniform float uGust;     // 0..1 scroll-wind strength (fast scroll = gust)
+  uniform float uSweep;    // signed scroll-wind impulse (direction of travel)
 
   attribute vec3 aOffset;   // base position in the field
   attribute vec3 aAxis;     // tumble axis (normalized)
@@ -102,9 +118,11 @@ const vertex = /* glsl */ `
     float fallH = 16.0;
     float fall = mod(aOffset.y - t * aSpeed * par, fallH) - fallH * 0.5;
 
-    // lateral sway — a breeze that gusts; near petals sway wider.
-    float sway = sin(t * 0.6 + aPhase * 10.0) * (0.6 * par)
-               + cos(t * 0.27 + aOffset.x) * 0.35 * par;
+    // lateral sway — a breeze that gusts; near petals sway wider, and the
+    // scroll-gust widens everyone's arc (the wind leaning into the field).
+    float sway = (sin(t * 0.6 + aPhase * 10.0) * (0.6 * par)
+               + cos(t * 0.27 + aOffset.x) * 0.35 * par)
+               * (1.0 + uGust * 1.4);
 
     // pointer breeze — a soft, eased push in the cursor direction.
     vec2 breeze = uPointer * uPointerStr * (0.9 * par);
@@ -115,12 +133,21 @@ const vertex = /* glsl */ `
     pos.y += breeze.y * 0.5;
     pos.z += sin(t * 0.4 + aPhase * 4.0) * 0.4 * par; // depth wobble
 
+    // scroll-wind sweep — the visitor's own motion is the wind. Scrolling down
+    // lifts the field past the eye and shears it across (a diagonal gust);
+    // scrolling up reverses it. Near petals travel furthest, so the parallax
+    // depth holds even mid-gust. Per-petal phase keeps the sweep organic.
+    float swayBias = 0.85 + 0.3 * sin(aPhase * 12.566);
+    pos.y += uSweep * (1.5 * par) * swayBias;
+    pos.x -= uSweep * (0.7 * par) * swayBias;
+
     // --- flutter: each petal tumbles about its own axis ---
     float spin = t * (0.8 + aSpeed) + aPhase * 9.0;
     mat3 rot = rotAxis(normalize(aAxis), spin);
-    // petal billows: slight non-uniform scale so it reads as a thin membrane
+    // petal billows: slight non-uniform scale so it reads as a thin membrane;
+    // a gust deepens the billow — petals caught broadside by the wind.
     vec3 local = position;
-    local.x *= 1.0 + 0.12 * sin(spin * 1.3);
+    local.x *= 1.0 + (0.12 + 0.1 * uGust) * sin(spin * 1.3);
     vec3 vtx = rot * (local * aScale * mix(0.55, 1.25, aDepth));
 
     vec3 world = pos + vtx;
@@ -228,6 +255,11 @@ function PetalField({
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const smoothPtr = useRef({ x: 0, y: 0, s: 0 });
   const flowSmooth = useRef(1);
+  // Scroll-wind state: a time-warped clock (gusts accelerate the whole field
+  // continuously — never a jump), the eased gust strength, the signed sweep.
+  const windTime = useRef(0);
+  const gust = useRef(0);
+  const sweep = useRef(0);
 
   const count = lite ? COUNT_LITE : COUNT_FULL;
 
@@ -300,6 +332,8 @@ function PetalField({
     const u = {
       uTime: { value: 0 },
       uFlow: { value: 1 },
+      uGust: { value: 0 },
+      uSweep: { value: 0 },
       uPointer: { value: new THREE.Vector2(0, 0) },
       uPointerStr: { value: 0 },
       uPale: { value: new THREE.Color(PALETTE.pale) },
@@ -312,11 +346,30 @@ function PetalField({
     return { geometry: geo, uniforms: u };
   }, [count, lite]);
 
-  useFrame(({ clock }, delta) => {
+  useFrame((_, delta) => {
     const m = matRef.current;
     if (!m) return;
     const dt = Math.min(delta, 1 / 30);
-    m.uniforms.uTime.value = clock.getElapsedTime();
+
+    // --- WIND THROUGH THE BLOSSOMS: scroll velocity → gust + sweep ---
+    const v = windBus.velocity; // signed Lenis velocity (down = positive)
+    const gustTarget = Math.min(1, Math.abs(v) / 55);
+    // attack fast (the gust HITS), release slow (it dies down like real wind)
+    const gk = gustTarget > gust.current ? Math.min(1, dt * 7) : Math.min(1, dt * 1.15);
+    gust.current += (gustTarget - gust.current) * gk;
+    // signed sweep — the direction of the visitor's travel becomes the wind's
+    const sweepTarget = Math.max(-1, Math.min(1, v / 70));
+    sweep.current += (sweepTarget - sweep.current) * Math.min(1, dt * 4.5);
+    // a gust accelerates the field's own clock — faster fall, faster tumble —
+    // accumulated on the CPU so the speed change is perfectly continuous.
+    windTime.current += dt * (1 + gust.current * 2.4);
+    // raw velocity decays toward stillness once scroll events stop arriving
+    windBus.velocity *= Math.exp(-dt * 3.2);
+    windBus.gust = gust.current;
+
+    m.uniforms.uTime.value = windTime.current;
+    m.uniforms.uGust.value = gust.current;
+    m.uniforms.uSweep.value = sweep.current;
 
     // ease the pointer breeze (frame-rate independent)
     const target = pointer.current ?? { x: 0, y: 0, active: 0 };
@@ -350,14 +403,18 @@ function PetalField({
   );
 }
 
-/* A barely-there group sway so the whole field breathes on the breeze. */
+/* A barely-there group sway so the whole field breathes on the breeze; the
+   scroll-gust leans the whole field a few degrees, like trees in wind. */
 function BreezeRig({ children }: { children: React.ReactNode }) {
   const g = useRef<THREE.Group>(null);
-  useFrame(({ clock }) => {
+  const lean = useRef(0);
+  useFrame(({ clock }, delta) => {
     const grp = g.current;
     if (!grp) return;
     const t = clock.getElapsedTime();
-    grp.rotation.z = Math.sin(t * 0.08) * 0.03;
+    const dt = Math.min(delta, 1 / 30);
+    lean.current += (windBus.gust - lean.current) * Math.min(1, dt * 2.5);
+    grp.rotation.z = Math.sin(t * 0.08) * 0.03 - lean.current * 0.055;
     grp.position.x = Math.sin(t * 0.05) * 0.3;
   });
   return <group ref={g}>{children}</group>;

@@ -163,26 +163,32 @@ export function BrandImage({
   );
 }
 
-/* ---- Pill button styles, shared across CTAs ---- */
+/* ---- Pill button styles, shared across CTAs ----
+   Every button carries a full hover/press arc: lift + glow on hover, a firm
+   settle (translate-0 + slight compress) on :active — touch included. */
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
   "shadow-[0_16px_44px_-18px_oklch(60%_0.15_52_/_0.55)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
   "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(60%_0.15_52_/_0.72)]",
+  "active:translate-y-0 active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGhost = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "border border-[var(--color-border)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
-  "transition-colors duration-300 hover:bg-[var(--color-bg-subtle)]",
+  "transition-[background-color,border-color,transform] duration-300 ease-out",
+  "hover:bg-[var(--color-bg-subtle)] hover:border-[var(--color-hairline)]",
+  "active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGlass = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "glass font-medium text-[var(--color-fg)] backdrop-blur-md",
-  "transition-colors duration-300 hover:bg-[var(--glass-bg-strong)]",
+  "transition-[background-color,transform] duration-300 hover:bg-[var(--glass-bg-strong)]",
+  "active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );

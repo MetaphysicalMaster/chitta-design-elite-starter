@@ -151,7 +151,9 @@ function ServiceCard({ s }: { s: Service }) {
         <span
           aria-hidden
           className={cn(
-            "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-[var(--color-accent)] transition-colors duration-300",
+            "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-[var(--color-accent)]",
+            "transition-[border-color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+            "group-hover:-rotate-3 group-hover:scale-105 motion-reduce:group-hover:rotate-0 motion-reduce:group-hover:scale-100",
             s.featured
               ? "border-[var(--color-accent)]/30 bg-[var(--color-accent-subtle)]"
               : "border-[var(--color-accent-subtle)] bg-[var(--color-bg-subtle)] group-hover:border-[var(--color-accent)]/30",

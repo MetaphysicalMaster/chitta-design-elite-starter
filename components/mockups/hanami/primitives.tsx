@@ -269,8 +269,9 @@ export const btnPrimary = cn(
   "bg-[var(--ink-deep)] text-[var(--color-bg)] font-medium tracking-tight",
   "ring-1 ring-[oklch(82%_0.09_88_/_0.28)]",
   "shadow-[0_16px_44px_-18px_oklch(16%_0.003_60_/_0.7)]",
-  "transition-[transform,box-shadow] duration-300 ease-out",
+  "transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
   "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-16px_oklch(16%_0.003_60_/_0.85)]",
+  "active:translate-y-0 active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 
@@ -279,26 +280,29 @@ export const btnPrimary = cn(
    action is visually singular; keep btnPrimary's sumi-black for secondary
    "explore" actions (never two dark pills where one is the booking action). */
 export const btnGold = cn(
-  "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
+  "hn-sheen group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold tracking-tight",
   "ring-1 ring-[oklch(88%_0.08_90_/_0.4)]",
   "shadow-[0_18px_50px_-18px_oklch(72%_0.11_86_/_0.6)]",
-  "transition-[transform,box-shadow] duration-300 ease-out",
+  "transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
   "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(78%_0.11_86_/_0.78)]",
+  "active:translate-y-0 active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 
 export const btnGhost = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "border border-[var(--gold-hairline)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
-  "transition-colors duration-300 hover:bg-[var(--color-bg-subtle)]",
+  "transition-[background-color,transform] duration-300 hover:bg-[var(--color-bg-subtle)]",
+  "active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 
 export const btnGlass = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "glass font-medium text-[var(--color-fg)] backdrop-blur-md",
-  "transition-colors duration-300 hover:bg-[var(--glass-bg-strong)]",
+  "transition-[background-color,transform] duration-300 hover:bg-[var(--glass-bg-strong)]",
+  "active:scale-[0.98]",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 

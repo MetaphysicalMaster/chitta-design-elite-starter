@@ -189,6 +189,67 @@ export function SectionHeading({
   );
 }
 
+/**
+ * FigureTag — the journal-plate figure annotation. A hairline DRAWS in from
+ * the left, then the tabular figure number + label surface — the academic
+ * "Fig. 0n" marginalia that threads the descent metaphor through every
+ * section. Decorative (aria-hidden); reduced-motion shows it instantly.
+ */
+export function FigureTag({
+  n,
+  label,
+  tone = "light",
+  className,
+}: {
+  /** Figure number, e.g. "02" (tabular numerals). */
+  n: string;
+  label: string;
+  /** "dark" = sits on the espresso night sections. */
+  tone?: "light" | "dark";
+  className?: string;
+}) {
+  const prefersReduced = useReducedMotion();
+  return (
+    <motion.div
+      aria-hidden="true"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-14% 0px -14% 0px" }}
+      className={cn(
+        "pointer-events-none flex select-none items-center gap-3",
+        tone === "dark"
+          ? "text-[var(--color-accent-bright)]"
+          : "text-[var(--color-accent-deep)]",
+        className,
+      )}
+    >
+      <motion.span
+        variants={{
+          hidden: { scaleX: prefersReduced ? 1 : 0 },
+          show: {
+            scaleX: 1,
+            transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+          },
+        }}
+        className="block h-px w-10 origin-left bg-current"
+      />
+      <motion.span
+        variants={{
+          hidden: { opacity: 0, y: prefersReduced ? 0 : 6 },
+          show: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.55, delay: 0.3, ease: EASE },
+          },
+        }}
+        className="text-[0.62rem] font-semibold uppercase tracking-[0.3em] tnum"
+      >
+        Fig. {n} — {label}
+      </motion.span>
+    </motion.div>
+  );
+}
+
 /** Magnetic — subtle cursor pull for primary CTAs. Disabled on touch + reduced. */
 export function Magnetic({
   children,
@@ -231,19 +292,23 @@ export function Magnetic({
   );
 }
 
-/** Shared CTA class helpers (consistent button system across sections). */
+/** Shared CTA class helpers (consistent button system across sections).
+    Press states ("active:") give every CTA a tactile settle — the instrument
+    clicks — alongside the hover lift. */
 export const ctaPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent-deep)] font-medium tracking-tight text-[var(--color-accent-fg)]",
   "shadow-[0_16px_40px_-16px_oklch(48%_0.082_197_/_0.6)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
   "hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(48%_0.082_197_/_0.7)]",
+  "active:translate-y-0 active:scale-[0.98] active:duration-100",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );
 
 export const ctaGhost = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "border border-[var(--color-border)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
-  "transition-colors duration-300 hover:border-[var(--color-accent-deep)] hover:text-[var(--color-accent-deep)]",
+  "transition-[color,border-color,transform] duration-300 hover:border-[var(--color-accent-deep)] hover:text-[var(--color-accent-deep)]",
+  "active:scale-[0.985] active:duration-100",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
 );

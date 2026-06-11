@@ -37,7 +37,13 @@
  */
 
 import Image from "next/image";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Reveal, SectionHeading } from "./primitives";
+import { InkStroke } from "./InkStroke";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Award = {
   id: string;
@@ -156,9 +162,88 @@ function Badge({ a, sizeHint }: { a: Award; sizeHint: string }) {
 const SIZE_HINT = "(min-width: 1024px) 23rem, (min-width: 640px) 21rem, 18rem";
 
 export function AwardsRail() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // GOLD-LEAF SHIMMER — as the trophy wall enters, a glint of light sweeps
+  // across every gold-foil text (the headline + the Top Doctor captions), and
+  // the 2024→2025→2026 year-spine assembles left-to-right. ScrollTrigger is
+  // Lenis-synced via SmoothScroll. Reduced-motion (gsap.matchMedia) and no-JS
+  // both land on the static gold — the shimmer is pure additive grace.
+  useLayoutEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // The glint helper: stretch the foil gradient and slide its bright band
+      // across the glyphs once; clearProps restores the pristine static foil.
+      const glint = (targets: HTMLElement[], tl: gsap.core.Timeline, at: number) =>
+        tl.fromTo(
+          targets,
+          { backgroundSize: "280% 100%", backgroundPosition: "130% 0%" },
+          {
+            backgroundPosition: "-40% 0%",
+            duration: 1.7,
+            ease: "power2.inOut",
+            stagger: 0.1,
+            clearProps: "backgroundSize,backgroundPosition",
+          },
+          at,
+        );
+
+      // BEAT 1 — anchored on the YEAR-SPINE (not the section top, which on a
+      // slow scroll would fire while everything is still below the fold): the
+      // 2024 → 2025 → 2026 run assembles left-to-right and the headline foil
+      // catches the light, all on screen.
+      const spineWrap = root.querySelector<HTMLElement>("[data-year-spine]");
+      const years = gsap.utils.toArray<HTMLElement>("[data-spine-year]", root);
+      const rules = gsap.utils.toArray<HTMLElement>("[data-spine-rule]", root);
+      const headFoils = gsap.utils.toArray<HTMLElement>("h2 .gold-foil", root);
+
+      const headTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: spineWrap ?? root,
+          start: "top 86%",
+          once: true,
+        },
+        defaults: { ease: "power2.out" },
+      });
+      if (years.length) {
+        headTl.from(years, { opacity: 0, y: 10, duration: 0.55, stagger: 0.18 }, 0);
+      }
+      if (rules.length) {
+        headTl.from(
+          rules,
+          { scaleX: 0, transformOrigin: "0% 50%", duration: 0.45, stagger: 0.18 },
+          0.12,
+        );
+      }
+      if (headFoils.length) glint(headFoils, headTl, 0);
+
+      // BEAT 2 — the trophy rail's own captions glint as the rail enters.
+      const railFoils = gsap.utils.toArray<HTMLElement>(
+        ".hn-marquee .gold-foil",
+        root,
+      );
+      if (railFoils.length) {
+        const railTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: root.querySelector(".hn-marquee") ?? root,
+            start: "top 82%",
+            once: true,
+          },
+        });
+        glint(railFoils, railTl, 0.1);
+      }
+    });
+
+    return () => mm.revert();
+  }, []);
+
   return (
     <section
       id="awards"
+      ref={sectionRef}
       aria-labelledby="awards-title"
       className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
       style={{ background: "linear-gradient(168deg, var(--night-1), var(--night-0))" }}
@@ -183,6 +268,7 @@ export function AwardsRail() {
             <span id="awards-title">
               Year after year,{" "}
               <span className="gold-foil font-display-em">Fort Worth&apos;s favor.</span>
+              <InkStroke tone="champagne" className="mx-auto mt-5 w-44 opacity-90 sm:w-52" />
             </span>
           }
           lead="Back-to-back DFW Favorites WINNER honors from the Fort Worth Star-Telegram — 2024, 2025, and 2026 — and a Fort Worth Magazine Top Doctor. The honors behind one trusted set of hands: Dr. Elaine Phuah's."
@@ -193,13 +279,14 @@ export function AwardsRail() {
         <Reveal delay={0.06}>
           <p
             aria-hidden
+            data-year-spine
             className="mt-7 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.32em] text-[var(--color-accent-bright)]/85 sm:gap-4"
           >
-            <span className="tnum">2024</span>
-            <span className="h-px w-6 bg-[var(--color-accent-bright)]/35 sm:w-9" />
-            <span className="tnum">2025</span>
-            <span className="h-px w-6 bg-[var(--color-accent-bright)]/35 sm:w-9" />
-            <span className="tnum">2026</span>
+            <span data-spine-year className="tnum">2024</span>
+            <span data-spine-rule className="h-px w-6 bg-[var(--color-accent-bright)]/35 sm:w-9" />
+            <span data-spine-year className="tnum">2025</span>
+            <span data-spine-rule className="h-px w-6 bg-[var(--color-accent-bright)]/35 sm:w-9" />
+            <span data-spine-year className="tnum">2026</span>
           </p>
         </Reveal>
       </div>

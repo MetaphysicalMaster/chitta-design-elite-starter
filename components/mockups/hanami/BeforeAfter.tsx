@@ -12,14 +12,25 @@
  * soft sakura) honestly marked "sample · illustrative" until paired before/
  * afters are sourced. The "drag to reveal" promise refers only to those tagged
  * sliders. Botanical: a light, airy frame rather than a dark gallery.
+ *
+ * THE REVEAL PAYOFF: each plate carries a hand-drawn sumi-e profile (the same
+ * serene line-art face on both sides, perfectly registered so the drag never
+ * "jumps") with per-treatment differences drawn as honest illustration —
+ * forehead/glabella lines that smooth away (tox), pigment flecks that clear to
+ * an even luminous tone (IPL), and a flattened mid-face that lifts into a soft
+ * cheek apple (filler). The AFTER side blooms: a soft glow, sakura accents and
+ * gold glints — privacy-first ("your face is never paraded online") yet the
+ * drag now has a visible, on-brand difference to reveal.
  */
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import { SectionHeading, Reveal, BrandPhoto } from "./primitives";
 import { cn } from "@/lib/utils";
 
+type CaseId = "tox" | "ipl" | "filler";
+
 type Case = {
-  id: string;
+  id: CaseId;
   treatment: string;
   detail: string;
   before: string;
@@ -52,6 +63,188 @@ const CASES: Case[] = [
     after: "radial-gradient(130% 100% at 60% 40%, oklch(91% 0.055 8), oklch(84% 0.085 6))",
   },
 ];
+
+/* ============================================================
+   Illustrative sumi-e face — the drag-reveal payoff.
+   ONE shared profile (identical paths on both sides of the slider, so the
+   reveal is perfectly registered) + per-treatment BEFORE concerns / AFTER
+   bloom. Pure inline SVG: crisp at any DPR, zero network, zero CLS, static
+   (reduced-motion safe by construction), honest "sample · illustrative".
+   ============================================================ */
+
+/* Shared base profile — a serene right-facing sumi-e line drawing. */
+const FACE_BASE: { d: string; w: number }[] = [
+  // the signature profile line: forehead → nose → lips → chin → jaw → neck
+  {
+    d: "M158 78 C196 70 226 92 232 134 C234 152 230 164 226 172 C224 180 226 186 230 194 C238 208 248 222 247 232 C246 238 240 241 236 243 C234 247 236 250 239 254 C243 258 243 263 239 266 C236 268 235 269 236 271 C241 274 243 279 240 285 C238 291 232 295 230 298 C236 302 240 309 237 318 C233 330 220 340 204 346 C186 353 168 362 160 378 C154 392 153 408 155 430",
+    w: 2.4,
+  },
+  // flowing hair, back sweep + inner strand
+  { d: "M158 78 C120 88 96 126 92 178 C88 228 100 268 96 310 C94 330 88 348 80 362", w: 2.2 },
+  { d: "M170 76 C140 92 120 124 116 170 C113 208 120 240 117 274", w: 1.6 },
+  // brow + closed, serene eye
+  { d: "M196 170 C206 164 218 164 226 169", w: 2 },
+  { d: "M200 192 C208 197 218 197 226 192", w: 2 },
+  // ear + lip corner + shoulder hint
+  { d: "M152 214 C140 208 132 220 138 234 C142 243 152 244 156 236", w: 1.6 },
+  { d: "M224 268 C229 269.5 233 270 236 271", w: 1.4 },
+  { d: "M155 430 C180 440 220 448 260 452", w: 2 },
+];
+
+/* Small brand glyphs for the AFTER bloom. */
+function Sparkle({ x, y, s = 1, o = 0.8 }: { x: number; y: number; s?: number; o?: number }) {
+  return (
+    <path
+      d="M0 -7 Q1.4 -1.4 7 0 Q1.4 1.4 0 7 Q-1.4 1.4 -7 0 Q-1.4 -1.4 0 -7 Z"
+      transform={`translate(${x} ${y}) scale(${s})`}
+      fill="var(--gold)"
+      opacity={o}
+    />
+  );
+}
+
+function Petal({ x, y, r = 0, s = 1, o = 0.4 }: { x: number; y: number; r?: number; s?: number; o?: number }) {
+  return (
+    <path
+      d="M0 -8 C3 -4 7 -3 7 1 C7 5 4 8 0 8 C-4 8 -7 5 -7 1 C-7 -3 -3 -4 0 -8 Z"
+      transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}
+      fill="var(--sakura-deep)"
+      opacity={o}
+    />
+  );
+}
+
+/* Per-treatment BEFORE concern marks — quiet ink, never caricature. */
+function BeforeDetails({ variant }: { variant: CaseId }) {
+  const stroke = {
+    stroke: "var(--ink)",
+    strokeOpacity: 0.34,
+    strokeWidth: 1.8,
+    fill: "none",
+    strokeLinecap: "round" as const,
+  };
+  if (variant === "tox") {
+    return (
+      <g {...stroke}>
+        {/* forehead lines */}
+        <path d="M177 104 C194 98 211 98 224 103" />
+        <path d="M174 120 C193 113 212 113 227 119" />
+        <path d="M173 136 C192 129 212 129 228 135" />
+        {/* glabella "11s" */}
+        <path d="M217 174 C216 180 215 186 216 191" />
+        <path d="M225 172 C224 178 223 184 224 189" />
+      </g>
+    );
+  }
+  if (variant === "ipl") {
+    return (
+      <g fill="var(--ink)" fillOpacity={0.2}>
+        {/* scattered pigment — cheek, temple, jaw */}
+        <ellipse cx={186} cy={238} rx={5} ry={4} />
+        <ellipse cx={199} cy={252} rx={3.6} ry={3} />
+        <ellipse cx={178} cy={258} rx={4.4} ry={3.6} />
+        <ellipse cx={206} cy={236} rx={2.8} ry={2.4} />
+        <ellipse cx={190} cy={274} rx={3.4} ry={2.8} />
+        <ellipse cx={205} cy={266} rx={2.6} ry={2.2} />
+        <ellipse cx={180} cy={154} rx={4} ry={3.4} />
+        <ellipse cx={192} cy={146} rx={3} ry={2.6} />
+        <ellipse cx={171} cy={166} rx={3.2} ry={2.6} />
+        <ellipse cx={214} cy={300} rx={3} ry={2.5} />
+        <ellipse cx={196} cy={308} rx={4} ry={3.2} />
+      </g>
+    );
+  }
+  // filler — deflated mid-face: nasolabial fold, marionette hint, flat cheek
+  return (
+    <g {...stroke}>
+      <path d="M225 243 C219 254 215 264 214 274" />
+      <path d="M223 288 C220 296 217 303 214 309" />
+      <path d="M183 232 C189 252 194 268 196 284" />
+    </g>
+  );
+}
+
+/* Per-treatment AFTER bloom — glow, smoothed/lifted accents, sakura + gold. */
+function AfterDetails({ variant, uid }: { variant: CaseId; uid: string }) {
+  const accent = {
+    stroke: "var(--sakura-deep)",
+    fill: "none",
+    strokeLinecap: "round" as const,
+  };
+  return (
+    <g>
+      {variant === "tox" && (
+        <>
+          <ellipse cx={200} cy={126} rx={54} ry={32} fill={`url(#${uid}-glow)`} />
+          {/* the smoothed brow — a soft dotted arc where the lines were */}
+          <path d="M176 122 C196 112 218 113 230 121" {...accent} strokeOpacity={0.45} strokeWidth={2.2} strokeDasharray="0.5 7" />
+          <Sparkle x={184} y={104} s={0.9} />
+          <Sparkle x={224} y={146} s={0.65} o={0.65} />
+        </>
+      )}
+      {variant === "ipl" && (
+        <>
+          <ellipse cx={194} cy={250} rx={56} ry={68} fill={`url(#${uid}-glow)`} />
+          {/* even-tone luminosity contours along the clear cheek */}
+          <path d="M176 230 C192 243 200 264 198 288" {...accent} strokeOpacity={0.35} strokeWidth={2} />
+          <path d="M161 244 C173 256 179 272 177 292" {...accent} strokeOpacity={0.24} strokeWidth={2} />
+          <Sparkle x={171} y={220} s={0.8} />
+          <Sparkle x={207} y={286} s={0.6} o={0.7} />
+          <Sparkle x={186} y={156} s={0.7} o={0.6} />
+        </>
+      )}
+      {variant === "filler" && (
+        <>
+          <ellipse cx={199} cy={252} rx={36} ry={28} fill={`url(#${uid}-blush)`} />
+          {/* the lifted cheek apple */}
+          <path d="M180 236 C198 238 212 252 215 272" {...accent} strokeOpacity={0.5} strokeWidth={2.2} />
+          {/* a defined jaw accent traced just inside the jawline */}
+          <path d="M206 342 C220 335 230 327 235 316" stroke="var(--gold-deep)" strokeOpacity={0.4} strokeWidth={2} fill="none" strokeLinecap="round" />
+          <Sparkle x={182} y={224} s={0.8} />
+          <Sparkle x={227} y={230} s={0.6} o={0.7} />
+        </>
+      )}
+      {/* drifting sakura — the brand's signature, only where the bloom lands */}
+      <Petal x={330} y={78} r={20} />
+      <Petal x={302} y={128} r={-16} s={0.7} o={0.32} />
+      <Petal x={352} y={152} r={42} s={0.55} o={0.28} />
+    </g>
+  );
+}
+
+/* The full plate art: shared registered base + phase details. */
+function FaceArt({ variant, phase }: { variant: CaseId; phase: "before" | "after" }) {
+  const uid = useId();
+  return (
+    <svg
+      viewBox="0 0 400 500"
+      preserveAspectRatio="xMidYMid slice"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      aria-hidden
+      focusable="false"
+    >
+      <defs>
+        <radialGradient id={`${uid}-glow`}>
+          <stop offset="0%" stopColor="#ffffff" stopOpacity={0.55} />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
+        </radialGradient>
+        <radialGradient id={`${uid}-blush`}>
+          <stop offset="0%" stopColor="var(--sakura-deep)" stopOpacity={0.26} />
+          <stop offset="100%" stopColor="var(--sakura-deep)" stopOpacity={0} />
+        </radialGradient>
+      </defs>
+      <g transform="translate(30 10)">
+        {phase === "after" ? <AfterDetails variant={variant} uid={uid} /> : null}
+        <g stroke="var(--ink)" strokeOpacity={0.5} fill="none" strokeLinecap="round" strokeLinejoin="round">
+          {FACE_BASE.map((p) => (
+            <path key={p.d} d={p.d} strokeWidth={p.w} />
+          ))}
+        </g>
+        {phase === "before" ? <BeforeDetails variant={variant} /> : null}
+      </g>
+    </svg>
+  );
+}
 
 function useSlider() {
   const [pos, setPos] = useState(50);
@@ -154,6 +347,7 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
         onPointerLeave={onPointerUp}
       >
         <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
+          <FaceArt variant={data.id} phase="after" />
           <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
             After
           </span>
@@ -163,6 +357,7 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
+          <FaceArt variant={data.id} phase="before" />
           <span className="absolute left-3 top-3 rounded-full bg-[var(--night-0)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
             Before
           </span>

@@ -74,7 +74,9 @@ export function Reviews() {
           title={
             <>
               Houston is{" "}
-              <span className="font-display-em">glowing.</span>
+              <span className="font-display-em" data-thread="underline">
+                glowing.
+              </span>
             </>
           }
           lead="A reputation built one transformation at a time. Here's what clients across Houston say about their beauty evolution."
@@ -125,7 +127,7 @@ export function Reviews() {
               key={r.name}
               className={r.span ? "sm:col-span-2 lg:col-span-2" : ""}
             >
-              <figure className="flex h-full flex-col rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 shadow-[0_1px_0_oklch(100%_0_0/0.6)]">
+              <figure className="sn-quote-card flex h-full flex-col rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 shadow-[0_1px_0_oklch(100%_0_0/0.6)]">
                 <Stars />
                 <blockquote className="mt-3 flex-1 text-pretty font-display text-[1.05rem] leading-relaxed text-[var(--color-fg)]">
                   &ldquo;{r.quote}&rdquo;

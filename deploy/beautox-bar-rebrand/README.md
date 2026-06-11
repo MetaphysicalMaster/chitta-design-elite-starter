@@ -1,3 +1,6 @@
-# beautox-bar-rebrand — Homepage Rebrand (Owner Preview)
-Proposed homepage rebuild by CHITTA DesignGod. Self-contained static site (.nojekyll keeps _next intact). Sample imagery marked as such.
-Live: https://metaphysicalmaster.github.io/beautox-bar-rebrand/
+# Beautox Bar — Homepage Rebrand (Owner Preview)
+
+Proposed homepage rebuild by CHITTA DesignGod.
+- **Live preview:** https://metaphysicalmaster.github.io/beautox-bar-rebrand/
+- **Tech:** Next.js static export · Three.js / React Three Fiber power-element hero · Tailwind v4 · Framer Motion
+- Self-contained static site (`.nojekyll` keeps the `_next/` dir intact on Pages). Sample imagery marked as such.

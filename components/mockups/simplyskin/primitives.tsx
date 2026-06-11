@@ -11,6 +11,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SplitLines, usePrintReveal } from "./experience";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -71,7 +72,11 @@ export function Reveal({
   );
 }
 
-/* ---- SectionHeading: eyebrow + editorial display title + lead ---- */
+/* ---- SectionHeading: eyebrow + editorial display title + lead ----
+   The title reveals line-by-line through hand-rolled word masks (SplitLines,
+   the page's typographic signature); eyebrow and lead carry their own quiet
+   fade-rise so the heading block choreographs itself — callers no longer
+   need to wrap it in Reveal. Reduced-motion renders everything static. */
 export function SectionHeading({
   eyebrow,
   title,
@@ -87,6 +92,17 @@ export function SectionHeading({
   align?: "left" | "center";
   className?: string;
 }) {
+  const prefersReduced = useReducedMotion();
+  const fade = (delay: number) => ({
+    initial: { opacity: 0, y: prefersReduced ? 0 : 14 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-10% 0px -10% 0px" },
+    transition: {
+      duration: 0.75,
+      ease: EASE,
+      delay: prefersReduced ? 0 : delay,
+    },
+  });
   return (
     <div
       className={cn(
@@ -94,7 +110,8 @@ export function SectionHeading({
         className,
       )}
     >
-      <p
+      <motion.p
+        {...fade(0)}
         className={cn(
           "rule-fine eyebrow inline-block",
           align === "center" && "[&::after]:mx-auto",
@@ -102,8 +119,9 @@ export function SectionHeading({
         )}
       >
         {eyebrow}
-      </p>
-      <h2
+      </motion.p>
+      <SplitLines
+        as="h2"
         className={cn(
           "font-display mt-5 text-balance",
           invert ? "text-white" : "text-[var(--color-fg)]",
@@ -111,9 +129,10 @@ export function SectionHeading({
         style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
       >
         {title}
-      </h2>
+      </SplitLines>
       {lead && (
-        <p
+        <motion.p
+          {...fade(0.16)}
           className={cn(
             "mt-5 text-pretty font-light",
             invert ? "text-white/75" : "text-[var(--color-fg-muted)]",
@@ -121,7 +140,7 @@ export function SectionHeading({
           style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.6 }}
         >
           {lead}
-        </p>
+        </motion.p>
       )}
     </div>
   );
@@ -142,6 +161,7 @@ export function BrandImage({
   src,
   alt,
   position = "center",
+  reveal = true,
   className,
   children,
 }: {
@@ -156,10 +176,22 @@ export function BrandImage({
   alt?: string;
   /** CSS object-position for the real photo, e.g. "68% 38%". */
   position?: string;
+  /** Signature "developing print" entrance (clip wipe + develop grade).
+      Disable for tiny avatars where a wipe reads as noise. */
+  reveal?: boolean;
   className?: string;
   children?: ReactNode;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const hasPhotoForReveal = Boolean(src);
+  // EDITORIAL LIGHT-ON-SKIN: every image frame develops like a print —
+  // top-to-bottom clip wipe; real photographs also settle from an
+  // overexposed grade and counter-scale. Reduced-motion: static.
+  usePrintReveal(wrapRef, {
+    enabled: reveal,
+    develop: hasPhotoForReveal,
+    scale: hasPhotoForReveal,
+  });
   const RADIUS: Record<string, string> = {
     lg: "rounded-2xl",
     xl: "rounded-[1.25rem]",
@@ -194,6 +226,7 @@ export function BrandImage({
         <img
           src={src}
           alt={alt ?? label ?? ""}
+          data-reveal-media
           className="absolute inset-0 h-full w-full object-cover"
           style={{ objectPosition: position }}
           draggable={false}
@@ -224,26 +257,33 @@ export function BrandImage({
   );
 }
 
-/* ---- Pill button styles, shared across CTAs ---- */
+/* ---- Pill button styles, shared across CTAs ----
+   Every state has personality: hover lifts, press settles (a quiet, tactile
+   compression) — motion-safe since transforms are wrapped by Tailwind's
+   transition utilities and reduced-motion users simply see color shifts. */
 export const btnPrimary = cn(
   "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-medium tracking-tight",
   "shadow-[0_16px_44px_-20px_oklch(58%_0.04_184_/_0.5)]",
   "transition-[transform,box-shadow] duration-300 ease-out",
   "hover:-translate-y-0.5 hover:shadow-[0_22px_56px_-18px_oklch(58%_0.04_184_/_0.65)]",
+  "active:translate-y-0 active:scale-[0.985] active:duration-150",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGhost = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "border border-[var(--color-border)] bg-[var(--color-bg-elevated)] font-medium text-[var(--color-fg)]",
-  "transition-colors duration-300 hover:bg-[var(--color-bg-subtle)]",
+  "transition-[color,background-color,border-color,transform] duration-300",
+  "hover:bg-[var(--color-bg-subtle)] hover:border-[var(--color-hairline)]",
+  "active:scale-[0.985] active:duration-150",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );
 
 export const btnGlass = cn(
   "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
   "glass font-medium text-[var(--color-fg)] backdrop-blur-md",
-  "transition-colors duration-300 hover:bg-white/70",
+  "transition-[color,background-color,transform] duration-300 hover:bg-white/70",
+  "active:scale-[0.985] active:duration-150",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
 );

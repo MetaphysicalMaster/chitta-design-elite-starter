@@ -58,7 +58,9 @@ export function Legacy() {
           title={
             <>
               Transformation,{" "}
-              <span className="font-display-em">step by step.</span>
+              <span className="font-display-em" data-thread="underline">
+                step by step.
+              </span>
             </>
           }
           lead="Beauty isn't a single appointment — it's an evolution. Here's the path we walk with every client, from first consultation to lasting glow."
@@ -67,9 +69,11 @@ export function Legacy() {
         <div className="mt-16 grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
           {/* ---- Movement 1: the timeline ---- */}
           <RevealGroup as="ul" className="relative" stagger={0.12}>
-            {/* the gold rail */}
+            {/* the pink rail — the thread literally fuses with it on scroll
+                (data-thread="rail" runs the drawn line down this exact spine) */}
             <span
               aria-hidden
+              data-thread="rail"
               className="absolute left-[7px] top-2 bottom-2 w-px"
               style={{
                 background:

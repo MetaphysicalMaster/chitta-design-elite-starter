@@ -6,11 +6,23 @@
  * nav. The caustics WebGL has its own internal frameloop; Lenis simply makes the
  * page's scroll feel unhurried and considered — an editorial, never-rushed
  * cadence that suits the brand.
+ *
+ * CRITICAL integration (the Pink Thread depends on it): GSAP's ScrollTrigger is
+ * synced to Lenis here — Lenis is driven by gsap.ticker (single rAF, correct
+ * ordering) and every Lenis scroll frame calls ScrollTrigger.update, so all
+ * scroll choreography fires at the TRUE smoothed scroll position. Without this,
+ * every ScrollTrigger on the page would read stale positions.
+ * Under prefers-reduced-motion Lenis is never created and ScrollTrigger falls
+ * back to native scroll events on its own.
  */
 
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { useReducedMotion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const prefersReduced = useReducedMotion();
@@ -24,12 +36,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // Lenis ↔ ScrollTrigger handshake: lenis announces every smoothed scroll
+    // frame; gsap.ticker is the single clock driving lenis (time in ms).
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     const onClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest(
@@ -46,8 +58,9 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
       document.removeEventListener("click", onClick);
+      gsap.ticker.remove(tick);
+      gsap.ticker.lagSmoothing(500, 33); // restore GSAP default on unmount
       lenis.destroy();
     };
   }, [prefersReduced]);

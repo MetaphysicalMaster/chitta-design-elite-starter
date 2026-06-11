@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Magnetic } from "./primitives";
+import { PourGlass } from "./PourGlass";
 import { BRAND } from "./nap";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
@@ -111,6 +112,24 @@ export function BubbleHero() {
     hidden: { opacity: 0, y: prefersReduced ? 0 : 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } },
   };
+  /* Headline choreography — the h1 orchestrates its own masked chunks (each
+     chunk rises out of an overflow-hidden sleeve with a touch of settle-back
+     rotation: a "poured" entrance, not a fade). The h1 itself only staggers. */
+  const headline = {
+    hidden: {},
+    show: { transition: { staggerChildren: prefersReduced ? 0 : 0.085 } },
+  };
+  const chunk = {
+    hidden: prefersReduced
+      ? { opacity: 0 }
+      : { y: "112%", rotate: 4.5 },
+    show: prefersReduced
+      ? { opacity: 1, transition: { duration: 0.6 } }
+      : { y: "0%", rotate: 0, transition: { duration: 0.95, ease } },
+  };
+  /* The masked-rise sleeve: overflow-hidden with a descender allowance so the
+     g / y tails of "mingle" never get sheared by the mask. */
+  const sleeve = "inline-block overflow-hidden pb-[0.14em] -mb-[0.14em] align-bottom";
 
   return (
     <section
@@ -143,6 +162,13 @@ export function BubbleHero() {
         className="absolute inset-0 -z-10 bg-[radial-gradient(64%_88%_at_24%_52%,oklch(12%_0.006_350_/_0.6),transparent_60%)]"
       />
 
+      {/* Signature moment: the BIG martini-glass pour intro — line-art glass at
+          the hero's right, liquid line fills, syringe stirs once, olive pops.
+          Decorative (aria-hidden), pointer-events-none so it never intercepts
+          the bubble-pop physics, desktop-only so mobile copy stays unconstrained.
+          Sits ABOVE the WebGL fizz, so the bubbles drift behind the glass. */}
+      <PourGlass className="absolute right-[4%] top-[16%] hidden w-[clamp(280px,26vw,420px)] lg:block" />
+
       {/* whileInView (not animate) so the reveal is driven by an Intersection
           observer that re-fires reliably even if the first paint frame is starved
           by the WebGL mount — the hero is in-view at load, so it plays immediately
@@ -165,12 +191,39 @@ export function BubbleHero() {
         </motion.p>
 
         <motion.h1
-          variants={item}
+          variants={headline}
           className="font-display max-w-[16ch] text-balance text-[var(--color-bg)] drop-shadow-[0_2px_44px_oklch(8%_0.01_350_/_0.7)]"
           style={{ fontSize: "var(--fluid-hero)", lineHeight: 0.98 }}
         >
-          Where <span className="candy-text--bright">shots &amp; beauty</span>{" "}
-          mingle.
+          {/* hand-rolled masked rise — three "poured" chunks; the gradient
+              phrase stays one chunk so its background-clip never fragments */}
+          <span className={sleeve}>
+            <motion.span
+              variants={chunk}
+              className="inline-block will-change-transform"
+              style={{ transformOrigin: "0% 100%" }}
+            >
+              Where
+            </motion.span>
+          </span>{" "}
+          <span className={sleeve}>
+            <motion.span
+              variants={chunk}
+              className="inline-block will-change-transform"
+              style={{ transformOrigin: "0% 100%" }}
+            >
+              <span className="candy-text--bright">shots &amp; beauty</span>
+            </motion.span>
+          </span>{" "}
+          <span className={sleeve}>
+            <motion.span
+              variants={chunk}
+              className="inline-block will-change-transform"
+              style={{ transformOrigin: "0% 100%" }}
+            >
+              mingle.
+            </motion.span>
+          </span>
         </motion.h1>
 
         <motion.p

@@ -1,15 +1,29 @@
 "use client";
 
 /**
- * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
- * Wires anchor (#hash) clicks to glide instead of jump, offset for the sticky
- * nav. The horology WebGL has its own internal frameloop; Lenis simply makes
- * the page's scroll feel premium and unhurried (heirloom cadence).
+ * SmoothScroll — Lenis smooth scroll + the GSAP ScrollTrigger sync spine.
+ *
+ * Lenis owns scrolling (disabled under prefers-reduced-motion); GSAP's ticker
+ * drives `lenis.raf` and every Lenis scroll event re-syncs ScrollTrigger, so
+ * every trigger on the page (hero bokeh depth-rack, the pinned "your visit"
+ * journey, the booking-warmth scrub) fires at the TRUE smoothed scroll
+ * position — never the raw wheel position. Without this wiring every
+ * ScrollTrigger on a Lenis page measures wrong; it lives here, once.
+ *
+ * Anchor (#hash) clicks glide instead of jump, offset for the sticky nav.
+ * Under reduced motion: native scroll, and ScrollTrigger still measures
+ * correctly against it (all consumers degrade to static states themselves).
  */
 
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { useReducedMotion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const prefersReduced = useReducedMotion();
@@ -23,12 +37,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // THE Lenis↔GSAP handshake: ScrollTrigger re-measures on every smoothed
+    // scroll frame, and GSAP's ticker is the single rAF driving Lenis (no
+    // second rAF loop, no lag-smoothing fighting the scrub).
+    lenis.on("scroll", () => ScrollTrigger.update());
+    const drive = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(drive);
+    gsap.ticker.lagSmoothing(0);
 
     const onClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest(
@@ -45,7 +60,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove(drive);
       document.removeEventListener("click", onClick);
       lenis.destroy();
     };

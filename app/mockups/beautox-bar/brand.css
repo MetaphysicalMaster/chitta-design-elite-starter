@@ -510,6 +510,111 @@
   background-repeat: no-repeat;
 }
 
+/* ============================================================
+   SIGNATURE MOTION LAYER — Happy-Hour physics support styles.
+   Everything transform/opacity-only; every animation is gated behind
+   (prefers-reduced-motion: no-preference) so reduced-motion users get the
+   elegant static state, never a broken one.
+   ============================================================ */
+
+/* The hero pour-intro stage: pre-hidden ONLY when motion is allowed (GSAP
+   reveals it as the first beat of the pour timeline). Under reduced motion the
+   resting markup — a fully-poured glass — simply shows. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="beautox-bar"] .bx-pour {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Menu-card icon "clink" — the coaster's glass-tap wiggle on hover. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="beautox-bar"] .bx-menu-card:hover .bx-menu-icon {
+    animation: bx-clink 0.55s ease-in-out;
+  }
+}
+@keyframes bx-clink {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-11deg);
+  }
+  62% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* CTA carbonation — tiny pearl bubbles rise inside the hot-pink pill on
+   hover/focus. Pure transform/opacity on a pseudo-element; the pill is already
+   overflow:hidden so the fizz stays in the glass. */
+[data-brand="beautox-bar"] .gloss-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, oklch(100% 0 0 / 0.9) 0 34%, transparent 56%),
+    radial-gradient(circle, oklch(100% 0 0 / 0.75) 0 34%, transparent 56%),
+    radial-gradient(circle, oklch(100% 0 0 / 0.85) 0 34%, transparent 56%),
+    radial-gradient(circle, oklch(100% 0 0 / 0.7) 0 34%, transparent 56%),
+    radial-gradient(circle, oklch(100% 0 0 / 0.8) 0 34%, transparent 56%);
+  background-repeat: no-repeat;
+  background-size: 5px 5px, 4px 4px, 6px 6px, 4px 4px, 5px 5px;
+  background-position: 16% 115%, 36% 130%, 55% 120%, 74% 135%, 88% 118%;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="beautox-bar"] .gloss-pill:hover::after,
+  [data-brand="beautox-bar"] .gloss-pill:focus-visible::after {
+    animation: bx-pill-fizz 0.85s linear infinite;
+  }
+}
+@keyframes bx-pill-fizz {
+  from {
+    opacity: 0.95;
+    transform: translateY(0.45em);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-1.7em);
+  }
+}
+
+/* Nav-link olive — the logo's garnish dot blooms under the link on hover/focus.
+   Color-only fallback still applies (the links keep their color transition). */
+[data-brand="beautox-bar"] .bx-navlink {
+  position: relative;
+}
+[data-brand="beautox-bar"] .bx-navlink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.28em;
+  width: 0.28em;
+  height: 0.28em;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="beautox-bar"] .bx-navlink::after {
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.2s ease;
+  }
+}
+[data-brand="beautox-bar"] .bx-navlink:hover::after,
+[data-brand="beautox-bar"] .bx-navlink:focus-visible::after {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
 /* Respect reduced motion globally for decorative transforms. */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="beautox-bar"] * {

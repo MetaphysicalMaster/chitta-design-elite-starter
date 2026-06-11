@@ -7,6 +7,7 @@
  * philosophy + recognition chips. Restraint over spectacle.
  */
 
+import { motion, useReducedMotion } from "motion/react";
 import { Reveal, SectionHeading, BrandImage } from "./primitives";
 
 const CREDS = [
@@ -30,58 +31,69 @@ const PROVIDER = {
 };
 
 export function Authority() {
+  const prefersReduced = useReducedMotion();
   return (
     <section
       id="authority"
       className="relative scroll-mt-28 overflow-hidden py-24 sm:py-28"
     >
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 sm:px-8 lg:grid-cols-12 lg:gap-16">
-        {/* Portrait — the real hero photograph */}
-        <Reveal className="lg:col-span-5">
-          <div className="relative">
-            {/* A deliberately different frame from the wide hero — reframed to
-                the upper face/eye so the single photo doesn't read as the literal
-                same shot (a taller 4/5 crop high on the subject). */}
-            <BrandImage
-              aspect="4 / 5"
-              radius="3xl"
-              src="/clients/simplyskin/hero.jpg"
-              alt="A close, soft-lit study of calm, healthy, natural skin — quiet ease, the SimplySkin result."
-              position="58% 12%"
-            />
-            {/* floating editorial caption — inset on mobile so it never clips
-                the viewport at 375px; floats off-edge from sm up. The Allergan &
-                Galderma lockup is deliberately reserved for ONE hero-grade
-                placement in Locations, so here the float speaks the philosophy,
-                not the award (keeps the prestige signal scarce). */}
-            <div className="absolute -bottom-6 right-3 max-w-[15rem] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 shadow-[var(--glass-shadow)] sm:-right-6">
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-deep)]">
-                The result
-              </p>
-              <p className="mt-1 font-display text-lg italic text-[var(--color-fg)]">
-                Looks like you, only rested
-              </p>
-              <p className="mt-2 text-xs text-[var(--color-fg-subtle)]">
-                Conservative, medically-guided care — never overdone
-              </p>
-            </div>
-          </div>
-        </Reveal>
+        {/* Portrait — the real hero photograph. The frame itself carries the
+            signature "developing print" reveal (BrandImage), so it is NOT
+            wrapped in a fading Reveal — one clean motion idea at a time. */}
+        <div className="relative lg:col-span-5">
+          {/* A deliberately different frame from the wide hero — reframed to
+              the upper face/eye so the single photo doesn't read as the literal
+              same shot (a taller 4/5 crop high on the subject). */}
+          <BrandImage
+            aspect="4 / 5"
+            radius="3xl"
+            src="/clients/simplyskin/hero.jpg"
+            alt="A close, soft-lit study of calm, healthy, natural skin — quiet ease, the SimplySkin result."
+            position="58% 12%"
+          />
+          {/* floating editorial caption — inset on mobile so it never clips
+              the viewport at 375px; floats off-edge from sm up. Its own beat:
+              it settles in AFTER the print has mostly developed. The Allergan &
+              Galderma lockup is deliberately reserved for ONE hero-grade
+              placement in Locations, so here the float speaks the philosophy,
+              not the award (keeps the prestige signal scarce). */}
+          <motion.div
+            initial={{ opacity: 0, y: prefersReduced ? 0 : 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
+            transition={{
+              duration: 0.8,
+              ease: [0.16, 1, 0.3, 1],
+              delay: prefersReduced ? 0 : 0.55,
+            }}
+            className="absolute -bottom-6 right-3 max-w-[15rem] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 shadow-[var(--glass-shadow)] sm:-right-6"
+          >
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-deep)]">
+              The result
+            </p>
+            <p className="mt-1 font-display text-lg italic text-[var(--color-fg)]">
+              Looks like you, only rested
+            </p>
+            <p className="mt-2 text-xs text-[var(--color-fg-subtle)]">
+              Conservative, medically-guided care — never overdone
+            </p>
+          </motion.div>
+        </div>
 
-        {/* Statement */}
+        {/* Statement — SectionHeading choreographs itself (line-masked title
+            + eyebrow/lead fades), so no outer Reveal. */}
         <div className="lg:col-span-7">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Our approach"
-              title={
-                <>
-                  The best work is the work{" "}
-                  <span className="font-display-em">no one notices.</span>
-                </>
-              }
-              lead="Considered, never rushed. We dose conservatively, lead with proportion over volume, and start every plan with a conversation — so the result is simply a better-rested version of you, not a face that looks &ldquo;done.&rdquo;"
-            />
-          </Reveal>
+          <SectionHeading
+            eyebrow="Our approach"
+            title={
+              <>
+                The best work is the work{" "}
+                <span className="font-display-em">no one notices.</span>
+              </>
+            }
+            lead="Considered, never rushed. We dose conservatively, lead with proportion over volume, and start every plan with a conversation — so the result is simply a better-rested version of you, not a face that looks &ldquo;done.&rdquo;"
+          />
 
           <Reveal delay={0.1}>
             <ul className="mt-9 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
@@ -121,6 +133,7 @@ export function Authority() {
                 variant="nude"
                 radius="full"
                 sample={false}
+                reveal={false}
                 className="h-20 w-20 shrink-0 sm:h-24 sm:w-24"
               />
               <figcaption className="min-w-0">

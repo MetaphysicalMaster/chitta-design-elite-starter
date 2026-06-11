@@ -179,6 +179,7 @@ export function HorologyHero() {
               "shadow-[0_18px_50px_-18px_oklch(60%_0.15_52_/_0.65)]",
               "transition-[transform,box-shadow] duration-300 ease-out",
               "hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-16px_oklch(60%_0.15_52_/_0.85)]",
+              "active:translate-y-0 active:scale-[0.98]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)]",
             )}
           >
@@ -190,7 +191,7 @@ export function HorologyHero() {
             className={cn(
               "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5",
               "border border-[var(--color-border)] bg-[oklch(100%_0_0_/_0.75)] font-medium text-[var(--color-fg)] backdrop-blur-md",
-              "transition-colors duration-300 hover:bg-[oklch(100%_0_0_/_0.95)]",
+              "transition-[background-color,transform] duration-300 hover:bg-[oklch(100%_0_0_/_0.95)] active:scale-[0.98]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
           >

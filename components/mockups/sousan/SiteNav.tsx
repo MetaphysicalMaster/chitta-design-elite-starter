@@ -90,7 +90,7 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                "sn-navlink rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 overHero
                   ? "text-[oklch(92%_0_0_/_0.88)] hover:text-[var(--color-bg)]"
                   : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
@@ -119,7 +119,7 @@ export function SiteNav() {
           <Link
             href="#book"
             className={cn(
-              "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
+              "sn-press group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-fg)]",
               "shadow-[0_10px_30px_-14px_oklch(51%_0.22_357_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
             )}

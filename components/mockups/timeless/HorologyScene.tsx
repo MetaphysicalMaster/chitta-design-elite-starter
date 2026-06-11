@@ -1,39 +1,53 @@
 "use client";
 
 /**
- * HorologyScene — the WebGL power element ("Bokeh Light Field").
+ * HorologyScene — the WebGL power element ("Living Bokeh Light Field").
  *
  * A slow-drifting, three-dimensional field of soft, out-of-focus ORANGE / peach
  * / cream BOKEH light dots over a bright peach environment — the brand's
- * signature texture, made dimensional. Friendly, sunlit, optimistic (the live
- * identity), now matching the wordmark dot-cluster and the CSS fallback rather
- * than a clock/orrery. Layers:
+ * signature texture, made dimensional AND alive:
+ *
  *   1. A warm peach studio environment + a bright orange key light, so every
  *      element reads as glowing warm light (low metalness + self-emission).
  *   2. THE BOKEH: ~16 self-emissive, additively-blended sphere "light dots" at
  *      varied depths — large soft blurred dots in the foreground (low opacity,
  *      strong scale) and smaller crisper dots toward the back — each drifting
  *      slowly on its own path. This is the primary read.
- *   3. A couple of very faint concentric light loops sit BEHIND the bokeh as a
- *      quiet secondary structure (depth + a wisp of the brand's circular motif),
- *      never a clock — no tick marks, no orbiting "planets".
- *   4. Everything self-emits warm orange so the field reads as soft bokeh
+ *   3. LIGHT THAT FOLLOWS YOU: every dot eases toward the cursor with real
+ *      inertia (a shared smoothed-pointer "flow" each dot samples). Influence
+ *      scales with DEPTH — foreground dots (nearest you) lean in the most,
+ *      background sparkle barely stirs — so moving the mouse feels like
+ *      stirring a field of warm light, not dragging a texture.
+ *   4. SCROLL DEPTH-OF-FIELD RACK (GSAP ScrollTrigger): as the hero scrolls
+ *      away, focus racks PAST the foreground — big near dots swell + dissolve
+ *      (more defocused), background points sharpen + brighten, and the camera
+ *      dollies gently in. Scrolling literally pulls you through the light.
+ *   5. Everything self-emits warm orange so the field reads as soft bokeh
  *      WITHOUT post-processing — friendly restraint, and crash-proof (the
  *      react-postprocessing Bloom was removed; it dereferenced a null WebGL
  *      context on context-loss and hard-crashed the page).
  *
  * Loaded ONLY via dynamic({ ssr:false }) from HorologyHero (a client
  * component) — WebGL/R3F is not SSR-safe. A static CSS bokeh field fallback
- * covers SSR, mobile, reduced-motion and no-WebGL (HorologyHero).
+ * covers SSR, mobile, reduced-motion and no-WebGL (HorologyHero) — so the
+ * pointer/scroll reactivity simply, gracefully, does not exist there.
  *
  * Perf: dpr={[1,2]}, frameloop pauses when the hero is offscreen or the tab is
- * hidden. `lite` tier lowers bokeh count + sphere tessellation on smaller tiers.
+ * hidden. All reactivity is mutation-only inside useFrame (zero React state in
+ * the hot path); ScrollTrigger writes one number into a ref. `lite` tier lowers
+ * bokeh count + sphere tessellation on smaller tiers.
  */
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /* Warm-orange bokeh palette as THREE colors (kept in JS to match brand.css
    ring stops). Sunlit, friendly, optimistic — orange + peach + cream over a
@@ -47,12 +61,19 @@ const PALETTE = {
   ember: "#f0915a", // warm peach-orange rim
 };
 
+/* The shared "flow" the whole field breathes through: a smoothed (inertial)
+   pointer offset in world units + the hero's scroll progress (the DOF rack).
+   One mutable object, written by BokehField/ScrollTrigger, sampled by every
+   dot inside useFrame — zero React state in the hot path. */
+type FlowState = { px: number; py: number; dof: number };
+
 /* A single soft BOKEH light dot — a self-emissive sphere, additively blended so
    it reads as an out-of-focus point of warm light rather than a solid ball. Each
-   dot drifts slowly on a gentle Lissajous path around its anchor; foreground dots
-   are large + faint (heavily "defocused"), background dots smaller + a touch
-   crisper, so the field has real depth. transparent + depthWrite:false keeps the
-   additive glow clean as dots overlap (no z-fighting halos). */
+   dot drifts slowly on a gentle Lissajous path around its anchor, LEANS toward
+   the smoothed cursor in proportion to its depth (near dots follow most), and
+   responds to the scroll DOF rack: foreground dots swell + dissolve, background
+   dots sharpen + brighten. transparent + depthWrite:false keeps the additive
+   glow clean as dots overlap (no z-fighting halos). */
 function BokehDot({
   anchor,
   size,
@@ -62,6 +83,7 @@ function BokehDot({
   speed,
   phase,
   segments,
+  flow,
 }: {
   anchor: [number, number, number];
   size: number;
@@ -71,19 +93,46 @@ function BokehDot({
   speed: number;
   phase: number;
   segments: number;
+  flow: { current: FlowState };
 }) {
   const ref = useRef<THREE.Mesh>(null);
+
+  // Depth-derived constants (anchor never changes): how strongly this dot
+  // follows the cursor, and which way the focus rack treats it.
+  const z = anchor[2];
+  const follow = Math.min(1, Math.max(0.06, (z + 1.8) / 4.2)); // fg ~1 → bg ~0.07
+  const isFg = z >= 1.5;
+  const isBg = z <= -0.8;
+
   useFrame(({ clock }) => {
     const m = ref.current;
     if (!m) return;
+    const f = flow.current;
     const t = clock.getElapsedTime() * speed + phase;
-    // gentle, non-repeating-looking drift around the anchor.
-    m.position.x = anchor[0] + Math.sin(t) * drift;
-    m.position.y = anchor[1] + Math.cos(t * 0.82 + phase) * drift * 0.8;
+    // gentle, non-repeating-looking drift around the anchor + the inertial
+    // lean toward the cursor (depth-weighted — near light follows you most).
+    m.position.x = anchor[0] + Math.sin(t) * drift + f.px * follow;
+    m.position.y = anchor[1] + Math.cos(t * 0.82 + phase) * drift * 0.8 + f.py * follow;
     m.position.z = anchor[2] + Math.sin(t * 0.6 + phase * 1.3) * drift * 0.5;
-    // a slow breathe so the dot subtly pulses like a defocused highlight.
-    const s = 1 + Math.sin(t * 0.7) * 0.06;
+
+    // a slow breathe so the dot subtly pulses like a defocused highlight,
+    // composited with the scroll DOF rack.
+    let s = 1 + Math.sin(t * 0.7) * 0.06;
+    let o = opacity;
+    if (isFg) {
+      // rack focus PAST the foreground: near dots swell + dissolve.
+      s *= 1 + f.dof * 0.85;
+      o *= 1 - f.dof * 0.6;
+    } else if (isBg) {
+      // …while the back sparkle tightens + brightens into focus.
+      s *= 1 - f.dof * 0.12;
+      o = Math.min(1, o * (1 + f.dof * 0.5));
+    } else {
+      s *= 1 + f.dof * 0.28;
+      o *= 1 - f.dof * 0.3;
+    }
     m.scale.setScalar(s);
+    (m.material as THREE.MeshBasicMaterial).opacity = o;
   });
   return (
     <mesh ref={ref} position={anchor}>
@@ -148,13 +197,16 @@ function Ring({
 
 /* The full BOKEH light-field group — a depth-staggered cloud of soft warm light
    dots (the primary read) with two faint concentric loops behind for depth.
-   Gentle global tilt + a barely-there parallax toward the cursor, frame-rate
-   independent. */
+   Gentle global tilt toward the cursor, an INERTIAL smoothed-pointer flow that
+   every dot samples (the "light follows you" read), and a camera that dollies
+   gently in as the scroll DOF rack runs. All frame-rate independent. */
 function BokehField({
   pointer,
+  flow,
   lite,
 }: {
   pointer: React.RefObject<{ x: number; y: number }>;
+  flow: { current: FlowState };
   lite: boolean;
 }) {
   const group = useRef<THREE.Group>(null);
@@ -215,11 +267,12 @@ function BokehField({
     [lite],
   );
 
-  useFrame(({ clock }, delta) => {
+  useFrame(({ clock, camera }, delta) => {
     const g = group.current;
     if (!g) return;
     const t = clock.getElapsedTime();
     const target = pointer.current ?? { x: 0, y: 0 };
+    const f = flow.current;
 
     // Eased cursor parallax — subtle tilt of the whole field (depth response).
     const k = 1 - Math.pow(0.002, delta);
@@ -227,6 +280,19 @@ function BokehField({
     const tiltY = target.x * 0.14 + Math.cos(t * 0.1) * 0.015;
     g.rotation.x += (tiltX - g.rotation.x) * k;
     g.rotation.y += (tiltY - g.rotation.y) * k;
+    // the rack adds a whisper of roll — scrolling feels like leaning through.
+    g.rotation.z += (f.dof * 0.05 - g.rotation.z) * k;
+
+    // THE INERTIA: the flow chases the raw pointer slowly (≈0.25s time
+    // constant) so the dots trail the cursor like stirred light, never snap.
+    const kp = 1 - Math.pow(0.012, delta);
+    f.px += (target.x * 1.5 - f.px) * kp;
+    f.py += (target.y * 0.95 - f.py) * kp;
+
+    // Scroll DOF rack, camera side: a gentle dolly-in + lift as the hero
+    // scrolls away — you move THROUGH the light field, not past a poster.
+    camera.position.z += (6.4 - f.dof * 1.05 - camera.position.z) * k;
+    camera.position.y += (0.4 + f.dof * 0.35 - camera.position.y) * k;
   });
 
   return (
@@ -235,7 +301,7 @@ function BokehField({
         <Ring key={`ring-${i}`} {...r} />
       ))}
       {dots.map((d, i) => (
-        <BokehDot key={`dot-${i}`} {...d} segments={lite ? 16 : 24} />
+        <BokehDot key={`dot-${i}`} {...d} segments={lite ? 16 : 24} flow={flow} />
       ))}
     </group>
   );
@@ -289,6 +355,7 @@ export interface HorologySceneProps {
 
 export default function HorologyScene({ lite = false }: HorologySceneProps) {
   const pointer = useRef({ x: 0, y: 0 });
+  const flow = useRef<FlowState>({ px: 0, py: 0, dof: 0 });
   const wrapRef = useRef<HTMLDivElement>(null);
   // Pause the render loop when the hero scrolls offscreen (perf + battery).
   const [visible, setVisible] = useState(true);
@@ -308,6 +375,23 @@ export default function HorologyScene({ lite = false }: HorologySceneProps) {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
     };
+  }, []);
+
+  // SCROLL DOF RACK input — one ScrollTrigger across the hero's own height
+  // writes progress (0 at top → 1 fully scrolled past) into the flow ref.
+  // Synced to Lenis via the SmoothScroll spine; killed on unmount.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top top",
+      end: "bottom top",
+      onUpdate: (self) => {
+        flow.current.dof = self.progress;
+      },
+    });
+    return () => st.kill();
   }, []);
 
   const handlePointer = (e: React.PointerEvent) => {
@@ -341,7 +425,7 @@ export default function HorologyScene({ lite = false }: HorologySceneProps) {
         style={{ position: "absolute", inset: 0 }}
       >
         <StudioLights />
-        <BokehField pointer={pointer} lite={lite} />
+        <BokehField pointer={pointer} flow={flow} lite={lite} />
         {/* NOTE: the post-processing Bloom (react-postprocessing) was removed —
             its EffectComposer reads gl.alpha and hard-crashes ("Cannot read
             properties of null") whenever the WebGL context is lost/recreated

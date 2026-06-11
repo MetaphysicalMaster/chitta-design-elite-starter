@@ -81,7 +81,7 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                "tl-navlink rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 "text-[var(--color-fg-muted)] hover:text-[var(--color-accent-deep)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
               )}
@@ -108,7 +108,7 @@ export function SiteNav() {
             onClick={() => openBooking()}
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-accent-fg)]",
-              "shadow-[0_10px_30px_-14px_oklch(60%_0.15_52_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_30px_-14px_oklch(60%_0.15_52_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
             )}
           >

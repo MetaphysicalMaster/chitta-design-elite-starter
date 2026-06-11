@@ -178,7 +178,7 @@ function ResultsCarousel() {
           type="button"
           onClick={() => go(i - 1)}
           aria-label="Previous result"
-          className="grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="hc-press grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
             <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -196,7 +196,7 @@ function ResultsCarousel() {
               aria-label={`Show result ${idx + 1}: ${r.treatment}`}
               onClick={() => go(idx)}
               className={cn(
-                "h-2.5 rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+                "h-2.5 rounded-full transition-[width,background-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                 idx === i
                   ? "w-7 bg-[var(--color-gold)]"
                   : "w-2.5 bg-white/30 hover:bg-white/50",
@@ -209,7 +209,7 @@ function ResultsCarousel() {
           type="button"
           onClick={() => go(i + 1)}
           aria-label="Next result"
-          className="grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="hc-press grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
             <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -226,8 +226,10 @@ export function BeforeAfter() {
   return (
     <section
       id="results"
-      className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
-      style={{ background: "linear-gradient(160deg, var(--night-0), var(--night-1))" }}
+      data-sky-window
+      // hc-sky--results: opaque navy by default; a translucent navy VEIL when
+      // the fixed aurora canvas is live — the night sky descends with you.
+      className="hc-sky--results relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
     >
       {/* aurora aura echoing the hero on the dark navy field */}
       <div

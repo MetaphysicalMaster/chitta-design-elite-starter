@@ -15,6 +15,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Reveal } from "./primitives";
+import { InkStroke } from "./InkStroke";
 
 const MOVEMENTS = [
   {
@@ -104,6 +105,9 @@ export function Philosophy() {
               and watch beauty unfold.
             </span>
           </h2>
+          {/* sumi-e brush moment — drawn in the logo's coral-blossom ink as the
+              philosophy enters (ScrollTrigger, Lenis-synced). */}
+          <InkStroke tone="blush" className="mx-auto mt-6 w-44 sm:w-52" />
           <p className="mx-auto mt-6 max-w-[54ch] text-center text-pretty font-light leading-relaxed text-[var(--color-bg)]/78">
             In Japan, hanami is the practice of gathering beneath the cherry
             trees — to notice the blossom precisely because it will not last.

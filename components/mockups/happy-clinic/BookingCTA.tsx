@@ -38,7 +38,7 @@ function Chip({
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        "rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200",
+        "hc-press rounded-full px-4 py-2.5 text-sm font-medium",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
         active
           ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_8px_22px_-10px_oklch(52%_0.087_178_/_0.85)]"
@@ -75,10 +75,18 @@ export function BookingCTA() {
   return (
     <section
       id="book"
-      className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
-      style={{ background: "linear-gradient(150deg, var(--night-0), var(--night-2))" }}
+      data-sky-window
+      // hc-sky--booking: opaque navy by default; a translucent veil when the
+      // fixed aurora canvas is live — by here the GSAP dawn scrub has resolved
+      // the sky to first light: you book at dawn.
+      className="hc-sky--booking relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
     >
-      <div className="aurora-fallback absolute inset-0 opacity-25" aria-hidden />
+      {/* static aurora texture — only needed when the live sky is absent */}
+      <div
+        className="aurora-fallback absolute inset-0 opacity-25"
+        data-hide-when-live="true"
+        aria-hidden
+      />
       <div
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-[oklch(16%_0.05_252_/_0.5)] via-transparent to-[oklch(14%_0.045_252_/_0.6)]"
@@ -250,7 +258,7 @@ export function BookingCTA() {
                 type="submit"
                 disabled={!ready}
                 className={cn(
-                  "mt-1 inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold transition-all duration-300",
+                  "hc-press mt-1 inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold",
                   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                   ready
                     ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] hover:-translate-y-0.5 shadow-[0_18px_50px_-16px_oklch(52%_0.087_178_/_0.9)]"

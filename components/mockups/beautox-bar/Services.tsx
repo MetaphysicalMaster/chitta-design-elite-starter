@@ -7,14 +7,25 @@
  * lifts on hover. The MENU GRID leads (the product the visitor came for), then
  * the section closes on two real-artwork features: the "Happy Hour" panel (in
  * the brand's real LAVENDER secondary) and the black-bed "Peptide Bar"
- * needle-free feature (the brand's real peptides promo). Reduced-motion safe
- * via RevealGroup.
+ * needle-free feature (the brand's real peptides promo).
+ *
+ * SIGNATURE: the menu cards DEAL IN like coasters slid across a bar — a GSAP
+ * ScrollTrigger stagger (slide from the bartender's side with a settling
+ * back-ease rotation, alternating tilt per card). ScrollTrigger is synced to
+ * Lenis in SmoothScroll. Reduced-motion: cards simply appear (no transforms).
  */
 
 import Image from "next/image";
-import { Reveal, RevealGroup, RevealItem, SectionHeading } from "./primitives";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Reveal, SectionHeading } from "./primitives";
 import { LOCATIONS } from "./nap";
 import { cn } from "@/lib/utils";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 type Service = {
   name: string;
@@ -129,6 +140,38 @@ function Icon({ name }: { name: Service["icon"] }) {
 export function Services() {
   const mg = LOCATIONS.find((l) => l.id === "maple-grove");
   const wbl = LOCATIONS.find((l) => l.id === "white-bear-lake");
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  /* The coaster deal-in. Each card slides in from the left-low (the
+     bartender's side) with an alternating tilt and settles with a back-ease —
+     like coasters dealt across the bar top. once:true keeps it an entrance;
+     clearProps hands the transform back to CSS so the hover-lift still works. */
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from(".bx-menu-card", {
+          opacity: 0,
+          y: 72,
+          x: -36,
+          rotation: (i: number) => (i % 2 ? 4 : -5.5),
+          transformOrigin: "50% 85%",
+          duration: 0.9,
+          ease: "back.out(1.35)",
+          stagger: { each: 0.085 },
+          clearProps: "transform,opacity",
+          scrollTrigger: {
+            trigger: grid,
+            start: "top 80%",
+            once: true,
+          },
+        });
+      });
+    }, grid);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section id="services" className="scroll-mt-20 bg-[var(--color-bg-subtle)] py-24 sm:py-28">
@@ -145,22 +188,22 @@ export function Services() {
 
         {/* The MENU leads — the six-card grid is the product the visitor came
             for, so it comes first; the Happy Hour ritual + Peptide Bar feature
-            close the section beneath it. */}
-        <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            close the section beneath it. GSAP deals the cards in like coasters. */}
+        <div ref={gridRef} className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((s) => (
-            <RevealItem key={s.name} as="article">
               <article
+                key={s.name}
                 className={cn(
-                  "group relative flex h-full flex-col overflow-hidden rounded-[1.4rem] border p-6 transition-[transform,box-shadow] duration-300 hover:-translate-y-1",
+                  "bx-menu-card group relative flex h-full flex-col overflow-hidden rounded-[1.4rem] border p-6 transition-[transform,box-shadow] duration-300 hover:-translate-y-1",
                   s.hero
-                    ? "border-[var(--color-accent)]/40 bg-[var(--color-bg-elevated)] shadow-[0_20px_50px_-28px_oklch(60%_0.16_356_/_0.45)]"
-                    : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]",
+                    ? "border-[var(--color-accent)]/40 bg-[var(--color-bg-elevated)] shadow-[0_20px_50px_-28px_oklch(60%_0.16_356_/_0.45)] hover:shadow-[0_26px_60px_-26px_oklch(60%_0.16_356_/_0.6)]"
+                    : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)] hover:shadow-[0_24px_60px_-28px_oklch(60%_0.16_356_/_0.4)]",
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className={cn(
-                      "grid h-11 w-11 place-items-center rounded-full transition-colors",
+                      "bx-menu-icon grid h-11 w-11 place-items-center rounded-full transition-colors",
                       s.hero
                         ? "bg-[var(--color-accent-subtle)] text-[var(--color-accent-deep)]"
                         : "bg-[var(--lilac-subtle)] text-[var(--lilac-deep)]",
@@ -199,9 +242,8 @@ export function Services() {
                   </a>
                 </div>
               </article>
-            </RevealItem>
           ))}
-        </RevealGroup>
+        </div>
 
         {/* Happy Hour feature — the brand's real signature artwork. Carries the
             real LAVENDER secondary (the artwork is hot-pink with lavender

@@ -86,9 +86,9 @@ export function Financing() {
                 <Link
                   href="#book"
                   className={cn(
-                    "mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)]",
+                    "hc-press mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)]",
                     "shadow-[0_14px_38px_-16px_oklch(52%_0.087_178_/_0.85)]",
-                    "transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+                    "hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
                   )}
                 >
                   Pre-qualify &amp; book

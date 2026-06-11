@@ -38,8 +38,10 @@ const HOURS = [
 export function SiteFooter() {
   return (
     <footer
-      className="relative overflow-hidden text-white/80"
-      style={{ background: "linear-gradient(180deg, var(--night-1), var(--night-0))" }}
+      data-sky-window
+      // hc-sky--footer: opaque navy by default; a translucent veil when the
+      // fixed aurora canvas is live (the dawn sky settles behind the footer).
+      className="hc-sky--footer relative overflow-hidden text-white/80"
     >
       <div className="ruler-ticks h-1.5 w-full opacity-20" aria-hidden />
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
@@ -58,7 +60,7 @@ export function SiteFooter() {
           </div>
           <Link
             href="#book"
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)] shadow-[0_14px_38px_-16px_oklch(52%_0.087_178_/_0.9)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="hc-press inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-semibold text-[var(--color-accent-fg)] shadow-[0_14px_38px_-16px_oklch(52%_0.087_178_/_0.9)] hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Book in 30 seconds
             <span aria-hidden>→</span>

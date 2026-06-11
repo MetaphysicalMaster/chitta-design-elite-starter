@@ -69,12 +69,18 @@ export function Services() {
           title={
             <>
               Transformative care,{" "}
-              <span className="font-display-em">an artist&rsquo;s eye.</span>
+              <span className="font-display-em" data-thread="underline">
+                an artist&rsquo;s eye.
+              </span>
             </>
           }
           lead="The treatments Houston comes to Sousan for. Every service is performed in-house, tailored to your skin and your goals."
         />
 
+        {/* data-thread="passv": the thread stitches straight down the SEAM
+            between the two card columns — sewing the menu together without
+            ever crossing the cards' copy. */}
+        <div data-thread="passv">
         <RevealGroup
           as="ul"
           className="mt-14 grid gap-6 sm:grid-cols-2"
@@ -143,13 +149,14 @@ export function Services() {
             </RevealItem>
           ))}
         </RevealGroup>
+        </div>
 
         <div className="mt-12 flex justify-center">
           <Magnetic>
             <Link
               href="#book"
               className={cn(
-                "inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-7 py-3.5",
+                "sn-press inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-7 py-3.5",
                 "font-medium text-[var(--color-fg)] shadow-[var(--glass-shadow)]",
                 "transition-transform duration-300 hover:-translate-y-0.5",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",

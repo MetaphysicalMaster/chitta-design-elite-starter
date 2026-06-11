@@ -25,7 +25,7 @@
  * pair. Plain <img> (lazy, sized to intrinsic dims) — zero CLS, these are real.
  */
 
-import { Reveal, SectionHeading } from "./primitives";
+import { FigureTag, Reveal, SectionHeading } from "./primitives";
 
 export function RealProof() {
   return (
@@ -34,6 +34,11 @@ export function RealProof() {
       className="bg-[var(--color-bg)] py-20 sm:py-24"
     >
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
+        <FigureTag
+          n="02"
+          label="Independently recognized"
+          className="mb-6 justify-end"
+        />
         <SectionHeading
           eyebrow="Recognized"
           title={

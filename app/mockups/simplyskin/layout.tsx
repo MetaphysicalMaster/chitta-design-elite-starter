@@ -7,8 +7,13 @@ import "./brand.css";
    Medical Expertise" voice — quiet restraint, not couture flourish. Distinct
    from the sibling builds' geometric sans (Avail → Space Grotesk, Happy Clinic
    → Sora). */
+/* NOTE: the variable is --font-display-src (not --font-display) — brand.css
+   composes the public --font-display token FROM this source plus fallbacks.
+   Naming both the same creates a cyclic var() → guaranteed-invalid → the
+   serif silently falls back to the body sans (caught live; same fix pattern
+   as the hanami / happy-clinic slugs). */
 const libreBaskerville = Libre_Baskerville({
-  variable: "--font-display",
+  variable: "--font-display-src",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "700"],

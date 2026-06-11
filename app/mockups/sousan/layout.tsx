@@ -58,7 +58,7 @@ export default function SousanLayout({
   return (
     <div
       data-brand="sousan"
-      className={`${inter.variable} ${interBody.variable} ${pinyon.variable} min-h-screen`}
+      className={`${inter.variable} ${interBody.variable} ${pinyon.variable} relative min-h-screen`}
     >
       {children}
     </div>

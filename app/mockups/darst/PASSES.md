@@ -432,3 +432,62 @@ leverage findings only — additive, no rewrites, tsc green. Edited ONLY
     fallback paths unchanged), new office chips use the existing labelled-fieldset
     pattern, decorative logo tail + plate modelling are aria-hidden, honest
     "sample" tags kept where imagery is still placeholder.
+
+## Pass 6 — DESCENT THROUGH THE DERMIS (the signature scroll experience)
+
+88. **Lenis ↔ ScrollTrigger one-clock wiring** (`SmoothScroll.tsx`): Lenis is
+    now raf'd by `gsap.ticker` (`lagSmoothing(0)`), and
+    `lenis.on("scroll", ScrollTrigger.update)` keeps trigger positions honest —
+    the mandatory plumbing without which every scrub fires at the wrong scroll.
+89. **The descent** (`LatticeHero.tsx` + `LatticeScene.tsx`): a GSAP
+    ScrollTrigger pins the hero (`+=150%`, scrub 0.6) and writes `descent.p`
+    0→1 into a mutable ref (scroll→GPU, zero React state). A new `DescentRig`
+    tracks the Three.js camera DOWN through the strata (y 0.52→−0.82) while
+    dollying IN (z 4.2→3.15) — descending magnification; the DoF focal plane
+    hands over from its idle sweep to TRACK the descent (sharp = the stratum
+    you've scrolled to: the literal "he reads deeper"); the group sway steadies
+    as the descent engages. Hero copy lifts away over the first 45%; the deep
+    end surfaces a journal annotation — hairline draws, then "Fig. 01 — Dermal
+    cross-section / The diagnosis is rarely at the surface. *He reads deeper.*"
+90. **Micrometer depth gauge** — a hairline instrument rail on the hero's right
+    (desktop, motion-ok only): four strata labelled at physical depths, a teal
+    needle + live tabular µm/mm readout (piecewise 0→4,200 µm across real strata
+    bands), active-stratum highlight. Transform + textContent writes only;
+    `quickSetter` + `yPercent:-50` centering; refreshed rail height on
+    ScrollTrigger refresh.
+91. **Precision-instrument micro-cursor** (`PrecisionCursor.tsx`): a small teal
+    crosshair reticle (dot + 4 ticks + fine ring) EASES after the native pointer
+    (never hidden — usability first), blooms + rotates 45° locking onto
+    interactive elements, pulses on press. Fine-pointer+hover devices only,
+    reduced-motion disabled, white-halo drop-shadow keeps it legible on paper
+    AND espresso. gsap.ticker, transform-only.
+92. **Journal-plate figure annotations** (`FigureTag` in `primitives.tsx`):
+    "Fig. 0n — label" marginalia whose hairline DRAWS in as each section enters
+    (Fig. 02 RealProof → 03 Credentials → 04 Aesthetics (coral) → 05
+    BeforeAfter → 06 SplitFlap), threading the academic-figure vocabulary the
+    hero establishes through the whole page. Decorative aria-hidden;
+    reduced-motion instant.
+93. **Press-state sweep**: every primary CTA (hero, nav Book, PeakCTA, coral
+    aesthetic consult, shared `ctaPrimary`/`ctaGhost`) gains an
+    `active:` tactile settle (translate-y-0 + scale .98, 100ms); nav links gain
+    hover pill fills on both the dark-hero and frosted surfaces.
+94. **Degradation discipline**: pin + gauge + annotation register ONLY under
+    `(min-width: 768px) and (prefers-reduced-motion: no-preference)` via
+    `gsap.matchMedia`; mobile + reduced-motion get the previous page exactly
+    (no pin, native flow, static hero). Chrome-verified: pin/scrub fires at
+    correct positions, needle + µm readout + strata highlight track the scroll,
+    copy lifts, annotation lands, unpin flows into TrustBar; reticle locks onto
+    CTAs; zero console errors; `npx tsc --noEmit` darst-clean.
+95. **QA fix — mobile hero contrast washout** (`LatticeHero.tsx`): below md the
+    WebGL gate never opens, so the backdrop is the static dermal SVG whose
+    upper strata are cream/tan — and the copy spans the full width, so the
+    desktop `to-r` scrim's transparent right end let the right halves of the
+    lead-paragraph lines render light-gray-on-near-white (QA major). Fix: a
+    `md:hidden` full-width vertical espresso scrim (0.34 α at the very top so a
+    breath of the "surface" stratum survives, ≥0.78 α through the entire copy
+    zone — AA+ for the oklch(93%) lead — easing to 0.68 at the bottom) +
+    a soft text-shadow on the lead paragraph as a second net. Desktop scrims
+    byte-identical (scrim is `display:none` ≥768px). Chrome-verified at 390px
+    (same-origin iframe emulation): every paragraph line legible edge-to-edge,
+    no horizontal overflow (scrollWidth 376 < 386), desktop hero unchanged,
+    zero console errors, tsc darst-clean.

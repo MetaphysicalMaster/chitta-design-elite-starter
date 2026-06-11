@@ -25,7 +25,7 @@
  */
 
 import Link from "next/link";
-import { Reveal } from "./primitives";
+import { FigureTag, Reveal } from "./primitives";
 import { BrandImage } from "./BrandImage";
 import { selectBookingIntent } from "./bookingIntent";
 
@@ -84,6 +84,11 @@ export function Aesthetics() {
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         {/* left: the warm invitation, in her language */}
         <div>
+          <FigureTag
+            n="04"
+            label="The aesthetic register"
+            className="mb-6 !text-[var(--color-coral-deep)]"
+          />
           <Reveal>
             <p className="eyebrow rule-accent text-[var(--color-coral-deep)]">
               The aesthetic side
@@ -188,7 +193,7 @@ export function Aesthetics() {
               <Link
                 href="#book"
                 onClick={() => selectBookingIntent("cosmetic")}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-coral-deep)] px-7 py-3.5 font-medium text-[oklch(99%_0.004_60)] shadow-[0_16px_40px_-16px_oklch(52%_0.13_31_/_0.6)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(52%_0.13_31_/_0.7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-coral-deep)]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-coral-deep)] px-7 py-3.5 font-medium text-[oklch(99%_0.004_60)] shadow-[0_16px_40px_-16px_oklch(52%_0.13_31_/_0.6)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_54px_-14px_oklch(52%_0.13_31_/_0.7)] active:translate-y-0 active:scale-[0.98] active:duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-coral-deep)]"
               >
                 Book an aesthetic consult
                 <span

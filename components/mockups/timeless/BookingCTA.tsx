@@ -11,18 +11,62 @@
  *
  * This section is LIGHT and warm (sunlit peach), matching the live brand: an
  * invitation on the left, the embedded guided-booking card on the right.
+ *
+ * LIGHT LEADING TO ACTION: a ScrollTrigger-scrubbed warmth layer (deep orange
+ * bokeh glow) blooms up as the visitor approaches the widget — the page's
+ * ambient light literally intensifies toward the conversion moment. Scrub is
+ * transform/opacity-only; reduced-motion users get a calm static warmth via
+ * the .tl-book-warmth CSS fallback.
  */
 
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Reveal } from "./primitives";
 import { GuidedBookingInline } from "./GuidedBooking";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const PHONE_DISPLAY = "(513) 451-9600";
 const PHONE_TEL = "+15134519600";
 
 export function BookingCTA() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const warmthRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const warmth = warmthRef.current;
+    if (!section || !warmth) return;
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // Direct progress→style mapping (Lenis already smooths the scroll, so
+      // the bloom glides). Pure opacity/transform — compositor-only.
+      const apply = (p: number) => {
+        warmth.style.opacity = String(p);
+        warmth.style.transform = `scale(${0.9 + p * 0.1})`;
+      };
+      const st = ScrollTrigger.create({
+        trigger: section,
+        start: "top 88%",
+        end: "center 55%",
+        onUpdate: (self) => apply(self.progress),
+      });
+      apply(st.progress);
+      return () => {
+        warmth.style.opacity = "";
+        warmth.style.transform = "";
+      };
+    });
+    return () => mm.revert();
+  }, []);
+
   return (
     <section
       id="book"
+      ref={sectionRef}
       aria-labelledby="book-title"
       className="relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
     >
@@ -43,6 +87,18 @@ export function BookingCTA() {
           background:
             "radial-gradient(circle at 22% 70%, oklch(74% 0.13 54 / 0.18) 0 7%, transparent 9%), radial-gradient(circle at 80% 22%, oklch(86% 0.08 60 / 0.3) 0 5%, transparent 7%)",
           filter: "blur(2px)",
+        }}
+      />
+      {/* THE WARMTH: deep-orange bokeh glow that blooms as you near booking —
+          scrubbed by ScrollTrigger (transform/opacity only); static warm under
+          reduced motion via .tl-book-warmth. */}
+      <div
+        ref={warmthRef}
+        aria-hidden
+        className="tl-book-warmth pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(46% 56% at 76% 38%, oklch(76% 0.14 54 / 0.34), transparent 70%), radial-gradient(38% 46% at 16% 78%, oklch(70% 0.15 52 / 0.26), transparent 68%), radial-gradient(circle at 64% 78%, oklch(72% 0.14 54 / 0.2) 0 4%, transparent 6%)",
         }}
       />
 

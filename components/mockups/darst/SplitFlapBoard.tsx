@@ -21,7 +21,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
-import { Reveal, SectionHeading } from "./primitives";
+import { FigureTag, Reveal, SectionHeading } from "./primitives";
 import { cn } from "@/lib/utils";
 
 type Review = { body: string; name: string; context: string };
@@ -285,6 +285,11 @@ export function SplitFlapBoard() {
       className="bg-[var(--color-bg)] py-24 sm:py-32"
     >
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
+        <FigureTag
+          n="06"
+          label="Patient record, rotating"
+          className="mb-6 justify-end"
+        />
         <SectionHeading
           eyebrow="In patients' words"
           title={

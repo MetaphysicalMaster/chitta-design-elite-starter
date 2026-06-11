@@ -3,14 +3,25 @@
 /**
  * SmoothScroll — optional Lenis smooth scroll, disabled under
  * prefers-reduced-motion. Anchor (#hash) clicks glide with an offset for the
- * sticky nav. The lattice WebGL has its own internal frameloop; Lenis only
- * lends the page an unhurried, considered cadence — the measured pace of a
- * clinical consultation, never rushed.
+ * sticky nav.
+ *
+ * CRITICAL WIRING (the "descent through the dermis" choreography depends on
+ * it): Lenis and GSAP ScrollTrigger must share one clock or every trigger
+ * fires at the wrong scroll position. Lenis is driven from gsap.ticker (not
+ * its own rAF), `lenis.on("scroll", ScrollTrigger.update)` keeps trigger
+ * positions honest, and `lagSmoothing(0)` stops GSAP from re-timing frames
+ * Lenis already smoothed. Under reduced motion no Lenis instance is created —
+ * native scroll + ScrollTrigger's own listeners take over (and the descent
+ * pin never registers anyway).
  */
 
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { useReducedMotion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const prefersReduced = useReducedMotion();
@@ -24,12 +35,11 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // One clock: Lenis raf'd by gsap.ticker; ScrollTrigger updated by Lenis.
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     const onClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest(
@@ -46,8 +56,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
       document.removeEventListener("click", onClick);
+      gsap.ticker.remove(tick);
       lenis.destroy();
     };
   }, [prefersReduced]);

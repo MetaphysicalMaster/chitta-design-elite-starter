@@ -84,7 +84,7 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                "bx-navlink rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                 overHero
                   ? "text-[oklch(92%_0.01_350_/_0.86)] hover:text-[var(--color-bg)]"
                   : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",

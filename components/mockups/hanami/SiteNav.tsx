@@ -89,7 +89,7 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]",
+                "hn-navlink rounded-full px-3.5 py-2 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
               )}
             >
@@ -113,7 +113,8 @@ export function SiteNav() {
             href="#book"
             className={cn(
               "group inline-flex items-center gap-1.5 rounded-full bg-[var(--ink-deep)] px-5 py-2.5 text-sm font-medium text-[var(--color-bg)]",
-              "shadow-[0_10px_30px_-14px_oklch(16%_0.003_60_/_0.9)] ring-1 ring-[oklch(82%_0.09_88_/_0.25)] transition-transform duration-300 hover:-translate-y-0.5",
+              "shadow-[0_10px_30px_-14px_oklch(16%_0.003_60_/_0.9)] ring-1 ring-[oklch(82%_0.09_88_/_0.25)]",
+              "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
             )}
           >

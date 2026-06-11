@@ -1,4 +1,5 @@
 import { SmoothScroll } from "@/components/mockups/sousan/SmoothScroll";
+import { PinkThread } from "@/components/mockups/sousan/PinkThread";
 import { SiteNav } from "@/components/mockups/sousan/SiteNav";
 import { CausticsHero } from "@/components/mockups/sousan/CausticsHero";
 import { Awards } from "@/components/mockups/sousan/Awards";
@@ -39,6 +40,11 @@ export default function SousanPage() {
       </main>
 
       <SiteFooter />
+
+      {/* THE PINK THREAD — the signature experience. One continuous magenta
+          line sewing the whole page together, drawn by scroll: signature →
+          portrait → proof → timeline rail → results divider → booking knot. */}
+      <PinkThread />
     </SmoothScroll>
   );
 }
