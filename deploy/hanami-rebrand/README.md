@@ -1,6 +1,6 @@
 # Hanami Medspa — Homepage Rebrand (Owner Preview)
 
-Proposed homepage rebuild by CHITTA DesignGod.
+Proposed homepage rebuild by The MetaMarketer.
 - **Live preview:** https://metaphysicalmaster.github.io/hanami-rebrand/
-- **Tech:** Next.js static export · Three.js / React Three Fiber + GSAP signature experience · Tailwind v4 · Framer Motion
-- Self-contained static site (`.nojekyll` keeps the `_next/` dir intact on Pages). Sample imagery marked as such.
+- **Tech:** Next.js static export · Three.js / R3F + GSAP signature experience · AI front-office demo surfaces · Tailwind v4
+- Self-contained static site. Sample imagery + concierge are demo previews.
