@@ -7,9 +7,11 @@ import { SoleInjector } from "@/components/mockups/hanami/SoleInjector";
 import { Services } from "@/components/mockups/hanami/Services";
 import { BeforeAfter } from "@/components/mockups/hanami/BeforeAfter";
 import { AwardsRail } from "@/components/mockups/hanami/AwardsRail";
+import { ReviewsWall } from "@/components/mockups/hanami/ReviewsWall";
 import { Financing } from "@/components/mockups/hanami/Financing";
 import { BookingCTA } from "@/components/mockups/hanami/BookingCTA";
 import { SiteFooter } from "@/components/mockups/hanami/SiteFooter";
+import { ConciergeWidget } from "@/components/mockups/hanami/ConciergeWidget";
 
 export default function HanamiPage() {
   return (
@@ -40,12 +42,23 @@ export default function HanamiPage() {
             second recognition beat competing with the trophy wall.) */}
         <AwardsRail />
         <Services />
+        {/* The reputation module — a tasteful, SMALL live-reviews wall on the
+            light surface. Deliberately the quiet sibling to the loud sumi-black
+            AwardsRail above (which it must NOT compete with): an aggregate
+            ★ 4.9 · Google lockup + a compact row of representative cards. */}
+        <ReviewsWall />
         <BeforeAfter />
         <Financing />
         <BookingCTA />
       </main>
 
       <SiteFooter />
+
+      {/* The front-desk / missed-call module — the page's single floating
+          affordance (the nav Book is sticky-TOP; there is no other bottom-right
+          bubble to collide with). A scripted, fully-canned concierge that demos
+          the missed-call → book flow; books & routes only, never advises. */}
+      <ConciergeWidget />
     </SmoothScroll>
   );
 }

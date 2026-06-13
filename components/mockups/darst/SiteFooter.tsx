@@ -131,6 +131,38 @@ export function SiteFooter() {
             practice&rsquo;s live site.
           </p>
         </div>
+
+        {/* MetaMarketer attribution + audit CTA — understated, the agency line
+            BENEATH the client footer so it never breaks the brand illusion
+            above it. This is the surface that makes the demo close for us. */}
+        <div className="mt-7 flex flex-col gap-3 border-t border-[var(--color-border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[0.78rem] text-[var(--color-fg-subtle)]">
+            Site &amp; Growth&nbsp;OS by{" "}
+            <span className="font-medium text-[var(--color-fg-muted)]">
+              The&nbsp;MetaMarketer
+            </span>
+            <span aria-hidden className="mx-2 text-[var(--color-border)]">
+              ·
+            </span>
+            <span className="italic">
+              the front office that never misses a patient.
+            </span>
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener"
+            className="group inline-flex items-center gap-1.5 self-start rounded-full border border-[var(--color-accent-deep)] px-4 py-2 text-[0.82rem] font-medium text-[var(--color-accent-deep)] transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-accent-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)] sm:self-auto"
+          >
+            Book a free Reactivation Audit
+            <span
+              aria-hidden
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </a>
+        </div>
       </div>
     </footer>
   );

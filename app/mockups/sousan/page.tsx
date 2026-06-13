@@ -11,6 +11,7 @@ import { Reviews } from "@/components/mockups/sousan/Reviews";
 import { Financing } from "@/components/mockups/sousan/Financing";
 import { Booking } from "@/components/mockups/sousan/Booking";
 import { SiteFooter } from "@/components/mockups/sousan/SiteFooter";
+import { Concierge } from "@/components/mockups/sousan/Concierge";
 
 export default function SousanPage() {
   return (
@@ -45,6 +46,12 @@ export default function SousanPage() {
           line sewing the whole page together, drawn by scroll: signature →
           portrait → proof → timeline rail → results divider → booking knot. */}
       <PinkThread />
+
+      {/* AI CONCIERGE — the Growth-OS "missed-call / front desk" demo surface.
+          The slug's SOLE bottom-right floating affordance (SiteNav is a top bar;
+          PinkThread is a pointer-events:none overlay), so there's no competing
+          bubble. Fully scripted + local-state; static-export safe. */}
+      <Concierge />
     </SmoothScroll>
   );
 }

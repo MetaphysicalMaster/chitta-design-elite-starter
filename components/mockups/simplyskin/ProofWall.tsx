@@ -1,10 +1,16 @@
 "use client";
 
 /**
- * ProofWall — a quiet wall of reviews/proof. Editorial pull-quotes in the
- * serif over near-white cards, a calm aggregate-rating strip, and an IG handle
- * cue (@simplyskinmedspa). Restrained masonry — no star-spam, no badges; the
- * confidence reads in the typography, not the noise.
+ * ProofWall — the LIVE REVIEWS WALL: the visible face of the Growth-OS
+ * "reputation" module. Editorial pull-quotes in the serif over near-white
+ * cards, a calm aggregate Google-rating strip framed as live (★ 4.9 · Google),
+ * a quiet local-ranking credibility line, and an IG handle cue. Restrained
+ * masonry — no star-spam, no badges; the confidence reads in the typography.
+ *
+ * COMPLIANCE: reviews are REPRESENTATIVE SAMPLES — marked plainly (the same
+ * honesty convention as the page's "sample" tags). Quotes are experience-
+ * flavored and generic; no fabricated named-patient clinical results, no
+ * before/after claims, no PHI (FTC-safe for a med-spa demo).
  */
 
 import { Reveal, SectionHeading } from "./primitives";
@@ -67,6 +73,19 @@ function Stars() {
   );
 }
 
+/* Google "G" glyph — kept monochrome in the brand ink so it reads as a quiet
+   source attribution, not a saturated logo dropped onto the editorial field. */
+function GoogleG() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+      <path d="M21.6 12.2c0-.7-.06-1.2-.18-1.74H12v3.16h5.4a4.6 4.6 0 0 1-2 3.02v2.5h3.24c1.9-1.74 3-4.3 3-7.94Z" />
+      <path d="M12 22c2.7 0 4.96-.9 6.62-2.42l-3.24-2.5c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.76-5.58-4.12H3.06v2.58A10 10 0 0 0 12 22Z" opacity="0.75" />
+      <path d="M6.42 13.92a6 6 0 0 1 0-3.84V7.5H3.06a10 10 0 0 0 0 9l3.36-2.58Z" opacity="0.55" />
+      <path d="M12 5.96c1.47 0 2.78.5 3.82 1.5l2.86-2.86C16.96 2.98 14.7 2 12 2A10 10 0 0 0 3.06 7.5l3.36 2.58C7.2 7.72 9.4 5.96 12 5.96Z" opacity="0.85" />
+    </svg>
+  );
+}
+
 export function ProofWall() {
   return (
     <section
@@ -76,14 +95,14 @@ export function ProofWall() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            eyebrow="In their words"
+            eyebrow="Live reviews"
             title={
               <>
                 Quietly,{" "}
                 <span className="font-display-em">obsessively</span> loved.
               </>
             }
-            lead="Word-of-mouth across the Indianapolis metro — the quiet kind of loyalty that medical-grade, understated care earns."
+            lead="Word-of-mouth across the Indianapolis metro — the quiet kind of loyalty that medical-grade, understated care earns, and the reputation that keeps SimplySkin near the top of local search."
           />
           <Reveal delay={0.08} className="lg:pb-2">
             <div className="flex items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[var(--glass-shadow)]">
@@ -92,8 +111,21 @@ export function ProofWall() {
                   <span className="font-display text-2xl tnum text-[var(--color-fg)]">4.9</span>
                   <Stars />
                 </p>
-                <p className="mt-1 text-xs text-[var(--color-fg-subtle)]">
-                  <span className="tnum">300+</span> Google reviews · @simplyskinmedspa · sample
+                <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs text-[var(--color-fg-subtle)]">
+                  <span className="inline-flex items-center gap-1 text-[var(--color-fg-muted)]">
+                    <GoogleG />
+                    Google
+                  </span>
+                  <span aria-hidden>·</span>
+                  <span><span className="tnum">300+</span> reviews</span>
+                  <span aria-hidden>·</span>
+                  <span className="inline-flex items-center gap-1">
+                    <span
+                      aria-hidden
+                      className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-success)]"
+                    />
+                    updating live
+                  </span>
                 </p>
               </div>
             </div>
@@ -152,6 +184,14 @@ export function ProofWall() {
             </a>
           </Reveal>
         </div>
+
+        {/* Compliance — representative sample disclosure (FTC-safe). */}
+        <Reveal delay={0.1}>
+          <p className="mt-10 text-center text-xs text-[var(--color-fg-subtle)]">
+            Representative reviews — sample copy shown for this design
+            demonstration. Live ratings sync from Google &amp; @simplyskinmedspa.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

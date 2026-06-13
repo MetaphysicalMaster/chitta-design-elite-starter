@@ -615,6 +615,34 @@
   opacity: 1;
 }
 
+/* ============================================================
+   Concierge (Growth-OS demo) — the typing-indicator dot bounce. Pure
+   transform/opacity, motion-gated: under reduced motion the dots simply rest
+   (fully opaque, no bounce) since the animation is only declared when motion is
+   allowed. The TypingBubble carries its own short lifespan, so this never loops
+   indefinitely in the live transcript.
+   ============================================================ */
+[data-brand="beautox-bar"] .bx-cc-dot {
+  opacity: 0.75;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="beautox-bar"] .bx-cc-dot {
+    animation: bx-cc-typing 1.1s ease-in-out infinite;
+  }
+}
+@keyframes bx-cc-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
 /* Respect reduced motion globally for decorative transforms. */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="beautox-bar"] * {

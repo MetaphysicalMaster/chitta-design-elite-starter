@@ -10,7 +10,7 @@ import { ProofWall } from "@/components/mockups/timeless/ProofWall";
 import { Financing } from "@/components/mockups/timeless/Financing";
 import { BookingCTA } from "@/components/mockups/timeless/BookingCTA";
 import { SiteFooter } from "@/components/mockups/timeless/SiteFooter";
-import { GuidedBooking } from "@/components/mockups/timeless/GuidedBooking";
+import { Concierge } from "@/components/mockups/timeless/Concierge";
 
 export default function TimelessPage() {
   return (
@@ -42,10 +42,13 @@ export default function TimelessPage() {
 
       <SiteFooter />
 
-      {/* The signature element: floating guided-booking launcher (elevates the
-          live site's "CHAT LIVE NOW" bot). Mounted once; the nav "Book" buttons
-          and #book section share the same flow. */}
-      <GuidedBooking />
+      {/* GROWTH-OS DEMO · the single floating element: the AI CONCIERGE — the
+          visible face of the missed-call / front-desk module. It opens with a
+          canned missed-call → book chat in the clinic's voice, then hands off to
+          the SAME guided-booking flow the nav "Book" buttons + #book section use.
+          (This replaces the old standalone launcher, so there is exactly one
+          floating bubble — no collision.) */}
+      <Concierge />
     </SmoothScroll>
   );
 }

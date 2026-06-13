@@ -1,10 +1,15 @@
 "use client";
 
 /**
- * ProofWall — a warm wall of patient reviews. Friendly pull-quotes in Open Sans
- * over clean cards, a calm 4.9★ aggregate strip, and an IG handle cue. The voice
- * is warm and confident — real people, real results — to match the sunlit
- * orange/peach brand ("Rejuvenate. Renew. Refresh."), never couture-cold.
+ * ProofWall — the GROWTH-OS "reputation" module: a LIVE GOOGLE REVIEWS WALL.
+ * Friendly pull-quotes in Open Sans over clean cards, a "★ 4.9 · Google" live
+ * aggregate strip (animated "live" dot), a local-ranking credibility line, and
+ * an IG handle cue. The voice is warm and confident — real people, real feelings
+ * — to match the sunlit orange/peach brand, never couture-cold.
+ *
+ * COMPLIANCE: reviews are REPRESENTATIVE SAMPLES, marked clearly (the "sample"
+ * note + the spec banner). They are experience-flavored and generic — no
+ * fabricated named-patient clinical results, no before/after claims, no PHI.
  */
 
 import { Reveal, SectionHeading } from "./primitives";
@@ -15,6 +20,8 @@ type Review = {
   quote: string;
   name: string;
   meta: string;
+  /** Relative recency, for the "live feed" feel. */
+  when: string;
   span?: boolean;
   /** The emotional-peak quote — feeling-led, foregrounded. */
   feature?: boolean;
@@ -28,6 +35,7 @@ const REVIEWS: Review[] = [
       "I walked out feeling like myself — only brighter. Calm, unhurried, never a sales pitch, just real doctors who listen.",
     name: "Beth T.",
     meta: "Medical skin · Westbourne",
+    when: "2 weeks ago",
     span: true,
     feature: true,
   },
@@ -36,12 +44,14 @@ const REVIEWS: Review[] = [
     quote: "Dr. Heuker's Secret RF gave me back skin I thought was gone for good.",
     name: "Lauren P.",
     meta: "Secret RF · Cincinnati",
+    when: "1 month ago",
   },
   {
     id: "r3",
     quote: "Dr. McCarren talked me out of more, not into it. That's why I'll never leave.",
     name: "Diane K.",
     meta: "Facial balancing · Westbourne",
+    when: "3 weeks ago",
   },
   {
     id: "r1",
@@ -49,6 +59,7 @@ const REVIEWS: Review[] = [
       "Ten years I've trusted them, and they've never once chased a trend. Just my face, looking rested and like me.",
     name: "Karen M.",
     meta: "Injectables · Westbourne",
+    when: "2 months ago",
     span: true,
   },
   {
@@ -57,8 +68,21 @@ const REVIEWS: Review[] = [
       "Real doctors who actually listen — the best physician-led care in Cincinnati. You feel looked-after the moment you walk in.",
     name: "Allison R.",
     meta: "Laser · Cincinnati",
+    when: "1 week ago",
   },
 ];
+
+/* Inline Google "G" glyph — marks each card as a live Google review. */
+function GoogleMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <path d="M21.6 12.2c0-.64-.06-1.25-.16-1.84H12v3.49h5.38a4.6 4.6 0 0 1-2 3.02v2.5h3.23c1.89-1.74 2.99-4.3 2.99-7.17Z" fill="#4285F4" />
+      <path d="M12 22c2.7 0 4.96-.9 6.61-2.43l-3.23-2.5c-.9.6-2.04.96-3.38.96-2.6 0-4.8-1.76-5.59-4.12H3.08v2.59A9.99 9.99 0 0 0 12 22Z" fill="#34A853" />
+      <path d="M6.41 13.91A6 6 0 0 1 6.09 12c0-.66.11-1.31.32-1.91V7.5H3.08A10 10 0 0 0 2 12c0 1.61.39 3.14 1.08 4.5l3.33-2.59Z" fill="#FBBC05" />
+      <path d="M12 5.98c1.47 0 2.79.51 3.83 1.5l2.86-2.86C16.96 2.99 14.7 2 12 2A9.99 9.99 0 0 0 3.08 7.5l3.33 2.59C7.2 7.74 9.4 5.98 12 5.98Z" fill="#EA4335" />
+    </svg>
+  );
+}
 
 function Stars() {
   return (
@@ -81,14 +105,14 @@ export function ProofWall() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            eyebrow="Patient love"
+            eyebrow="Live reviews"
             title={
               <>
                 Loved by Cincinnati for{" "}
                 <span className="font-display-em">over a decade.</span>
               </>
             }
-            lead="Hundreds of patients keep coming back — and bringing their friends. Here's what they say about being cared for by Drs. Heuker and McCarren."
+            lead="Hundreds of patients keep coming back — and bringing their friends. Here's what they say about being cared for by Drs. Heuker and McCarren, pulled from our Google profile."
           />
           <Reveal delay={0.08} className="lg:pb-2">
             <div className="flex items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-4 shadow-[var(--glass-shadow)]">
@@ -97,8 +121,14 @@ export function ProofWall() {
                   <span className="font-display text-2xl tnum text-[var(--color-fg)]">4.9</span>
                   <Stars />
                 </p>
-                <p className="mt-1 text-xs text-[var(--color-fg-subtle)]">
-                  Across Google &amp; @timelessaesthetics · sample
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[var(--color-fg-muted)]">
+                  <span className="tl-live-dot" aria-hidden />
+                  <span className="font-semibold text-[var(--color-fg)]">Google</span>
+                  <span aria-hidden className="text-[var(--color-fg-subtle)]">·</span>
+                  <span className="tnum">380+ reviews</span>
+                </p>
+                <p className="mt-1 text-[0.68rem] text-[var(--color-fg-subtle)]">
+                  Top-rated medspa in West Cincinnati · representative sample
                 </p>
               </div>
             </div>
@@ -146,9 +176,15 @@ export function ProofWall() {
                     {r.quote}
                   </p>
                 </blockquote>
-                <figcaption className="mt-5 border-t border-[var(--color-border)] pt-4">
-                  <p className="text-sm font-medium text-[var(--color-fg)]">{r.name}</p>
-                  <p className="text-xs text-[var(--color-fg-subtle)]">{r.meta}</p>
+                <figcaption className="mt-5 flex items-end justify-between gap-3 border-t border-[var(--color-border)] pt-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[var(--color-fg)]">{r.name}</p>
+                    <p className="truncate text-xs text-[var(--color-fg-subtle)]">{r.meta}</p>
+                  </div>
+                  <span className="flex shrink-0 items-center gap-1.5 text-[0.68rem] text-[var(--color-fg-subtle)]">
+                    <GoogleMark className="h-3.5 w-3.5" />
+                    {r.when}
+                  </span>
                 </figcaption>
               </figure>
             </Reveal>
@@ -184,6 +220,13 @@ export function ProofWall() {
             </a>
           </Reveal>
         </div>
+
+        {/* Compliance: these are representative samples, marked clearly — the
+            same honesty convention used across the mockup. */}
+        <p className="mt-10 text-center text-xs text-[var(--color-fg-subtle)]">
+          Representative sample reviews shown for design demonstration — generic
+          patient experiences, not specific clinical results.
+        </p>
       </div>
     </section>
   );

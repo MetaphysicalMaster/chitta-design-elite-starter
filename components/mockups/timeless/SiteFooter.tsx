@@ -107,6 +107,30 @@ export function SiteFooter() {
             Pitch mockup — sample copy &amp; imagery for design demonstration only.
           </p>
         </div>
+
+        {/* GROWTH-OS DEMO · MetaMarketer attribution + "Book the Audit" CTA.
+            Editorial + understated, set below the client fine print so it never
+            breaks the client-brand illusion above it. */}
+        <div className="mt-6 flex flex-col items-start gap-3 border-t border-dashed border-[var(--color-border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-[var(--color-fg-subtle)]">
+            Site + Growth OS by{" "}
+            <span className="font-semibold text-[var(--color-fg-muted)]">
+              The MetaMarketer
+            </span>{" "}
+            — the front office that books while you work.
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-subtle)] px-4 py-2 text-xs font-semibold text-[var(--color-accent-deep)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+          >
+            Book a free Reactivation Audit
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
+              →
+            </span>
+          </a>
+        </div>
       </div>
     </footer>
   );

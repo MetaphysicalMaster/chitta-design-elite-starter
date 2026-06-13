@@ -11,6 +11,7 @@ import { Financing } from "@/components/mockups/beautox-bar/Financing";
 import { Booking } from "@/components/mockups/beautox-bar/Booking";
 import { SiteFooter } from "@/components/mockups/beautox-bar/SiteFooter";
 import { MobileBookingBar } from "@/components/mockups/beautox-bar/MobileBookingBar";
+import { Concierge } from "@/components/mockups/beautox-bar/Concierge";
 
 export default function BeautoxBarPage() {
   return (
@@ -49,6 +50,14 @@ export default function BeautoxBarPage() {
       {/* Mobile-only sticky booking bar — appears after the hero, hides over the
           booking module. Thumb-reachable Book + Text for the mobile-first buyer. */}
       <MobileBookingBar />
+
+      {/* AI Concierge — the visible face of the Growth-OS "missed-call / front
+          desk" module and the centerpiece of the pitch demo. The single
+          bottom-right floating element; on mobile it lifts above the booking bar
+          (watches the same #top/#book anchors) so the two never stack. Fully
+          canned, local-state — books / qualifies / routes only, no medical advice,
+          static-export safe. */}
+      <Concierge />
     </SmoothScroll>
   );
 }

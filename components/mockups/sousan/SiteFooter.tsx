@@ -134,6 +134,52 @@ export function SiteFooter() {
           </p>
         </div>
       </div>
+
+      {/* MetaMarketer attribution — the demo site quietly closes for US. Kept
+          editorial + understated, on its own faint sub-rail BELOW the client
+          footer so it never competes with the client-brand illusion above. */}
+      <AuditCredit />
     </footer>
+  );
+}
+
+/**
+ * AuditCredit — "Site + Growth OS by The MetaMarketer" + a free Reactivation
+ * Audit CTA. The pitch-site's own quiet close: a faint sub-rail beneath the
+ * client footer, editorial and small, so the client-brand illusion stays
+ * intact. External link opens in a new tab with rel="noopener". The href is a
+ * static placeholder (no env, no fetch) — static-export safe.
+ */
+function AuditCredit() {
+  return (
+    <div className="border-t border-[oklch(100%_0_0_/_0.08)] bg-[var(--night-0)]">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-5 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-left">
+        <p className="text-[0.76rem] leading-relaxed text-[oklch(74%_0_0_/_0.6)]">
+          Site &amp; Growth&nbsp;OS by{" "}
+          <span className="font-medium text-[oklch(90%_0_0_/_0.82)]">
+            The&nbsp;MetaMarketer
+          </span>{" "}
+          — the AI front office for modern med spas.
+        </p>
+        <a
+          href="https://themetamarketer.com/start"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            "group inline-flex items-center gap-1.5 rounded-full border border-[oklch(100%_0_0_/_0.18)] px-4 py-2 text-[0.78rem] font-medium text-[oklch(92%_0_0_/_0.86)]",
+            "transition-colors hover:border-[var(--gold-bright)] hover:text-[var(--gold-bright)]",
+            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",
+          )}
+        >
+          Book a free Reactivation Audit
+          <span
+            aria-hidden
+            className="transition-transform duration-300 group-hover:translate-x-0.5"
+          >
+            →
+          </span>
+        </a>
+      </div>
+    </div>
   );
 }

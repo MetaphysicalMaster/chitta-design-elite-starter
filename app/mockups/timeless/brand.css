@@ -389,6 +389,36 @@
   100% { transform: scale(1.7); opacity: 0; }
 }
 
+/* "Live" pulse dot — marks the live Google reviews aggregate (and any live
+   feed cue). A soft green core with a one-and-done expanding halo; halo is
+   reduced-motion gated, the dot itself is always painted. */
+[data-brand="timeless"] .tl-live-dot {
+  position: relative;
+  display: inline-block;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background: var(--color-success);
+}
+[data-brand="timeless"] .tl-live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--color-success);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="timeless"] .tl-live-dot::after {
+    animation: tl-live 2.4s ease-out infinite;
+  }
+}
+@keyframes tl-live {
+  0% { transform: scale(1); opacity: 0.55; }
+  70% { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
 /* Step progress dots for the guided flow. */
 [data-brand="timeless"] .tl-step-dot {
   height: 0.4rem;

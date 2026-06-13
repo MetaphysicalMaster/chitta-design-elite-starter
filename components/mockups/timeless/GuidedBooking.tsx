@@ -142,20 +142,29 @@ type Answers = Record<StepKey, string | null>;
 const EMPTY: Answers = { treatment: null, provider: null, location: null, when: null };
 
 /* ------------------------------------------------------------------ *
- * The guided flow body — shared by the floating panel + inline mode. *
+ * The guided flow body — shared by the floating panel + inline mode  *
+ * + the AI Concierge hand-off (Concierge.tsx). Exported so the        *
+ * concierge can drop the SAME booking flow after the canned chat,     *
+ * keeping one booking experience across the whole site.               *
  * ------------------------------------------------------------------ */
-function GuidedFlow({
+export function GuidedFlow({
   onClose,
   titleId,
   autoFocusFirst,
+  header = true,
+  prefill,
 }: {
   onClose?: () => void;
   titleId: string;
   autoFocusFirst?: boolean;
+  /** Hide the internal header (the concierge supplies its own chrome). */
+  header?: boolean;
+  /** Seed an answer (e.g. treatment chosen in the concierge chat). */
+  prefill?: Partial<Answers>;
 }) {
   const prefersReduced = useReducedMotion();
   const [stepIdx, setStepIdx] = useState(0);
-  const [answers, setAnswers] = useState<Answers>(EMPTY);
+  const [answers, setAnswers] = useState<Answers>(() => ({ ...EMPTY, ...prefill }));
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [done, setDone] = useState(false);
@@ -203,7 +212,7 @@ function GuidedFlow({
   };
 
   const reset = () => {
-    setAnswers(EMPTY);
+    setAnswers({ ...EMPTY, ...prefill });
     setName("");
     setPhone("");
     setStepIdx(0);
@@ -217,6 +226,7 @@ function GuidedFlow({
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* Header */}
+      {header && (
       <div className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] px-5 py-4 sm:px-6">
         <div className="flex items-center gap-3">
           <span
@@ -253,6 +263,7 @@ function GuidedFlow({
           </button>
         )}
       </div>
+      )}
 
       {/* Progress */}
       {!done && (
@@ -568,9 +579,10 @@ function Field({
 }
 
 /* ------------------------------------------------------------------ *
- * Focus trap helper — keeps Tab inside the panel while open.         *
+ * Focus trap helper — keeps Tab inside the panel while open. Exported *
+ * so the AI Concierge (Concierge.tsx) reuses the SAME trap + Esc.     *
  * ------------------------------------------------------------------ */
-function useFocusTrap(
+export function useFocusTrap(
   active: boolean,
   containerRef: React.RefObject<HTMLElement | null>,
   onEscape: () => void,
@@ -612,116 +624,14 @@ function useFocusTrap(
 }
 
 /* ------------------------------------------------------------------ *
- * The floating launcher + dialog panel — mount once near the root.   *
+ * NOTE: the single floating launcher + dialog panel now lives in       *
+ * Concierge.tsx — it owns the ONE bottom-right element on this page    *
+ * and opens with the canned missed-call concierge chat, then hands off *
+ * to <GuidedFlow /> (above) so there is exactly one booking surface.   *
+ * `openBooking()`, the event bus, GuidedFlow, useFocusTrap + the inline *
+ * card all stay here and are consumed by SiteNav / BookingCTA /        *
+ * Concierge unchanged.                                                 *
  * ------------------------------------------------------------------ */
-export function GuidedBooking() {
-  const prefersReduced = useReducedMotion();
-  const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const invokerRef = useRef<HTMLElement | null>(null);
-  const launcherRef = useRef<HTMLButtonElement | null>(null);
-  const titleId = useId();
-
-  // Open from anywhere via the event bus; remember the invoking element.
-  useEffect(() => {
-    const onOpen = () => {
-      invokerRef.current = (document.activeElement as HTMLElement) ?? null;
-      setOpen(true);
-    };
-    window.addEventListener(OPEN_EVENT, onOpen as EventListener);
-    return () => window.removeEventListener(OPEN_EVENT, onOpen as EventListener);
-  }, []);
-
-  const close = useCallback(() => setOpen(false), []);
-  useFocusTrap(open, panelRef, close);
-
-  // Lock body scroll while open; return focus on close.
-  useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
-    // returning focus to the invoker (or launcher) after close
-    const target = invokerRef.current ?? launcherRef.current;
-    target?.focus?.();
-  }, [open]);
-
-  const openSelf = () => {
-    invokerRef.current = launcherRef.current;
-    setOpen(true);
-  };
-
-  return (
-    <>
-      {/* Floating launcher — the home of the old "CHAT LIVE NOW" bot. */}
-      <button
-        ref={launcherRef}
-        type="button"
-        onClick={openSelf}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        className={cn(
-          "group fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 rounded-full pl-4 pr-5 py-3.5 sm:bottom-6 sm:right-6",
-          "bg-[var(--color-accent)] text-[var(--color-accent-fg)] font-semibold",
-          "shadow-[0_18px_44px_-14px_oklch(60%_0.15_52_/_0.85)] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.96]",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
-          open && "pointer-events-none opacity-0",
-        )}
-      >
-        <span className="relative grid h-7 w-7 place-items-center">
-          {!prefersReduced && <span className="tl-launch-pulse" aria-hidden />}
-          <svg viewBox="0 0 24 24" className="relative h-6 w-6" fill="none" aria-hidden>
-            <path d="M5 5h14v10H9l-4 4V5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-            <circle cx="9.5" cy="10" r="1" fill="currentColor" />
-            <circle cx="12.5" cy="10" r="1" fill="currentColor" />
-            <circle cx="15.5" cy="10" r="1" fill="currentColor" />
-          </svg>
-        </span>
-        <span className="text-sm">Book with us</span>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 z-50 bg-[oklch(33%_0.03_50_/_0.42)] backdrop-blur-sm"
-              initial={prefersReduced ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: prefersReduced ? 0 : 0.22 }}
-              onClick={close}
-              aria-hidden
-            />
-            {/* Panel */}
-            <motion.div
-              ref={panelRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={titleId}
-              initial={prefersReduced ? false : { opacity: 0, y: 24, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
-              transition={{ duration: prefersReduced ? 0 : 0.34, ease: [0.16, 1, 0.3, 1] }}
-              className={cn(
-                "fixed z-50 flex flex-col overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-elevated)]",
-                // mobile: bottom sheet; sm+: anchored bottom-right card
-                "inset-x-0 bottom-0 max-h-[88svh] rounded-t-[1.75rem]",
-                "sm:inset-x-auto sm:bottom-6 sm:right-6 sm:max-h-[min(40rem,86svh)] sm:w-[26rem] sm:rounded-[1.5rem]",
-                "shadow-[0_40px_90px_-30px_oklch(40%_0.1_50_/_0.5)]",
-              )}
-            >
-              <GuidedFlow onClose={close} titleId={titleId} />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
 
 /* ------------------------------------------------------------------ *
  * Embedded section variant — the same guided flow as an in-page card *

@@ -45,8 +45,11 @@ export function SiteFooter() {
     >
       <div className="ruler-ticks h-1.5 w-full opacity-20" aria-hidden />
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
-        {/* Top: brand + booking nudge */}
-        <div className="flex flex-col gap-8 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
+        {/* Top: brand + booking nudge.
+            lg:pr-40 reserves a right gutter so the "Book in 30 seconds" CTA
+            never slides under the fixed concierge launcher (bottom-right,
+            ~right:16px + ≤~130px wide) at any scroll position / desktop width. */}
+        <div className="flex flex-col gap-8 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between lg:pr-40">
           <div>
             <Link href="#top" aria-label="Happy Clinic Denver — home" className="inline-flex">
               <HappyLogo tone="dark" size="lg" />
@@ -148,6 +151,35 @@ export function SiteFooter() {
             content. BOTOX®, JUVÉDERM® &amp; Dysport® are registered trademarks of
             their respective owners.
           </p>
+        </div>
+
+        {/* MetaMarketer attribution + audit CTA — the demo site closing for US.
+            Deliberately the quietest line on the page: a hairline-separated
+            editorial credit beneath the client's own legal row, so it never
+            competes with the Happy Clinic illusion above it. */}
+        <div className="mt-8 flex flex-col items-center gap-3 border-t border-white/[0.06] pt-7 text-center sm:flex-row sm:justify-between sm:text-left lg:pr-40">
+          <p className="text-[0.7rem] leading-relaxed text-white/40">
+            Site &amp; Growth&nbsp;OS by{" "}
+            <span className="font-semibold tracking-tight text-white/65">
+              The MetaMarketer
+            </span>{" "}
+            — the front-office engine behind the concierge, reviews &amp; booking
+            you just used.
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener"
+            className="hc-press group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-[0.72rem] font-semibold text-white/75 transition-colors hover:border-white/30 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Book a free Reactivation Audit
+            <span
+              aria-hidden
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </a>
         </div>
       </div>
     </footer>

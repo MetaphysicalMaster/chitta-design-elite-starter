@@ -632,6 +632,32 @@
     0 14px 34px -20px oklch(10% 0 0 / 0.6);
 }
 
+/* ============================================================
+   CONCIERGE WIDGET — the "typing" dots while a scripted line "arrives".
+   A gentle three-dot bounce; reduced-motion holds them at a soft steady
+   opacity (no bounce), so the indicator still reads without animation.
+   ============================================================ */
+[data-brand="hanami"] .hn-typing-dot {
+  opacity: 0.45;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="hanami"] .hn-typing-dot {
+    animation: hn-typing 1.1s ease-in-out infinite;
+  }
+}
+@keyframes hn-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 0.95;
+  }
+}
+
 /* Respect reduced motion globally for decorative transforms. */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="hanami"] * {

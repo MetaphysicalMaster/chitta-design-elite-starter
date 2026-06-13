@@ -661,6 +661,44 @@
   }
 }
 
+/* ============================================================
+   AI Concierge widget (ConciergeWidget) — the Growth-OS "missed-call /
+   front-desk" demo surface. A soft "unread" ping on the launcher and a
+   three-dot "typing" indicator in the transcript. Both are decorative and
+   gated to no-preference: under reduced motion the classes are simply not
+   applied (the element holds a calm static state).
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="happy-clinic"] .hc-concierge-ping {
+    animation: hc-concierge-ping 2.4s ease-in-out infinite;
+  }
+  [data-brand="happy-clinic"] .hc-concierge-dot {
+    animation: hc-concierge-dot 1.1s ease-in-out infinite;
+  }
+}
+@keyframes hc-concierge-ping {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.75;
+  }
+}
+@keyframes hc-concierge-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
 /* Respect reduced motion globally for decorative transforms. */
 @media (prefers-reduced-motion: reduce) {
   [data-brand="happy-clinic"] * {

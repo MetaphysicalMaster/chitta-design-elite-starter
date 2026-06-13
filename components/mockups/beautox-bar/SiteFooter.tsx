@@ -89,7 +89,26 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-[var(--glass-border-dark)] pt-7 text-xs text-[oklch(78%_0.008_350_/_0.66)] sm:flex-row sm:items-center sm:justify-between">
+        {/* MetaMarketer attribution + audit CTA — the line that makes the demo
+            site close for US. Understated, editorial, on its own hairline so it
+            never competes with the client brand above it. */}
+        <div className="mt-14 flex flex-col gap-4 border-t border-[var(--glass-border-dark)] pt-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-[oklch(82%_0.008_350_/_0.72)]">
+            <span className="text-[oklch(70%_0.008_350_/_0.6)]">Site &amp; Growth OS by</span>{" "}
+            <span className="font-semibold text-[var(--color-bg)]">The MetaMarketer</span>
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener"
+            className="group inline-flex items-center gap-2 self-start rounded-full border border-[oklch(80%_0.04_350_/_0.32)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:border-[var(--color-accent-bright)] hover:text-[var(--color-accent-bright)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-bright)] sm:self-auto"
+          >
+            Book a free Reactivation Audit
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
+
+        <div className="mt-7 flex flex-col gap-3 border-t border-[var(--glass-border-dark)] pt-7 text-xs text-[oklch(78%_0.008_350_/_0.66)] sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {BRAND.name}. Sample pitch mockup — imagery &amp; pricing are
             placeholders for illustration.

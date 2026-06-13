@@ -14,6 +14,7 @@ import { SplitFlapBoard } from "@/components/mockups/darst/SplitFlapBoard";
 import { Financing } from "@/components/mockups/darst/Financing";
 import { Booking } from "@/components/mockups/darst/Booking";
 import { SiteFooter } from "@/components/mockups/darst/SiteFooter";
+import { Concierge } from "@/components/mockups/darst/Concierge";
 
 export default function DarstPage() {
   return (
@@ -68,6 +69,13 @@ export default function DarstPage() {
       </main>
 
       <SiteFooter />
+
+      {/* AI front-desk concierge — the visible face of the Growth-OS
+          "never miss a patient" module. A fixed bottom-right launcher opening
+          a scripted, fully-canned missed-call → book demo in the practice's
+          voice. The slug's ONLY floating bottom-right element (z-[70], clear of
+          the top nav at z-50 and the pointer-events:none reticle at z-80). */}
+      <Concierge />
     </SmoothScroll>
   );
 }

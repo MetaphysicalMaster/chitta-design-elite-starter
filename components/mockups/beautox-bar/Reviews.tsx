@@ -1,9 +1,16 @@
 "use client";
 
 /**
- * Reviews — a candy proof wall of regulars' quotes across the bars, plus an
- * aggregate badge. Witty, warm voice that matches the brand. Masonry-ish grid,
- * staggered in. Reduced-motion safe. Sample testimonials, clearly noted.
+ * Reviews — the LIVE REVIEWS WALL: the visible face of the Growth-OS "reputation"
+ * module. A candy proof wall of regulars' quotes across the bars, framed with a
+ * live "★ 4.9 · Google" aggregate badge and a local-ranking credibility line
+ * (reputation is the #1 conversion lever for local aesthetics). Witty, warm voice
+ * that matches the brand. Reduced-motion safe.
+ *
+ * COMPLIANCE: the cards are REPRESENTATIVE SAMPLES — clearly marked (badge + per-
+ * card "sample" chip + footnote), experience-flavored and generic. No fabricated
+ * named-patient clinical results, no before/after claims, no PHI (FTC). Real
+ * Google / Instagram reviews stream in on launch.
  */
 
 import { RevealGroup, RevealItem, SectionHeading } from "./primitives";
@@ -97,22 +104,21 @@ export function Reviews() {
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            eyebrow="The regulars"
+            eyebrow="The regulars · live reviews"
             title={
               <>
                 Loved at <span className="candy-text">both bars.</span>
               </>
             }
-            lead="A sample of the kind of words regulars leave — your real Google & Instagram reviews drop straight in on launch."
+            lead="The Growth-OS reputation wall streams your real Google & Instagram reviews straight onto the page — the proof that wins the local search and turns lookers into bookings. Below is a representative sample of how it reads."
           />
+          {/* Live aggregate badge — reads as a Google rating card, the #1 trust
+              lever for a local aesthetics buyer. Honest: the 4.9 + count are
+              illustrative until the client's real feed is wired in on launch. */}
           <div className="flex items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-4 shadow-[var(--glass-shadow)]">
-            <span className="font-display text-4xl text-[var(--color-accent-deep)] tnum">5.0</span>
+            <span className="font-display text-4xl text-[var(--color-accent-deep)] tnum">4.9</span>
             <div>
               <Stars />
-              {/* Source-credible scaffolding: a recognizable Google + Instagram
-                  mark beside the rating (the top conversion lever for local
-                  aesthetics), with the real review count wired in on launch — no
-                  invented number, matching the honest "client-to-supply" pattern. */}
               <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-[var(--color-fg-muted)]">
                 <span className="inline-flex items-center gap-1 font-semibold text-[var(--color-fg)]">
                   <GoogleGlyph /> Google
@@ -122,11 +128,26 @@ export function Reviews() {
                   <InstagramGlyph /> Instagram
                 </span>
                 <span aria-hidden className="text-[var(--color-border)]">·</span>
-                <span className="uppercase tracking-[0.14em]">— reviews · client to confirm</span>
+                {/* "live" pulse — the reputation module is wired + watching */}
+                <span className="inline-flex items-center gap-1.5 uppercase tracking-[0.14em]">
+                  <span className="relative flex h-1.5 w-1.5" aria-hidden>
+                    <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-[var(--color-success)] opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-success)]" />
+                  </span>
+                  Live · sample
+                </span>
               </p>
             </div>
           </div>
         </div>
+
+        {/* Local-ranking credibility line — ties reputation to the lever the
+            buyer actually feels: showing up #1 in the Twin Cities map pack. */}
+        <p className="mt-6 max-w-3xl text-sm text-[var(--color-fg-muted)]">
+          Fresh five-star reviews are what push you to the top of &ldquo;Botox near me&rdquo;
+          across Maple Grove &amp; White Bear Lake — Growth-OS asks every happy guest for one
+          and surfaces them here automatically.
+        </p>
 
         <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {REVIEWS.map((r) => (
@@ -139,7 +160,17 @@ export function Reviews() {
                     : "border-[var(--color-border)]",
                 )}
               >
-                <Stars />
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Stars />
+                    <GoogleGlyph />
+                  </span>
+                  {/* Per-card honesty marker (FTC): representative sample, not a
+                      verbatim named-patient testimonial. */}
+                  <span className="rounded-full bg-[var(--color-bg-subtle)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-[var(--color-fg-subtle)]">
+                    Sample
+                  </span>
+                </div>
                 <blockquote className="mt-4 flex-1 text-[0.95rem] leading-relaxed text-[var(--color-fg)]">
                   &ldquo;{r.quote}&rdquo;
                 </blockquote>
@@ -159,6 +190,14 @@ export function Reviews() {
             </RevealItem>
           ))}
         </RevealGroup>
+
+        {/* FTC honesty footnote — representative samples; real verified reviews
+            replace these on launch. Generic & experience-flavored; no fabricated
+            clinical results, no before/after claims, no patient PHI. */}
+        <p className="mt-8 text-center text-xs text-[var(--color-fg-subtle)]">
+          Representative sample reviews shown for illustration — your real, verified
+          Google &amp; Instagram reviews stream in automatically on launch.
+        </p>
       </div>
     </section>
   );

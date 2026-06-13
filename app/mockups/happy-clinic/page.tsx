@@ -11,6 +11,7 @@ import { Financing } from "@/components/mockups/happy-clinic/Financing";
 import { BookingCTA } from "@/components/mockups/happy-clinic/BookingCTA";
 import { SiteFooter } from "@/components/mockups/happy-clinic/SiteFooter";
 import { MobileActionBar } from "@/components/mockups/happy-clinic/MobileActionBar";
+import { ConciergeWidget } from "@/components/mockups/happy-clinic/ConciergeWidget";
 
 export default function HappyClinicPage() {
   return (
@@ -58,6 +59,15 @@ export default function HappyClinicPage() {
       {/* Mobile-only sticky Book + Call — the conversion path never scrolls away
           on the device where med-spa traffic actually is. Hidden on lg+. */}
       <MobileActionBar />
+
+      {/* AI Concierge — the visible face of the Growth-OS missed-call / front-desk
+          module and the centerpiece of the pitch demo. A fixed bottom-right
+          launcher that opens a scripted, fully-canned booking chat in the
+          clinic's voice. The ONLY bottom-right floater: on mobile it's lifted
+          above the MobileActionBar (which owns bottom:0) so the two never
+          collide; on lg+ the action bar is hidden and the launcher owns the
+          corner. Books & routes only — never medical advice. */}
+      <ConciergeWidget />
     </SmoothScroll>
   );
 }

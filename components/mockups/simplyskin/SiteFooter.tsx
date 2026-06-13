@@ -122,6 +122,30 @@ export function SiteFooter() {
             Pitch mockup — sample copy &amp; imagery for design demonstration only.
           </p>
         </div>
+
+        {/* MetaMarketer attribution + audit CTA — the quiet close that lets the
+            demo site sell us. Understated editorial credit; deliberately set
+            below the client fine print so it never breaks the brand illusion
+            above it. Opens in a new tab, no referrer leak. */}
+        <div className="mt-7 flex flex-col items-start gap-x-4 gap-y-2 border-t border-[var(--color-border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[0.7rem] uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
+            Site &amp; Growth OS by{" "}
+            <span className="font-medium text-[var(--color-fg-muted)]">
+              The MetaMarketer
+            </span>
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 text-xs font-medium text-[var(--color-accent-deep)] underline-offset-4 transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+          >
+            Book a free Reactivation Audit
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
+              →
+            </span>
+          </a>
+        </div>
       </div>
     </footer>
   );

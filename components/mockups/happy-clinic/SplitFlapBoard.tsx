@@ -123,6 +123,102 @@ function initials(name: string) {
   return name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
 }
 
+/* Aggregate-rating band — the visible face of the Growth-OS "reputation"
+   module. Frames the wall as live Google reviews (a "★ 4.9 · Google" feel) and
+   ties one line to local ranking / credibility. Counts are representative
+   sample figures for this mockup (marked beneath the board with the existing
+   honesty convention). No fabricated named-patient clinical claims. */
+const AGGREGATE = {
+  rating: "4.9",
+  count: "300+",
+  source: "Google",
+} as const;
+
+function RatingHeader() {
+  return (
+    <Reveal className="mt-10 sm:mt-12">
+      <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-6 text-center shadow-[0_18px_46px_-30px_oklch(28.1%_0.07_252_/_0.45)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
+        {/* Big aggregate score */}
+        <div className="flex items-center gap-3">
+          <span className="font-display text-5xl leading-none text-[var(--color-accent-deep)]">
+            {AGGREGATE.rating}
+          </span>
+          <span className="flex flex-col items-start">
+            <span
+              aria-hidden
+              className="flex items-center gap-0.5 text-[var(--color-gold-deep)]"
+            >
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg
+                  key={i}
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="currentColor"
+                  aria-hidden
+                >
+                  <path d="M12 2.4l2.86 5.8 6.4.93-4.63 4.52 1.1 6.38L12 17.5l-5.73 3.01 1.1-6.38L2.74 9.6l6.4-.93z" />
+                </svg>
+              ))}
+            </span>
+            <span className="mt-1 text-xs font-medium text-[var(--color-fg-muted)]">
+              <span className="tnum font-semibold text-[var(--color-fg)]">
+                {AGGREGATE.count}
+              </span>{" "}
+              reviews
+            </span>
+          </span>
+        </div>
+
+        {/* divider */}
+        <span
+          aria-hidden
+          className="hidden h-12 w-px bg-[var(--color-border)] sm:block"
+        />
+
+        {/* Source + local-ranking credibility line */}
+        <div className="max-w-xs">
+          <p className="flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--color-fg)] sm:justify-start">
+            <GoogleGlyph className="h-4 w-4" />
+            Rated {AGGREGATE.rating} on {AGGREGATE.source}
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-[var(--color-fg-muted)]">
+            Among Denver&rsquo;s most-reviewed injectors — the kind of standing
+            that puts a practice at the top of the map for{" "}
+            <span className="font-medium text-[var(--color-fg)]">
+              &ldquo;Botox near me.&rdquo;
+            </span>
+          </p>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+/* A tiny, brand-tinted Google "G" glyph — recognizable without using the
+   trademarked four-color logo. */
+function GoogleGlyph({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <path
+        d="M21.6 12.2c0-.64-.06-1.25-.16-1.84H12v3.48h5.4a4.62 4.62 0 0 1-2 3.03v2.5h3.23c1.89-1.74 2.97-4.3 2.97-7.17Z"
+        fill="var(--color-accent)"
+      />
+      <path
+        d="M12 22c2.7 0 4.96-.9 6.63-2.43l-3.24-2.5c-.9.6-2.04.96-3.39.96-2.6 0-4.8-1.76-5.59-4.12H3.07v2.58A10 10 0 0 0 12 22Z"
+        fill="var(--color-accent-deep)"
+      />
+      <path
+        d="M6.41 13.91a5.99 5.99 0 0 1 0-3.82V7.51H3.07a10 10 0 0 0 0 8.98l3.34-2.58Z"
+        fill="var(--color-accent-bright)"
+      />
+      <path
+        d="M12 5.98c1.47 0 2.79.5 3.83 1.5l2.87-2.87C16.95 2.98 14.7 2 12 2A10 10 0 0 0 3.07 7.51l3.34 2.58C7.2 7.74 9.4 5.98 12 5.98Z"
+        fill="var(--color-gold-deep)"
+      />
+    </svg>
+  );
+}
+
 /* The static hero pull-quote — a larger serif treatment, NOT flipping, so the
    highest-dwell proof surface is the most legible thing in the section. */
 function HeroQuote() {
@@ -327,17 +423,22 @@ export function SplitFlapBoard() {
     >
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
         <SectionHeading
-          eyebrow="In patients' words"
+          eyebrow="Live reviews wall"
           title={
             <>
-              The reviews that matter speak to{" "}
+              A live wall of voices, all saying the same thing:{" "}
               <span className="font-display-em text-[var(--color-fg)]">
                 natural, never overdone.
               </span>
             </>
           }
-          lead="One patient in her own words — beside a live wall of voices, curated to lead with what Happy Clinic is known for: subtle, physician-administered results that look like you, only refreshed."
+          lead="The reputation engine pulls real Google reviews into one living wall — curated to lead with what Happy Clinic is known for: subtle, physician-administered results that look like you, only refreshed."
         />
+
+        {/* Aggregate rating band — the "reputation module" face: ★ 4.9 · Google
+            + a local-ranking credibility line. Sits above the proof so the
+            score frames everything beneath it. */}
+        <RatingHeader />
 
         {/* The anchored, legible quote first — substance — then the kinetic
             board beneath as the "wall of voices" spectacle. */}
@@ -364,9 +465,10 @@ export function SplitFlapBoard() {
 
         <Reveal delay={0.05}>
           <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-[var(--color-fg-subtle)]">
-            Reviews are representative samples for this mockup. The board flips a
-            new quote every 1.5 seconds; verified patient reviews would rotate
-            here, curated to lead with natural, subtle results.
+            Rating, review count and quotes are representative samples for this
+            mockup. The board flips a new quote every 1.5 seconds; in the live
+            Growth&nbsp;OS, verified Google reviews would sync and rotate here —
+            curated to lead with natural, subtle results.
           </p>
         </Reveal>
       </div>

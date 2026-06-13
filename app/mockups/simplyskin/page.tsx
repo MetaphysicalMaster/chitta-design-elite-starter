@@ -11,6 +11,7 @@ import { ProofWall } from "@/components/mockups/simplyskin/ProofWall";
 import { Financing } from "@/components/mockups/simplyskin/Financing";
 import { BookingCTA } from "@/components/mockups/simplyskin/BookingCTA";
 import { SiteFooter } from "@/components/mockups/simplyskin/SiteFooter";
+import { Concierge } from "@/components/mockups/simplyskin/Concierge";
 
 export default function SimplySkinPage() {
   return (
@@ -45,6 +46,11 @@ export default function SimplySkinPage() {
       </main>
 
       <SiteFooter />
+
+      {/* AI Concierge — the visible face of the Growth-OS missed-call / front
+          desk module. A single fixed bottom-right launcher (z-40, below the
+          nav) opening a scripted book/route demo. No second floating pill. */}
+      <Concierge />
     </SmoothScroll>
   );
 }

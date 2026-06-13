@@ -240,6 +240,58 @@ function PanelText({ review }: { review: Review }) {
   );
 }
 
+/* Five stars with a fractional fill (4.9 → last star ~90% gold) — the aggregate
+   review-rating glyph, in the brand's warm-gold register. Decorative; the real
+   value is announced in adjacent text + the aria-label here. */
+function Stars({ value }: { value: number }) {
+  const pct = Math.max(0, Math.min(100, (value / 5) * 100));
+  return (
+    <span
+      className="relative inline-block leading-none"
+      role="img"
+      aria-label={`${value} out of 5 stars`}
+    >
+      {/* empty track */}
+      <span aria-hidden className="flex text-[1.05rem] text-[var(--color-border)]">
+        {"★★★★★"}
+      </span>
+      {/* gold fill clipped to the percentage */}
+      <span
+        aria-hidden
+        className="absolute inset-0 flex overflow-hidden text-[1.05rem] text-[var(--color-warning)]"
+        style={{ width: `${pct}%` }}
+      >
+        {"★★★★★"}
+      </span>
+    </span>
+  );
+}
+
+/* A small Google "G" mark (brand colors), so the aggregate reads as a Google
+   rating at a glance. Inline SVG — no external asset, static-export-safe. */
+function GoogleG() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" aria-hidden>
+      <path
+        fill="#4285F4"
+        d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.26-2.09 3.56-5.17 3.56-8.87Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.3v3.09A12 12 0 0 0 12 24Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.27 14.29A7.21 7.21 0 0 1 4.89 12c0-.8.14-1.57.38-2.29V6.62H1.3A12 12 0 0 0 0 12c0 1.94.46 3.77 1.3 5.38l3.97-3.09Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.3 6.62l3.97 3.09C6.22 6.86 8.87 4.75 12 4.75Z"
+      />
+    </svg>
+  );
+}
+
 export function SplitFlapBoard() {
   const prefersReduced = useReducedMotion();
   const reduced = !!prefersReduced;
@@ -303,7 +355,51 @@ export function SplitFlapBoard() {
           lead="Not a star average — the proof behind the credential: patient voices curated to the outcomes that matter, catches made early, conditions finally explained, decades of continuity."
         />
 
-        <Reveal className="mt-14 sm:mt-16">
+        {/* Live-reviews aggregate — the visible face of the Growth-OS reputation
+            module. A Google-flavored rating bar ties the board to real local
+            credibility, then the rotating board IS the live wall beneath it.
+            Aggregate figures are representative samples (marked below). */}
+        <Reveal className="mt-10 sm:mt-12">
+          <div className="flex flex-col items-start gap-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-5 py-5 shadow-[0_18px_50px_-34px_oklch(30%_0.05_58_/_0.4)] sm:flex-row sm:items-center sm:gap-7 sm:px-7 sm:py-6">
+            {/* the rating lockup */}
+            <div className="flex items-center gap-4">
+              <span className="font-display text-5xl leading-none text-[var(--color-fg)] tnum">
+                4.9
+              </span>
+              <span className="flex flex-col">
+                <Stars value={4.9} />
+                <span className="mt-1.5 flex items-center gap-1.5 text-[0.82rem] text-[var(--color-fg-muted)]">
+                  <GoogleG />
+                  <span>
+                    <span className="font-semibold text-[var(--color-fg)] tnum">
+                      210+
+                    </span>{" "}
+                    Google reviews
+                  </span>
+                </span>
+              </span>
+            </div>
+
+            {/* a quiet divider on wider viewports */}
+            <span
+              aria-hidden
+              className="hidden h-12 w-px bg-[var(--color-border)] sm:block"
+            />
+
+            {/* the credibility line */}
+            <p className="max-w-[40ch] text-[0.92rem] leading-relaxed text-[var(--color-fg-muted)]">
+              Among the{" "}
+              <span className="font-medium text-[var(--color-fg)]">
+                top-rated dermatology practices in the Charlotte &amp; Monroe
+                area
+              </span>{" "}
+              — a reputation earned one careful diagnosis at a time. New patient
+              voices flow onto the board below as they arrive.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal className="mt-7 sm:mt-9">
           <div
             className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6"
             role="group"
@@ -322,10 +418,10 @@ export function SplitFlapBoard() {
 
         <Reveal delay={0.05}>
           <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-[var(--color-fg-subtle)]">
-            Reviews are representative samples for this mockup. The board flips a
-            new quote every couple of seconds; verified patient reviews would
-            rotate here, curated to lead with clinical outcomes rather than a
-            single aggregate score.
+            Rating and reviews are representative samples for this mockup. In a
+            live build the aggregate and the rotating quotes sync from the
+            practice&rsquo;s verified Google profile — curated to lead with
+            clinical outcomes rather than a single score.
           </p>
         </Reveal>
       </div>
