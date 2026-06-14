@@ -1,9 +1,17 @@
 "use client";
 
 /**
- * SiteNav — sticky glass navigation. Over the DARK navy lattice hero it's a
- * near-transparent bar with paper-white text; once scrolled it frosts to a
- * paper glass with navy-ink text. A "D" monogram wordmark + native "Book" CTA.
+ * SiteNav — sticky glass navigation.
+ *
+ * LOGO-BUG FIX (operator revision): the hero is now a LIGHT warm dermoscopy
+ * field, not the old dark espresso lattice. Over a light hero the real
+ * dark-ink Darst wordmark (logo.png, tone="light") is the legible variant — so
+ * the nav now uses tone="light" at the TOP OF PAGE too, correct from first
+ * paint, instead of the cream/teal on-dark recreation that vanished over a light
+ * hero. Both nav states (transparent-over-hero AND frosted-after-scroll) are
+ * light surfaces, so the dark-ink mark + dark-ink text read on both; the only
+ * thing that changes on scroll is the bar's frost, not the ink color.
+ *
  * Mobile: accessible disclosure menu with focus-visible rings + Esc to close.
  */
 
@@ -45,8 +53,10 @@ export function SiteNav() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Text/icon color flips with the surface: paper-white over the dark hero,
-  // navy-ink once the paper glass is frosted in.
+  // The hero is now a LIGHT field, so the bar is over a light surface in BOTH
+  // states. Text/icon stay dark-ink throughout; only the bar's frost + border
+  // come in on scroll. `overHero` now just selects the transparent (top) vs
+  // frosted (scrolled) surface treatment — NOT a light/dark ink flip.
   const overHero = !scrolled && !open;
 
   return (
@@ -65,15 +75,18 @@ export function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        {/* Wordmark — the recreated Darst Dermatology brush-script + teal mark.
-            Tone flips with the surface: over the dark brown hero it's
-            cream + bright teal; once frosted it's brown + deep teal. */}
+        {/* Wordmark — the REAL Darst Dermatology mark (warm-brown brush-script +
+            teal). The hero is light, so tone="light" (the canonical logo.png,
+            dark-on-transparent) reads correctly over BOTH the transparent hero
+            bar and the frosted-paper scrolled bar — legible from first paint.
+            (The old code used the on-dark cream/teal recreation over the hero,
+            which is the bug: it was near-invisible on a light hero.) */}
         <Link
           href="#top"
           aria-label="Darst Dermatology — home"
           className="group flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent-deep)]"
         >
-          <DarstLogo tone={overHero ? "dark" : "light"} size="sm" />
+          <DarstLogo tone="light" size="sm" />
         </Link>
 
         {/* Desktop links */}
@@ -84,8 +97,10 @@ export function SiteNav() {
               href={l.href}
               className={cn(
                 "rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300",
+                // Both states sit on a LIGHT surface now → dark-ink links, with
+                // a hover wash that's a touch softer over the transparent hero.
                 overHero
-                  ? "text-[oklch(90%_0.018_70_/_0.86)] hover:bg-[var(--glass-bg-dark)] hover:text-[var(--color-bg)]"
+                  ? "text-[var(--color-fg-muted)] hover:bg-[oklch(96%_0.008_70_/_0.7)] hover:text-[var(--color-fg)]"
                   : "text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-fg)]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
               )}
@@ -101,9 +116,9 @@ export function SiteNav() {
             href={`tel:${NAP.phoneTel}`}
             className={cn(
               "hidden rounded-full px-3.5 py-2 text-sm font-semibold tnum transition-colors sm:inline-flex",
-              overHero
-                ? "text-[var(--color-bg)] hover:text-[var(--color-accent-bright)]"
-                : "text-[var(--color-fg)] hover:text-[var(--color-accent-deep)]",
+              // Dark-ink phone number on both light states (the on-dark white
+              // would have been invisible over the new light hero).
+              "text-[var(--color-fg)] hover:text-[var(--color-accent-deep)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
             )}
           >
@@ -135,7 +150,8 @@ export function SiteNav() {
             onClick={() => setOpen((o) => !o)}
             className={cn(
               "grid h-10 w-10 place-items-center rounded-full lg:hidden",
-              overHero ? "text-[var(--color-bg)]" : "text-[var(--color-fg)]",
+              // Dark-ink toggle on the light hero (was white-on-dark before).
+              "text-[var(--color-fg)]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-deep)]",
             )}
           >

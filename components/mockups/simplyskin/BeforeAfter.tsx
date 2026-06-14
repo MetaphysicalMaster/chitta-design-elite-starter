@@ -3,14 +3,17 @@
 /**
  * BeforeAfter — interactive drag slider on a soft nude field. Pointer + full
  * keyboard support (arrows/Home/End on the handle). The page's primary proof-
- * of-work, so the LEAD case is grounded in the real hero complexion (one large
- * comparison: a degraded "before" grade revealing the clean "after") — a real
- * face, not a swatch. Two supporting cases stay as soft-lit complexion STUDIES
- * (ss-skin), the "after" the same warm skin only brighter/clearer — a
- * luminosity lift, never a hue jump — so the gallery stays on-palette. Every
- * tile is honestly tagged "sample · illustrative"; real client photos are
- * shared privately at consultation. Quiet-luxury: a light, editorial frame
- * rather than a dark gallery — restraint over spectacle.
+ * of-work, so the LEAD case is grounded in a REAL aligned before/after pair
+ * (one large comparison: the same woman, identical pose/lighting/grey backdrop;
+ * the AFTER is the base layer, the BEFORE is the clipped overlay, so dragging
+ * left→right reveals before→after). The pair is pixel-aligned, so the reveal is
+ * seamless — no synthetic colour grade. Two supporting cases stay as soft-lit
+ * complexion STUDIES (ss-skin), the "after" the same warm skin only
+ * brighter/clearer — a luminosity lift, never a hue jump — so the gallery stays
+ * on-palette. Every tile is honestly tagged ("Illustrative · representative
+ * result" on the real pair, "sample · illustrative" on the studies); real
+ * client photos are shared privately at consultation. Quiet-luxury: a light,
+ * editorial frame rather than a dark gallery — restraint over spectacle.
  */
 
 import { useCallback, useRef, useState } from "react";
@@ -22,26 +25,43 @@ type Case = {
   id: string;
   treatment: string;
   detail: string;
-  /** When set, the slider reveals the REAL hero complexion (graded before vs
-      clean after) instead of a CSS skin-study plate. */
-  photo?: { src: string; position?: string; alt: string };
+  /** When set, the slider reveals a REAL, pixel-aligned before/after pair
+      (distinct photographs of the same face) instead of a CSS skin-study
+      plate. `after` is the base layer; `before` is the clipped overlay. */
+  photo?: {
+    before: string;
+    after: string;
+    position?: string;
+    /** Alt for the AFTER (base) frame — the result the gallery presents. */
+    altAfter: string;
+    /** Alt for the BEFORE (clipped) frame. */
+    altBefore: string;
+  };
 };
 
-// The LEAD case is grounded in the real hero photograph (one actual complexion,
-// graded as a degraded "before" revealing the clean "after") so the gallery's
-// primary proof is a real face, not a swatch. The two supporting cases stay as
-// soft-lit complexion STUDIES (ss-skin) — the "after" the same warm skin, only
-// brighter/clearer (a luminosity lift, never a hue jump) — on-palette and
-// honestly tagged "sample · illustrative".
+// The LEAD case is grounded in a REAL aligned before/after pair (two distinct
+// photographs of the same woman — same pose, lighting and grey backdrop — the
+// AFTER refreshed/glowing, the BEFORE with subtle under-eye shadow, faint fine
+// lines and a slightly duller tone). They align pixel-for-pixel so the wipe is
+// seamless. The two supporting cases stay as soft-lit complexion STUDIES
+// (ss-skin) — the "after" the same warm skin, only brighter/clearer (a
+// luminosity lift, never a hue jump) — on-palette and honestly tagged
+// "sample · illustrative".
 const CASES: Case[] = [
   {
     id: "balance",
     treatment: "Liquid Facial Balancing",
     detail: "Full-face plan · proportion-led",
     photo: {
-      src: "/clients/simplyskin/hero.jpg",
-      position: "62% 34%",
-      alt: "A SimplySkin client's calm, healthy complexion — the natural, rested result of a full-face balancing plan.",
+      before: "/clients/simplyskin/ba-before.jpg",
+      after: "/clients/simplyskin/ba-after.jpg",
+      // Face/eyes sit upper-centre in the 4:5 frame; bias up so the result
+      // reads first at any aspect ratio.
+      position: "50% 30%",
+      altAfter:
+        "A SimplySkin client's refreshed, luminous complexion — even tone and a rested, natural glow after a full-face balancing plan.",
+      altBefore:
+        "The same client before treatment — subtle under-eye shadow, faint fine lines and a slightly duller skin tone.",
     },
   },
   {
@@ -148,8 +168,8 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
   return (
     <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
       {/* The comparison plate develops like a print (wipe only — no scale or
-          filter so the slider's own before/after grades and pointer math stay
-          untouched). */}
+          develop filter, so the real before/after photographs and the slider's
+          own clip-path pointer math stay untouched). */}
       <PrintReveal>
       <div
         ref={ref}
@@ -160,18 +180,19 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        {/* AFTER layer (full width) — real clean complexion, or the brighter
-            skin-study plate. */}
-        <div className="absolute inset-0" aria-hidden>
+        {/* AFTER layer (full width) — the real refreshed complexion (base of
+            the comparison), or the brighter skin-study plate. The AFTER frame
+            carries the meaningful alt: it is the result the gallery presents. */}
+        <div className="absolute inset-0">
           {data.photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={data.photo.src}
-              alt=""
-              aria-hidden
+              src={data.photo.after}
+              alt={data.photo.altAfter}
               draggable={false}
               loading="lazy"
-              className="ss-photo ss-photo--after"
+              decoding="async"
+              className="ss-photo"
               style={{ objectPosition: data.photo.position ?? "center" }}
             />
           ) : (
@@ -181,8 +202,10 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
             After
           </span>
         </div>
-        {/* BEFORE layer (clipped) — same real frame, degraded grade; or the
-            deeper skin-study plate. */}
+        {/* BEFORE layer (clipped) — the same face, pre-treatment (the real
+            BEFORE photograph, pixel-aligned to the AFTER so the wipe is
+            seamless); or the deeper skin-study plate. Decorative overlay, so
+            aria-hidden — the AFTER frame above already names the comparison. */}
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
@@ -191,12 +214,13 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           {data.photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={data.photo.src}
+              src={data.photo.before}
               alt=""
               aria-hidden
               draggable={false}
               loading="lazy"
-              className="ss-photo ss-photo--before"
+              decoding="async"
+              className="ss-photo"
               style={{ objectPosition: data.photo.position ?? "center" }}
             />
           ) : (
@@ -207,7 +231,7 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           </span>
         </div>
         <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/30 px-3 py-1 text-[0.56rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
-          Sample · illustrative
+          {data.photo ? "Illustrative · representative result" : "Sample · illustrative"}
         </span>
         <SliderHandle pos={pos} label={data.treatment} onKeyDown={onKeyDown} />
       </div>
@@ -248,13 +272,13 @@ export function BeforeAfter() {
               delay={i * 0.08}
               className={cn(c.photo && "lg:col-span-2")}
             >
-              <Slider data={c} ratio={c.photo ? "16 / 10" : "4/5"} />
+              <Slider data={c} ratio={c.photo ? "16 / 11" : "4/5"} />
             </Reveal>
           ))}
         </div>
         <p className="mt-8 text-center text-xs text-[var(--color-fg-subtle)]">
-          Representative studies for layout. Real client before/after photos are
-          shared privately at your consultation.
+          Illustrative, representative results shown for layout. Real client
+          before/after photos are shared privately at your consultation.
         </p>
       </div>
     </section>

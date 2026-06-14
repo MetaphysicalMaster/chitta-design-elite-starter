@@ -107,9 +107,10 @@
   --night-1: oklch(19% 0 0);
   --night-2: oklch(24% 0 0);
 
-  /* Facet stops — used by the WebGL caustic material + CSS fallback.
+  /* Greyscale facet stops (legacy tokens, retained for any consumer).
      A monochrome progression with the pink as the lone chromatic face:
-     deep charcoal → grey → light grey → HOT PINK glint. */
+     deep charcoal → grey → light grey → HOT PINK glint. The hero's silk
+     scene now carries its own palette in JS (see SilkScene.tsx). */
   --facet-deep: oklch(26% 0 0);
   --facet-emerald: oklch(45% 0 0); /* mid grey (name kept) */
   --facet-jewel: oklch(70% 0 0); /* light grey */
@@ -288,113 +289,99 @@
   position: absolute;
   inset: 0.5rem;
   border: 1px solid var(--gold-deep);
-  opacity: 0.32;
+  opacity: 0.55;
   pointer-events: none;
   border-radius: inherit;
+  box-shadow:
+    0 0 26px -8px oklch(58% 0.245 358 / 0.4),
+    inset 0 0 20px -12px oklch(58% 0.245 358 / 0.28);
 }
 
 /* ============================================================
-   Monochrome caustics FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
-   An on-brand, layered CSS field: a deep near-black studio lit by a slow
-   HOT-PINK light sweep — the single statement color glinting across charcoal,
-   echoing the pink-on-greyscale hero. Built from conic + radial gradients.
-   NEVER a blank box. Zero CLS. The drift is reduced-motion gated; static it
-   still reads as a pink-lit monochrome stage.
+   Luminous SILK FALLBACK — SSR + reduced-motion + mobile + no-WebGL.
+   Matches the NEW hero concept (SilkScene): a slow luminous GREYSCALE silk
+   drape lit by a soft upper-left studio key, with ONE precise controlled
+   HOT-PINK light-edge — the single statement color glancing off a single fold
+   crest. Built from layered linear/radial gradients (the satin sheen bands +
+   the pink edge). NEVER a blank box. Zero CLS. The slow drift is reduced-motion
+   gated; static it still reads as a refined pink-edged monochrome silk stage.
    ============================================================ */
 [data-brand="sousan"] .caustics-fallback {
   position: relative;
   overflow: hidden;
   background:
-    /* hot-pink key bloom, upper-left */
+    /* soft silver key lift, upper-left (the studio light pooling on silk) */
     radial-gradient(
-      48% 54% at 26% 26%,
-      oklch(60% 0.25 357 / 0.45) 0%,
-      transparent 60%
-    ),
-    /* soft grey lift, center-right */
-    radial-gradient(
-      60% 66% at 72% 56%,
-      oklch(46% 0 0 / 0.5) 0%,
+      62% 70% at 28% 24%,
+      oklch(58% 0 0 / 0.55) 0%,
       transparent 64%
     ),
-    /* deep near-black studio field */
+    /* satin sheen bands — diagonal greyscale folds catching the light */
+    repeating-linear-gradient(
+      118deg,
+      oklch(15% 0 0) 0px,
+      oklch(24% 0 0) 70px,
+      oklch(34% 0 0) 120px,
+      oklch(22% 0 0) 180px,
+      oklch(14% 0 0) 250px
+    ),
+    /* deep near-black studio floor under the drape */
     linear-gradient(
       152deg,
       var(--night-1) 0%,
-      var(--night-0) 56%,
-      oklch(12% 0 0) 100%
+      var(--night-0) 58%,
+      oklch(11% 0 0) 100%
     );
 }
-/* Pink light layer — a conic hot-pink sweep over charcoal, the lone pop.
-   Masked to a soft shape. */
+/* The ONE pink light-edge — a single thin diagonal magenta sheen riding the
+   crest of one fold near the key light. Masked so it stays controlled to the
+   lit upper-left, never an all-over wash. */
 [data-brand="sousan"] .caustics-fallback::before {
   content: "";
   position: absolute;
-  inset: -20%;
-  background:
-    conic-gradient(
-      from 200deg at 56% 44%,
-      transparent 0deg,
-      oklch(58% 0.245 358 / 0.28) 38deg,
-      oklch(66% 0.255 356 / 0.4) 96deg,
-      transparent 150deg,
-      oklch(56% 0.235 357 / 0.22) 226deg,
-      oklch(60% 0.25 357 / 0.34) 300deg,
-      transparent 360deg
-    );
-  -webkit-mask-image: radial-gradient(
-    70% 70% at 56% 46%,
-    #000 8%,
-    transparent 78%
+  inset: -10%;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 30%,
+    oklch(66% 0.255 356 / 0) 36%,
+    oklch(66% 0.255 356 / 0.85) 38.5%,
+    oklch(72% 0.25 356 / 0.55) 39.5%,
+    oklch(66% 0.255 356 / 0) 42%,
+    transparent 50%,
+    transparent 100%
   );
-  mask-image: radial-gradient(70% 70% at 56% 46%, #000 8%, transparent 78%);
-  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(
+    70% 80% at 30% 28%,
+    #000 4%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(70% 80% at 30% 28%, #000 4%, transparent 72%);
+  opacity: 0.95;
 }
-/* Glints — fine pink + white speckle catching the light. */
+/* Soft frame vignette — seats the silk drape on the dark studio. */
 [data-brand="sousan"] .caustics-fallback::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(
-      3px 3px at 30% 34%,
-      oklch(70% 0.24 356 / 0.9),
-      transparent 70%
-    ),
-    radial-gradient(
-      2px 2px at 62% 26%,
-      oklch(98% 0 0 / 0.7),
-      transparent 70%
-    ),
-    radial-gradient(
-      2.5px 2.5px at 50% 62%,
-      oklch(66% 0.255 356 / 0.85),
-      transparent 70%
-    ),
-    radial-gradient(
-      2px 2px at 74% 70%,
-      oklch(96% 0 0 / 0.55),
-      transparent 70%
-    ),
-    radial-gradient(
-      3px 3px at 40% 78%,
-      oklch(60% 0.25 357 / 0.7),
-      transparent 70%
-    );
-  background-repeat: no-repeat;
+  background: radial-gradient(
+    120% 120% at 50% 45%,
+    transparent 52%,
+    oklch(10% 0 0 / 0.5) 100%
+  );
 }
 @media (prefers-reduced-motion: no-preference) {
   [data-brand="sousan"] .caustics-fallback::before {
-    animation: sn-caustic 26s ease-in-out infinite alternate;
+    animation: sn-silk-edge 22s ease-in-out infinite alternate;
   }
 }
-/* Slow light sweep — the studio key turning. */
-@keyframes sn-caustic {
+/* Slow controlled travel — the single pink edge glances slowly along the fold. */
+@keyframes sn-silk-edge {
   from {
-    transform: rotate(0deg) scale(1.02);
+    transform: translate3d(-3%, -2%, 0);
   }
   to {
-    transform: rotate(26deg) scale(1.08);
+    transform: translate3d(4%, 3%, 0);
   }
 }
 
@@ -703,58 +690,9 @@
   --wm-caps: var(--gold-bright); /* brighter pink over the dark hero */
 }
 
-/* ============================================================
-   THE PINK THREAD — the signature experience layer.
-   One continuous hot-magenta line sews the entire page: out of the founder's
-   script signature, around her portrait, under every statement word, through
-   the proof medallions, down the evolution rail, through the before/after
-   divider, tied off around the booking CTA. Drawn by scroll (stroke-dashoffset
-   scrub, Lenis-synced ScrollTrigger — see PinkThread.tsx). pointer-events:none,
-   aria-hidden; under prefers-reduced-motion it renders fully drawn and quiet.
-   ============================================================ */
-[data-brand="sousan"] .sn-thread {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-  overflow: hidden;
-}
-[data-brand="sousan"] .sn-thread svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-[data-brand="sousan"] .sn-thread path {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.92;
-}
-[data-brand="sousan"] .sn-thread__tip {
-  fill: var(--gold-bright);
-}
-[data-brand="sousan"] .sn-thread__glow {
-  fill: var(--gold-bright);
-  opacity: 0.22;
-}
-@media (max-width: 767px) {
-  [data-brand="sousan"] .sn-thread path {
-    stroke-width: 1.75;
-    opacity: 0.8;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-brand="sousan"] .sn-thread path {
-    opacity: 0.45;
-  }
-}
-
 /* The literal founder signature in the hero trust line — Pinyon Script, a
-   slight pen-tilt. The visual ORIGIN of the pink thread (data-thread="start"). */
+   slight pen-tilt. (The vaulted Pink Thread once spilled from its tail; the
+   signature remains as a refined script flourish in the trust line.) */
 [data-brand="sousan"] .sn-signature {
   font-family: var(--font-script), "Snell Roundhand", "Apple Chancery",
     "Segoe Script", "Brush Script MT", cursive;
@@ -763,82 +701,6 @@
   color: oklch(99% 0 0);
   display: inline-block;
   transform: rotate(-2.5deg) translateY(-0.04em);
-}
-
-/* ============================================================
-   COLOR-POP MOMENTS — as key monochrome elements cross the viewport's focal
-   band (ScrollTrigger adds .is-popped, once), their pink blooms in. Reduced
-   motion: .is-popped is applied immediately, transitions are gated off, so the
-   page simply rests in its finished state.
-   ============================================================ */
-/* Founder portrait — the pink filet frame blooms awake around her. */
-@media (prefers-reduced-motion: no-preference) {
-  [data-brand="sousan"] .filet::after {
-    transition:
-      opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-}
-[data-brand="sousan"] .filet.is-popped::after {
-  opacity: 0.8;
-  box-shadow:
-    0 0 30px -6px oklch(58% 0.245 358 / 0.5),
-    inset 0 0 22px -12px oklch(58% 0.245 358 / 0.3);
-}
-[data-brand="sousan"] .filet.is-popped .sn-grayscale {
-  filter: grayscale(1) contrast(1.1) brightness(1.05);
-}
-
-/* Proof medallions — the pink accent ring catches light, staggered along the
-   row like a glint travelling the wall of recognition. */
-@media (prefers-reduced-motion: no-preference) {
-  [data-brand="sousan"] .sn-award::before {
-    transition: box-shadow 1.1s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  [data-brand="sousan"] li:nth-child(2) .sn-award.is-popped::before {
-    transition-delay: 0.12s;
-  }
-  [data-brand="sousan"] li:nth-child(3) .sn-award.is-popped::before {
-    transition-delay: 0.24s;
-  }
-  [data-brand="sousan"] li:nth-child(4) .sn-award.is-popped::before {
-    transition-delay: 0.36s;
-  }
-}
-[data-brand="sousan"] .sn-award.is-popped::before {
-  box-shadow:
-    0 0 0 1px oklch(100% 0 0 / 0.5),
-    inset 0 0 10px -2px oklch(60% 0.25 357 / 0.45),
-    0 0 26px -2px oklch(58% 0.245 358 / 0.5);
-}
-
-/* The "after" plate — the saturate sweep. It waits in near-greyscale and
-   DEVELOPS to its full pink as the comparison crosses the viewport center:
-   the reveal mechanic made literal. (Motion-gated so RM users and pre-JS
-   paint always see the finished plate.) */
-@media (prefers-reduced-motion: no-preference) {
-  [data-brand="sousan"] [data-pop] .sn-plate--gold {
-    filter: grayscale(0.92) brightness(1.02);
-    transition: filter 1.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  [data-brand="sousan"] [data-pop].is-popped .sn-plate--gold {
-    filter: grayscale(0) brightness(1);
-  }
-}
-
-/* The booking CTA — a single pink pulse the moment the thread ties into it. */
-@keyframes sn-tie {
-  0% {
-    box-shadow: 0 0 0 0 oklch(58% 0.245 358 / 0.55);
-  }
-  100% {
-    box-shadow: 0 0 0 18px oklch(58% 0.245 358 / 0);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  [data-brand="sousan"] .sn-tied {
-    animation: sn-tie 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1;
-  }
 }
 
 /* ============================================================

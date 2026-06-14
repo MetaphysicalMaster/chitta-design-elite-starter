@@ -60,10 +60,7 @@ export function Booking() {
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
           >
             Book in{" "}
-            <span
-              className="gold-leaf--bright font-display-em"
-              data-thread="underline"
-            >
+            <span className="gold-leaf--bright font-display-em">
               thirty seconds.
             </span>
           </h2>
@@ -209,11 +206,8 @@ export function Booking() {
                   ever.
                 </p>
 
-                {/* data-thread="knot": the pink thread's final act — it loops
-                    around this button and ties off against its edge. */}
                 <button
                   type="submit"
-                  data-thread="knot"
                   className={cn(
                     "sn-press group inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5",
                     "bg-[var(--color-accent-deep)] font-semibold text-[var(--color-accent-fg)]",

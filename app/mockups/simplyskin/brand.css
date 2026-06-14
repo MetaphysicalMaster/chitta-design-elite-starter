@@ -432,24 +432,23 @@
   opacity: 0.5;
 }
 
-/* Real-complexion before/after — grounds the LEAD comparison in the actual
-   hero photograph (one real face) instead of a swatch, while staying honestly
-   "sample · illustrative". The same crop is shown both sides; the "before" is a
-   deliberately degraded grade (desaturated, lower contrast, slightly dim) and
-   the "after" is the clean, luminous frame — so the slider reveals a visible,
-   skin-real change without needing real client photos. */
+/* Real-complexion before/after — grounds the LEAD comparison in a REAL,
+   pixel-aligned pair of photographs (same face, identical pose/lighting/grey
+   backdrop): ba-after.jpg as the base layer, ba-before.jpg as the clipped
+   overlay, so the drag reveals before→after. Because the two frames are genuine
+   and aligned, the change is real — NO synthetic colour grade is applied, which
+   keeps the wipe seamless (a CSS filter on only one side would shimmer at the
+   divider). Honestly tagged "Illustrative · representative result". */
 [data-brand="simplyskin"] .ss-photo {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
-}
-[data-brand="simplyskin"] .ss-photo--before {
-  filter: saturate(0.62) contrast(0.9) brightness(0.92) sepia(0.06);
-}
-[data-brand="simplyskin"] .ss-photo--after {
-  filter: saturate(1.06) contrast(1.04) brightness(1.05);
+  /* The photographs already share the warm greige palette; a hair-thin warmth
+     nudge ties the pair to the brand sweep without distorting either frame.
+     Applied to BOTH sides equally, so the divider stays invisible. */
+  filter: saturate(1.02) contrast(1.01);
 }
 /* Soft edge vignette + fine skin grain so the plate reads as a lit portrait. */
 [data-brand="simplyskin"] .ss-skin::before {

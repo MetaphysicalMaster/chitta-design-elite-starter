@@ -332,6 +332,79 @@ function SliderHandle({
   );
 }
 
+/* ============================================================
+   The LEAD comparison — a real, consented-style photographic before/after.
+   AFTER is the base layer; BEFORE is the clipped overlay, so dragging the handle
+   from left→right WIPES the before away to reveal the refreshed after. The pair
+   is pixel-aligned (same woman, identical pose/lighting/grey backdrop) so the
+   reveal is seamless. Plain <img> (the static-export build handles basePath); a
+   small honest "Illustrative · representative result" tag stays on the frame.
+   ============================================================ */
+function PhotoCompare() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider();
+
+  return (
+    <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
+      <div
+        ref={ref}
+        className="relative w-full cursor-ew-resize touch-none select-none bg-[var(--color-bg-warm)]"
+        style={{ aspectRatio: "3 / 4" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        {/* AFTER — the base layer (always fully present beneath the wipe). */}
+        <div className="absolute inset-0" aria-hidden>
+          <img
+            src="/clients/hanami/ba-after.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-cover"
+            draggable={false}
+          />
+          <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)] shadow-sm">
+            After
+          </span>
+        </div>
+        {/* BEFORE — clipped overlay; the handle wipes it away left→right. */}
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          aria-hidden
+        >
+          <img
+            src="/clients/hanami/ba-before.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-cover"
+            draggable={false}
+          />
+          <span className="absolute left-3 top-3 rounded-full bg-[var(--night-0)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white shadow-sm">
+            Before
+          </span>
+        </div>
+        {/* A single descriptive label for assistive tech (the imgs are aria-hidden
+            decorative halves; the slider button below carries the live value). */}
+        <span className="sr-only">
+          Before-and-after comparison: under-eye shadow and fine lines refreshed
+          to an even, glowing tone. Illustrative, representative result.
+        </span>
+        <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/40 px-3 py-1 text-[0.56rem] font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm">
+          Illustrative · representative result
+        </span>
+        <SliderHandle pos={pos} label="the consultation refresh" onKeyDown={onKeyDown} />
+      </div>
+      <figcaption className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
+        <span className="font-display text-lg text-[var(--color-fg)]">
+          A refreshed, rested glow
+        </span>
+        <span className="text-xs text-[var(--color-fg-subtle)]">
+          Under-eye &amp; tone · the feather touch
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
 function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
   const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider();
 
@@ -399,8 +472,49 @@ export function BeforeAfter() {
               <span className="font-display-em text-[var(--color-accent-deep)]">public eye.</span>
             </>
           }
-          lead="Dr. Phuah and the practice, featured in Fort Worth Magazine — and a look at the feather touch in motion. Slide the illustrative handles below, or use your keyboard, to see how a soft, never-overworked result reads."
+          lead="Drag the handle below — or use your keyboard — to wipe from before to after, then see Dr. Phuah and the practice featured in Fort Worth Magazine. A soft, rested, never-overworked result is the whole point of the feather touch."
         />
+
+        {/* THE LEAD COMPARISON — a real, pixel-aligned photographic before/after.
+            It sits first, directly under the heading, as the proof the section
+            promises ("drag to reveal"). Framed beside a short narrative column on
+            wide screens; stacks on mobile. Honestly tagged on the frame. */}
+        <div className="mt-12 grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-12">
+          <Reveal>
+            <div className="mx-auto w-full max-w-md lg:mx-0">
+              <PhotoCompare />
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-deep)]">
+                See the difference · drag to reveal
+              </p>
+              <h3
+                className="font-display mt-4 text-balance text-[var(--color-fg)]"
+                style={{ fontSize: "var(--fluid-h3, 1.85rem)", lineHeight: 1.12 }}
+              >
+                The same face — simply{" "}
+                <span className="font-display-em text-[var(--color-accent-deep)]">
+                  rested.
+                </span>
+              </h3>
+              <p className="mt-4 max-w-[46ch] text-pretty text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
+                Under-eye shadow softened, fine lines eased, tone brought back to
+                an even, lit-from-within glow — the brightening, balancing effect
+                of a considered plan.{" "}
+                <span className="text-[var(--color-fg)]">
+                  Real, consented before &amp; afters are shared privately at your
+                  consultation
+                </span>{" "}
+                — your face is never paraded online.
+              </p>
+              <p className="mt-5 text-[0.7rem] uppercase tracking-[0.16em] text-[var(--color-fg-subtle)]">
+                Illustrative · representative result
+              </p>
+            </div>
+          </Reveal>
+        </div>
 
         {/* PRESS, framed honestly — photo-a / photo-b are Fort Worth Magazine
             editorial features (a FOCUS bio of Dr. Phuah and the 2022 "Faces of
@@ -450,20 +564,16 @@ export function BeforeAfter() {
           </Reveal>
         </div>
 
-        {/* The compare mechanic — clearly framed as an illustrative demo so the
-            honestly-tagged sample sliders never read as faux before/afters. */}
+        {/* Supporting illustrative studies — clearly framed as illustrative so
+            the honestly-tagged sample sliders never read as faux before/afters.
+            They show how the touch reads PER TREATMENT (tox / IPL / filler). */}
         <div className="mt-16">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-deep)]">
-            See the difference · drag to reveal
+            By treatment · illustrative
           </p>
           <p className="mt-2 max-w-[56ch] text-sm font-light text-[var(--color-fg-muted)]">
-            An illustrative look at the feather touch — soft, balanced, never
-            frozen.{" "}
-            <span className="text-[var(--color-fg)]">
-              Real, consented before &amp; afters are shared privately at your
-              consultation
-            </span>{" "}
-            — your face is never paraded online.
+            How the feather touch reads across the menu — soft, balanced, never
+            frozen. These are illustrative studies, not client photos.
           </p>
         </div>
 

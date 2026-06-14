@@ -1,5 +1,4 @@
 import { SmoothScroll } from "@/components/mockups/sousan/SmoothScroll";
-import { PinkThread } from "@/components/mockups/sousan/PinkThread";
 import { SiteNav } from "@/components/mockups/sousan/SiteNav";
 import { CausticsHero } from "@/components/mockups/sousan/CausticsHero";
 import { Awards } from "@/components/mockups/sousan/Awards";
@@ -42,15 +41,10 @@ export default function SousanPage() {
 
       <SiteFooter />
 
-      {/* THE PINK THREAD — the signature experience. One continuous magenta
-          line sewing the whole page together, drawn by scroll: signature →
-          portrait → proof → timeline rail → results divider → booking knot. */}
-      <PinkThread />
-
       {/* AI CONCIERGE — the Growth-OS "missed-call / front desk" demo surface.
-          The slug's SOLE bottom-right floating affordance (SiteNav is a top bar;
-          PinkThread is a pointer-events:none overlay), so there's no competing
-          bubble. Fully scripted + local-state; static-export safe. */}
+          The slug's SOLE bottom-right floating affordance (SiteNav is a top bar),
+          so there's no competing bubble. Fully scripted + local-state;
+          static-export safe. */}
       <Concierge />
     </SmoothScroll>
   );

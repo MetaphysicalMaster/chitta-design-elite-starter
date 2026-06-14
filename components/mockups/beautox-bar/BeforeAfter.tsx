@@ -1,53 +1,39 @@
 "use client";
 
 /**
- * BeforeAfter — a premium, accessible before/after reveal slider. Pointer-drag
- * AND full keyboard control (the divider is a native range input styled as a
- * handle), so it's operable by AT users. The "after" image is clipped by the
- * slider position. Reduced-motion safe (no autoplay).
+ * BeforeAfter — a premium, accessible before/after reveal slider wired to the
+ * REAL aligned comparison pair. Pointer-drag AND full keyboard control (the
+ * divider is a native range input styled as a handle), so it's operable by AT
+ * users. Reduced-motion safe (no autoplay; a one-time in-view nudge only).
  *
- * HONEST GAP (per the program owner): Beautox Bar's real before/after photos
- * live only on Instagram — there is no gallery/media page to capture a real pair
- * from. So this ships as a genuinely-premium slider over on-brand SAMPLE plates,
- * clearly marked, with a visible caption telling the owner exactly where their
- * real B&A drops in: "Client to supply real before/after — slider ready." When
- * they hand over a real pair, it slots straight into these two BrandImage slots.
+ * THE PAIR: Beautox Bar's real before/after photos live only on Instagram, with
+ * no gallery/media page to capture a clean pair from. So this ships an aligned,
+ * ILLUSTRATIVE pair (same subject, identical pose / lighting / grey backdrop —
+ * the BEFORE carries subtle under-eye shadow, faint fine lines and a slightly
+ * duller tone; the AFTER is refreshed and glowing). They are pixel-for-pixel
+ * registered (both 928×1152), so the divider reveal is seamless.
+ *
+ * LAYERING: the AFTER is the base layer; the BEFORE is the clipped overlay
+ * (clipPath insets from the right by `100 - pos`%), so dragging left→right
+ * sweeps BEFORE → AFTER — the satisfying "watch it refresh" direction.
+ *
+ * Static-export-safe: plain <img> (basePath is applied by the build), fixed
+ * intrinsic width/height + an exact aspect-ratio bed → zero CLS. An honest
+ * "Illustrative · representative result" tag stays on the frame, and the
+ * caption keeps the playful brand framing while telling the owner their real
+ * Instagram pair drops straight in at launch.
  */
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { Reveal, SectionHeading } from "./primitives";
-import { BrandImage } from "./BrandImage";
 
-/* A faint face-and-skin motif so each sample plate reads unmistakably as "a real
-   face drops in here" rather than a flat paint swatch — a soft portrait
-   silhouette (head + shoulders) plus a sparse skin-texture stipple, both at low
-   alpha over the candy gradient. aria-hidden, decorative only. */
-function FaceMotif({ tint }: { tint: string }) {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 200 200"
-      preserveAspectRatio="xMidYMid slice"
-      className="pointer-events-none absolute inset-0 h-full w-full"
-      style={{ color: tint }}
-    >
-      {/* head + shoulders portrait silhouette, centered */}
-      <g fill="none" stroke="currentColor" strokeWidth="2.2" opacity="0.5">
-        <circle cx="100" cy="78" r="34" />
-        <path d="M48 168c4-30 26-46 52-46s48 16 52 46" strokeLinecap="round" />
-      </g>
-      {/* a few skin-texture freckles/pores so it reads as a face, not an icon */}
-      <g fill="currentColor" opacity="0.32">
-        <circle cx="88" cy="74" r="1.4" />
-        <circle cx="112" cy="80" r="1.2" />
-        <circle cx="100" cy="92" r="1.3" />
-        <circle cx="92" cy="100" r="1" />
-        <circle cx="110" cy="98" r="1" />
-      </g>
-    </svg>
-  );
-}
+/* The aligned pair, shipped per-slug under /public. Both 928×1152 — declaring
+   the intrinsic size + a matching aspect bed guarantees zero layout shift. */
+const BA_AFTER = "/clients/beautox-bar/ba-after.jpg";
+const BA_BEFORE = "/clients/beautox-bar/ba-before.jpg";
+const IMG_W = 928;
+const IMG_H = 1152;
 
 export function BeforeAfter() {
   const [pos, setPos] = useState(50);
@@ -90,51 +76,62 @@ export function BeforeAfter() {
               Subtle. Natural. <span className="candy-text">So you.</span>
             </>
           }
-          lead="Drag the divider — or use the arrow keys — to see the difference a tailored tox + filler pour makes. Results vary; plans are personalized at your consult."
+          lead="Drag the divider — or use the arrow keys — to watch a tailored tox + filler pour refresh the face. Results vary; every plan is personalized at your consult."
         />
 
         <Reveal delay={0.1} className="mt-12">
-          <figure ref={figRef} className="mx-auto max-w-3xl">
-            <div className="relative select-none overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] shadow-[var(--glass-shadow)]">
-              {/* AFTER (base layer) */}
-              <BrandImage
-                alt="Skin after a tox and filler refresh — smooth, refreshed, natural"
-                aspect="4:3"
-                tone="magenta"
-                radius="lg"
-                sample
-                className="rounded-none border-0"
-              >
-                {/* face motif so the plate reads as "an AFTER photo goes here" */}
-                <FaceMotif tint="oklch(99% 0.01 350 / 0.85)" />
-                {/* soft vignette to lift it off a flat swatch */}
-                <span aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(72%_72%_at_50%_42%,transparent_44%,oklch(16%_0.02_350_/_0.34))]" />
-                <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-[oklch(16%_0.01_350_/_0.6)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm">
-                  After
-                </span>
-              </BrandImage>
+          {/* Portrait pair → a snug max-width so a single face reads intimate,
+              not billboard-sized; centered in the section. */}
+          <figure ref={figRef} className="mx-auto max-w-[26rem]">
+            <div
+              className="relative select-none overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-bg-subtle)] shadow-[var(--glass-shadow)]"
+              style={{ aspectRatio: `${IMG_W} / ${IMG_H}` }}
+            >
+              {/* AFTER (base layer) — the refreshed, glowing result */}
+              <img
+                src={BA_AFTER}
+                alt="Beautox Bar before/after — the same client after a tailored tox and filler refresh: skin looks smoother, brighter and rested"
+                width={IMG_W}
+                height={IMG_H}
+                draggable={false}
+                className="absolute inset-0 h-full w-full object-cover object-top"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(78%_78%_at_50%_38%,transparent_52%,oklch(16%_0.02_350_/_0.22))]"
+              />
+              <span className="pointer-events-none absolute bottom-3 right-3 z-[12] rounded-full bg-[oklch(16%_0.01_350_/_0.62)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm transition-opacity duration-200" style={{ opacity: pos > 88 ? 0 : 1 }}>
+                After
+              </span>
 
-              {/* BEFORE (clipped overlay) */}
+              {/* BEFORE (clipped overlay) — revealed on the left of the divider */}
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 z-[8]"
                 style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
                 aria-hidden
               >
-                <BrandImage
+                <img
+                  src={BA_BEFORE}
                   alt=""
-                  aspect="4:3"
-                  tone="lilac"
-                  radius="lg"
-                  sample={false}
-                  className="rounded-none border-0"
-                >
-                  <FaceMotif tint="oklch(28% 0.04 320 / 0.7)" />
-                  <span aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(72%_72%_at_50%_42%,transparent_44%,oklch(16%_0.02_350_/_0.34))]" />
-                  <span className="pointer-events-none absolute bottom-3 left-3 z-10 rounded-full bg-[oklch(16%_0.01_350_/_0.6)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm">
-                    Before
-                  </span>
-                </BrandImage>
+                  width={IMG_W}
+                  height={IMG_H}
+                  draggable={false}
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(78%_78%_at_50%_38%,transparent_52%,oklch(16%_0.02_350_/_0.22))]"
+                />
+                <span className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-[oklch(16%_0.01_350_/_0.62)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm transition-opacity duration-200" style={{ opacity: pos < 12 ? 0 : 1 }}>
+                  Before
+                </span>
               </div>
+
+              {/* honest illustrative tag — stays on the frame at all times */}
+              <span className="pointer-events-none absolute left-3 top-3 z-[12] inline-flex items-center gap-1.5 rounded-full border border-[oklch(100%_0_0_/_0.34)] bg-[oklch(16%_0.01_350_/_0.55)] px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-[oklch(98%_0.01_350)] backdrop-blur-sm">
+                <span aria-hidden className="text-[var(--color-accent-bright)]">✦</span>
+                Illustrative · representative result
+              </span>
 
               {/* divider line + premium handle */}
               <div
@@ -177,9 +174,9 @@ export function BeforeAfter() {
               />
             </div>
 
-            {/* HONEST "supply real B&A" note — shows the owner exactly where their
-                real Instagram before/after pair slots into the (ready) slider, and
-                pitches the owner directly: their B&A is their strongest closer. */}
+            {/* HONEST framing — the pair is an aligned ILLUSTRATIVE comparison;
+                pitches the owner that their real Instagram B&A drops in cleanly
+                at launch (it's their strongest closer). */}
             <figcaption className="mt-5 space-y-2 text-center">
               <p className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/40 bg-[var(--color-accent-subtle)] px-4 py-1.5 text-xs font-semibold text-[var(--color-accent-deep)]">
                 {/* Instagram glyph — signals exactly where the real pair comes from */}
@@ -188,15 +185,15 @@ export function BeforeAfter() {
                   <circle cx="12" cy="12" r="3.6" stroke="currentColor" strokeWidth="1.6" />
                   <circle cx="16.8" cy="7.2" r="1" fill="currentColor" stroke="none" />
                 </svg>
-                Pulls straight from{" "}
+                Swaps for your real pair from{" "}
                 <span className="tnum">@beautoxbar</span> — slider ready.
               </p>
               <p className="mx-auto max-w-xl text-sm text-[var(--color-fg-subtle)]">
-                The two plates are the live <strong>Before</strong> and{" "}
-                <strong>After</strong> slots. Hand us one real pair from your
-                Instagram and this becomes your strongest closer — it drops in with
-                no rebuild. Plates shown are on-brand <strong>samples</strong>;
-                individual results vary.
+                The comparison above is an aligned{" "}
+                <strong>illustrative</strong> pair — client to supply real
+                before/after at launch. Hand us one real pour from your Instagram
+                and it drops straight into this slider with no rebuild, becoming
+                your strongest closer. Individual results vary.
               </p>
             </figcaption>
           </figure>

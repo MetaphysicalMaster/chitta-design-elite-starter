@@ -1,56 +1,32 @@
 "use client";
 
 /**
- * BeforeAfter — interactive drag slider on a warm, sunlit field. Pointer + full
- * keyboard support (arrows/Home/End on the handle). Placeholder gradient
- * "plates" clearly marked "sample · illustrative": BEFORE reads dull/cool/tired,
- * AFTER reads brighter + warmer peach, so the drag shows a real lift in tone.
- * Light and clean — true to the orange/peach brand, never a dark gallery.
+ * BeforeAfter — interactive drag-reveal slider, warm-orange/peach brand-native.
+ *
+ * LEAD comparison = a REAL, pixel-aligned AI-generated photo pair (same woman,
+ * identical pose/lighting/grey background). AFTER is the base layer (full-bleed
+ * image); BEFORE is the clipped overlay — so dragging the handle left→right
+ * wipes the tired pre-treatment skin away to the refreshed result. The pair
+ * aligns pixel-for-pixel, so the reveal is seamless.
+ *
+ * A faint warm-orange wash + an honest "Illustrative · representative result"
+ * tag keep it on-brand and truthful. Photos are plain <img> (static-export-safe;
+ * basePath handled by the build).
+ *
+ * Below the hero photo, three brand-tinted gradient "studies" stand in for
+ * additional treatment categories (clearly marked sample · illustrative).
+ *
+ * Pointer + full keyboard support (arrows / Home / End on the handle), AA, and
+ * zero-CLS via fixed aspect-ratio.
  */
 
 import { useCallback, useRef, useState } from "react";
 import { SectionHeading, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
-type Case = {
-  id: string;
-  treatment: string;
-  detail: string;
-  before: string;
-  after: string;
-};
-
-// Before/after "plates". To read as a real transformation (not two near-identical
-// rectangles), BEFORE is deliberately lower-L, lower-chroma and cooler-toned (a
-// dull, tired skin field), while AFTER is higher-L, warmer and more saturated
-// PEACH — all kept inside the true brand hue range (~52–62), never the old
-// brassy 70–82. The drag now visibly lifts tone + warmth.
-const CASES: Case[] = [
-  {
-    id: "tox",
-    treatment: "Neuromodulator — Forehead & Glabella",
-    detail: "Physician-placed · 14 days post",
-    before: "linear-gradient(155deg, oklch(72% 0.018 56), oklch(64% 0.022 50))",
-    after: "linear-gradient(155deg, oklch(93% 0.035 60), oklch(86% 0.055 58))",
-  },
-  {
-    id: "secretrf",
-    treatment: "Secret RF — Texture & Tightening",
-    detail: "Three-session plan · 8 weeks",
-    before: "radial-gradient(120% 120% at 40% 30%, oklch(70% 0.016 54), oklch(61% 0.02 50))",
-    after: "radial-gradient(120% 120% at 40% 30%, oklch(92% 0.04 60), oklch(85% 0.06 56))",
-  },
-  {
-    id: "filler",
-    treatment: "Liquid Facial Balancing",
-    detail: "Full-face plan · proportion-led",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(71% 0.018 52), oklch(62% 0.022 48))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(92% 0.05 60), oklch(85% 0.07 56))",
-  },
-];
-
-function useSlider() {
-  const [pos, setPos] = useState(50);
+/* ---------- shared slider hook ---------- */
+function useSlider(initial = 50) {
+  const [pos, setPos] = useState(initial);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
 
@@ -93,6 +69,7 @@ function useSlider() {
   return { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown };
 }
 
+/* ---------- handle ---------- */
 function SliderHandle({
   pos,
   label,
@@ -135,22 +112,150 @@ function SliderHandle({
   );
 }
 
-function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
-  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider();
+/* ---------- LEAD: real photo pair ----------
+   AFTER is the base layer (always full image). BEFORE is the clipped overlay,
+   so as `pos` grows the BEFORE shrinks from the right and the AFTER is revealed.
+   pos=0 → all AFTER; pos=100 → all BEFORE. Default opens at 55% (mostly BEFORE)
+   so the resting state invites the drag-to-after gesture. */
+function PhotoSlider() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider(55);
+
+  return (
+    <figure className="group/photo overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
+      <div
+        ref={ref}
+        className="relative w-full cursor-ew-resize touch-none select-none"
+        style={{ aspectRatio: "4 / 5" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        {/* AFTER — base layer (refreshed / glowing) */}
+        <div className="absolute inset-0">
+          <img
+            src="/clients/timeless/ba-after.jpg"
+            alt="After a physician-led treatment plan — refreshed, luminous skin"
+            width={928}
+            height={1152}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className="h-full w-full select-none object-cover"
+          />
+          {/* faint warm-orange brand sheen, AFTER side reads a touch warmer */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 mix-blend-soft-light"
+            style={{
+              background:
+                "radial-gradient(70% 60% at 50% 22%, oklch(80% 0.13 54 / 0.22), transparent 66%)",
+            }}
+          />
+          <span className="absolute right-3 top-3 z-[2] rounded-full bg-white/90 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-wider text-[var(--color-fg)] shadow-sm">
+            After
+          </span>
+        </div>
+
+        {/* BEFORE — clipped overlay (tired / pre-treatment) */}
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
+        >
+          <img
+            src="/clients/timeless/ba-before.jpg"
+            alt="Before treatment — subtle under-eye shadow, faint fine lines, duller tone"
+            width={928}
+            height={1152}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className="h-full w-full select-none object-cover"
+          />
+          {/* a whisper-cool veil so the pre side reads a hair duller than after */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 mix-blend-multiply"
+            style={{
+              background:
+                "linear-gradient(180deg, oklch(86% 0.01 250 / 0.1), oklch(80% 0.012 250 / 0.16))",
+            }}
+          />
+          <span className="absolute left-3 top-3 z-[2] rounded-full bg-[var(--color-fg)]/85 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-wider text-white">
+            Before
+          </span>
+        </div>
+
+        {/* honest provenance tag */}
+        <span className="pointer-events-none absolute bottom-3 left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap rounded-full bg-black/35 px-3 py-1 text-[0.56rem] font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm">
+          Illustrative · representative result
+        </span>
+
+        <SliderHandle pos={pos} label="Liquid Facial Balancing + neuromodulator" onKeyDown={onKeyDown} />
+      </div>
+      <figcaption className="flex items-center justify-between gap-3 px-5 py-4 sm:px-6 sm:py-5">
+        <span className="font-display text-lg text-[var(--color-fg)] sm:text-xl">
+          Liquid Balancing + Neuromodulator
+        </span>
+        <span className="text-xs text-[var(--color-fg-subtle)] sm:text-sm">
+          Physician-led plan · 6 weeks post
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/* ---------- supporting gradient "studies" ----------
+   Brand-tinted plates for additional treatment categories. BEFORE reads
+   dull/cool/tired; AFTER reads brighter + warmer peach — all inside the true
+   brand hue range (~52–60), never brassy. Clearly marked sample · illustrative. */
+type Study = {
+  id: string;
+  treatment: string;
+  detail: string;
+  before: string;
+  after: string;
+};
+
+const STUDIES: Study[] = [
+  {
+    id: "tox",
+    treatment: "Neuromodulator",
+    detail: "Forehead & glabella · 14 days",
+    before: "linear-gradient(155deg, oklch(72% 0.018 56), oklch(64% 0.022 50))",
+    after: "linear-gradient(155deg, oklch(93% 0.035 60), oklch(86% 0.055 58))",
+  },
+  {
+    id: "secretrf",
+    treatment: "Secret RF",
+    detail: "Texture & tightening · 8 weeks",
+    before: "radial-gradient(120% 120% at 40% 30%, oklch(70% 0.016 54), oklch(61% 0.02 50))",
+    after: "radial-gradient(120% 120% at 40% 30%, oklch(92% 0.04 60), oklch(85% 0.06 56))",
+  },
+  {
+    id: "glow",
+    treatment: "Medical Facial Glow",
+    detail: "Tone & radiance · single session",
+    before: "radial-gradient(130% 100% at 60% 40%, oklch(71% 0.018 52), oklch(62% 0.022 48))",
+    after: "radial-gradient(130% 100% at 60% 40%, oklch(92% 0.05 60), oklch(85% 0.07 56))",
+  },
+];
+
+function StudySlider({ data }: { data: Study }) {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } = useSlider(50);
 
   return (
     <figure className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)]">
       <div
         ref={ref}
         className="relative w-full cursor-ew-resize touch-none select-none"
-        style={{ aspectRatio: ratio }}
+        style={{ aspectRatio: "4 / 5" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
         <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
-          {/* after: a soft warm sheen — reads smoother / more luminous */}
           <div
             className="absolute inset-0"
             style={{
@@ -167,7 +272,6 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          {/* before: a faint texture + soft de-focus so it reads tired / pre-treatment */}
           <div
             className="absolute inset-0 opacity-50 mix-blend-soft-light"
             style={{
@@ -216,12 +320,66 @@ export function BeforeAfter() {
               <span className="font-display-em">Drag to reveal.</span>
             </>
           }
-          lead="Representative results from our physicians' chairs. Slide the handle — or use your keyboard — to compare before and after."
+          lead="A representative result from our physicians' chairs. Slide the handle — or use your keyboard — to wipe before into after."
         />
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {CASES.map((c, i) => (
+
+        {/* LEAD comparison: real aligned photo pair, paired with context copy */}
+        <div className="mt-14 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <Reveal className="lg:col-span-5">
+            <PhotoSlider />
+          </Reveal>
+          <Reveal delay={0.08} className="lg:col-span-7">
+            <div className="max-w-xl">
+              <h3
+                className="font-display text-[var(--color-fg)]"
+                style={{ fontSize: "clamp(1.5rem, 1rem + 1.6vw, 2.1rem)", lineHeight: 1.1 }}
+              >
+                The same face, refreshed —{" "}
+                <span className="font-display-em text-accent-deep">not someone else&apos;s.</span>
+              </h3>
+              <p className="mt-5 text-pretty font-light leading-relaxed text-[var(--color-fg-muted)]">
+                Drag the handle across the photo: under-eye shadow softens, fine
+                lines settle, and tired tone lifts to a lit-from-within glow. Both
+                frames are aligned pixel-for-pixel, so the only thing that changes
+                is the skin — exactly how we plan it in the chair.
+              </p>
+              <ul className="mt-7 grid gap-3">
+                {[
+                  "Physician-placed, proportion-led — never overfilled",
+                  "A staged plan, reviewed at every visit",
+                  "Results that read as rested, not done",
+                ].map((line) => (
+                  <li
+                    key={line}
+                    className="flex items-start gap-3 text-sm text-[var(--color-fg-muted)]"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-1.5 inline-grid h-4 w-4 flex-none place-items-center rounded-full bg-[var(--color-accent-subtle)] text-[var(--color-accent-deep)]"
+                    >
+                      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
+                        <path d="M2.5 6.2 5 8.5l4.5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-7 text-xs text-[var(--color-fg-subtle)]">
+                Illustrative, representative result — individual outcomes vary.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* supporting category studies */}
+        <p className="mt-20 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
+          More to compare
+        </p>
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {STUDIES.map((c, i) => (
             <Reveal key={c.id} delay={i * 0.08}>
-              <Slider data={c} />
+              <StudySlider data={c} />
             </Reveal>
           ))}
         </div>

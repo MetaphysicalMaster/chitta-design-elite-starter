@@ -1,24 +1,229 @@
 "use client";
 
 /**
- * BeforeAfter — "Real Results." A premium gallery of GENUINE before/after pairs
- * from Happy Clinic Denver. Each source image is already composed side-by-side
- * (BEFORE left | AFTER right, with the clinic's own watermark) on a black
- * backdrop — so there is no drag-reveal slider (that needs separate files).
- * Instead: one featured result + an accessible carousel of the real pairs, each
- * presented on a near-black tile so the image's own black bleeds seamlessly.
+ * BeforeAfter — "Real Results." The centerpiece is now an INTERACTIVE
+ * before/after drag-reveal slider built on the practice's REAL aligned photo
+ * pair (ba-after.jpg as the base layer, ba-before.jpg as the clipped overlay)
+ * so dragging the handle sweeps from BEFORE → AFTER seamlessly. The pair is
+ * pixel-registered (same patient, identical pose / lighting / grey backdrop) so
+ * the reveal never "jumps".
  *
- * These are real client results — NO "sample" tags here.
+ * The signature "Subtle is The New WOW!™" brand lockup survives as an elegant
+ * eyebrow/caption around the slider (with a small butterfly mark) — the brand
+ * moment is preserved, but the WORKING slider is the hero.
  *
- * Accessibility: the carousel is a labelled region with prev/next buttons, a
- * live status announcing the active slide, full keyboard support (arrow keys),
- * and honest alt text on every image. No autoplay (reduced-motion friendly).
+ * Below the slider, the practice's genuine composited before/after pairs remain
+ * as a supporting gallery (a featured female result + an accessible carousel of
+ * the real men's-aesthetics pairs) — real client results.
+ *
+ * Accessibility:
+ *  - the slider is a real ARIA slider (role="slider", valuemin/now/max,
+ *    aria-valuetext) with pointer + full keyboard support (arrows/Home/End);
+ *  - the static track has no transform animation, so it is reduced-motion safe
+ *    by construction;
+ *  - the supporting carousel is a labelled region with prev/next, a live status,
+ *    arrow-key support, and honest alt text. No autoplay.
  */
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SectionHeading, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
+
+/* ============================================================
+   The interactive drag-reveal slider (lead comparison).
+   Real aligned photos: AFTER base + BEFORE clipped overlay.
+   ============================================================ */
+
+/* Both source photos are intrinsic 928 × 1152 (≈ 4 / 5 portrait). Locking the
+   aspect-ratio to the real pixels keeps the reveal pixel-perfect + zero CLS. */
+const BA = {
+  before: "/clients/happy-clinic/ba-before.jpg",
+  after: "/clients/happy-clinic/ba-after.jpg",
+  w: 928,
+  h: 1152,
+} as const;
+
+function useReveal() {
+  const [pos, setPos] = useState(50); // % of BEFORE shown from the left edge
+  const ref = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const setFromClientX = useCallback((clientX: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(0, Math.min(100, pct)));
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragging.current = true;
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    setFromClientX(e.clientX);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    setFromClientX(e.clientX);
+  };
+  const onPointerUp = () => {
+    dragging.current = false;
+  };
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setPos((p) => Math.max(0, p - 4));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setPos((p) => Math.min(100, p + 4));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setPos(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setPos(100);
+    }
+  };
+
+  return { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown };
+}
+
+function RevealSlider() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } =
+    useReveal();
+  const shown = Math.round(pos);
+
+  return (
+    <figure className="mx-auto max-w-md">
+      {/* Brand eyebrow — the signature "Subtle is The New WOW" lockup with a
+          small butterfly mark, so the brand moment survives around the slider. */}
+      <figcaption className="mb-4 flex items-center justify-center gap-2.5 text-center">
+        <Butterfly className="h-5 w-5 text-[var(--color-gold)]" />
+        <span className="font-display-em text-xl leading-none text-[var(--color-accent-bright)] sm:text-2xl">
+          Subtle is The New WOW!
+          <span className="align-super text-[0.55em]">™</span>
+        </span>
+      </figcaption>
+
+      <div
+        ref={ref}
+        className="hc-ba relative w-full overflow-hidden rounded-3xl border border-white/12 bg-[var(--night-0)] shadow-[0_36px_90px_-44px_oklch(12%_0.04_252_/_0.95)]"
+        style={{ aspectRatio: `${BA.w} / ${BA.h}` }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        {/* BASE LAYER — AFTER (refreshed/glowing). Plain <img>, static-export
+            safe; basePath is handled by the build. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BA.after}
+          alt="After — the same Happy Clinic Denver patient with refreshed, more even, naturally glowing skin."
+          width={BA.w}
+          height={BA.h}
+          draggable={false}
+          className="absolute inset-0 h-full w-full select-none object-cover"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-3 top-3 z-[2] rounded-full bg-[var(--color-accent)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-fg)] backdrop-blur-sm"
+        >
+          After
+        </span>
+
+        {/* OVERLAY — BEFORE, clipped from the left so dragging right reveals the
+            after beneath. */}
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          aria-hidden
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={BA.before}
+            alt=""
+            width={BA.w}
+            height={BA.h}
+            draggable={false}
+            className="absolute inset-0 h-full w-full select-none object-cover"
+          />
+          <span className="pointer-events-none absolute left-3 top-3 z-[2] rounded-full bg-[var(--night-0)]/80 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
+            Before
+          </span>
+        </div>
+
+        {/* Honest tag — illustrative / representative result. */}
+        <span className="pointer-events-none absolute bottom-3 left-1/2 z-[2] -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[0.54rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
+          Illustrative · representative result
+        </span>
+
+        {/* Divider line + the ARIA slider handle. */}
+        <span className="hc-ba-line" style={{ left: `${pos}%` }} aria-hidden />
+        <button
+          type="button"
+          role="slider"
+          aria-label="Drag to reveal before and after. Use arrow keys to compare."
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={shown}
+          aria-valuetext={`Showing ${shown}% before, ${100 - shown}% after`}
+          onKeyDown={onKeyDown}
+          className="hc-ba-handle"
+          style={{ left: `${pos}%` }}
+        >
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+            <path
+              d="M9 6 4 12l5 6M15 6l5 6-5 6"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <p className="mt-4 text-center text-xs text-white/60">
+        Drag the handle — or use your arrow keys — to reveal the difference.
+        Skin texture &amp; tone, naturally refreshed.
+      </p>
+    </figure>
+  );
+}
+
+/* A tiny brand butterfly mark — echoes the lockup that ships in the client's
+   own before/after artwork, kept small so the slider stays the centerpiece. */
+function Butterfly({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden>
+      <path
+        d="M12 6.5c-1.3-2.7-3.6-4-5.7-3.6C3.9 3.3 2.6 5.6 3 8c.4 2.3 2.4 3.9 4.7 4.2-2.1.6-3.7 2.2-3.9 4.3-.2 2 1 3.6 2.7 3.7 2 .1 4-1.7 5.5-4.4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 6.5c1.3-2.7 3.6-4 5.7-3.6C20.1 3.3 21.4 5.6 21 8c-.4 2.3-2.4 3.9-4.7 4.2 2.1.6 3.7 2.2 3.9 4.3.2 2-1 3.6-2.7 3.7-2 .1-4-1.7-5.5-4.4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 5.5v13"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/* ============================================================
+   Supporting gallery — the practice's genuine composited pairs.
+   ============================================================ */
 
 type Result = {
   src: string;
@@ -27,17 +232,13 @@ type Result = {
   h: number;
   treatment: string;
   detail: string;
-  /** optional small audience tag (e.g. men's aesthetics) so the female-luxury
-      buyer is never the visual minority on her own proof wall */
+  /** optional small audience tag (e.g. men's aesthetics) */
   tag?: string;
   alt: string;
 };
 
-/* Featured = the female aspirational outcome the primary 35–60 woman buyer
-   should see herself in — the dominant Mirror leads the proof block.
-   Caption is HONEST to the pixels: this pair shows a skin texture/tone
-   rejuvenation (smoother, more even, refreshed skin), NOT a volume change —
-   accurate labels ARE the brand ("Subtle is The New WOW"). */
+/* Featured = the female aspirational outcome. Caption honest to the pixels:
+   a skin texture/tone rejuvenation, NOT a volume change. */
 const FEATURED: Result = {
   src: "/clients/happy-clinic/ba-2.png",
   w: 1444,
@@ -47,9 +248,7 @@ const FEATURED: Result = {
   alt: "Before and after of a female patient — facial skin texture and tone visibly smoother and more even after rejuvenation at Happy Clinic Denver, shown side by side.",
 };
 
-/* The remaining real pairs are men's aesthetics — tagged honestly so they read
-   as a SECONDARY proof (men's results), keeping the female result dominant on a
-   female-luxury wall. Same 1.337 ratio as the featured tile (even baseline). */
+/* The remaining real pairs are men's aesthetics — tagged honestly. */
 const RESULTS: Result[] = [
   {
     src: "/clients/happy-clinic/ba-1.png",
@@ -71,8 +270,7 @@ const RESULTS: Result[] = [
   },
 ];
 
-/* A single result tile — the composed pair on a near-black plate (object-contain
-   keeps the whole BEFORE|AFTER frame + labels visible, never cropped). */
+/* A single result tile — the composed pair on a near-black plate. */
 function ResultTile({
   r,
   priority = false,
@@ -103,13 +301,6 @@ function ResultTile({
           priority={priority}
           className="object-contain"
         />
-        {/* NOTE: every source pair ALREADY bakes in its own BEFORE (bottom-left)
-            + AFTER (bottom-right) labels and a "HAPPY CLINIC" watermark
-            (top-right). We deliberately add NO Before/After overlay chips here —
-            doubling them looked like clashing labels and collided with the
-            watermark. The image self-labels; the figcaption + alt carry meaning.
-            The only overlay is an optional small audience tag, placed TOP-LEFT
-            so it never lands on the baked-in watermark. */}
         {r.tag && (
           <span
             aria-hidden
@@ -134,10 +325,7 @@ function ResultsCarousel() {
   const liveRef = useRef<HTMLParagraphElement>(null);
   const n = RESULTS.length;
 
-  const go = useCallback(
-    (next: number) => setI(((next % n) + n) % n),
-    [n],
-  );
+  const go = useCallback((next: number) => setI(((next % n) + n) % n), [n]);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
@@ -151,7 +339,6 @@ function ResultsCarousel() {
 
   const active = RESULTS[i];
 
-  // Announce the active slide for assistive tech.
   useEffect(() => {
     if (liveRef.current) {
       liveRef.current.textContent = `Result ${i + 1} of ${n}: ${active.treatment}, ${active.detail}`;
@@ -172,7 +359,6 @@ function ResultsCarousel() {
         className="mx-auto max-w-3xl"
       />
 
-      {/* Controls */}
       <div className="mx-auto mt-6 flex max-w-3xl items-center justify-between">
         <button
           type="button"
@@ -185,8 +371,6 @@ function ResultsCarousel() {
           </svg>
         </button>
 
-        {/* Slide picker — APG carousel pattern: plain buttons with aria-current,
-            NOT orphaned tabs (there are no tabpanels). */}
         <div className="flex items-center gap-2.5">
           {RESULTS.map((r, idx) => (
             <button
@@ -227,8 +411,6 @@ export function BeforeAfter() {
     <section
       id="results"
       data-sky-window
-      // hc-sky--results: opaque navy by default; a translucent navy VEIL when
-      // the fixed aurora canvas is live — the night sky descends with you.
       className="hc-sky--results relative scroll-mt-20 overflow-hidden py-24 sm:py-28"
     >
       {/* aurora aura echoing the hero on the dark navy field */}
@@ -252,38 +434,17 @@ export function BeforeAfter() {
               </span>
             </>
           }
-          lead="Real Happy Clinic patients — actual before-and-after results from Dr. Phil's chair. Look closely: the difference is obvious, the work never is."
+          lead="Real Happy Clinic patients — actual before-and-after results from Dr. Phil's chair. Drag the slider below and look closely: the difference is obvious, the work never is."
         />
 
-        {/* The practice's OWN words — the genuine handwritten "Subtle is the new
-            WOW!™" lockup (with the butterfly mark + an inset of Dr. Phil) that
-            ships with the client's real before/after set. The single most
-            brand-authentic artifact in the asset library — surfaced here as a
-            signature brand moment, not a sharp proof tile. */}
+        {/* THE CENTERPIECE — interactive before/after drag-reveal on the real
+            aligned photo pair, wrapped in the signature brand lockup. */}
         <Reveal className="mt-12">
-          <figure className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-white/12 bg-[var(--night-1)] shadow-[0_30px_80px_-40px_oklch(20%_0.06_252_/_0.9)]">
-            <div
-              className="relative w-full"
-              style={{ aspectRatio: "1024 / 711" }}
-            >
-              <Image
-                src="/clients/happy-clinic/ba-featured.jpg"
-                alt="Happy Clinic Denver's own signature lockup — the handwritten tagline “Subtle is the new WOW!™ · Happy Clinic Denver · Phil Hong Nguyen, MD” beside a real patient before-and-after and a portrait of Dr. Phil."
-                fill
-                sizes="(min-width: 1024px) 48rem, 100vw"
-                className="object-contain"
-              />
-            </div>
-            <figcaption className="flex items-center gap-2.5 bg-[var(--night-1)] px-5 py-3.5 text-xs text-white/65">
-              <span aria-hidden className="text-[var(--color-accent-bright)]">✦</span>
-              The practice&rsquo;s own words — Dr. Phil Hong Nguyen, MD · Happy
-              Clinic Denver.
-            </figcaption>
-          </figure>
+          <RevealSlider />
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-          {/* Featured result */}
+        {/* Supporting gallery — the practice's genuine composited pairs. */}
+        <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <Reveal>
             <ResultTile
               r={FEATURED}
@@ -292,7 +453,6 @@ export function BeforeAfter() {
             />
           </Reveal>
 
-          {/* Gallery carousel of the real pairs */}
           <Reveal delay={0.08}>
             <ResultsCarousel />
           </Reveal>
@@ -302,9 +462,6 @@ export function BeforeAfter() {
           <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-white/55">
             Actual patients of Happy Clinic Denver. Individual results vary;
             photos are unretouched before/after pairs shared with patient consent.
-            {/* Asset note (for the client, not a public claim): supplying more
-                FEMALE before/after pairs would let this wall lead even more
-                strongly with the primary 35–60 woman audience. */}
           </p>
         </Reveal>
       </div>

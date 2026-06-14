@@ -21,8 +21,8 @@
  * Honesty: a small "Demo" tag sits in the header; the panel is clearly a preview.
  *
  * Collision: the slug has NO other bottom-right floating element (SiteNav is a
- * top bar; PinkThread is a pointer-events:none decorative overlay). So this is
- * the SOLE floating affordance — no competing bubble, no duplicate booking pill.
+ * top bar). So this is the SOLE floating affordance — no competing bubble, no
+ * duplicate booking pill.
  *
  * A11y: launcher is a labelled button with aria-expanded; the panel is a dialog
  * with focus management, Esc-to-close, focus-visible rings, reduced-motion safe,

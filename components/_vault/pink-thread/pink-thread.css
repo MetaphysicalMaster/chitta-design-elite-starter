@@ -1,0 +1,110 @@
+/* ============================================================
+   PINK THREAD — vaulted supporting styles.
+   Lifted verbatim from the Sousan Med Spa brand.css when the element was
+   removed from that site (2026-06-13). Scope these to your target brand's
+   selector (replace [data-brand="sousan"]) and re-point the --gold* / accent
+   color tokens at the new brand's accent. Pairs with PinkThread.tsx.
+
+   Tokens referenced (define these for your brand, or find-replace them):
+     --gold        the thread stroke color (the accent line itself)
+     --gold-bright a brighter accent for the moving tip + glow
+     --gold-deep   deep accent (AA-safe text/rim variant)
+     --font-script a calligraphic face for the signature origin
+   ============================================================ */
+
+/* The thread overlay — a full-document, pointer-safe, aria-hidden SVG layer. */
+[data-brand="sousan"] .sn-thread {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+}
+[data-brand="sousan"] .sn-thread svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+[data-brand="sousan"] .sn-thread path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.92;
+}
+[data-brand="sousan"] .sn-thread__tip {
+  fill: var(--gold-bright);
+}
+[data-brand="sousan"] .sn-thread__glow {
+  fill: var(--gold-bright);
+  opacity: 0.22;
+}
+@media (max-width: 767px) {
+  [data-brand="sousan"] .sn-thread path {
+    stroke-width: 1.75;
+    opacity: 0.8;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="sousan"] .sn-thread path {
+    opacity: 0.45;
+  }
+}
+
+/* The signature origin (data-thread="start") — a calligraphic word the thread
+   visually spills from. Re-point --font-script + color for your brand. */
+[data-brand="sousan"] .sn-signature {
+  font-family: var(--font-script), "Snell Roundhand", "Apple Chancery",
+    "Segoe Script", "Brush Script MT", cursive;
+  font-size: 2.1em;
+  line-height: 0.9;
+  color: oklch(99% 0 0);
+  display: inline-block;
+  transform: rotate(-2.5deg) translateY(-0.04em);
+}
+
+/* ---- COLOR-POP MOMENTS (data-pop -> .is-popped via the component) ---- */
+/* A portrait/frame bloom example — adapt the selectors to your sections. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] .filet::after {
+    transition:
+      opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+[data-brand="sousan"] .filet.is-popped::after {
+  opacity: 0.8;
+  box-shadow:
+    0 0 30px -6px oklch(58% 0.245 358 / 0.5),
+    inset 0 0 22px -12px oklch(58% 0.245 358 / 0.3);
+}
+
+/* A "develop" sweep example — a plate waits desaturated and saturates on pop. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] [data-pop] .develop-on-pop {
+    filter: grayscale(0.92) brightness(1.02);
+    transition: filter 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-brand="sousan"] [data-pop].is-popped .develop-on-pop {
+    filter: grayscale(0) brightness(1);
+  }
+}
+
+/* The closing CTA pulse the moment the thread ties into it (data-thread="knot"
+   -> .sn-tied via the component). */
+@keyframes sn-tie {
+  0% {
+    box-shadow: 0 0 0 0 oklch(58% 0.245 358 / 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 18px oklch(58% 0.245 358 / 0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-brand="sousan"] .sn-tied {
+    animation: sn-tie 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1;
+  }
+}

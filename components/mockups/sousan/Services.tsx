@@ -69,18 +69,13 @@ export function Services() {
           title={
             <>
               Transformative care,{" "}
-              <span className="font-display-em" data-thread="underline">
-                an artist&rsquo;s eye.
-              </span>
+              <span className="font-display-em">an artist&rsquo;s eye.</span>
             </>
           }
           lead="The treatments Houston comes to Sousan for. Every service is performed in-house, tailored to your skin and your goals."
         />
 
-        {/* data-thread="passv": the thread stitches straight down the SEAM
-            between the two card columns — sewing the menu together without
-            ever crossing the cards' copy. */}
-        <div data-thread="passv">
+        <div>
         <RevealGroup
           as="ul"
           className="mt-14 grid gap-6 sm:grid-cols-2"

@@ -6,7 +6,7 @@ import { TrustBar } from "@/components/mockups/happy-clinic/TrustBar";
 import { Authority } from "@/components/mockups/happy-clinic/Authority";
 import { Services } from "@/components/mockups/happy-clinic/Services";
 import { BeforeAfter } from "@/components/mockups/happy-clinic/BeforeAfter";
-import { SplitFlapBoard } from "@/components/mockups/happy-clinic/SplitFlapBoard";
+import { ReviewsMarquee } from "@/components/mockups/happy-clinic/ReviewsMarquee";
 import { Financing } from "@/components/mockups/happy-clinic/Financing";
 import { BookingCTA } from "@/components/mockups/happy-clinic/BookingCTA";
 import { SiteFooter } from "@/components/mockups/happy-clinic/SiteFooter";
@@ -40,16 +40,20 @@ export default function HappyClinicPage() {
         {/* The closer — "Meet Dr. Phil" authority section (real headshot) */}
         <Authority />
         <Services />
-        {/* Real before/after results gallery (real client photos) */}
+        {/* Real before/after results — led by an INTERACTIVE drag-reveal slider
+            on the practice's real aligned photo pair (AFTER base / BEFORE
+            clipped overlay), wrapped in the "Subtle is The New WOW" brand
+            lockup; the practice's genuine composited pairs follow as a gallery. */}
         <BeforeAfter />
-        {/* Split-flap "Solari" review board — six panels flip round-robin
-            (one flip / 1.5s → each panel refreshes every 9s). Now led by ONE
-            static, named, fully-legible hero pull-quote (the board is the
-            spectacle; the anchored quote is the substance).
-            NOTE: components/.../ProofWall.tsx is the intentionally-RETIRED
-            alternate review layout — kept on disk (operator's call) but NOT
-            mounted; SplitFlapBoard is the canonical reviews surface. */}
-        <SplitFlapBoard />
+        {/* Reviews — a CONTINUOUS HORIZONTAL MARQUEE of full 5-star Google
+            reviews (replaces the unreadable SplitFlapBoard): each card shows the
+            whole review text + stars + reviewer, auto-scrolls, pauses on
+            hover/focus, reduced-motion → static swipeable strip, seamless loop
+            (duplicate set aria-hidden). Led by the ★ 4.9 · Google band.
+            NOTE: components/.../SplitFlapBoard.tsx + ProofWall.tsx are the
+            intentionally-RETIRED alternate review layouts — kept on disk but NOT
+            mounted; ReviewsMarquee is the canonical reviews surface. */}
+        <ReviewsMarquee />
         <Financing />
         <BookingCTA />
       </main>

@@ -125,9 +125,7 @@ export function Reviews() {
           title={
             <>
               Houston is{" "}
-              <span className="font-display-em" data-thread="underline">
-                glowing.
-              </span>
+              <span className="font-display-em">glowing.</span>
             </>
           }
           lead="A reputation built one transformation at a time — pulled straight from our Google profile, where Houston tells the real story of their beauty evolution."

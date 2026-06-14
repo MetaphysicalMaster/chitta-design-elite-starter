@@ -42,11 +42,7 @@ const PROOF: Proof[] = [
     The coin carries the credibility-positive stat so each reads as earned proof. */
 function Medallion({ stat, tag }: { stat: string; tag: string }) {
   return (
-    <span
-      aria-hidden
-      data-pop
-      className="sn-award h-24 w-24 shrink-0 sm:h-28 sm:w-28"
-    >
+    <span aria-hidden className="sn-award h-24 w-24 shrink-0 sm:h-28 sm:w-28">
       <span className="relative z-10 flex flex-col items-center leading-none">
         <span className="text-[var(--gold-mid)] text-base" aria-hidden>
           ★
@@ -76,9 +72,7 @@ export function Awards() {
           title={
             <>
               Proof Houston{" "}
-              <span className="gold-leaf font-display-em" data-thread="underline">
-                trusts
-              </span>
+              <span className="gold-leaf font-display-em">trusts</span>
               , not just claims.
             </>
           }
@@ -87,12 +81,9 @@ export function Awards() {
 
         {/* The wall of recognition — framed top + bottom by a thin pink rule so
             the strip registers as a confident, deliberate band, not loose stamps. */}
-        {/* data-thread="passv": the pink thread weaves VERTICALLY through the
-            gap between the medallions — sewing the proof together. */}
-        <div className="relative mt-14" data-thread="passv">
+        <div className="relative mt-14">
           <span
             aria-hidden
-            data-rule
             className="block h-px w-full"
             style={{
               background:
@@ -124,7 +115,6 @@ export function Awards() {
           </RevealGroup>
           <span
             aria-hidden
-            data-rule
             className="block h-px w-full"
             style={{
               background:

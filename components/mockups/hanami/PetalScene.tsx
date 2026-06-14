@@ -6,13 +6,22 @@
  * A drifting cherry-blossom petal field: thousands of soft sakura petals
  * catching a gentle breeze. Built as a SINGLE instanced petal mesh (one draw
  * call) with a light custom vertex/fragment shader so each petal:
+ *   · is a REAL sakura silhouette — a soft rounded OVAL with the signature
+ *     NOTCH/cleft cut into its outer tip (carved in the fragment mask), on a
+ *     gently CUPPED 3D surface (a spoon/boat curl, tessellated 6×6) so it tumbles
+ *     as a 3D petal, not a flat 2D sliver,
  *   · drifts down-and-across on a wind field (sin/cos noise + per-petal phase),
- *   · flutters — pitches and rolls as if tumbling on air,
+ *     with a BIMODAL fall-speed spread (lazy drifters + a few quick tumblers),
+ *   · FLUTTERS realistically — three independent slow pitch/yaw/roll waves at
+ *     incommensurate rates over a slow base tumble, so it rocks broadside↔edge-on
+ *     instead of spinning flat; the rotated surface normal drives a catch-the-
+ *     light flash (brighter + more opaque broadside, translucent edge-on),
  *   · sits on one of several DEPTH LAYERS (near/mid/far) with depth-scaled
- *     size, parallax speed, opacity and a soft-focus blur fade for the far
- *     layer (bokeh), so the field reads with real depth, not a flat sprite wall,
- *   · colours along a sakura ramp (pale rim → sakura → deep → plum heart) with a
- *     soft length-wise gradient and a translucent edge for a petal silhouette.
+ *     size variation, parallax speed, opacity and a soft-focus blur fade for the
+ *     far layer (bokeh), so the field reads with real depth, not a flat wall,
+ *   · colours translucent SOFT PINK — a near-white pale rim → sakura body → a
+ *     deeper rose only at the cupped base (the logo's blossom pink, never the
+ *     coral-red that read as reddish blades before).
  *
  * Density/flow EASE as you scroll: a `flow` uniform (driven from the hero's
  * scroll progress) gently reduces drift speed and fades the densest near layer,
@@ -44,27 +53,51 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { windBus } from "./wind";
 
-/* TWO-TONE cherry-blossom palette as THREE colors — matched to the REAL logo,
-   whose blossoms are a coral/cherry-RED (~#E8504D), not a soft pink. A pale rim
-   at the petal tip eases to a sakura body and blooms to a coral-red heart at the
-   base, so the falling field reads as THIS logo's flower (it sits beside it in
-   the nav). Mirrors brand.css --petal-* stops (pale → sakura → deep → plum). */
+/* TRUE SAKURA palette as THREE colors. Real cherry-blossom petals are a
+   translucent SOFT PINK: a near-white pale rim easing into a sakura-pink body
+   with a slightly warmer rose toward the base, where the petal cups toward the
+   blossom heart. We pull the dominant body toward the LOGO's blossom pink rather
+   than the previous coral-red, which made the field read as reddish slivers. The
+   deepest/plum is reserved for a tiny minority + only at the very base, so the
+   field reads unmistakably as pink blossom over the sumi-black hero.
+   Mirrors brand.css --petal-* stops (pale → sakura → deep → plum). */
 const PALETTE = {
-  pale: "#f7d2d4", // --petal-pale   (soft pale rim, the two-tone tip)
-  sakura: "#f0a59f", // --petal-sakura (sakura body, warmed toward coral)
-  deep: "#ec6f68", // --petal-deep   (deep coral-rose)
-  plum: "#e44b48", // --petal-plum   (coral-RED heart, logo ~#E8504D)
+  pale: "#fdeef0", // near-white pale rim (the translucent catching-light edge)
+  sakura: "#f7c2cf", // sakura body — the logo's soft blossom pink
+  deep: "#f09bb0", // deeper rose toward the cupped base
+  plum: "#e87a96", // rose heart (minority accent, base only) — NOT coral-red
 };
 
-const COUNT_FULL = 2600;
-const COUNT_LITE = 1200;
+const COUNT_FULL = 2400;
+const COUNT_LITE = 1100;
 
-/* A single petal silhouette — a soft almond/teardrop built once and instanced.
-   A custom plane whose UVs we shade into a blossom-petal alpha. We keep the
-   geometry a simple 2-tri plane and do the petal SHAPE in the fragment shader
-   (cheap, crisp at any DPR). */
+/* A single CHERRY-BLOSSOM petal — a real, cupped 3D surface (not a flat plane),
+   built once and instanced. We tessellate a small grid so each petal can be
+   gently CUPPED along both axes (a saddle-ish curl, like a real petal caught on
+   the breeze) — this is what makes the tumble read as 3D fluttering instead of a
+   2D spinning sliver: as it rotates, the curved surface catches and loses the
+   light, flashing edge-on then broad. The petal SILHOUETTE (rounded oval + the
+   signature sakura notch) is still carved in the fragment shader, crisp at any
+   DPR. The plane is aspect ~1 : 1.18 — a soft rounded oval, NOT a thin blade. */
 function makePetalGeometry() {
-  const g = new THREE.PlaneGeometry(1, 1.35, 1, 1);
+  const SEG = 6;
+  const g = new THREE.PlaneGeometry(1, 1.18, SEG, SEG);
+  const pos = g.attributes.position as THREE.BufferAttribute;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i); // -0.5 .. 0.5
+    const y = pos.getY(i); // -0.59 .. 0.59
+    // Normalize y to 0 (base) .. 1 (tip) for a length-wise curl.
+    const v = (y + 0.59) / 1.18;
+    // Cup ACROSS the width: the long edges lift toward the viewer (a trough),
+    // strongest near the wide upper body, easing to flat at the narrow base.
+    const widthCurl = (x * x) * 0.62 * (0.35 + v * 0.65);
+    // Cup ALONG the length: a gentle forward bow so the tip and base dip,
+    // giving the petal a shallow boat/spoon shape (real petals are not flat).
+    const lengthCurl = Math.sin(v * Math.PI) * 0.12;
+    pos.setZ(i, widthCurl - lengthCurl);
+  }
+  pos.needsUpdate = true;
+  g.computeVertexNormals();
   return g;
 }
 
@@ -85,11 +118,13 @@ const vertex = /* glsl */ `
   attribute float aScale;   // per-petal size
   attribute float aDepth;   // 0 = far, 1 = near (depth layer)
   attribute float aColorMix;// 0..1 along the sakura ramp
+  attribute float aFlutter; // 0..1 per-petal flutter amplitude/character
 
   varying vec2  vUv;
   varying float vDepth;
   varying float vColorMix;
   varying float vFade;
+  varying float vFacing;    // |n·view| — how broadside the petal faces us (light)
 
   // cheap rotation matrix about an arbitrary axis
   mat3 rotAxis(vec3 a, float angle) {
@@ -101,6 +136,17 @@ const vertex = /* glsl */ `
       oc*a.x*a.y + a.z*s,  oc*a.y*a.y + c,     oc*a.y*a.z - a.x*s,
       oc*a.z*a.x - a.y*s,  oc*a.y*a.z + a.x*s, oc*a.z*a.z + c
     );
+  }
+
+  // Euler rotation (pitch X, yaw Y, roll Z) — composed for a true 3D tumble.
+  mat3 rotXYZ(vec3 e) {
+    float cx = cos(e.x), sx = sin(e.x);
+    float cy = cos(e.y), sy = sin(e.y);
+    float cz = cos(e.z), sz = sin(e.z);
+    mat3 rx = mat3(1.0,0.0,0.0, 0.0,cx,-sx, 0.0,sx,cx);
+    mat3 ry = mat3(cy,0.0,sy, 0.0,1.0,0.0, -sy,0.0,cy);
+    mat3 rz = mat3(cz,-sz,0.0, sz,cz,0.0, 0.0,0.0,1.0);
+    return rz * ry * rx;
   }
 
   void main() {
@@ -141,16 +187,39 @@ const vertex = /* glsl */ `
     pos.y += uSweep * (1.5 * par) * swayBias;
     pos.x -= uSweep * (0.7 * par) * swayBias;
 
-    // --- flutter: each petal tumbles about its own axis ---
-    float spin = t * (0.8 + aSpeed) + aPhase * 9.0;
-    mat3 rot = rotAxis(normalize(aAxis), spin);
-    // petal billows: slight non-uniform scale so it reads as a thin membrane;
-    // a gust deepens the billow — petals caught broadside by the wind.
-    vec3 local = position;
-    local.x *= 1.0 + (0.12 + 0.1 * uGust) * sin(spin * 1.3);
-    vec3 vtx = rot * (local * aScale * mix(0.55, 1.25, aDepth));
+    // --- FLUTTER: a real cherry-blossom tumble, NOT a 2D sliver spin ---
+    // A falling sakura petal does not spin flat on one axis — it flutters: it
+    // PITCHES (rocks forward/back over its width), ROLLS (rocks side to side),
+    // and YAWS (turns to face you, then away) on three INDEPENDENT slow waves at
+    // incommensurate rates, with a slow continuous base tumble underneath. The
+    // gust deepens the rocking. This is what makes it read as a 3D petal on air.
+    float fl = 0.6 + aFlutter * 0.9;                 // per-petal flutter character
+    float gustFl = 1.0 + uGust * 1.1;                // wind deepens the rocking
+    // base slow tumble about the petal's own axis — keeps motion non-repeating
+    float baseSpin = t * (0.28 + aSpeed * 0.42) + aPhase * 9.0;
+    vec3 euler = vec3(
+      // pitch: the dominant rocking, broadside ↔ edge-on (the "flutter")
+      sin(t * (0.9 * fl) + aPhase * 6.0) * (1.15 * gustFl),
+      // yaw: turns the face toward / away from the eye
+      baseSpin + sin(t * (0.55 * fl) + aPhase * 3.7) * 0.7,
+      // roll: gentle side-to-side rock
+      sin(t * (0.7 * fl) + aPhase * 11.0) * (0.85 * gustFl)
+    );
+    mat3 rot = rotXYZ(euler);
 
+    // petal billows: a faint membrane flex as it rocks; a gust deepens it.
+    vec3 local = position;
+    local.x *= 1.0 + (0.08 + 0.08 * uGust) * sin(t * 1.3 + aPhase * 7.0);
+
+    vec3 vtx = rot * (local * aScale * mix(0.62, 1.22, aDepth));
     vec3 world = pos + vtx;
+
+    // Light-catching: how broadside the petal faces the camera (+z view dir).
+    // The cupped, tessellated surface gives a real normal; we read its facing so
+    // the fragment can flash the petal brighter when it turns flat to the eye and
+    // dim it toward translucency when it tips edge-on — that catch-the-light beat.
+    vec3 n = normalize(rot * normalize(normal));
+    vFacing = abs(n.z);
 
     // soft-focus fade for the far layer (bokeh) + edge fade near field bounds.
     float edge = smoothstep(8.0, 5.5, abs(fall));
@@ -174,72 +243,107 @@ const fragment = /* glsl */ `
   varying float vDepth;
   varying float vColorMix;
   varying float vFade;
+  varying float vFacing;
 
-  // Cherry-blossom petal silhouette in UV space: a teardrop that is narrow at
-  // the base (bottom, v=0) and wide at the top (v=1), with the signature sakura
-  // V-CLEFT notched into the top edge. Built from a width profile + a notch carve.
-  float petalMask(vec2 uv) {
+  // ── A REAL cherry-blossom (sakura) petal silhouette in UV space ──
+  // The single-petal sakura shape: a soft, broad ROUNDED OVAL (widest in the
+  // upper-mid body, gently tapering to a soft rounded base), with the
+  // characteristic small NOTCH / CLEFT cut into the outer tip. NOT a teardrop
+  // blade. Returns a soft-edged 0..1 coverage mask. Also writes the signed
+  // distance-ish edge proximity into edgeOut for the translucent rim.
+  float petalMask(vec2 uv, out float edgeOut, out float tipNotch) {
     float x = uv.x - 0.5;          // -0.5..0.5 across
-    float y = uv.y;                // 0 (base) .. 1 (tip)
+    float y = clamp(uv.y, 0.0, 1.0); // 0 (base) .. 1 (tip)
 
-    // Width profile: pinched at the base, swelling to its widest near the top,
-    // then easing back so the top corners are rounded (egg-shaped petal).
-    float w = sin(clamp(y, 0.0, 1.0) * 3.14159) * 0.34   // round body
-            + y * 0.18;                                   // bias width toward top
-    float body = smoothstep(w, w - 0.06, abs(x));         // inside the outline
+    // WIDTH PROFILE — a rounded ovate petal:
+    //  · base (y→0): soft, rounded, fairly narrow shoulder (not a point)
+    //  · body (y~0.45..0.7): widest — the broad sakura body
+    //  · tip  (y→1): eases back in so the outer end is a rounded lobe, ready
+    //                for the notch to be cut into it.
+    // A skewed sine swell gives the asymmetric ovate profile; a base floor keeps
+    // the bottom rounded rather than pinched to a spike.
+    float swell = sin(pow(y, 0.82) * 3.14159);            // 0 at ends, 1 mid
+    float w = 0.085 + swell * 0.30;                        // half-width envelope
+    // widen the upper body slightly more than the base (ovate, not symmetric)
+    w += smoothstep(0.25, 0.85, y) * 0.05;
 
-    // base rounding so the bottom point isn't a hard spike
-    float baseSoft = smoothstep(0.0, 0.1, y);
+    // soft-edged coverage inside the outline (antialiased band)
+    float aa = 0.045;
+    float body = smoothstep(w + aa, w - aa, abs(x));
 
-    // the sakura cleft: carve a small V-notch DOWN into the top edge at center.
-    float cleftDepth = 0.2;                                // how deep the notch
-    float cleftWidth = 0.16;                               // how wide
-    float notchEdge = 1.0 - cleftDepth + (cleftWidth - abs(x)) * (cleftDepth / cleftWidth);
-    float topCut = (abs(x) < cleftWidth)
-      ? smoothstep(notchEdge + 0.03, notchEdge, y)         // cut the V out
-      : 1.0;
-    float topSoft = smoothstep(1.02, 0.96, y);             // soften the very top
+    // THE SAKURA NOTCH — a small smooth V/cleft cut DOWN into the outer tip.
+    // Real sakura petals have a shallow rounded cleft, not a deep gash.
+    float cleftW = 0.13;                                   // notch half-width
+    float cleftD = 0.16;                                   // notch depth
+    // parabolic notch floor: deepest at center, rising to the rim at ±cleftW
+    float floorY = 1.0 - cleftD + cleftD * (abs(x) / cleftW) * (abs(x) / cleftW);
+    float topCut = (abs(x) < cleftW)
+      ? smoothstep(floorY + 0.035, floorY, y)             // carve the cleft
+      : smoothstep(1.005, 0.97, y);                        // round the lobes
+    // a global soft cap on the very tip so the two lobes read rounded
+    float tipSoft = smoothstep(1.02, 0.95, y);
 
-    return clamp(body * baseSoft * topCut * topSoft, 0.0, 1.0);
+    float mask = clamp(body * topCut * tipSoft, 0.0, 1.0);
+
+    // edge proximity (1 at the silhouette outline → 0 in the interior) for the
+    // translucent catching-light rim.
+    edgeOut = smoothstep(0.0, 0.16, mask) * (1.0 - smoothstep(0.16, 0.5, mask));
+    // how close we are to the tip-notch region (for a faint cleft shadow line)
+    tipNotch = (abs(x) < cleftW) ? smoothstep(floorY - 0.06, floorY, y) : 0.0;
+    return mask;
   }
 
   void main() {
-    float mask = petalMask(vUv);
+    float edge; float tipNotch;
+    float mask = petalMask(vUv, edge, tipNotch);
     if (mask < 0.02) discard;
 
-    // length-wise color: a SAKURA-dominant petal. Body sits in sakura, easing to
-    // a pale rim at the tip; only the deepest base hints the blossom heart. This
-    // keeps petals reading pink over the black field rather than maroon.
-    vec3 base = mix(uDeep, uSakura, smoothstep(0.0, 0.32, vUv.y));
-    base = mix(base, uPale, smoothstep(0.5, 1.0, vUv.y));
-    // per-petal ramp shift toward the plum heart — applied to the MINORITY of
-    // petals (colorMix is cubed at generation) and only near the very base.
-    base = mix(base, uPlum, vColorMix * 0.3 * (1.0 - smoothstep(0.0, 0.45, vUv.y)));
+    // ── COLOR: a translucent SOFT-PINK sakura petal ──
+    // Length-wise ramp: the cupped base sits in a slightly deeper rose, the broad
+    // body is sakura-pink, and the tip eases to a near-white pale rim — exactly
+    // how light reads through a real petal (thin translucent edge, denser heart).
+    vec3 col = mix(uDeep, uSakura, smoothstep(0.0, 0.34, vUv.y));
+    col = mix(col, uPale, smoothstep(0.46, 1.0, vUv.y));
 
-    // additive sakura rim — lift the petal edges toward pale pink so the
-    // silhouette glows softly over the sumi-black field instead of crushing to a
-    // dark maroon edge under NormalBlending. Strongest at the outline, fades in.
-    float rim = smoothstep(0.0, 0.12, mask) * (1.0 - smoothstep(0.12, 0.4, mask));
-    base += uPale * rim * 0.22;
+    // a soft central vein-line keeps it from looking like a flat decal
+    float vein = 1.0 - smoothstep(0.0, 0.05, abs(vUv.x - 0.5));
+    col = mix(col, uDeep, vein * 0.10 * smoothstep(0.1, 0.7, vUv.y));
 
-    // gentle inner glow toward the heart
-    float glow = smoothstep(0.5, 0.0, length(vUv - vec2(0.5, 0.32)));
-    base += uSakura * glow * 0.06;
+    // per-petal heart accent toward the rose tone — MINORITY of petals (colorMix
+    // is cubed at generation) and only near the cupped base. Never coral-red.
+    col = mix(col, uPlum, vColorMix * 0.34 * (1.0 - smoothstep(0.0, 0.5, vUv.y)));
 
-    // depth dims the far layer slightly; flow fades the whole field as it calms.
-    float depthDim = mix(0.82, 1.0, vDepth);
+    // translucent catching-light RIM: lift the silhouette edge toward the pale
+    // near-white so the petal glows softly over the sumi-black field — the way a
+    // thin petal edge catches light. Modulated by facing so the rim is brightest
+    // when the petal turns broadside to the eye.
+    float lightCatch = mix(0.72, 1.18, vFacing);          // broadside = brighter
+    col += uPale * edge * 0.30 * lightCatch;
+
+    // gentle broadside sheen across the whole petal as it flutters flat to us
+    col += uSakura * smoothstep(0.55, 1.0, vFacing) * 0.10;
+
+    // a faint cool shadow inside the tip notch so the cleft reads
+    col -= uDeep * tipNotch * 0.05;
+
+    // ── ALPHA: translucent, depth- & facing-aware ──
+    float depthDim = mix(0.84, 1.0, vDepth);
     float alpha = mask * vFade * depthDim;
 
-    // far-layer soft focus (bokeh): lift alpha edge softness on far petals.
+    // edge-on petals go MORE translucent (you see through the thin membrane),
+    // broadside petals stay more opaque — the realistic flutter shimmer.
+    alpha *= mix(0.55, 1.0, smoothstep(0.05, 0.85, vFacing));
+
+    // far-layer soft focus (bokeh): soften far-petal alpha.
     if (uBokeh) {
       float soft = mix(0.45, 1.0, vDepth);
-      alpha *= mix(0.7, 1.0, soft);
+      alpha *= mix(0.74, 1.0, soft);
     }
 
-    // near petals stay denser; very-near calm keeps a tasteful translucency.
-    alpha *= mix(0.78, 0.95, vDepth);
+    // near petals stay denser; keep a tasteful translucency throughout.
+    alpha *= mix(0.80, 0.96, vDepth);
 
-    gl_FragColor = vec4(base, alpha);
+    gl_FragColor = vec4(col, alpha);
   }
 `;
 
@@ -269,6 +373,9 @@ function PetalField({
     geo.index = petal.index;
     geo.attributes.position = petal.attributes.position;
     geo.attributes.uv = petal.attributes.uv;
+    // the cupped petal's per-vertex normals — the shader reads these (rotated)
+    // to flash the petal as it turns broadside / edge-on (catch-the-light).
+    geo.attributes.normal = petal.attributes.normal;
 
     const offsets = new Float32Array(count * 3);
     const axes = new Float32Array(count * 3);
@@ -277,6 +384,7 @@ function PetalField({
     const scales = new Float32Array(count);
     const depths = new Float32Array(count);
     const colorMix = new Float32Array(count);
+    const flutter = new Float32Array(count);
 
     // deterministic-ish scatter across a wide, tall field with depth layers.
     let seed = 1337;
@@ -311,12 +419,19 @@ function PetalField({
       axes[i * 3 + 2] = az / len;
 
       phases[i] = rand();
-      speeds[i] = 0.45 + rand() * 0.9;
-      scales[i] = 0.16 + rand() * 0.22;
+      // Fall speed: a BIMODAL spread so the field has both lazy drifters and a
+      // few quicker tumblers (real blossom fall is never uniform). ~70% drift
+      // slowly, ~30% fall noticeably faster.
+      const sR = rand();
+      speeds[i] = sR < 0.7 ? 0.32 + rand() * 0.4 : 0.9 + rand() * 0.7;
+      // Size: wider variation (small distant petals → a few large near ones),
+      // biased small via a squared random so big petals stay a tasteful minority.
+      scales[i] = 0.14 + Math.pow(rand(), 1.7) * 0.34;
+      // Per-petal flutter character — how vigorously this petal rocks/tumbles.
+      flutter[i] = rand();
       // Color ramp bias: cube the random so most petals land PALE→SAKURA and the
-      // deep/plum heart is reserved for a small minority. Over the sumi-black
-      // hero this keeps the field reading as true cherry-blossom pink instead of
-      // the oxblood/maroon that a uniform distribution produced.
+      // deep/rose heart is reserved for a small minority. Over the sumi-black
+      // hero this keeps the field reading as true soft cherry-blossom pink.
       colorMix[i] = Math.pow(rand(), 3);
     }
 
@@ -327,6 +442,7 @@ function PetalField({
     geo.setAttribute("aScale", new THREE.InstancedBufferAttribute(scales, 1));
     geo.setAttribute("aDepth", new THREE.InstancedBufferAttribute(depths, 1));
     geo.setAttribute("aColorMix", new THREE.InstancedBufferAttribute(colorMix, 1));
+    geo.setAttribute("aFlutter", new THREE.InstancedBufferAttribute(flutter, 1));
     geo.instanceCount = count;
 
     const u = {

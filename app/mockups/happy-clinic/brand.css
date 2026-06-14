@@ -496,6 +496,147 @@
 }
 
 /* ============================================================
+   REVIEWS MARQUEE — a continuous horizontal rail of FULL 5-star reviews.
+   Replaces the SplitFlapBoard treatment. Mechanics modeled on hanami's
+   .hn-marquee / darst's .dt-marquee: the track holds the cards TWICE and
+   translates -50% in a seamless loop, pauses on hover/focus-within, masked
+   edges. Reduced-motion → animation off + the rail becomes a normal
+   horizontally-scrollable, swipeable, snapping strip, and the seamless-loop
+   duplicate is removed from layout so the swipe shows each review once.
+   ============================================================ */
+[data-brand="happy-clinic"] .hc-marquee {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+[data-brand="happy-clinic"] .hc-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: hc-marquee-scroll 64s linear infinite;
+  will-change: transform; /* continuous loop — keep it on the compositor */
+}
+@keyframes hc-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+[data-brand="happy-clinic"] .hc-marquee:hover .hc-marquee__track,
+[data-brand="happy-clinic"] .hc-marquee:focus-within .hc-marquee__track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="happy-clinic"] .hc-marquee__track {
+    animation: none;
+  }
+  /* Reduced-motion: drop the loop + allow manual horizontal swipe with snap. */
+  [data-brand="happy-clinic"] .hc-marquee {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  /* Remove the seamless-loop duplicate from layout so a motion-sensitive
+     visitor swiping the static strip sees each review exactly once. */
+  [data-brand="happy-clinic"] .hc-marquee__dup {
+    display: none;
+  }
+}
+
+/* A single review card — a frosted navy plate with a pine-teal hairline and a
+   pale-yellow top accent thread. Sits on the dark sky-window field. */
+[data-brand="happy-clinic"] .hc-review-card {
+  position: relative;
+  background:
+    radial-gradient(120% 120% at 0% 0%, oklch(40% 0.07 250 / 0.55), transparent 62%),
+    linear-gradient(165deg, oklch(32% 0.07 251 / 0.92), oklch(24% 0.06 252 / 0.92));
+  border: 1px solid oklch(70% 0.06 200 / 0.22);
+  box-shadow:
+    0 26px 64px -34px oklch(10% 0.04 252 / 0.85),
+    inset 0 1px 0 oklch(85% 0.05 200 / 0.1);
+}
+/* Pale-yellow → pine-teal accent thread along the top edge of each card. */
+[data-brand="happy-clinic"] .hc-review-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 22%,
+    var(--color-accent-bright) 78%,
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* ============================================================
+   BEFORE / AFTER drag-reveal slider — the interactive comparison.
+   AFTER is the base layer; BEFORE is the clipped overlay so dragging the
+   handle from left→right sweeps from before into after. Pointer + full
+   keyboard (arrows / Home / End). The track region itself is static (no
+   transform animation) so it's reduced-motion safe by construction.
+   ============================================================ */
+[data-brand="happy-clinic"] .hc-ba {
+  position: relative;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* The vertical divider line that tracks the handle. */
+[data-brand="happy-clinic"] .hc-ba-line {
+  position: absolute;
+  inset-block: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: oklch(99% 0.01 200 / 0.96);
+  box-shadow:
+    0 0 0 1px oklch(52% 0.087 178 / 0.4),
+    0 0 14px oklch(90% 0.12 99 / 0.35);
+  pointer-events: none;
+  z-index: 3;
+}
+/* The grab handle — a teal-ringed white pill with the pale-yellow glow. */
+[data-brand="happy-clinic"] .hc-ba-handle {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  height: 2.75rem;
+  width: 2.75rem;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: oklch(99.6% 0.005 178);
+  color: var(--color-accent-deep);
+  border: 1px solid oklch(99% 0.01 200);
+  box-shadow:
+    0 10px 28px -10px oklch(20% 0.06 252 / 0.7),
+    0 0 0 6px oklch(90% 0.12 99 / 0.18);
+  z-index: 4;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-brand="happy-clinic"] .hc-ba-handle:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+[data-brand="happy-clinic"] .hc-ba-handle:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-brand="happy-clinic"] .hc-ba-handle {
+    transition: none;
+  }
+}
+
+/* ============================================================
    LIVE-SKY WIRING — the signature scroll experience.
    AuroraConductor mounts ONE fixed, full-viewport WebGL night sky behind the
    whole page and sets [data-aurora-live] on this wrapper. These rules then:

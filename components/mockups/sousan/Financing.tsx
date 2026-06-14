@@ -35,10 +35,7 @@ export function Financing() {
             style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
           >
             Your evolution,{" "}
-            <span
-              className="gold-leaf--bright font-display-em"
-              data-thread="underline"
-            >
+            <span className="gold-leaf--bright font-display-em">
               on your terms.
             </span>
           </h2>

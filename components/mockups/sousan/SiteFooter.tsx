@@ -24,10 +24,9 @@ export function SiteFooter() {
     <footer
       className="relative overflow-hidden bg-[var(--night-0)] text-[oklch(88%_0_0_/_0.86)]"
     >
-      {/* pink hairline top — draws itself in as the footer arrives */}
+      {/* pink hairline top — a confident accent rule framing the footer */}
       <div
         aria-hidden
-        data-rule
         className="h-px w-full"
         style={{
           background:

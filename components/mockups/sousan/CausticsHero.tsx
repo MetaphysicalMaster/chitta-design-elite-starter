@@ -3,12 +3,20 @@
 /**
  * CausticsHero — hero section + the lazy WebGL boundary.
  *
- * The "Liquid-Gold Caustics" R3F scene is dynamically imported with ssr:false
- * (only legal inside a "use client" module — Next 16 gotcha). Until it mounts —
- * and on mobile / reduced-motion / no-WebGL / save-data — we render a static
- * CSS pink-caustics-on-charcoal field so there is never a blank frame, zero CLS,
- * and full graceful degradation. The scene itself pauses its render loop when
- * scrolled offscreen or the tab is hidden (IntersectionObserver + visibility).
+ * SCRAPPED & REBUILT: the old hero ran a red/pink CAUSTICS-PLASMA field plus a
+ * spinning glass gem — chaotic and off-brand for a precision aesthetics
+ * practice. It is replaced by SilkScene: a slow luminous GREYSCALE silk drape
+ * lit by a moving studio key, with ONE precise razor-thin HOT-PINK specular
+ * light-edge (the lone controlled magenta pop). Refined, editorial, luxe —
+ * controlled motion, not a storm. (The component file name is kept so the page
+ * import is unchanged; only the scene + concept were swapped.)
+ *
+ * The scene is dynamically imported with ssr:false (only legal inside a "use
+ * client" module — Next 16 gotcha). Until it mounts — and on mobile /
+ * reduced-motion / no-WebGL / save-data — we render a static CSS silk-drape
+ * gradient field so there is never a blank frame, zero CLS, and full graceful
+ * degradation. The scene itself pauses its render loop when scrolled offscreen
+ * or the tab is hidden (IntersectionObserver + visibility).
  */
 
 import dynamic from "next/dynamic";
@@ -20,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { Magnetic } from "./primitives";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
-const CausticsScene = dynamic(() => import("./CausticsScene"), {
+const SilkScene = dynamic(() => import("./SilkScene"), {
   ssr: false,
   loading: () => null,
 });
@@ -132,20 +140,21 @@ export function CausticsHero() {
       aria-label="Sousan Med Spa — Houston, TX · your beauty evolution"
       className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
-      {/* Layer 0: static monochrome + pink-light field — always painted (SSR) */}
+      {/* Layer 0: static monochrome silk-drape field — always painted (SSR) */}
       <div
         className="caustics-fallback absolute inset-0 -z-20"
         aria-hidden="true"
       />
 
-      {/* Layer 1: WebGL power element (desktop, motion-ok, webgl-ok only) */}
+      {/* Layer 1: WebGL power element (desktop, motion-ok, webgl-ok only) —
+          the luminous greyscale silk drape with the one pink light-edge. */}
       {enabled && (
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <CausticsScene lite={lite} />
+          <SilkScene lite={lite} />
         </div>
       )}
 
-      {/* Base legibility wash — anchors the copy column over the caustics field
+      {/* Base legibility wash — anchors the copy column over the silk field
           and seats the nav + the trust-bar transition. The founder portrait is
           NO LONGER a full-bleed background scrim; she is a real, visible framed
           element in the grid below (see the portrait column). Decorative. */}
@@ -211,10 +220,8 @@ export function CausticsHero() {
             className="h-px w-7 shrink-0 bg-[var(--gold-bright)]"
           />
           Led personally by{" "}
-          {/* The literal signature — the pink thread spills from its tail. */}
-          <span className="sn-signature" data-thread="start">
-            Sousan
-          </span>
+          {/* The literal founder signature — Pinyon Script, a slight pen-tilt. */}
+          <span className="sn-signature">Sousan</span>
           &nbsp;— Houston&rsquo;s artist of natural results.
         </motion.p>
 
@@ -302,11 +309,7 @@ export function CausticsHero() {
           variants={item}
           className="relative order-1 mx-auto w-full max-w-[24rem] md:order-2 md:max-w-none"
         >
-          <div
-            data-thread="frame"
-            data-pop
-            className="filet relative overflow-hidden rounded-[1.75rem] border border-[oklch(100%_0_0_/_0.16)] shadow-[0_40px_90px_-40px_oklch(0%_0_0_/_0.85)]"
-          >
+          <div className="filet relative overflow-hidden rounded-[1.75rem] border border-[oklch(100%_0_0_/_0.16)] shadow-[0_40px_90px_-40px_oklch(0%_0_0_/_0.85)]">
             <Image
               src="/clients/sousan/hero.jpg"
               alt="Sousan, founder and lead aesthetic provider at Sousan Medspa, Houston"

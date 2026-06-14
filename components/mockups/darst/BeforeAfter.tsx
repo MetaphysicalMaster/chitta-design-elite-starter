@@ -1,16 +1,30 @@
 "use client";
 
 /**
- * BeforeAfter — an accessible before/after comparison slider (sample). A native
- * range input drives the clip width; the whole track is a drag surface while a
- * styled divider handle reads as the reveal line. Keyboard operable (arrow
- * keys), labelled, reduced-motion safe. Imagery is on-brand placeholder plates
- * explicitly marked "sample" — the real case photos would be slotted in.
+ * BeforeAfter — an accessible before/after drag-reveal slider.
+ *
+ * Now wired with the REAL, pixel-aligned case photos (operator revision):
+ * /clients/darst/ba-after.jpg (the base layer, refreshed/glowing) and
+ * /clients/darst/ba-before.jpg (the clipped overlay, subtle under-eye shadow +
+ * faint fine lines + duller tone). The pair is the same woman, identical pose,
+ * lighting and grey ground, so dragging the handle wipes BEFORE → AFTER
+ * seamlessly. A native range input drives the clip width; the whole track is a
+ * drag surface while a styled divider handle reads as the reveal line. Keyboard
+ * operable (arrow keys), labelled, reduced-motion safe.
+ *
+ * Plain <img> (static-export-safe; the build handles basePath). A small honest
+ * "Illustrative · representative result" tag stays — these are believable
+ * representative images, not a specific patient's clinical record.
  */
 
 import { useState } from "react";
 import { FigureTag, Reveal, SectionHeading } from "./primitives";
-import { BrandImage } from "./BrandImage";
+
+// The real pair lives per-slug under /public/clients/darst/. They are
+// pixel-for-pixel aligned (same crop), so the clipped overlay registers exactly
+// over the base layer with no counter-scaling needed beyond the clip wrapper.
+const BA_AFTER = "/clients/darst/ba-after.jpg";
+const BA_BEFORE = "/clients/darst/ba-before.jpg";
 
 export function BeforeAfter() {
   const [pos, setPos] = useState(50);
@@ -41,49 +55,59 @@ export function BeforeAfter() {
         />
 
         <Reveal className="mt-12 sm:mt-14">
-          <figure className="mx-auto max-w-3xl">
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] shadow-[0_30px_80px_-40px_oklch(30%_0.05_58_/_0.4)]">
-              {/* AFTER (base layer, full) — the warm, radiant register, so the
-                  reveal reads as duller skin → glow even as a sample. */}
-              <BrandImage
-                alt="After treatment — clearer, more radiant skin"
-                aspect="16 / 11"
-                variant="warm"
-                radius="2xl"
-                showSample={false}
-                className="!rounded-none !border-0"
-                label="After"
+          <figure className="mx-auto max-w-md">
+            <div
+              className="relative overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] shadow-[0_30px_80px_-40px_oklch(30%_0.05_58_/_0.4)]"
+              style={{ aspectRatio: "4 / 5" }}
+            >
+              {/* AFTER (base layer, full) — refreshed, glowing, even-toned. The
+                  reveal wipes from this back toward the BEFORE so dragging left→
+                  right travels before → after. */}
+              <img
+                src={BA_AFTER}
+                alt="After: refreshed, more even and luminous skin"
+                width={930}
+                height={1163}
+                decoding="async"
+                draggable={false}
+                className="absolute inset-0 h-full w-full select-none object-cover"
               />
+              <span className="pointer-events-none absolute bottom-3 right-3 z-10 rounded-full bg-[oklch(20%_0.035_56_/_0.55)] px-2.5 py-0.5 text-[0.72rem] font-medium tracking-tight text-[oklch(97%_0.012_72)] backdrop-blur-sm">
+                After
+              </span>
 
               {/* BEFORE (clipped overlay). The clip wrapper narrows to `pos%`;
-                  the inner plate counter-scales its width to 100/pos% so the
+                  the inner image counter-scales its width to 100/pos% so the
                   revealed BEFORE stays pixel-aligned with the AFTER beneath it
-                  (no distortion), regardless of the frame's measured width. */}
+                  (the pair is shot identically), regardless of frame width. */}
               <div
                 className="absolute inset-y-0 left-0 overflow-hidden"
                 style={{ width: `${pos}%` }}
                 aria-hidden
               >
                 <div
-                  className="absolute inset-y-0 left-0"
+                  className="absolute inset-y-0 left-0 h-full"
                   style={{ width: pos > 0 ? `${(100 / pos) * 100}%` : "100%" }}
                 >
-                  <BrandImage
-                    alt="Before treatment"
-                    aspect="16 / 11"
-                    variant="muted"
-                    radius="2xl"
-                    showSample={false}
-                    className="!h-full !w-full !rounded-none !border-0"
-                    label="Before"
+                  <img
+                    src={BA_BEFORE}
+                    alt=""
+                    width={930}
+                    height={1163}
+                    decoding="async"
+                    draggable={false}
+                    className="absolute inset-0 h-full w-full select-none object-cover"
                   />
+                  <span className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-[oklch(20%_0.035_56_/_0.55)] px-2.5 py-0.5 text-[0.72rem] font-medium tracking-tight text-[oklch(97%_0.012_72)] backdrop-blur-sm">
+                    Before
+                  </span>
                 </div>
               </div>
 
-              {/* divider handle — given brand craft (most-interacted control):
+              {/* divider handle — brand craft on the most-interacted control:
                   a warm-paper disc with a teal ring + hairline and a teal
-                  chevron, so it matches the page's finish (Solari bevels, strata
-                  rails, the swoosh) rather than reading as a plain flat circle. */}
+                  chevron, matching the page's finish (Solari bevels, strata
+                  rails, the swoosh). */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-y-0 z-10 w-px bg-[oklch(98%_0.012_72)]"
@@ -102,15 +126,10 @@ export function BeforeAfter() {
                 </span>
               </div>
 
-              {/* "sample" tag for the whole comparison */}
-              <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
-                Sample
-              </span>
-
-              {/* representative-treatment chip — names what the comparison would
-                  show, so the placeholder communicates an aesthetic outcome. */}
-              <span className="pointer-events-none absolute bottom-3 right-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.55)] px-2.5 py-0.5 text-[0.62rem] font-medium tracking-tight text-[oklch(96%_0.012_72)] backdrop-blur-sm">
-                Laser resurfacing — sample
+              {/* honest representative-result tag — these are believable,
+                  representative images, not a specific patient's record. */}
+              <span className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
+                Illustrative · representative result
               </span>
 
               {/* the accessible control */}
@@ -125,8 +144,8 @@ export function BeforeAfter() {
               />
             </div>
             <figcaption className="mt-4 text-center text-sm text-[var(--color-fg-subtle)]">
-              Drag the handle (or use arrow keys) to compare. Representative
-              sample — individual results vary.
+              Drag the handle (or use arrow keys) to compare. Illustrative,
+              representative result — individual outcomes vary.
             </figcaption>
           </figure>
         </Reveal>
