@@ -1,6 +1,3 @@
-# Beautox Bar — Homepage Rebrand (Owner Preview)
-
+# Beautox Bar
 Proposed homepage rebuild by The MetaMarketer.
-- **Live preview:** https://metaphysicalmaster.github.io/beautox-bar-rebrand/
-- **Tech:** Next.js static export · Three.js / R3F + GSAP signature experience · AI front-office demo surfaces · Tailwind v4
-- Self-contained static site. Sample imagery + concierge are demo previews.
+- Live: https://metaphysicalmaster.github.io/beautox-bar-rebrand/

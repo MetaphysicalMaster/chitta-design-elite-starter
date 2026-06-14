@@ -1,6 +1,3 @@
-# Sousan Med Spa — Homepage Rebrand (Owner Preview)
-
+# Sousan Med Spa
 Proposed homepage rebuild by The MetaMarketer.
-- **Live preview:** https://metaphysicalmaster.github.io/sousan-rebrand/
-- **Tech:** Next.js static export · Three.js / R3F + GSAP signature experience · AI front-office demo surfaces · Tailwind v4
-- Self-contained static site. Sample imagery + concierge are demo previews.
+- Live: https://metaphysicalmaster.github.io/sousan-rebrand/
