@@ -17,7 +17,11 @@ const PERKS = [
 
 export function Financing() {
   return (
-    <Section labelledBy="financing-heading">
+    <Section
+      labelledBy="financing-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <Reveal>
         <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/60 p-8 sm:p-12">
           <div

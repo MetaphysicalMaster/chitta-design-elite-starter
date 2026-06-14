@@ -18,8 +18,8 @@
  * Performance / safety:
  *  - dynamic(ssr:false) from LuxeHero; a static CSS marble fallback paints first
  *    so there is never a blank frame or CLS.
- *  - DPR-capped (≤2), particle count scales with viewport, hot path only mutates
- *    canvas (no React state per frame).
+ *  - DPR-capped per tier (lite ≤1.25 / full ≤1.5), particle count scales with
+ *    viewport, hot path only mutates canvas (no React state per frame).
  *  - IntersectionObserver + document.visibilitychange PAUSE the RAF when the hero
  *    scrolls offscreen or the tab is hidden (battery / 60fps neighbours).
  *  - prefers-reduced-motion is gated upstream (scene never mounts) AND re-checked
@@ -70,7 +70,9 @@ export default function TurnBackTimeScene({
       return; // belt-and-braces: never animate under reduced motion
     }
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // DPR cap by tier — lite ≤1.25, full ≤1.5 (never 2). Crisp enough for a
+    // soft gold-dust field while keeping fill-rate low on hi-DPI phones.
+    const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1.25 : 1.5);
     let w = 0;
     let h = 0;
     let particles: Particle[] = [];
@@ -97,8 +99,8 @@ export default function TurnBackTimeScene({
 
     function build() {
       const area = w * h;
-      const density = lite ? 26000 : 15000; // px² per particle
-      const count = Math.max(40, Math.min(220, Math.round(area / density)));
+      const density = lite ? 23000 : 13000; // px² per particle (slightly denser drift)
+      const count = Math.max(44, Math.min(240, Math.round(area / density)));
       particles = Array.from({ length: count }, () => spawn(true));
     }
 
@@ -188,7 +190,7 @@ export default function TurnBackTimeScene({
           GOLD_BRIGHT,
           Math.max(0, p.tone - 0.6) / 0.4,
         );
-        const a = tw * (0.5 + 0.5 * p.tone) * energy * 0.85;
+        const a = tw * (0.5 + 0.5 * p.tone) * energy * 0.95;
 
         // soft glow halo for the brighter motes
         if (p.tone > 0.72) {
@@ -263,8 +265,10 @@ function drawHorologe(
 ) {
   const cx = w * 0.79;
   const cy = h * 0.62;
-  const R = Math.min(w, h) * (lite ? 0.16 : 0.19);
-  const baseAlpha = 0.16 * energy;
+  // A touch larger + more present so the "turn back time" horologe actually
+  // reads — still whisper-quiet, never gaudy.
+  const R = Math.min(w, h) * (lite ? 0.19 : 0.23);
+  const baseAlpha = 0.3 * energy;
 
   ctx.save();
   ctx.translate(cx, cy);
@@ -292,15 +296,15 @@ function drawHorologe(
 
   // COUNTER-clockwise hand (negative angle): one revolution per ~24s
   const ang = -((t / 24) % 1) * Math.PI * 2 - Math.PI / 2;
-  ctx.strokeStyle = `rgba(236,213,150,${Math.min(0.5, baseAlpha * 2.6)})`;
-  ctx.lineWidth = 1.6 * dpr;
+  ctx.strokeStyle = `rgba(236,213,150,${Math.min(0.62, baseAlpha * 2)})`;
+  ctx.lineWidth = 1.7 * dpr;
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(Math.cos(ang) * R * 0.66, Math.sin(ang) * R * 0.66);
   ctx.stroke();
 
   // a brighter leading mote on the hand tip
-  ctx.fillStyle = `rgba(236,213,150,${Math.min(0.6, baseAlpha * 3)})`;
+  ctx.fillStyle = `rgba(236,213,150,${Math.min(0.72, baseAlpha * 2.3)})`;
   ctx.beginPath();
   ctx.arc(Math.cos(ang) * R * 0.66, Math.sin(ang) * R * 0.66, 2.2 * dpr, 0, Math.PI * 2);
   ctx.fill();

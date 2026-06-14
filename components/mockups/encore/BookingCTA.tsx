@@ -21,7 +21,12 @@ export function BookingCTA() {
   const ready = path && time;
 
   return (
-    <Section id="book" labelledBy="book-heading">
+    <Section
+      id="book"
+      labelledBy="book-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <Reveal>
         <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-deep)] p-8 text-white sm:p-12">
           <div

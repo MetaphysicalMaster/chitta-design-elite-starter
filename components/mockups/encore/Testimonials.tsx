@@ -39,7 +39,11 @@ const QUOTES = [
 export function Testimonials() {
   const prefersReduced = useReducedMotion();
   return (
-    <Section labelledBy="testimonials-heading">
+    <Section
+      labelledBy="testimonials-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <SectionHeading
         id="testimonials-heading"
         eyebrow="4.8★ · 400+ reviews"

@@ -173,6 +173,7 @@ export function BeforeAfter() {
       id="results"
       aria-labelledby="results-title"
       className="relative scroll-mt-20 overflow-hidden bg-[var(--cream-deep)] py-24 sm:py-28"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       {/* soft peach + gold aura on the warm field */}
       <div

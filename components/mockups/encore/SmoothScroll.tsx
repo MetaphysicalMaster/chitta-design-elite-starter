@@ -33,6 +33,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (prefersReduced) return;
+    // Skip Lenis on touch / small screens: native touch scroll is already
+    // smooth, and Lenis only adds jank + an always-on rAF loop on phones.
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth < 1024
+    )
+      return;
 
     const lenis = new Lenis({
       duration: 1.15,

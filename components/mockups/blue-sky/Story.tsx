@@ -24,6 +24,7 @@ export function Story() {
       id="story"
       aria-label="Our story"
       className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       {/* faint sky wash to tie back to the hero palette */}
       <div

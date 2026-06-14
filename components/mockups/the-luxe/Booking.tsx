@@ -70,6 +70,7 @@ export function Booking() {
     <section
       id="book"
       className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       <div
         aria-hidden

@@ -1,3 +1,2 @@
-# Hanami Medspa
-Proposed homepage rebuild by The MetaMarketer.
-- Live: https://metaphysicalmaster.github.io/hanami-rebrand/
+# Hanami Medspa — Owner Preview
+Live: https://metaphysicalmaster.github.io/hanami-rebrand/

@@ -171,6 +171,7 @@ export function BeforeAfter() {
     <section
       id="results"
       className="grain relative scroll-mt-24 overflow-hidden bg-[var(--plum-deep)] py-24 text-[var(--color-bg)] sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}
     >
       {/* mauve aura echoing the hero on the dark plum field */}
       <div

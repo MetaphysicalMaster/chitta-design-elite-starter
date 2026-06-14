@@ -12,7 +12,13 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { SectionHeading, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
-type Service = { name: string; note: string; from: string };
+type Service = {
+  name: string;
+  note: string;
+  from: string;
+  /** infused card photo (root-absolute; basePath added by the build) */
+  photo: string;
+};
 type Group = {
   id: string;
   label: string;
@@ -20,17 +26,24 @@ type Group = {
   services: Service[];
 };
 
+/* Card body color the photo dissolves into — MUST match the <li> bg exactly so
+   the bottom fade leaves no seam. Brand tint = a soft 150° gold wash for the
+   on-brand duotone over each photo. */
+const CARD_BG = "var(--color-bg-elevated)";
+const BRAND_TINT_GRADIENT =
+  "linear-gradient(150deg, var(--gold-pale), var(--gold-deep))";
+
 const GROUPS: Group[] = [
   {
     id: "injectables",
     label: "Injectables",
     blurb: "Neuromodulators, filler & biostimulators — artfully dosed.",
     services: [
-      { name: "Botox / Dysport", note: "Per unit · expert injector", from: "$12/unit" },
-      { name: "Daxxify", note: "Longer-lasting tox", from: "$16/unit" },
-      { name: "Dermal Fillers", note: "Lips · cheeks · jawline", from: "$650/syringe" },
-      { name: "Sculptra", note: "Collagen biostimulator", from: "$850/vial" },
-      { name: "PRF / EZ Gel", note: "Natural under-eye & glow", from: "$550" },
+      { name: "Botox / Dysport", note: "Per unit · expert injector", from: "$12/unit", photo: "/clients/the-luxe/gen/tox.webp" },
+      { name: "Daxxify", note: "Longer-lasting tox", from: "$16/unit", photo: "/clients/the-luxe/gen/tox.webp" },
+      { name: "Dermal Fillers", note: "Lips · cheeks · jawline", from: "$650/syringe", photo: "/clients/the-luxe/gen/filler.webp" },
+      { name: "Sculptra", note: "Collagen biostimulator", from: "$850/vial", photo: "/clients/the-luxe/real/inj-1.jpg" },
+      { name: "PRF / EZ Gel", note: "Natural under-eye & glow", from: "$550", photo: "/clients/the-luxe/gen/filler.webp" },
     ],
   },
   {
@@ -38,12 +51,12 @@ const GROUPS: Group[] = [
     label: "Laser & Skin",
     blurb: "Resurfacing, tightening & tone — clinical-grade platforms.",
     services: [
-      { name: "Morpheus8", note: "RF microneedling · firm + tighten", from: "$900/session" },
-      { name: "BBL HERO", note: "Broadband light · tone & redness", from: "$450" },
-      { name: "MOXI", note: "Gentle laser resurfacing", from: "$500" },
-      { name: "IPL Photofacial", note: "Sun damage & vascular", from: "$350" },
-      { name: "Microneedling", note: "Texture & pores", from: "$300" },
-      { name: "Laser Resurfacing", note: "Deep renewal", from: "$750" },
+      { name: "Morpheus8", note: "RF microneedling · firm + tighten", from: "$900/session", photo: "/clients/the-luxe/gen/microneedling.webp" },
+      { name: "BBL HERO", note: "Broadband light · tone & redness", from: "$450", photo: "/clients/the-luxe/gen/laser.webp" },
+      { name: "MOXI", note: "Gentle laser resurfacing", from: "$500", photo: "/clients/the-luxe/gen/laser.webp" },
+      { name: "IPL Photofacial", note: "Sun damage & vascular", from: "$350", photo: "/clients/the-luxe/gen/laser.webp" },
+      { name: "Microneedling", note: "Texture & pores", from: "$300", photo: "/clients/the-luxe/gen/microneedling.webp" },
+      { name: "Laser Resurfacing", note: "Deep renewal", from: "$750", photo: "/clients/the-luxe/gen/laser.webp" },
     ],
   },
   {
@@ -51,12 +64,12 @@ const GROUPS: Group[] = [
     label: "Body & Wellness",
     blurb: "Contouring, weight, hormones & IV — head-to-toe vitality.",
     services: [
-      { name: "Body Contouring", note: "Non-invasive sculpting", from: "$600/area" },
-      { name: "Medical Weight Loss", note: "Semaglutide program", from: "$299/mo" },
-      { name: "IV Therapy", note: "Hydration & recovery drips", from: "$150" },
-      { name: "BHRT", note: "Bioidentical hormone therapy", from: "Consult" },
-      { name: "Peptide Therapy", note: "Performance & longevity", from: "Consult" },
-      { name: "Signature Facials", note: "Medical-grade glow", from: "$175" },
+      { name: "Body Contouring", note: "Non-invasive sculpting", from: "$600/area", photo: "/clients/the-luxe/gen/body.webp" },
+      { name: "Medical Weight Loss", note: "Semaglutide program", from: "$299/mo", photo: "/clients/the-luxe/gen/iv.webp" },
+      { name: "IV Therapy", note: "Hydration & recovery drips", from: "$150", photo: "/clients/the-luxe/gen/iv.webp" },
+      { name: "BHRT", note: "Bioidentical hormone therapy", from: "Consult", photo: "/clients/the-luxe/gen/iv.webp" },
+      { name: "Peptide Therapy", note: "Performance & longevity", from: "Consult", photo: "/clients/the-luxe/gen/iv.webp" },
+      { name: "Signature Facials", note: "Medical-grade glow", from: "$175", photo: "/clients/the-luxe/gen/facial.webp" },
     ],
   },
 ];
@@ -72,6 +85,7 @@ export function Services() {
     <section
       id="services"
       className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       <div
         aria-hidden
@@ -149,23 +163,52 @@ export function Services() {
             {group.services.map((s) => (
               <li
                 key={s.name}
-                className="group flex flex-col justify-between gap-6 bg-[var(--color-bg-elevated)] p-7 transition-colors duration-300 hover:bg-[var(--color-accent-subtle)]"
+                className="group flex flex-col overflow-hidden bg-[var(--color-bg-elevated)] p-0 transition-colors duration-300 hover:bg-[var(--color-accent-subtle)]"
               >
-                <div>
-                  <h3 className="font-display text-2xl text-[var(--color-fg)]">
-                    {s.name}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-fg-muted)]">
-                    {s.note}
-                  </p>
+                {/* Infused photo header — the image bleeds to the card edges and
+                    dissolves into the body color so it never reads as a pasted
+                    thumbnail. Hover scale + bottom fade give it life. */}
+                <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={s.photo}
+                    alt={`${s.name} treatment at The Luxe MedSpa`}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  />
+                  {/* soft brand duotone so the photo reads on-brand gold */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{ background: BRAND_TINT_GRADIENT, mixBlendMode: "soft-light", opacity: 0.4 }}
+                  />
+                  {/* fade the image INTO the card body color — no hard seam */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-2/3"
+                    style={{ background: `linear-gradient(to bottom, transparent, ${CARD_BG})` }}
+                  />
                 </div>
-                <div className="flex items-end justify-between gap-3">
-                  <span className="text-xs uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
-                    From
-                  </span>
-                  <span className="font-display text-xl text-[var(--gold-deep)]">
-                    {s.from}
-                  </span>
+
+                {/* Padded text below the infused image */}
+                <div className="flex flex-1 flex-col justify-between gap-6 p-7 pt-5">
+                  <div>
+                    <h3 className="font-display text-2xl text-[var(--color-fg)]">
+                      {s.name}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+                      {s.note}
+                    </p>
+                  </div>
+                  <div className="flex items-end justify-between gap-3">
+                    <span className="text-xs uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
+                      From
+                    </span>
+                    <span className="font-display text-xl text-[var(--gold-deep)]">
+                      {s.from}
+                    </span>
+                  </div>
                 </div>
               </li>
             ))}

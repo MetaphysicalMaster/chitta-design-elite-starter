@@ -25,7 +25,11 @@ export function BookingCTA() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section id="book" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28">
+    <section
+      id="book"
+      className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       {/* Ambient aurora — shared effect, pure CSS, SSR-safe */}
       <div aria-hidden className="absolute inset-0 opacity-50">
         <AuroraGradient

@@ -32,6 +32,7 @@ export function BrandStory() {
     <section
       id="story"
       className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
         {/* Copy column */}
@@ -90,38 +91,34 @@ export function BrandStory() {
           </RevealGroup>
         </div>
 
-        {/* Art panel — warm marble + soft peach light, pure CSS */}
+        {/* Art panel — the real Luxe MedSpa interior */}
         <Reveal delay={0.1}>
-          <figure className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[var(--color-border)] shadow-[0_40px_100px_-50px_oklch(50%_0.04_70_/_0.55)]">
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(150deg, var(--marble) 0%, var(--cream) 50%, var(--cream-deep) 100%)",
-              }}
+          <figure className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--marble)] shadow-[0_40px_100px_-50px_oklch(50%_0.04_70_/_0.55)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/clients/the-luxe/real/shoot-1.jpg"
+              alt="Inside The Luxe MedSpa — a calm, warm-marble treatment space."
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
             />
-            {/* soft peach abstract art glow */}
+            {/* warm scrim so the caption reads cleanly over the photo */}
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="absolute inset-x-0 bottom-0 h-2/5"
               style={{
                 background:
-                  "radial-gradient(50% 44% at 62% 36%, var(--peach-deep) 0%, var(--peach) 28%, transparent 64%), radial-gradient(40% 38% at 30% 78%, var(--gold-pale) 0%, transparent 60%)",
-                opacity: 0.95,
+                  "linear-gradient(to top, oklch(26% 0.03 62 / 0.6), transparent)",
               }}
             />
             {/* fine gold ring framing */}
             <div
               aria-hidden
-              className="absolute inset-5 rounded-[1.5rem] border border-[oklch(72%_0.1_80_/_0.35)]"
+              className="absolute inset-5 rounded-[1.5rem] border border-[oklch(92%_0.06_86_/_0.35)]"
             />
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
-              <span className="font-display text-lg text-[var(--color-fg)]">
+              <span className="font-display text-lg text-[var(--cream)]">
                 A calm, luxurious escape.
-              </span>
-              <span className="rounded-full border border-[var(--color-border)] bg-[var(--glass-bg)] px-3 py-1 text-[0.6rem] uppercase tracking-[0.2em] text-[var(--color-fg-subtle)] backdrop-blur-sm">
-                Sample
               </span>
             </figcaption>
           </figure>

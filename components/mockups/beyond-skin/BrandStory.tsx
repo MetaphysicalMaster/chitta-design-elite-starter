@@ -16,6 +16,7 @@ export function BrandStory() {
     <section
       id="experience"
       className="relative scroll-mt-24 overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}
     >
       {/* warm aura */}
       <div
@@ -90,7 +91,8 @@ export function BrandStory() {
                 </span>
               </motion.div>
 
-              {/* Front frame (the "new, 4× larger" suite) */}
+              {/* Front frame (the "new, 4× larger" suite) — a real studio photo
+                  with a soft mauve duotone + "your best self / Unveiled" caption */}
               <motion.div
                 initial="hidden"
                 whileInView="show"
@@ -109,13 +111,36 @@ export function BrandStory() {
                   },
                 }}
                 className="absolute bottom-0 right-0 grid h-[88%] w-[80%] place-items-center overflow-hidden rounded-[1.75rem] border border-[var(--glass-border)] shadow-[0_30px_70px_-24px_oklch(40%_0.08_40_/_0.5)]"
-                style={{
-                  background:
-                    "radial-gradient(120% 120% at 20% 0%, var(--glow-gold), transparent 55%), linear-gradient(150deg, var(--glow-bronze), var(--glow-rose) 60%, var(--glow-plum))",
-                }}
               >
+                <img
+                  src="/clients/beyond-skin/gen/mauve-studio.webp"
+                  alt="Inside the Beyond Skin Aesthetics studio"
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                {/* brand mauve duotone so the photo reads on-brand */}
+                <span
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(150deg, var(--glow-mauve), var(--glow-rose))",
+                    mixBlendMode: "soft-light",
+                    opacity: 0.45,
+                  }}
+                />
+                {/* legibility scrim for the caption at the base */}
+                <span
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, oklch(24% 0.06 340 / 0.78), transparent 62%)",
+                  }}
+                />
                 <div className="absolute inset-0 grain" aria-hidden />
-                <div className="relative px-6 text-center">
+                <div className="relative mt-auto px-6 pb-7 text-center">
                   <p className="font-display text-5xl font-medium italic leading-none text-[oklch(99%_0.008_350)] drop-shadow-[0_2px_18px_oklch(24%_0.06_340_/_0.5)] sm:text-6xl">
                     your best self
                   </p>

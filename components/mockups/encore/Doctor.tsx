@@ -3,12 +3,21 @@
 /**
  * Doctor — the "Meet Dr. Londeree" credibility section. Leads hard on the
  * brand's crown jewel: academic authority + OSU faculty role. A refined
- * portrait placeholder (initials monogram, clearly not a stock photo) keeps
- * the layout honest while reading as premium.
+ * portrait MONOGRAM (initials, clearly not a stock photo — we never fabricate a
+ * real person's face) keeps the layout honest while reading as premium. Beneath
+ * it, a real clinical AMBIANCE photo (explicitly labelled "Inside the practice")
+ * adds warmth + credibility without ever implying it is the doctor.
  */
 
 import { Section, Reveal } from "./primitives";
 import { motion, useReducedMotion } from "motion/react";
+
+/* A real clinical-injectable moment — supporting AMBIANCE only, never the
+   doctor's likeness. Locked aspect-ratio container = zero CLS. */
+const AMBIANCE = {
+  src: "/clients/encore/real/en-3.jpg",
+  alt: "Inside the practice — a clinician performing a precise injectable treatment at Encore.",
+} as const;
 
 const CREDS = [
   { v: "OSU", k: "Associate Professor of Dermatology, College of Medicine" },
@@ -26,10 +35,15 @@ const TRAINING = [
 export function Doctor() {
   const prefersReduced = useReducedMotion();
   return (
-    <Section id="doctor" labelledBy="doctor-heading">
+    <Section
+      id="doctor"
+      labelledBy="doctor-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <div className="grid items-center gap-12 md:grid-cols-[0.85fr_1fr]">
-        {/* Portrait monogram */}
-        <Reveal className="order-2 md:order-1">
+        {/* Portrait monogram + supporting ambiance photo */}
+        <Reveal className="order-2 flex flex-col gap-4 md:order-1">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
             <div
               aria-hidden
@@ -62,6 +76,37 @@ export function Doctor() {
               </p>
             </div>
           </div>
+
+          {/* Supporting ambiance — a real clinical moment, clearly framed as the
+              setting (NOT the doctor). The photo fades into the bright theme via
+              the shared en-photo-tone + a hairline border. Zero CLS. */}
+          <figure className="relative mx-auto w-full max-w-sm overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+            <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={AMBIANCE.src}
+                alt={AMBIANCE.alt}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                className="en-photo absolute inset-0 h-full w-full object-cover"
+              />
+              {/* brand duotone wash for on-brand cohesion */}
+              <span aria-hidden className="en-photo-tone" />
+              {/* gentle bottom scrim so the caption holds contrast */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
+                style={{ background: "linear-gradient(to top, oklch(24% 0.03 207 / 0.55), transparent)" }}
+              />
+              <figcaption className="absolute bottom-3 left-4 right-4 flex items-center gap-2">
+                <span className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-white/95">
+                  Inside the practice
+                </span>
+                <span aria-hidden className="h-px flex-1 bg-white/30" />
+              </figcaption>
+            </div>
+          </figure>
         </Reveal>
 
         {/* Narrative */}

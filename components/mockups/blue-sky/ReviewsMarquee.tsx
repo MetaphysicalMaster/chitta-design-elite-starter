@@ -20,6 +20,7 @@
  * Brand: airy light field, sky-blue + champagne accents.
  */
 
+import { useEffect, useRef } from "react";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
 import { CloudDivider } from "./CloudDivider";
@@ -184,11 +185,32 @@ function ReviewCard({ r, ariaHidden = false }: { r: Review; ariaHidden?: boolean
 }
 
 export function ReviewsMarquee() {
+  // Pause the (always-running) CSS marquee while the rail is scrolled off-screen
+  // so the GPU stays idle — the track only animates when it's actually visible.
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = marqueeRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const track = el.querySelector<HTMLElement>(".bs-marquee__track");
+    if (!track) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        // Off-screen → force paused; on-screen → clear the inline override so the
+        // CSS hover/focus-pause + reduced-motion rules stay authoritative.
+        track.style.animationPlayState = entry.isIntersecting ? "" : "paused";
+      },
+      { rootMargin: "0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="reviews"
       aria-labelledby="reviews-title"
       className="relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       {/* sky-blue cloud melt from the (transparent) membership band above */}
       <CloudDivider
@@ -226,7 +248,7 @@ export function ReviewsMarquee() {
       {/* The marquee — full-bleed beyond the prose column so the rail reads as a
           continuous river of reviews. Masked edges; pauses on hover/focus. */}
       <Reveal className="relative mt-14 sm:mt-16">
-        <div className="bs-marquee" aria-label="Patient reviews (auto-scrolling)">
+        <div ref={marqueeRef} className="bs-marquee" aria-label="Patient reviews (auto-scrolling)">
           <ul className="bs-marquee__track items-stretch gap-5 px-5 sm:gap-6 sm:px-6">
             {REVIEWS.map((r) => (
               <li key={r.name} className="flex">

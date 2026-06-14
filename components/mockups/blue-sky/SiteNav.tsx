@@ -61,10 +61,27 @@ export function SiteNav() {
   const prefersReduced = useReducedMotion();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    // Coalesce scroll work into one rAF tick and only setState when the boolean
+    // actually flips — avoids a re-render on every scroll frame.
+    let raf = 0;
+    let last = window.scrollY > 24;
+    setScrolled(last);
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        const next = window.scrollY > 24;
+        if (next !== last) {
+          last = next;
+          setScrolled(next);
+        }
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Lock body scroll while drawer open

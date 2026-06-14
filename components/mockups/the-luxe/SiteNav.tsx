@@ -26,10 +26,28 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    // Coalesce scroll reads into a single rAF and only flip state when the
+    // boolean actually changes — avoids a setState on every scroll frame.
+    let ticking = false;
+    let current = scrolled;
+    const sync = () => {
+      ticking = false;
+      const next = window.scrollY > 24;
+      if (next !== current) {
+        current = next;
+        setScrolled(next);
+      }
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(sync);
+    };
+    // Defer the initial read into rAF too (no synchronous setState in effect).
+    requestAnimationFrame(sync);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

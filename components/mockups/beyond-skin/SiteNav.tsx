@@ -25,8 +25,20 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    // Coalesce scroll work into a single rAF tick and only setState when the
+    // boolean actually flips — no per-frame state churn while scrolling.
+    let ticking = false;
+    const apply = () => {
+      ticking = false;
+      const next = window.scrollY > 24;
+      setScrolled((prev) => (prev === next ? prev : next));
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    };
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

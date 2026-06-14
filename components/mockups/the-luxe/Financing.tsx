@@ -15,6 +15,7 @@ export function Financing() {
     <section
       aria-label="Financing with CareCredit and Cherry"
       className="relative overflow-hidden bg-[var(--color-bg)] py-20 sm:py-24"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <Reveal>

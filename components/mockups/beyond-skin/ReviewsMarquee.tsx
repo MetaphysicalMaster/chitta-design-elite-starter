@@ -20,6 +20,7 @@
  * Brand: warm cream field, dusty-mauve accents.
  */
 
+import { useEffect, useRef } from "react";
 import { Reveal, SectionHeading } from "./primitives";
 
 type Review = { body: string; name: string; treatment: string };
@@ -188,11 +189,30 @@ function ReviewCard({ r, ariaHidden = false }: { r: Review; ariaHidden?: boolean
 }
 
 export function ReviewsMarquee() {
+  // Pause the CSS marquee whenever the rail is scrolled off-screen so the GPU
+  // sits idle instead of compositing an unseen, always-animating transform.
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = marqueeRef.current;
+    if (!root) return;
+    const track = root.querySelector<HTMLElement>(".bs-marquee__track");
+    if (!track) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        track.style.animationPlayState = e.isIntersecting ? "running" : "paused";
+      },
+      { threshold: 0 },
+    );
+    io.observe(root);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="reviews"
       aria-labelledby="reviews-title"
       className="relative scroll-mt-20 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}
     >
       <div
         aria-hidden
@@ -224,7 +244,7 @@ export function ReviewsMarquee() {
       {/* The marquee — full-bleed beyond the prose column. Masked edges; pauses
           on hover/focus. */}
       <Reveal className="relative mt-14 sm:mt-16">
-        <div className="bs-marquee" aria-label="Patient reviews (auto-scrolling)">
+        <div ref={marqueeRef} className="bs-marquee" aria-label="Patient reviews (auto-scrolling)">
           <ul className="bs-marquee__track items-stretch gap-5 px-5 sm:gap-6 sm:px-6">
             {REVIEWS.map((r) => (
               <li key={r.name} className="flex">

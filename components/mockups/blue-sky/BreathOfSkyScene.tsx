@@ -212,7 +212,8 @@ export default function BreathOfSkyScene({ showOrb = true, rise }: BreathOfSkySc
         orthographic
         frameloop={frameloop}
         camera={{ zoom: 1, position: [0, 0, 1] }}
-        dpr={[1, 2]}
+        // Cap DPR at 1.5 (never 2): the perf-vs-sharpness sweet spot on retina.
+        dpr={[1, 1.5]}
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
         style={{ position: "absolute", inset: 0 }}
       >
@@ -224,7 +225,8 @@ export default function BreathOfSkyScene({ showOrb = true, rise }: BreathOfSkySc
         <Canvas
           frameloop={frameloop}
           camera={{ position: [0, 0, 4], fov: 42 }}
-          dpr={[1, 2]}
+          // Cap DPR at 1.5 (never 2): the perf-vs-sharpness sweet spot on retina.
+          dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
         >

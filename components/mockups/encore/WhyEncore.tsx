@@ -39,7 +39,12 @@ function dot(tone: "clinical" | "leaf" | "spa") {
 
 export function WhyEncore() {
   return (
-    <Section labelledBy="why-heading" className="py-20 md:py-24">
+    <Section
+      labelledBy="why-heading"
+      className="py-20 md:py-24"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <SectionHeading
         id="why-heading"
         eyebrow="Why Encore"

@@ -9,10 +9,10 @@
 import { Reveal, RevealGroup, RevealItem } from "./primitives";
 
 const PROVIDERS = [
-  { name: "Dawn Kirstine", role: "Provider · Aesthetic Injector" },
-  { name: "Nurse Injector", role: "Advanced Practice · Injectables" },
-  { name: "Medical Aesthetician", role: "Facials · Laser · Skin Health" },
-  { name: "Patient Concierge", role: "Booking · Membership · Care" },
+  { name: "Anne", role: "Provider · Aesthetic Injector", photo: "/clients/the-luxe/real/team-anne.webp" },
+  { name: "Sarah", role: "Advanced Practice · Injectables", photo: "/clients/the-luxe/real/team-sarah.webp" },
+  { name: "Julie", role: "Facials · Laser · Skin Health", photo: "/clients/the-luxe/real/team-julie.webp" },
+  { name: "Patient Concierge", role: "Booking · Membership · Care", photo: null },
 ];
 
 export function Team() {
@@ -20,45 +20,44 @@ export function Team() {
     <section
       id="team"
       className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       <div className="hairline-gold absolute inset-x-0 top-0" aria-hidden />
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
-        {/* Portrait panel — warm marble + soft peach */}
+        {/* Portrait panel — the real studio portrait of Dr. Carlos Sanchez */}
         <Reveal>
-          <figure className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-border)] shadow-[0_40px_100px_-54px_oklch(50%_0.04_70_/_0.55)]">
+          <figure className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--marble)] shadow-[0_40px_100px_-54px_oklch(50%_0.04_70_/_0.55)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/clients/the-luxe/real/dr-sanchez.webp"
+              alt="Dr. Carlos Sanchez, Owner and Medical Director of The Luxe MedSpa"
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 20%" }}
+            />
+            {/* warm scrim so the caption reads cleanly over the photo */}
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="absolute inset-x-0 bottom-0 h-2/5"
               style={{
                 background:
-                  "linear-gradient(160deg, var(--cream) 0%, var(--marble) 52%, var(--cream-deep) 100%)",
+                  "linear-gradient(to top, oklch(26% 0.03 62 / 0.62), transparent)",
               }}
             />
             <div
               aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(46% 40% at 36% 24%, var(--peach-deep) 0%, var(--peach) 26%, transparent 62%), radial-gradient(42% 36% at 70% 76%, var(--gold-pale) 0%, transparent 60%)",
-                opacity: 0.9,
-              }}
-            />
-            <div
-              aria-hidden
-              className="absolute inset-5 rounded-[1.5rem] border border-[oklch(72%_0.1_80_/_0.32)]"
+              className="absolute inset-5 rounded-[1.5rem] border border-[oklch(92%_0.06_86_/_0.32)]"
             />
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
               <div>
-                <span className="block font-display text-xl text-[var(--color-fg)]">
+                <span className="block font-display text-xl text-[var(--cream)]">
                   Dr. Carlos Sanchez
                 </span>
-                <span className="text-xs uppercase tracking-[0.18em] text-[var(--gold-deep)]">
+                <span className="text-xs uppercase tracking-[0.18em] text-[var(--gold-bright)]">
                   Owner · Medical Director
                 </span>
               </div>
-              <span className="rounded-full border border-[var(--color-border)] bg-[var(--glass-bg)] px-3 py-1 text-[0.58rem] uppercase tracking-[0.2em] text-[var(--color-fg-subtle)] backdrop-blur-sm">
-                Sample
-              </span>
             </figcaption>
           </figure>
         </Reveal>
@@ -106,13 +105,34 @@ export function Team() {
               <RevealItem
                 key={p.name}
                 as="li"
-                className="bg-[var(--color-bg-elevated)] p-5 transition-colors duration-300 hover:bg-[var(--color-accent-subtle)]"
+                className="flex items-center gap-4 bg-[var(--color-bg-elevated)] p-5 transition-colors duration-300 hover:bg-[var(--color-accent-subtle)]"
               >
-                <span className="block font-display text-lg text-[var(--color-fg)]">
-                  {p.name}
-                </span>
-                <span className="mt-1 block text-sm text-[var(--color-fg-muted)]">
-                  {p.role}
+                {p.photo ? (
+                  <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[oklch(72%_0.1_80_/_0.4)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={p.photo}
+                      alt={`${p.name}, The Luxe MedSpa care team`}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
+                  </span>
+                ) : (
+                  <span
+                    aria-hidden
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--color-accent-subtle)] font-display text-base text-[var(--gold-deep)]"
+                  >
+                    {p.name.charAt(0)}
+                  </span>
+                )}
+                <span className="min-w-0">
+                  <span className="block font-display text-lg text-[var(--color-fg)]">
+                    {p.name}
+                  </span>
+                  <span className="mt-1 block text-sm text-[var(--color-fg-muted)]">
+                    {p.role}
+                  </span>
                 </span>
               </RevealItem>
             ))}

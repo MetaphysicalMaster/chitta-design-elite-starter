@@ -87,7 +87,12 @@ export function CarePaths() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <Section id="paths" labelledBy="paths-heading">
+    <Section
+      id="paths"
+      labelledBy="paths-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <SectionHeading
         id="paths-heading"
         eyebrow="Two sides, one standard"

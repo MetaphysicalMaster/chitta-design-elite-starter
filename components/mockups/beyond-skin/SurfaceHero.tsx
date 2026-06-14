@@ -1,13 +1,15 @@
 "use client";
 
 /**
- * SurfaceHero — hero section + the lazy WebGL boundary for the signature
- * "Journey to Wellness" silk light-field.
+ * SurfaceHero — hero section + the lazy Canvas-2D boundary for the signature
+ * "The Unveiling" aurora-veil bloom (AuroraVeilScene).
  *
- * The R3F silk scene is dynamically imported with ssr:false (only legal inside
+ * The Canvas-2D scene is dynamically imported with ssr:false (only legal inside
  * a "use client" module — Next 16 gotcha). Until it mounts — and on mobile /
- * reduced-motion / no-WebGL / save-data — we render a static CSS silk gradient
- * field so there is never a blank frame, zero CLS, and full graceful degradation.
+ * reduced-motion / save-data — we render a static CSS silk gradient field so
+ * there is never a blank frame, zero CLS, and full graceful degradation. (The
+ * old muddy R3F/three.js silk shader was scrapped: Canvas-2D paints a cleaner,
+ * legible light-bloom and removes three.js from this page's bundle = a perf win.)
  *
  * Copy is faithful to the REAL brand: "The Joy of Beauty & Wellness" /
  * "Unveil your inner beauty, as you discover joyful wellness."
@@ -21,13 +23,13 @@ import { cn } from "@/lib/utils";
 import { Magnetic } from "./primitives";
 
 // ssr:false REQUIRES being inside a "use client" module (Next 16 gotcha).
-const SurfaceScene = dynamic(() => import("./SurfaceScene"), {
+const AuroraVeilScene = dynamic(() => import("./AuroraVeilScene"), {
   ssr: false,
   loading: () => null,
 });
 
-/** Gate: only enable the heavy WebGL scene on capable, willing devices. */
-function useEnableWebGL() {
+/** Gate: only enable the animated scene on capable, willing devices. */
+function useEnableScene() {
   const prefersReduced = useReducedMotion();
   const [enabled, setEnabled] = useState(false);
   const [lite, setLite] = useState(false);
@@ -44,16 +46,9 @@ function useEnableWebGL() {
         ? navigator.hardwareConcurrency
         : 8;
 
-    let hasWebGL = false;
-    try {
-      const c = document.createElement("canvas");
-      hasWebGL = !!(c.getContext("webgl2") || c.getContext("webgl"));
-    } catch {
-      hasWebGL = false;
-    }
-
     const update = () => {
-      setEnabled(mq.matches && hasWebGL && !saveData);
+      // Canvas-2D needs no WebGL context — gate on viewport + save-data only.
+      setEnabled(mq.matches && !saveData);
       setLite(mqLite.matches || cores <= 4);
     };
     update();
@@ -70,8 +65,28 @@ function useEnableWebGL() {
 
 export function SurfaceHero() {
   const prefersReduced = useReducedMotion();
-  const { enabled, lite } = useEnableWebGL();
+  const { enabled, lite } = useEnableScene();
   const sectionRef = useRef<HTMLElement>(null);
+  const progressRef = useRef(0);
+
+  // Drive hero scroll progress (0..1 across the hero height) on rAF for the
+  // scene to read — so the aurora veils + bloom ease + fade as the hero scrolls
+  // out, synced to the same scroll Lenis smooths upstream.
+  useEffect(() => {
+    if (prefersReduced) return;
+    let raf = 0;
+    const loop = () => {
+      const el = sectionRef.current;
+      if (el) {
+        const vh = window.innerHeight || 1;
+        const top = el.getBoundingClientRect().top;
+        progressRef.current = Math.min(1, Math.max(0, -top / vh));
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [prefersReduced]);
 
   /* Trigger the hero entrance ONLY when the document is actually visible.
      The copy is visible by default (CSS resting state), so this purely adds the
@@ -118,10 +133,10 @@ export function SurfaceHero() {
       {/* Layer 0: static silk field — always painted (SSR + fallback, no CLS) */}
       <div className="surface-fallback absolute inset-0 -z-20" aria-hidden="true" />
 
-      {/* Layer 1: WebGL silk light-field (desktop, motion-ok, webgl-ok only) */}
+      {/* Layer 1: "The Unveiling" aurora-veil bloom (desktop, motion-ok only) */}
       {enabled && (
         <div className="absolute inset-0 -z-10" aria-hidden="true">
-          <SurfaceScene lite={lite} />
+          <AuroraVeilScene lite={lite} progressRef={progressRef} />
         </div>
       )}
 

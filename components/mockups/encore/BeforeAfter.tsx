@@ -182,7 +182,12 @@ function LeafMark({ className }: { className?: string }) {
 
 export function BeforeAfter() {
   return (
-    <Section id="results" labelledBy="results-heading">
+    <Section
+      id="results"
+      labelledBy="results-heading"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       <SectionHeading
         id="results-heading"
         eyebrow="Real results"

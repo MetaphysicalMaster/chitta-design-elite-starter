@@ -2,17 +2,21 @@
 
 /**
  * SocialGallery — Instagram-style social-proof grid. They have a large IG
- * following, so this makes it shine: an editorial mosaic of brand-tinted
- * tiles with hover lift + a follow CTA. Tiles are CSS-only placeholders
- * (no asset deps) but structured like a real IG embed.
+ * following, so this makes it shine: an editorial mosaic of REAL brand photos
+ * with a hover caption scrim + a follow CTA, structured like a live IG embed.
+ * The big 2x2 lead tile carries the studio shot; the rest mix glow, event,
+ * results, facial, injectable and product photography. Links point at the real
+ * Instagram handle.
  */
 
 import { RevealGroup, RevealItem, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
+const IG_URL = "https://www.instagram.com/beyondskinaesthetics/";
+
 type Tile = {
   id: number;
-  bg: string;
+  src: string;
   caption: string;
   span?: string;
 };
@@ -20,16 +24,16 @@ type Tile = {
 const TILES: Tile[] = [
   {
     id: 1,
-    bg: "linear-gradient(150deg, var(--glow-rose), var(--glow-plum))",
+    src: "/clients/beyond-skin/gen/mauve-studio.webp",
     caption: "The journey to wellness",
     span: "sm:col-span-2 sm:row-span-2",
   },
-  { id: 2, bg: "linear-gradient(150deg, var(--glow-taupe), var(--glow-rose))", caption: "Signature facial glow" },
-  { id: 3, bg: "linear-gradient(150deg, var(--glow-blush), var(--glow-taupe))", caption: "Inside the studio" },
-  { id: 4, bg: "linear-gradient(150deg, var(--plum-warm), var(--glow-plum))", caption: "Behind the results" },
-  { id: 5, bg: "linear-gradient(150deg, var(--glow-rose), var(--glow-blush))", caption: "Member event night" },
-  { id: 6, bg: "linear-gradient(150deg, var(--glow-plum), var(--glow-mauve))", caption: "Naturally refreshed" },
-  { id: 7, bg: "linear-gradient(150deg, var(--glow-taupe), var(--plum-deep))", caption: "Skincare shelf picks" },
+  { id: 2, src: "/clients/beyond-skin/gen/mauve-glow.webp", caption: "Signature facial glow" },
+  { id: 3, src: "/clients/beyond-skin/gen/mauve-event.webp", caption: "Member event night" },
+  { id: 4, src: "/clients/beyond-skin/gen/mauve-results.webp", caption: "Behind the results" },
+  { id: 5, src: "/clients/beyond-skin/gen/facial.webp", caption: "Inside the studio" },
+  { id: 6, src: "/clients/beyond-skin/gen/tox.webp", caption: "Naturally refreshed" },
+  { id: 7, src: "/clients/beyond-skin/real/asset18.webp", caption: "Skincare shelf picks" },
 ];
 
 export function SocialGallery() {
@@ -37,6 +41,7 @@ export function SocialGallery() {
     <section
       aria-label="Beyond Skin on Instagram"
       className="relative bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
@@ -58,7 +63,7 @@ export function SocialGallery() {
           </div>
           <Reveal delay={0.1}>
             <a
-              href="https://www.instagram.com/"
+              href={IG_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--color-fg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
@@ -78,14 +83,19 @@ export function SocialGallery() {
               className={cn("min-h-0", t.span)}
             >
               <a
-                href="https://www.instagram.com/"
+                href={IG_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block aspect-square h-full w-full overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-                style={{ background: t.bg }}
+                className="group relative block aspect-square h-full w-full overflow-hidden rounded-2xl bg-[var(--color-bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
                 aria-label={`Instagram post: ${t.caption}`}
               >
-                <div className="grain absolute inset-0" aria-hidden />
+                <img
+                  src={t.src}
+                  alt={t.caption}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                />
                 {/* hover scrim + caption */}
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/55 via-transparent to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <span className="text-sm font-medium text-white drop-shadow">
@@ -103,7 +113,16 @@ export function SocialGallery() {
           ))}
         </RevealGroup>
         <p className="mt-6 text-center text-xs text-[var(--color-fg-subtle)]">
-          Sample tiles · live feed embeds the real Instagram grid.
+          Representative imagery · on launch this embeds the live{" "}
+          <a
+            href={IG_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-[var(--color-fg-muted)] underline-offset-2 hover:underline"
+          >
+            @beyondskinaesthetics
+          </a>{" "}
+          grid.
         </p>
       </div>
     </section>

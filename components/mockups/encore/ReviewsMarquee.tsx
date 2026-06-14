@@ -17,6 +17,7 @@
  * content, clearly marked. Brand: white paper, teal + ink.
  */
 
+import { useEffect, useRef } from "react";
 import { Reveal, SectionHeading } from "./primitives";
 
 type Review = { body: string; name: string; treatment: string };
@@ -186,11 +187,34 @@ function ReviewCard({ r, ariaHidden = false }: { r: Review; ariaHidden?: boolean
 }
 
 export function ReviewsMarquee() {
+  // Pause the CSS marquee while it's scrolled off-screen so the GPU stays idle
+  // (an always-running transform animation is wasted work when unseen).
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const wrap = marqueeRef.current;
+    if (!wrap) return;
+    const track = wrap.querySelector<HTMLElement>(".en-marquee__track");
+    if (!track) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        // Force-pause only when off-screen. On-screen we CLEAR the inline value
+        // so the CSS hover/focus-within pause rule keeps working (inline style
+        // would otherwise out-specify it and re-run the track under the cursor).
+        track.style.animationPlayState = entry.isIntersecting ? "" : "paused";
+      },
+      { rootMargin: "120px 0px" },
+    );
+    io.observe(wrap);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="reviews"
       aria-labelledby="reviews-title"
       className="relative scroll-mt-20 overflow-hidden border-y border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)] py-24 sm:py-32"
+      // Below the fold: skip off-screen render/paint.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       {/* soft teal aura top-right, sage low-left */}
       <div
@@ -221,7 +245,7 @@ export function ReviewsMarquee() {
 
       {/* The marquee — full-bleed beyond the prose column. */}
       <Reveal className="relative mt-14 sm:mt-16">
-        <div className="en-marquee" aria-label="Patient reviews (auto-scrolling)">
+        <div ref={marqueeRef} className="en-marquee" aria-label="Patient reviews (auto-scrolling)">
           <ul className="en-marquee__track items-stretch">
             {REVIEWS.map((r) => (
               <li key={r.name} className="flex">

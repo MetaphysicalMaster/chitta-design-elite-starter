@@ -172,17 +172,21 @@ export function SectionHeading({
   );
 }
 
-/** A consistently-padded full-width section shell with optional id. */
+/** A consistently-padded full-width section shell with optional id.
+ *  `style` lets below-the-fold callers opt into `content-visibility:auto`
+ *  (skip off-screen render/paint) without losing the shared padding rhythm. */
 export function Section({
   id,
   children,
   className,
   labelledBy,
+  style,
 }: {
   id?: string;
   children: ReactNode;
   className?: string;
   labelledBy?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <section
@@ -192,6 +196,7 @@ export function Section({
         "relative mx-auto w-full max-w-6xl px-6 py-24 sm:px-8 md:py-32",
         className,
       )}
+      style={style}
     >
       {children}
     </section>

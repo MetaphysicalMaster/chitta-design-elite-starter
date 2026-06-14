@@ -213,31 +213,38 @@
   }
 }
 
-/* Static "Journey to Wellness" silk field — SSR + reduced-motion + mobile
-   fallback. A luminous mauve/plum silk light-field over warm plum void. */
+/* Static "The Unveiling" aurora-bloom field — SSR + reduced-motion + mobile
+   fallback. Mirrors the AuroraVeilScene look: a warm rose/blush bloom rising
+   low-center over the deep-plum void, with soft mauve veil columns and a pale
+   blush lift — a luminous, legible light-bloom (never a muddy flat wash). */
 [data-brand="beyond-skin"] .surface-fallback {
   background:
+    /* the low-center bloom — the anchor light */
     radial-gradient(
-      58% 64% at 28% 30%,
-      var(--glow-mauve) 0%,
-      transparent 56%
-    ),
-    radial-gradient(
-      52% 58% at 74% 64%,
-      var(--glow-plum) 0%,
+      62% 56% at 50% 74%,
+      var(--glow-blush) 0%,
+      var(--glow-rose) 24%,
       transparent 60%
     ),
+    /* soft mauve veil columns parting around the bloom */
     radial-gradient(
-      42% 48% at 62% 16%,
-      var(--glow-rose) 0%,
-      transparent 54%
+      30% 78% at 30% 56%,
+      var(--glow-mauve) 0%,
+      transparent 64%
     ),
     radial-gradient(
-      40% 44% at 14% 88%,
-      var(--glow-taupe) 0%,
+      28% 74% at 72% 50%,
+      var(--glow-mauve) 0%,
+      transparent 64%
+    ),
+    /* a faint rose lift up top so it never reads bottom-heavy */
+    radial-gradient(
+      46% 40% at 58% 14%,
+      var(--glow-rose) 0%,
       transparent 58%
     ),
-    linear-gradient(155deg, var(--plum-warm) 0%, var(--plum-deep) 58%, oklch(20% 0.05 340) 130%);
+    /* the deep-plum field */
+    linear-gradient(160deg, var(--plum-warm) 0%, var(--plum-deep) 58%, oklch(20% 0.05 340) 130%);
   background-color: var(--plum-deep);
 }
 

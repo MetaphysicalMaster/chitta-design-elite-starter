@@ -268,6 +268,7 @@ export function BeforeAfter() {
       className={cn(
         "relative scroll-mt-24 overflow-hidden bg-[var(--color-fg)] py-24 sm:py-28",
       )}
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       {/* soft sky aura on the dark field */}
       <div

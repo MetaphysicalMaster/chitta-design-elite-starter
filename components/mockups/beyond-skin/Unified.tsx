@@ -11,7 +11,18 @@ import Link from "next/link";
 import { Reveal, RevealGroup, RevealItem } from "./primitives";
 import { cn } from "@/lib/utils";
 
-const PILLARS = [
+type Pillar = {
+  key: string;
+  label: string;
+  title: string;
+  desc: string;
+  cta: string;
+  href: string;
+  /** optional real product photo accent (root-absolute; deploy prefixes base) */
+  photo?: { src: string; alt: string };
+};
+
+const PILLARS: Pillar[] = [
   {
     key: "treat",
     label: "Treat",
@@ -27,6 +38,10 @@ const PILLARS = [
     desc: "Medical-grade skincare in the same place you book — your cart, your records, one gentle login.",
     cta: "Browse the shelf",
     href: "#book",
+    photo: {
+      src: "/clients/beyond-skin/real/asset18.webp",
+      alt: "Medical-grade skincare products at Beyond Skin Aesthetics",
+    },
   },
   {
     key: "belong",
@@ -43,6 +58,7 @@ export function Unified() {
     <section
       aria-label="One brand for treatments, shop and membership"
       className="grain relative overflow-hidden bg-[var(--ink-deep)] py-24 text-[var(--color-bg)] sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}
     >
       {/* molten aura */}
       <div
@@ -101,6 +117,31 @@ export function Unified() {
               <p className="mt-3 flex-1 text-pretty text-[0.95rem] leading-relaxed text-[var(--color-bg)]/70">
                 {p.desc}
               </p>
+              {p.photo && (
+                <div
+                  className="relative mt-5 w-full overflow-hidden rounded-xl border border-[var(--glass-dark-border)]"
+                  style={{ aspectRatio: "16 / 9" }}
+                >
+                  <img
+                    src={p.photo.src}
+                    alt={p.photo.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  />
+                  {/* mauve duotone so the product shot reads on-brand on the dark field */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(150deg, var(--glow-mauve), var(--glow-plum))",
+                      mixBlendMode: "soft-light",
+                      opacity: 0.45,
+                    }}
+                  />
+                </div>
+              )}
               <Link
                 href={p.href}
                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-bg)] underline-offset-4 transition-colors hover:text-[var(--glow-gold)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-gold)]"

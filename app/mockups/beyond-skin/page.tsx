@@ -1,5 +1,4 @@
 import { SmoothScroll } from "@/components/mockups/beyond-skin/SmoothScroll";
-import { JourneyThread } from "@/components/mockups/beyond-skin/JourneyThread";
 import { SiteNav } from "@/components/mockups/beyond-skin/SiteNav";
 import { SurfaceHero } from "@/components/mockups/beyond-skin/SurfaceHero";
 import { TrustBar } from "@/components/mockups/beyond-skin/TrustBar";
@@ -23,9 +22,6 @@ export default function BeyondSkinMockupPage() {
       >
         Skip to content
       </a>
-      {/* The signature: a luminous thread tracing the journey to wellness down
-          the page spine as you scroll (fixed overlay, desktop, motion-aware). */}
-      <JourneyThread />
       <SiteNav />
       <main id="main">
         <div id="top" />

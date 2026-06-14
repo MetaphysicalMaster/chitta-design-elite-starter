@@ -55,7 +55,11 @@ export function Membership() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section id="membership" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28">
+    <section
+      id="membership"
+      className="relative scroll-mt-24 overflow-hidden py-24 sm:py-28"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
+    >
       {/* faint drifting cloud depth behind the heading — atmospheric, not literal */}
       <div
         aria-hidden

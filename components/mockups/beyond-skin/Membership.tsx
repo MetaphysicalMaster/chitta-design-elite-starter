@@ -30,6 +30,7 @@ export function Membership() {
     <section
       id="membership"
       className="relative scroll-mt-24 overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <SectionHeading

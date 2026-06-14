@@ -15,6 +15,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (prefersReduced) return;
+    // Native touch scroll is already smooth; Lenis only adds jank + an
+    // always-on rAF on phones/tablets. Desktop pointers only.
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth < 1024
+    )
+      return;
 
     const lenis = new Lenis({
       duration: 1.15,

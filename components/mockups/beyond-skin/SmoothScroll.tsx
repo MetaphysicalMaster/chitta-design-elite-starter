@@ -1,10 +1,12 @@
 "use client";
 
 /**
- * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
- * Lenis updates native window scroll, which the signature JourneyThread reads
- * directly to trace itself in lock-step. Anchor (#hash) clicks glide instead of
- * jump, offset for the sticky glass nav.
+ * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion and
+ * on touch / small screens (native touch scroll is already smooth there, and
+ * Lenis only adds jank + an always-on rAF on phones). Lenis updates native
+ * window scroll, which the hero's scroll-progress rAF loop reads to ease the
+ * aurora-veil signature. Anchor (#hash) clicks glide instead of jump, offset for
+ * the sticky glass nav.
  */
 
 import { useEffect } from "react";
@@ -16,6 +18,14 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (prefersReduced) return;
+    // Skip Lenis on touch / small screens: native touch scroll is already
+    // smooth, and Lenis adds jank + an always-on rAF on phones.
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth < 1024
+    ) {
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 1.15,
