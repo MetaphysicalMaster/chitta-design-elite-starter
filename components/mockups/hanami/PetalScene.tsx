@@ -59,7 +59,8 @@ import { windBus } from "./wind";
    FAKES the petal shape/colour procedurally (that read as flat shaded blobs);
    it samples the photo for colour + alpha and only adds the catch-the-light
    facing beat from the cupped geometry's normal. */
-const PETAL_TEX = "/clients/hanami/petal.png";
+const PETALS_ATLAS = "/clients/hanami/petals-atlas.png";
+const ATLAS_CELLS = 3; // three real petal variants packed left→right (soft pink / deep rose / pale blush)
 
 const COUNT_FULL = 2400;
 const COUNT_LITE = 1100;
@@ -116,12 +117,14 @@ const vertex = /* glsl */ `
   attribute float aDepth;   // 0 = far, 1 = near (depth layer)
   attribute float aColorMix;// 0..1 along the sakura ramp
   attribute float aFlutter; // 0..1 per-petal flutter amplitude/character
+  attribute float aTexIndex;// which of the 3 atlas petal variants this instance uses
 
   varying vec2  vUv;
   varying float vDepth;
   varying float vColorMix;
   varying float vFade;
   varying float vFacing;    // |n·view| — how broadside the petal faces us (light)
+  varying float vTexIndex;  // -> fragment: select the atlas cell
 
   // cheap rotation matrix about an arbitrary axis
   mat3 rotAxis(vec3 a, float angle) {
@@ -150,6 +153,7 @@ const vertex = /* glsl */ `
     vUv = uv;
     vDepth = aDepth;
     vColorMix = aColorMix;
+    vTexIndex = aTexIndex;
 
     // --- wind field: down-and-across drift, eased by uFlow ---
     float t = uTime * (0.35 + aSpeed * 0.55) * mix(0.45, 1.0, uFlow) + aPhase * 6.2831;
@@ -229,7 +233,7 @@ const vertex = /* glsl */ `
 const fragment = /* glsl */ `
   precision highp float;
 
-  uniform sampler2D uPetalTex; // the REAL photographed sakura petal (RGBA cutout)
+  uniform sampler2D uPetalTex; // 3-petal ATLAS (real photographed sakura cutouts)
   uniform float uFlow;
   uniform bool  uBokeh;
 
@@ -237,12 +241,16 @@ const fragment = /* glsl */ `
   varying float vDepth;
   varying float vFade;
   varying float vFacing;       // |n·view| — broadside (1) vs edge-on (0)
+  varying float vTexIndex;     // 0..2 — which atlas petal this instance carries
 
   void main() {
     // ── COLOUR + SILHOUETTE come straight from the photographed petal ──
-    // The texture carries the true sakura shape, the white→rose gradient and the
-    // fine veins; alpha carries the soft cut-out edge. No procedural fakery.
-    vec4 tex = texture2D(uPetalTex, vUv);
+    // Three real petal variants are packed left→right in one atlas; pick this
+    // instance's cell and inset the UV so linear filtering never bleeds across
+    // the cell seam. The photo carries the shape + white→rose gradient + veins.
+    float cell = floor(vTexIndex + 0.5);
+    vec2 auv = vec2((clamp(vUv.x, 0.04, 0.96) + cell) / 3.0, clamp(vUv.y, 0.02, 0.98));
+    vec4 tex = texture2D(uPetalTex, auv);
     if (tex.a < 0.04) discard;
 
     vec3 col = tex.rgb;
@@ -308,6 +316,7 @@ function PetalField({
     const depths = new Float32Array(count);
     const colorMix = new Float32Array(count);
     const flutter = new Float32Array(count);
+    const texIndex = new Float32Array(count);
 
     // deterministic-ish scatter across a wide, tall field with depth layers.
     let seed = 1337;
@@ -356,6 +365,8 @@ function PetalField({
       // deep/rose heart is reserved for a small minority. Over the sumi-black
       // hero this keeps the field reading as true soft cherry-blossom pink.
       colorMix[i] = Math.pow(rand(), 3);
+      // which of the 3 real petal variants this instance wears (even split).
+      texIndex[i] = Math.floor(rand() * ATLAS_CELLS);
     }
 
     geo.setAttribute("aOffset", new THREE.InstancedBufferAttribute(offsets, 3));
@@ -366,17 +377,22 @@ function PetalField({
     geo.setAttribute("aDepth", new THREE.InstancedBufferAttribute(depths, 1));
     geo.setAttribute("aColorMix", new THREE.InstancedBufferAttribute(colorMix, 1));
     geo.setAttribute("aFlutter", new THREE.InstancedBufferAttribute(flutter, 1));
+    geo.setAttribute("aTexIndex", new THREE.InstancedBufferAttribute(texIndex, 1));
     geo.instanceCount = count;
 
     // Load the real photographed sakura-petal cutout as the petal texture.
     // (Path is root-absolute for dev; the Pages build rewrites /clients/ to the
     // per-repo basePath, so it resolves on the static export too.)
-    const tex = new THREE.TextureLoader().load(PETAL_TEX);
+    const tex = new THREE.TextureLoader().load(PETALS_ATLAS);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 4;
-    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    // No mipmaps + clamp: a packed atlas bleeds across cell seams under mip
+    // minification; the fragment UV-insets per cell and we filter linear only.
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.generateMipmaps = false;
+    tex.minFilter = THREE.LinearFilter;
     tex.magFilter = THREE.LinearFilter;
-    tex.generateMipmaps = true;
 
     const u = {
       uTime: { value: 0 },
