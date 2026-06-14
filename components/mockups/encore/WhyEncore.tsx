@@ -3,13 +3,12 @@
 /**
  * WhyEncore — a concise differentiators band that merchandises the practice's
  * real edge: academic authority, two practices under one roof, and an honest,
- * unhurried standard of care. Sits between the two-path split and the service
- * grids to give the pitch its "why us" spine. All claims are brand-faithful.
+ * unhurried standard of care. A clean teal-ink "standard" quote panel replaces
+ * the old photo band so the bright theme stays cohesive. All claims are
+ * brand-faithful.
  */
 
 import { Section, SectionHeading, Reveal } from "./primitives";
-import { BrandImage } from "./BrandImage";
-import { encoreImages } from "@/app/mockups/encore/images.manifest";
 
 const PILLARS = [
   {
@@ -22,20 +21,20 @@ const PILLARS = [
     k: "One roof",
     t: "Medical & aesthetic, together",
     d: "Diagnosis, surgery and The Spa at Encore share the same board-certified team — so your skin's health and its glow are never an afterthought.",
-    tone: "gold" as const,
+    tone: "leaf" as const,
   },
   {
     k: "Honest & unhurried",
     t: "Thorough, never rushed",
-    d: "The reputation behind 404 reviews and a 4.81★ rating: careful exams, clear explanations, and recommendations made for you — not upsold.",
+    d: "The reputation behind hundreds of five-star reviews: careful exams, clear explanations, and recommendations made for you — not upsold.",
     tone: "spa" as const,
   },
 ];
 
-function dot(tone: "clinical" | "gold" | "spa") {
+function dot(tone: "clinical" | "leaf" | "spa") {
   if (tone === "clinical") return "var(--clinical)";
-  if (tone === "spa") return "var(--spa)";
-  return "var(--gold)";
+  if (tone === "spa") return "var(--spa-deep)";
+  return "var(--leaf)";
 }
 
 export function WhyEncore() {
@@ -44,54 +43,66 @@ export function WhyEncore() {
       <SectionHeading
         id="why-heading"
         eyebrow="Why Encore"
-        title={<>A standard you can <span className="italic">feel.</span></>}
-        lede="Sixteen years of academic-level dermatology in Columbus — built on credentials, not gimmicks."
+        title={<>A standard you can <span className="display-em">feel.</span></>}
+        lede="Over fifteen years of academic-level dermatology in Columbus — built on credentials, not gimmicks."
       />
 
-      {/* Academic-authority ambiance band — an interior that conveys the
-          teaching-faculty prestige behind the practice (not a portrait). */}
+      {/* "The standard" — a deep teal-ink quote panel with a faint tree canopy
+          motif. The brand statement, cleanly typeset, no photography. */}
       <Reveal className="mt-12">
-        <BrandImage
-          src={encoreImages.authority.primary}
-          alt={encoreImages.authority.altText}
-          aspect="16:9"
-          graded
-          tone
-          vignette
-          parallax
-          scrim="strong"
-          radius="3xl"
-          position="center 50%"
-          className="shadow-[var(--glass-shadow)]"
-        >
-          <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-6 sm:p-9">
-            <span className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[var(--gold-soft)]">
+        <div className="relative overflow-hidden rounded-[1.75rem] bg-[var(--color-bg-deep)] px-8 py-12 text-white sm:px-12 sm:py-16">
+          {/* faint canopy dapple */}
+          <svg
+            aria-hidden
+            viewBox="0 0 600 240"
+            preserveAspectRatio="xMidYMid slice"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]"
+            fill="none"
+          >
+            <path d="M40 240 C 120 180, 180 120, 300 60 C 420 120, 480 180, 560 240" stroke="var(--leaf-bright)" strokeWidth="2" strokeLinecap="round" />
+            {Array.from({ length: 14 }).map((_, i) => {
+              const x = 60 + i * 38;
+              const y = 50 + Math.sin(i * 1.3) * 30 + (i % 3) * 14;
+              const r = 9 + (i % 4) * 2;
+              return (
+                <g key={i} transform={`translate(${x} ${y}) rotate(${(i * 53) % 90})`}>
+                  <path
+                    d={`M0 ${-r} C ${r * 0.82} ${-r * 0.4}, ${r * 0.82} ${r * 0.7}, 0 ${r} C ${-r * 0.82} ${r * 0.7}, ${-r * 0.82} ${-r * 0.4}, 0 ${-r} Z`}
+                    fill="var(--leaf-bright)"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          <div className="relative">
+            <span className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[var(--leaf-bright)]">
               The standard
             </span>
             <p
-              className="font-display max-w-xl text-pretty text-xl text-white sm:text-2xl"
-              style={{ lineHeight: 1.18 }}
+              className="mt-4 max-w-2xl text-pretty font-display text-2xl leading-snug text-white sm:text-3xl"
             >
-              The calm of an academic practice — where careful, unhurried care
-              is simply the standard.
+              The calm of an academic practice — where careful, unhurried care is
+              simply the standard, and your second act starts the moment you sit
+              down.
+            </p>
+            <p className="mt-5 text-sm text-white/55">
+              — Encore Dermatology &amp; The Spa at Encore, NW Columbus
             </p>
           </div>
-          <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-[oklch(13%_0.02_248_/_0.5)] px-3 py-1 text-[0.55rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
-            Ambiance · illustrative
-          </span>
-        </BrandImage>
+        </div>
       </Reveal>
 
       <ul className="mt-12 grid gap-5 md:grid-cols-3">
         {PILLARS.map((p, i) => (
           <Reveal as="li" key={p.k} delay={i * 0.08}>
-            <div className="flex h-full flex-col rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]/55 p-7">
+            <div className="flex h-full flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-7 shadow-[0_10px_30px_-28px_oklch(46%_0.06_205_/_0.5)]">
               <span
                 aria-hidden
                 className="mb-5 inline-block h-2 w-10 rounded-full"
                 style={{ background: dot(p.tone) }}
               />
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--gold)]">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--clinical-deep)]">
                 {p.k}
               </p>
               <h3 className="mt-2 font-display text-xl text-[var(--color-fg)]">

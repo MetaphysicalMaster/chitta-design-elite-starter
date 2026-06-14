@@ -1,114 +1,24 @@
 /**
- * surface-shaders.ts — GLSL for the "Beyond the Surface" particle-morph hero.
+ * surface-shaders.ts — GLSL for the "Journey to Wellness" silk light-field.
  *
- * A single GPU particle system (drei <Points>) whose vertices are driven
- * entirely on the GPU: each particle interpolates between morph targets
- * (face profile → leaf/botanical → flowing ribbon → dispersed cloud), drifts
- * with curl-style noise, and bends around a cursor flow field. Color is a
- * brand-tinted gradient based on depth + life, output to additive blending +
- * Bloom for a luminous "skin/light" read.
+ * A single full-bleed plane whose surface flows like luminous mauve/plum silk:
+ * layered value-noise (fbm) displaces a virtual height-field and lights it from
+ * a soft key, so folds catch a rose/blush highlight and valleys sink into plum.
+ * A faint guiding "current" sweeps left→right (the journey direction) and the
+ * pointer lifts a gentle bloom of light where the guest looks. Brand-tinted,
+ * additive-free (it's a lit surface, not particles), so it reads soft + premium.
  *
- * Motion lives in the shader (one draw call, thousands of points) to hold a
- * 60fps budget. JS only updates a handful of uniforms per frame.
+ * All motion lives in the fragment shader on one quad → trivially 60fps. JS only
+ * updates a few uniforms per frame. Loaded ONLY via dynamic({ ssr:false }) from
+ * SurfaceHero; a static CSS silk gradient covers SSR / mobile / reduced-motion.
  */
 
 export const surfaceVertexShader = /* glsl */ `
   precision highp float;
-
-  // Per-particle morph targets (positions for each named shape)
-  attribute vec3 aFace;
-  attribute vec3 aLeaf;
-  attribute vec3 aRibbon;
-  attribute vec3 aCloud;
-  attribute float aSeed;     // 0..1 random per particle
-  attribute float aScale;    // base point size multiplier
-
-  uniform float uTime;
-  uniform float uMorph;      // 0..3 continuous morph phase
-  uniform float uDpr;
-  uniform float uSize;       // global point-size scale
-  uniform vec2  uPointer;    // -1..1 cursor in clip-ish space
-  uniform float uPointerStr; // 0..1 strength (eased on enter/leave)
-  uniform float uIntro;      // 0..1 reveal on mount
-
-  varying float vLife;       // 0..1 used for color/alpha
-  varying float vDepth;      // view-space depth term for color
-  varying float vGlow;       // cursor proximity glow
-
-  // Cheap hash-based 3D noise (curl-ish drift, no textures).
-  vec3 hash3(vec3 p) {
-    p = vec3(
-      dot(p, vec3(127.1, 311.7, 74.7)),
-      dot(p, vec3(269.5, 183.3, 246.1)),
-      dot(p, vec3(113.5, 271.9, 124.6))
-    );
-    return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
-  }
-
-  // Smooth interpolation between the 4 morph targets along uMorph (0..3),
-  // looping back to face. Uses smoothstep windows for organic dissolve.
-  vec3 morphPosition(float phase) {
-    // phase in [0,4); 3->4 returns to face
-    vec3 a = aFace;
-    vec3 b = aLeaf;
-    vec3 c = aRibbon;
-    vec3 d = aCloud;
-
-    float f01 = smoothstep(0.0, 1.0, clamp(phase, 0.0, 1.0));
-    float f12 = smoothstep(0.0, 1.0, clamp(phase - 1.0, 0.0, 1.0));
-    float f23 = smoothstep(0.0, 1.0, clamp(phase - 2.0, 0.0, 1.0));
-    float f34 = smoothstep(0.0, 1.0, clamp(phase - 3.0, 0.0, 1.0));
-
-    vec3 p = mix(a, b, f01);
-    p = mix(p, c, f12);
-    p = mix(p, d, f23);
-    p = mix(p, a, f34);
-    return p;
-  }
-
+  varying vec2 vUv;
   void main() {
-    // Continuous looping phase 0..4
-    float phase = mod(uMorph, 4.0);
-    vec3 pos = morphPosition(phase);
-
-    // Organic drift — particles never sit perfectly still ("alive skin").
-    float t = uTime * 0.18;
-    vec3 n = hash3(pos * 0.7 + aSeed * 13.0 + t);
-    float driftAmt = 0.06 + 0.04 * sin(uTime * 0.5 + aSeed * 6.2831);
-    pos += n * driftAmt;
-
-    // Dissolve burst near morph transitions (when fract(phase) ~ 0.5).
-    float transition = abs(fract(phase) - 0.5); // 0 at mid-transition
-    float burst = smoothstep(0.5, 0.0, transition); // 1 mid-transition
-    pos += n * burst * (0.25 + 0.5 * aSeed);
-
-    // --- Cursor flow field: gentle attraction + swirl around the pointer ---
-    // Project a pointer position into the particle plane (z~0).
-    vec3 pointer3 = vec3(uPointer * 1.6, 0.0);
-    vec3 toP = pos - pointer3;
-    float d = length(toP.xy) + 0.0001;
-    float influence = uPointerStr * smoothstep(1.3, 0.0, d);
-    // Swirl: rotate the in-plane offset, push slightly outward (repel).
-    vec2 swirl = vec2(-toP.y, toP.x) / d;
-    pos.xy += swirl * influence * 0.22;
-    pos.xy += (toP.xy / d) * influence * 0.12;
-    pos.z += influence * 0.25 * sin(uTime * 1.4 + aSeed * 6.2831);
-
-    // Intro reveal — particles fly in from a dispersed cloud.
-    pos = mix(aCloud * 1.4, pos, smoothstep(0.0, 1.0, uIntro));
-
-    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-
-    // Point size: perspective attenuation + per-particle scale + dpr.
-    float size = uSize * aScale * (0.6 + 0.7 * aSeed);
-    gl_PointSize = size * uDpr * (300.0 / -mvPosition.z);
-    gl_PointSize = clamp(gl_PointSize, 0.0, 14.0 * uDpr);
-
-    // Varyings for the fragment shader.
-    vLife = 0.35 + 0.65 * aSeed + burst * 0.4;
-    vDepth = clamp((-mvPosition.z - 3.0) / 5.0, 0.0, 1.0);
-    vGlow = influence;
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
 
@@ -116,33 +26,114 @@ export const surfaceFragmentShader = /* glsl */ `
   precision highp float;
 
   uniform float uTime;
-  uniform vec3  uColorRose;
-  uniform vec3  uColorBronze;
-  uniform vec3  uColorGold;
-  uniform vec3  uColorDeep;
+  uniform vec2  uRes;
+  uniform vec2  uPointer;     // 0..1, smoothed
+  uniform float uPointerStr;  // 0..1
+  uniform float uIntro;       // 0..1 reveal on mount
+  uniform float uScroll;      // 0..1 page-progress (deepens the journey)
+  uniform vec3  uPlumDeep;
+  uniform vec3  uPlum;
+  uniform vec3  uMauve;
+  uniform vec3  uRose;
+  uniform vec3  uBlush;
 
-  varying float vLife;
-  varying float vDepth;
-  varying float vGlow;
+  varying vec2 vUv;
+
+  // --- value noise + fbm -------------------------------------------------
+  float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+  }
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    float a = hash(i);
+    float b = hash(i + vec2(1.0, 0.0));
+    float c = hash(i + vec2(0.0, 1.0));
+    float d = hash(i + vec2(1.0, 1.0));
+    return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+  }
+  float fbm(vec2 p) {
+    float v = 0.0;
+    float amp = 0.5;
+    mat2 rot = mat2(0.8, -0.6, 0.6, 0.8);
+    for (int i = 0; i < 5; i++) {
+      v += amp * noise(p);
+      p = rot * p * 2.0 + 0.07;
+      amp *= 0.55;
+    }
+    return v;
+  }
+
+  // Silk height-field: drifting folds with a left→right "current" (the journey).
+  float silk(vec2 uv, float t) {
+    vec2 q = uv * vec2(2.6, 2.0);
+    // domain warp for that liquid-silk fold feel
+    vec2 warp = vec2(
+      fbm(q + vec2(t * 0.06, t * 0.03)),
+      fbm(q + vec2(-t * 0.04, t * 0.05) + 5.2)
+    );
+    float h = fbm(q + warp * 1.6 + vec2(t * 0.10, 0.0)); // current flows +x
+    h += 0.35 * fbm(q * 2.0 - vec2(t * 0.08, t * 0.02));
+    return h;
+  }
 
   void main() {
-    // Soft round sprite (no texture): radial falloff -> feathered dot.
-    vec2 uv = gl_PointCoord - 0.5;
-    float r = length(uv);
-    float alpha = smoothstep(0.5, 0.06, r);
-    if (alpha <= 0.001) discard;
+    vec2 uv = vUv;
+    // correct for aspect so folds aren't stretched
+    vec2 auv = uv;
+    auv.x *= uRes.x / max(uRes.y, 1.0);
 
-    // Brand-tinted color: depth blends deep->bronze, life lifts toward gold,
-    // cursor proximity flares rose. Reads as luminous skin/light.
-    vec3 col = mix(uColorDeep, uColorBronze, smoothstep(0.0, 1.0, vDepth));
-    col = mix(col, uColorRose, smoothstep(0.3, 1.0, vLife));
-    col = mix(col, uColorGold, vGlow * 0.8);
+    float t = uTime * 0.5;
 
-    // Gentle core hotspot for additive bloom pickup.
-    float core = smoothstep(0.32, 0.0, r);
-    col += core * 0.35 * (0.6 + 0.6 * vLife);
+    // Sample the height-field + finite-difference normal for soft lighting.
+    float e = 0.0016 * (uRes.y > 0.0 ? 1.0 : 1.0);
+    float h  = silk(auv, t);
+    float hx = silk(auv + vec2(e, 0.0), t);
+    float hy = silk(auv + vec2(0.0, e), t);
+    vec3 n = normalize(vec3((h - hx), (h - hy), e * 9.0));
 
-    float a = alpha * (0.5 + 0.5 * vLife);
-    gl_FragColor = vec4(col, a);
+    // Soft key light from upper-left; a fill from lower-right keeps shadows alive.
+    vec3 key = normalize(vec3(-0.5, 0.7, 0.8));
+    vec3 fill = normalize(vec3(0.6, -0.4, 0.7));
+    float dKey = max(dot(n, key), 0.0);
+    float dFill = max(dot(n, fill), 0.0) * 0.4;
+    float lit = dKey + dFill;
+    // specular sheen on the fold crests (the satin highlight)
+    float spec = pow(dKey, 22.0) * 0.9;
+
+    // Color ramp: valleys → deep plum, mid → plum/mauve, crests → rose/blush.
+    float band = clamp(h * 1.15 + lit * 0.5, 0.0, 1.0);
+    vec3 col = mix(uPlumDeep, uPlum, smoothstep(0.0, 0.45, band));
+    col = mix(col, uMauve, smoothstep(0.35, 0.72, band));
+    col = mix(col, uRose, smoothstep(0.68, 0.95, band));
+    col += uBlush * spec;
+
+    // The scroll deepens the field toward the plum core as the journey descends.
+    col = mix(col, uPlumDeep, uScroll * 0.18);
+
+    // A gentle left→right luminous "guide" gradient (toward revealed light).
+    float guide = smoothstep(0.0, 1.0, uv.x);
+    col += uMauve * guide * 0.06;
+
+    // Pointer bloom — a soft halo of light where the guest looks.
+    vec2 pa = uPointer;
+    pa.x *= uRes.x / max(uRes.y, 1.0);
+    float pd = distance(auv, pa);
+    float halo = smoothstep(0.5, 0.0, pd) * uPointerStr;
+    col += mix(uRose, uBlush, 0.5) * halo * 0.5;
+
+    // Vignette so hero copy on the left stays legible.
+    float vig = smoothstep(1.25, 0.25, distance(uv, vec2(0.62, 0.5)));
+    col *= 0.72 + 0.28 * vig;
+
+    // Intro reveal: rise out of the plum void.
+    col = mix(uPlumDeep, col, smoothstep(0.0, 1.0, uIntro));
+
+    // subtle filmic lift
+    col = pow(col, vec3(0.92));
+    gl_FragColor = vec4(col, 1.0);
   }
 `;

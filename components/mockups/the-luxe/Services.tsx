@@ -71,14 +71,14 @@ export function Services() {
   return (
     <section
       id="services"
-      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--emerald-abyss)] py-24 sm:py-32"
+      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
           background:
-            "radial-gradient(50% 40% at 88% 0%, var(--emerald-mid), transparent 66%), radial-gradient(46% 42% at 6% 100%, oklch(40% 0.07 90 / 0.5), transparent 68%)",
+            "radial-gradient(50% 40% at 88% 0%, var(--peach), transparent 66%), radial-gradient(46% 42% at 6% 100%, var(--gold-pale), transparent 68%)",
         }}
       />
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8">
@@ -86,17 +86,17 @@ export function Services() {
           eyebrow="The Menu"
           title={
             <>
-              Every treatment, <span className="gold-leaf italic">priced in the open.</span>
+              Every treatment, <span className="gold-leaf italic">made clear.</span>
             </>
           }
-          lead="No more guessing. We list real starting prices for every service — transparency is part of the luxury. Final plans are tailored at your consult."
+          lead="From injectables to lasers, facials and wellness — explore the full menu with honest starting prices. Your final plan is always tailored to you at a complimentary consult."
         />
 
         {/* Segmented control */}
         <div
           role="tablist"
           aria-label="Treatment categories"
-          className="mt-12 inline-flex flex-wrap gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--glass-bg)] p-1.5 backdrop-blur-md"
+          className="mt-12 inline-flex flex-wrap gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-1.5 shadow-[0_8px_24px_-18px_oklch(50%_0.04_70_/_0.5)]"
         >
           {GROUPS.map((g) => {
             const selected = g.id === active;
@@ -110,7 +110,7 @@ export function Services() {
                 onClick={() => setActive(g.id)}
                 className={cn(
                   "relative rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200",
-                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]",
+                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
                   selected
                     ? "text-[var(--color-accent-fg)]"
                     : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
@@ -149,7 +149,7 @@ export function Services() {
             {group.services.map((s) => (
               <li
                 key={s.name}
-                className="group flex flex-col justify-between gap-6 bg-[oklch(20%_0.03_166_/_0.55)] p-7 backdrop-blur-sm transition-colors duration-300 hover:bg-[oklch(25%_0.04_162_/_0.65)]"
+                className="group flex flex-col justify-between gap-6 bg-[var(--color-bg-elevated)] p-7 transition-colors duration-300 hover:bg-[var(--color-accent-subtle)]"
               >
                 <div>
                   <h3 className="font-display text-2xl text-[var(--color-fg)]">
@@ -163,7 +163,7 @@ export function Services() {
                   <span className="text-xs uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
                     From
                   </span>
-                  <span className="font-display text-xl text-[var(--gold)]">
+                  <span className="font-display text-xl text-[var(--gold-deep)]">
                     {s.from}
                   </span>
                 </div>
@@ -178,15 +178,15 @@ export function Services() {
               href="#book"
               className={cn(
                 "inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-[var(--color-accent-fg)]",
-                "shadow-[0_14px_40px_-16px_oklch(80%_0.13_86_/_0.6)] transition-transform duration-300 hover:-translate-y-0.5",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",
+                "shadow-[0_14px_40px_-16px_oklch(70%_0.12_78_/_0.6)] transition-transform duration-300 hover:-translate-y-0.5",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
               )}
             >
               Reserve a consult
               <span aria-hidden>→</span>
             </Link>
             <p className="text-sm text-[var(--color-fg-subtle)]">
-              Prices shown are starting points · CareCredit financing available.
+              Prices shown are starting points · CareCredit &amp; Cherry financing available.
             </p>
           </div>
         </Reveal>

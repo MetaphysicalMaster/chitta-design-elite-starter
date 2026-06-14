@@ -9,8 +9,8 @@
 import { motion, useReducedMotion } from "motion/react";
 
 const ITEMS: { v: string; k: string; sr?: string }[] = [
-  { v: "4.81★", k: "Zocdoc rating", sr: "4.81 out of 5 stars" },
-  { v: "404", k: "Verified patient reviews" },
+  { v: "4.8★", k: "Patient rating", sr: "4.8 out of 5 stars" },
+  { v: "400+", k: "Patient reviews" },
   { v: "OSU", k: "Associate Professor of Dermatology" },
   { v: "Since 2010", k: "Serving the Columbus area" },
   { v: "Board-Certified", k: "Dermatology — since 2001" },

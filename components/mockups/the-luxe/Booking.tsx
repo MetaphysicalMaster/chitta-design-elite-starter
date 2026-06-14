@@ -44,10 +44,10 @@ function Pill({
       onClick={onClick}
       className={cn(
         "rounded-full border px-4 py-2.5 text-sm font-medium transition-colors duration-200",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
         selected
           ? "border-[var(--gold)] bg-[var(--color-accent)] text-[var(--color-accent-fg)]"
-          : "border-[var(--color-border)] bg-[var(--glass-bg)] text-[var(--color-fg-muted)] hover:border-[var(--gold)] hover:text-[var(--color-fg)]",
+          : "border-[var(--color-border)] bg-[var(--color-bg-elevated)] text-[var(--color-fg-muted)] hover:border-[var(--gold)] hover:text-[var(--color-fg)]",
       )}
     >
       {children}
@@ -69,14 +69,14 @@ export function Booking() {
   return (
     <section
       id="book"
-      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--emerald-abyss)] py-24 sm:py-32"
+      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg-subtle)] py-24 sm:py-32"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           background:
-            "radial-gradient(46% 40% at 14% 8%, var(--emerald-mid), transparent 64%), radial-gradient(48% 44% at 90% 96%, oklch(42% 0.07 88 / 0.5), transparent 66%)",
+            "radial-gradient(46% 40% at 14% 8%, var(--peach), transparent 64%), radial-gradient(48% 44% at 90% 96%, var(--gold-pale), transparent 66%)",
         }}
       />
       <div className="relative mx-auto grid max-w-7xl items-start gap-14 px-6 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
@@ -84,15 +84,15 @@ export function Booking() {
           eyebrow="Book in 30 Seconds"
           title={
             <>
-              No redirects. No deposit handoff.{" "}
+              No phone tag. No waiting.{" "}
               <span className="gold-leaf italic">Just booked.</span>
             </>
           }
-          lead="Their current site bounces you to a third-party Fresha page. Here, scheduling is native, instant and on-brand — three taps and you're in."
+          lead="Scheduling at The Luxe is effortless — native, instant and on-brand. Choose your treatment, pick a time, and you're in. Three taps, complimentary consult."
         />
 
         {/* Scheduler card */}
-        <div className="glass-strong relative overflow-hidden rounded-[2rem] border border-[var(--glass-border)] p-6 shadow-[var(--glass-shadow)] sm:p-8">
+        <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 shadow-[0_30px_80px_-50px_oklch(50%_0.04_70_/_0.5)] sm:p-8">
           {/* Progress */}
           <ol className="mb-7 flex items-center gap-2" aria-label="Booking progress">
             {stepLabels.map((label, i) => (
@@ -161,7 +161,7 @@ export function Booking() {
                     setDay(null);
                     setTime(null);
                   }}
-                  className="mt-6 rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-fg)] transition-colors hover:bg-[var(--color-bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+                  className="mt-6 rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-medium text-[var(--color-fg)] transition-colors hover:bg-[var(--color-bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]"
                 >
                   Start over
                 </button>
@@ -243,7 +243,7 @@ export function Booking() {
                         <input
                           type="text"
                           autoComplete="given-name"
-                          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2.5 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-fg-subtle)] focus-visible:border-[var(--gold)]"
+                          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2.5 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-fg-subtle)] focus-visible:border-[var(--gold)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--gold-deep)]"
                           placeholder="Ava"
                         />
                       </label>
@@ -254,7 +254,7 @@ export function Booking() {
                         <input
                           type="tel"
                           autoComplete="tel"
-                          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2.5 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-fg-subtle)] focus-visible:border-[var(--gold)]"
+                          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2.5 text-[var(--color-fg)] outline-none transition-colors placeholder:text-[var(--color-fg-subtle)] focus-visible:border-[var(--gold)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--gold-deep)]"
                           placeholder="(614) 555-0143"
                         />
                       </label>
@@ -278,7 +278,7 @@ export function Booking() {
                 type="button"
                 onClick={() => setStep((s) => Math.max(0, s - 1))}
                 disabled={step === 0}
-                className="rounded-full px-4 py-2.5 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)] disabled:opacity-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+                className="rounded-full px-4 py-2.5 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)] disabled:opacity-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]"
               >
                 ← Back
               </button>
@@ -289,9 +289,9 @@ export function Booking() {
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-[transform,opacity] duration-300",
                   "bg-[var(--color-accent)] text-[var(--color-accent-fg)]",
-                  "shadow-[0_14px_40px_-16px_oklch(80%_0.13_86_/_0.6)]",
+                  "shadow-[0_14px_40px_-16px_oklch(70%_0.12_78_/_0.6)]",
                   "hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0",
-                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",
+                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]",
                 )}
               >
                 {step === 2 ? "Confirm booking" : "Continue"}

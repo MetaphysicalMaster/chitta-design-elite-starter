@@ -2,22 +2,17 @@
 
 /**
  * Services — two full treatment grids, one per care path. The Medical grid
- * leads with clinical authority; The Spa grid is given equally lavish
- * treatment (it's the under-marketed growth engine). Real treatments only.
+ * leads with clinical authority; The Spa grid is given equally lavish treatment
+ * (the under-marketed growth engine). Uniform, refined CSS cards in the brand's
+ * teal/ink/white system — crisp, consistent, no photography to muddy the bright
+ * theme. Real treatments only.
  */
 
 import { motion, useReducedMotion } from "motion/react";
 import { Section, SectionHeading, Reveal } from "./primitives";
-import { BrandImage } from "./BrandImage";
-import { encoreImages } from "@/app/mockups/encore/images.manifest";
 import { cn } from "@/lib/utils";
 
-type ServicePhoto = {
-  src: string;
-  alt: string;
-  position?: string;
-};
-type Service = { name: string; desc: string; photo?: ServicePhoto };
+type Service = { name: string; desc: string };
 
 const MEDICAL: Service[] = [
   { name: "Skin Cancer Care", desc: "Routine exams, biopsy and surgical removal of skin cancers — with academic rigor." },
@@ -31,31 +26,24 @@ const MEDICAL: Service[] = [
 ];
 
 const SPA: Service[] = [
-  {
-    name: "Botox",
-    desc: "Softens forehead lines, crow's feet and frown lines for a refreshed look.",
-    photo: {
-      src: encoreImages.injectable.primary,
-      alt: encoreImages.injectable.altText,
-      position: "center 40%",
-    },
-  },
+  { name: "Botox & Dysport", desc: "Softens forehead lines, crow's feet and frown lines for a refreshed, natural look." },
   { name: "Juvéderm Fillers", desc: "The #1 hyaluronic-acid filler collection — placed with conservative artistry." },
-  {
-    name: "Sciton Halo Laser",
-    desc: "Hybrid fractional resurfacing for tone, texture and luminous glow.",
-    photo: {
-      src: encoreImages.laser.primary,
-      alt: encoreImages.laser.altText,
-      position: "center 45%",
-    },
-  },
+  { name: "Sciton Halo Laser", desc: "Hybrid fractional resurfacing for tone, texture and a luminous glow." },
   { name: "RF Microneedling", desc: "Radiofrequency collagen remodeling for fine lines, pores and texture." },
   { name: "Doctor-Directed CoolSculpting", desc: "Physician-supervised, non-surgical fat reduction of stubborn pockets." },
   { name: "Custom Facials & Peels", desc: "Clinical-grade facials and chemical peels, tailored to your skin." },
   { name: "Dermaplaning & Waxing", desc: "Smooth, polished skin with expert dermaplaning and waxing services." },
   { name: "Skincare & Memberships", desc: "Physician-curated regimens and members-only aesthetic pricing." },
 ];
+
+function LeafBullet({ tone }: { tone: "clinical" | "spa" }) {
+  const color = tone === "clinical" ? "var(--clinical)" : "var(--spa-deep)";
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill={color} aria-hidden>
+      <path d="M5 19c0-7 5-12 14-13C18 13 13 19 6 19c0 0-1-3 2-7" opacity="0.95" />
+    </svg>
+  );
+}
 
 function ServiceCard({ s, tone, i }: { s: Service; tone: "clinical" | "spa"; i: number }) {
   const prefersReduced = useReducedMotion();
@@ -66,51 +54,38 @@ function ServiceCard({ s, tone, i }: { s: Service; tone: "clinical" | "spa"; i: 
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: prefersReduced ? 0 : (i % 4) * 0.06 }}
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]/55 transition-colors duration-300 hover:border-[var(--color-border)]",
-        s.photo ? "p-0" : "p-6",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6",
+        "shadow-[0_10px_30px_-26px_oklch(46%_0.06_205_/_0.5)] transition-[transform,box-shadow,border-color] duration-300",
+        "hover:-translate-y-1 hover:border-[var(--clinical)] hover:shadow-[0_22px_50px_-30px_oklch(46%_0.06_205_/_0.7)]",
       )}
     >
-      {s.photo && (
-        <div className="relative overflow-hidden">
-          <BrandImage
-            src={s.photo.src}
-            alt={s.photo.alt}
-            aspect="16:9"
-            light
-            graded
-            tone
-            vignette
-            scrim="soft"
-            radius="none"
-            position={s.photo.position ?? "center"}
-            className="!border-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-          >
-            <span
-              aria-hidden
-              className={cn(
-                "absolute inset-x-0 bottom-0 h-px",
-                tone === "clinical"
-                  ? "bg-gradient-to-r from-transparent via-[var(--clinical)]/55 to-transparent"
-                  : "bg-gradient-to-r from-transparent via-[var(--spa)]/55 to-transparent",
-              )}
-            />
-          </BrandImage>
-        </div>
-      )}
-      <div className={cn("relative flex flex-1 flex-col", s.photo ? "p-6" : "")}>
+      {/* hover wash */}
+      <span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-60",
+          tone === "clinical" ? "bg-[var(--color-accent-subtle)]" : "bg-[oklch(94%_0.04_158)]",
+        )}
+      />
+      <div className="relative mb-4 flex items-center gap-3">
         <span
-          aria-hidden
           className={cn(
-            "absolute left-0 top-0 h-7 w-px transition-all duration-300 group-hover:h-10",
-            s.photo && "hidden",
-            tone === "clinical" ? "bg-[var(--clinical)]" : "bg-[var(--spa)]",
+            "grid h-9 w-9 shrink-0 place-items-center rounded-full",
+            tone === "clinical"
+              ? "bg-[var(--color-accent-subtle)] text-[var(--clinical-deep)]"
+              : "bg-[oklch(94%_0.04_158)] text-[var(--spa-deep)]",
           )}
-        />
-        <h4 className="font-display text-lg text-[var(--color-fg)]">{s.name}</h4>
-        <p className="mt-2 text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
-          {s.desc}
-        </p>
+        >
+          <LeafBullet tone={tone} />
+        </span>
+        <span className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-fg-subtle)] [font-variant-numeric:tabular-nums]">
+          {String(i + 1).padStart(2, "0")}
+        </span>
       </div>
+      <h4 className="relative font-display text-lg leading-tight text-[var(--color-fg)]">{s.name}</h4>
+      <p className="relative mt-2 text-sm font-light leading-relaxed text-[var(--color-fg-muted)]">
+        {s.desc}
+      </p>
     </motion.li>
   );
 }
@@ -154,7 +129,7 @@ export function MedicalServices() {
     <ServiceBlock
       id="medical"
       eyebrow="Medical Dermatology"
-      title={<>Clinical care, <span className="italic">academically grounded.</span></>}
+      title={<>Clinical care, <span className="display-em">academically grounded.</span></>}
       lede="The full breadth of medical and surgical dermatology — delivered with the precision you'd expect from a teaching faculty."
       items={MEDICAL}
       tone="clinical"
@@ -165,26 +140,26 @@ export function MedicalServices() {
 export function SpaServices() {
   return (
     <div className="relative">
-      {/* Subtle warm wash differentiates the spa world */}
+      {/* Subtle warm sage wash differentiates the spa world */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_80%_0%,oklch(60%_0.1_22_/_0.14),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_80%_0%,oklch(72%_0.07_158_/_0.1),transparent_60%)]"
       />
       <ServiceBlock
         id="spa"
         eyebrow="The Spa at Encore"
-        title={<>Aesthetics, <span className="italic">elevated.</span></>}
-        lede="The Spa at Encore blends medical treatments with spa luxury — in a relaxed, peaceful setting. The same expertise behind your medical care, now devoted to how you look and feel."
+        title={<>Aesthetics, <span className="display-em">elevated.</span></>}
+        lede="The Spa at Encore blends dermatologic science with spa luxury — in a relaxed, peaceful setting. The same expertise behind your medical care, now devoted to how you look and feel."
         items={SPA}
         tone="spa"
         footnote={
           <>
             Every aesthetic journey begins with a{" "}
-            <span className="text-[var(--color-fg)]">
+            <span className="font-medium text-[var(--clinical-deep)]">
               complimentary consultation
             </span>{" "}
             — and ask about Spa membership for members-only pricing. Treatments
-            are physician-supervised. Pricing shown elsewhere is illustrative.
+            are physician-supervised.
           </>
         }
       />

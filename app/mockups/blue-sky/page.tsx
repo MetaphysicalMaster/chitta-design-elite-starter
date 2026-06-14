@@ -6,9 +6,10 @@ import { Services } from "@/components/mockups/blue-sky/Services";
 import { BeforeAfter } from "@/components/mockups/blue-sky/BeforeAfter";
 import { Story } from "@/components/mockups/blue-sky/Story";
 import { Membership } from "@/components/mockups/blue-sky/Membership";
-import { Testimonials } from "@/components/mockups/blue-sky/Testimonials";
+import { ReviewsMarquee } from "@/components/mockups/blue-sky/ReviewsMarquee";
 import { BookingCTA } from "@/components/mockups/blue-sky/BookingCTA";
 import { SiteFooter } from "@/components/mockups/blue-sky/SiteFooter";
+import { Concierge } from "@/components/mockups/blue-sky/Concierge";
 
 export default function BlueSkyMockupPage() {
   return (
@@ -30,10 +31,12 @@ export default function BlueSkyMockupPage() {
         <BeforeAfter />
         <Story />
         <Membership />
-        <Testimonials />
+        <ReviewsMarquee />
         <BookingCTA />
       </main>
       <SiteFooter />
+      {/* AI concierge — fixed bottom-right; books/qualifies/routes only */}
+      <Concierge />
     </SmoothScroll>
   );
 }

@@ -20,35 +20,35 @@ type Service = {
 const SERVICES: Service[] = [
   {
     name: "Injectables",
-    desc: "Botox & Dysport, dermal fillers — sculpted, never overdone.",
-    price: "$600–1,200 / syringe",
-    tag: "Most booked",
+    desc: "Botox, Dysport & dermal fillers — refreshed and natural, never overdone.",
+    price: "Starting anchors apply",
+    tag: "Most loved",
   },
   {
-    name: "RF Microneedling",
-    desc: "Radiofrequency + microneedling for firmness, tone & texture.",
-    price: "from $650",
+    name: "Laser & Devices",
+    desc: "RF microneedling, IPL photofacials & laser for tone, texture & clarity.",
+    price: "Consult to plan",
   },
   {
-    name: "IPL & Laser",
-    desc: "Photofacials and laser for pigment, redness & clarity.",
-    price: "from $300",
+    name: "Body Contouring",
+    desc: "Non-invasive sculpting, lifting & skin tightening, personalized to you.",
+    price: "Consult to plan",
   },
   {
-    name: "Glo2Facial",
-    desc: "Oxygenating signature facial — instant editorial glow.",
-    price: "from $225",
+    name: "Esthetician Services",
+    desc: "Signature facials & glow treatments — your reset, your ritual.",
+    price: "Starting anchors apply",
   },
   {
-    name: "Skin Tightening",
-    desc: "Non-invasive lifting & contouring for jawline and neck.",
-    price: "from $500",
+    name: "Wellness",
+    desc: "Physician-guided wellness & weight-management programs, built around you.",
+    price: "Consult",
   },
   {
-    name: "Medical Weight Loss",
-    desc: "Physician-supervised programs, personalized to you.",
-    price: "consult",
-    tag: "New suite",
+    name: "Specialty Treatments",
+    desc: "Curated, results-driven options for your specific goals.",
+    price: "Consult",
+    tag: "Tailored",
   },
 ];
 
@@ -64,10 +64,11 @@ export function Services() {
             eyebrow="The Treatments"
             title={
               <>
-                Results-driven, <span className="italic">artfully delivered.</span>
+                Results-driven,{" "}
+                <span className="font-em">gently delivered.</span>
               </>
             }
-            lead="Every treatment is performed by our dual board-certified team. Prices are starting anchors — your plan is built in consultation."
+            lead="Every treatment is performed by our expert team in a warm, judgment-free setting. Your plan is built around your goals in a complimentary consultation."
           />
           <Link
             href="#book"

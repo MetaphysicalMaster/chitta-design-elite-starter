@@ -37,7 +37,7 @@ export function Membership() {
           eyebrow="The Membership"
           title={
             <>
-              $149 a month, <span className="text-molten italic">banked for you.</span>
+              $149 a month, <span className="text-molten font-em">banked for you.</span>
             </>
           }
           lead="Not a discount club — a smarter way to invest in yourself. Every dollar becomes credit you control."

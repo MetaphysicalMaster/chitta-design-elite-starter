@@ -1,77 +1,95 @@
 /* ============================================================
    Encore Dermatology — Scoped Brand Palette (OKLch)
    Overrides shared --color-* tokens ONLY within [data-brand="encore"].
-   Brand essence: clinical authority + academic credibility fused with
-   premium, modern spa luxury — "the most trusted skin in Columbus."
-   A dark, cinematic theme: deep ink-navy surfaces, champagne-gold luxe,
-   and a cool clinical light accent. Does NOT touch app/globals.css.
+
+   FAITHFUL to the REAL practice (encoredermatology.com): a clean, bright,
+   credible LIGHT theme — white paper, black ink, and a single living TEAL
+   accent (the brand's signature). The motif is the logo's TREE — branch +
+   leaves — and the voice "The Science of Dermatology · The Environment of a
+   Spa." Restraint + medical authority, warmed by a spa calm.
+
+   Does NOT touch app/globals.css.
    ============================================================ */
 
 [data-brand="encore"] {
-  /* Surfaces — deep, sophisticated ink-navy with a faint clinical-teal cast
-     (their real brand leans aqua/teal, not pure navy). The cinematic dark
-     theme: a teaching-hospital-at-dusk calm under champagne light. */
-  --color-bg: oklch(20% 0.021 244);
-  --color-bg-subtle: oklch(23.5% 0.023 244);
-  --color-bg-elevated: oklch(26.5% 0.025 242);
-  --color-bg-deep: oklch(14.5% 0.019 248); /* near-black for the hero void */
+  /* Surfaces — bright clinical paper. A near-white canvas with the faintest
+     cool cast (a teaching practice, freshly lit), graduating into a soft
+     mist-teal for elevated cards and a deep ink for the footer/CTA wells. */
+  --color-bg: oklch(99.2% 0.003 200);
+  --color-bg-subtle: oklch(97.4% 0.008 196);
+  --color-bg-elevated: oklch(100% 0 0);
+  --color-bg-deep: oklch(24% 0.03 207); /* deep teal-ink for CTA / footer wells */
 
-  /* Foreground — warm porcelain whites for AA on the dark theme */
-  --color-fg: oklch(96.5% 0.008 84);
-  --color-fg-muted: oklch(81% 0.013 230);
-  --color-fg-subtle: oklch(68% 0.015 232); /* lifted to clear AA (≥4.5:1) */
+  /* Foreground — black ink + graded greys, all AA on the paper surfaces. */
+  --color-fg: oklch(22% 0.018 220); /* near-black ink, faint teal undertone */
+  --color-fg-muted: oklch(43% 0.018 218);
+  --color-fg-subtle: oklch(52% 0.018 216); /* AA (≥4.5:1) on white */
 
-  /* Accent — champagne gold (the luxe / academic-crest accent).
-     accent-fg stays dark so gold buttons read with AA contrast. */
-  --color-accent: oklch(83% 0.098 86);
-  --color-accent-fg: oklch(21% 0.028 248);
-  --color-accent-subtle: oklch(33% 0.05 82);
+  /* Accent — the LIVING TEAL (Encore's signature). accent-fg is white so
+     teal buttons read with AA contrast. */
+  --color-accent: oklch(58% 0.094 197);
+  --color-accent-fg: oklch(99.5% 0.002 200);
+  --color-accent-subtle: oklch(94.5% 0.028 196);
 
-  /* Borders — luminous hairlines on dark */
-  --color-border: oklch(39% 0.021 242);
-  --color-border-subtle: oklch(30.5% 0.018 244);
+  /* Borders — quiet cool hairlines on paper */
+  --color-border: oklch(88% 0.012 205);
+  --color-border-subtle: oklch(92.5% 0.009 204);
 
-  --color-success: oklch(72% 0.13 162);
-  --color-warning: oklch(82% 0.13 85);
-  --color-error: oklch(66% 0.18 25);
-  --color-info: oklch(72% 0.1 230);
+  --color-success: oklch(60% 0.12 162);
+  --color-warning: oklch(72% 0.13 75);
+  --color-error: oklch(58% 0.18 25);
+  --color-info: oklch(58% 0.094 197);
 
   /* ---- Brand-specific vars (not in shared system) ---- */
-  /* Clinical aqua-teal — Encore's authentic brand hue, the cool "renewal
-     light" counterpart to champagne gold. Tuned toward their real aqua. */
-  --clinical: oklch(82% 0.095 205);
-  --clinical-deep: oklch(62% 0.105 212);
+  /* The teal ramp — the single accent restated at three depths. `clinical`
+     is the canonical signature teal; the deep is for ink-on-teal moments. */
+  --clinical: oklch(58% 0.094 197);
+  --clinical-deep: oklch(46% 0.092 200);
+  --clinical-bright: oklch(70% 0.108 192); /* leaf-catch highlight */
 
-  /* Gold ramp for crests, rules, dividers — refined champagne */
-  --gold: oklch(83% 0.098 86);
-  --gold-soft: oklch(89% 0.066 88);
-  --gold-deep: oklch(67% 0.108 80);
+  /* Kept names for back-compat — remapped to the teal/ink system so any
+     stray reference stays on-brand instead of reading champagne-gold. */
+  --gold: oklch(58% 0.094 197);
+  --gold-soft: oklch(70% 0.108 192);
+  --gold-deep: oklch(46% 0.092 200);
 
-  /* Spa-side warm rose-quartz — differentiates The Spa path (aesthetics) */
-  --spa: oklch(79% 0.072 22);
-  --spa-deep: oklch(61% 0.1 20);
+  /* The Spa side — a warm, calming sage-leaf green differentiates aesthetics
+     from the cooler medical teal, while staying inside the tree/botanical
+     world (never the old rose). */
+  --spa: oklch(66% 0.072 158);
+  --spa-deep: oklch(52% 0.082 160);
 
-  /* Hero crystal gradient stops (WebGL scene + CSS fallback) */
-  --void-0: oklch(15.5% 0.02 248);
-  --void-1: oklch(21.5% 0.029 244);
-  --beam: oklch(93% 0.058 90); /* warm light shaft */
-  --beam-cool: oklch(87% 0.072 210); /* cool refracted (clinical) light */
+  /* Leaf palette for the signature tree — a young spring leaf catching teal
+     light, deepening toward the canopy. */
+  --leaf: oklch(64% 0.1 168);
+  --leaf-bright: oklch(74% 0.12 172);
+  --leaf-deep: oklch(48% 0.09 178);
+  --bark: oklch(34% 0.022 210); /* the branch ink */
 
-  /* Glass tokens — dark, premium frosted surface */
-  --glass-bg: oklch(28% 0.022 264 / 0.55);
-  --glass-bg-strong: oklch(22% 0.022 265 / 0.82);
-  --glass-border: oklch(85% 0.02 90 / 0.16);
-  --glass-shadow: 0 20px 60px -24px oklch(8% 0.02 265 / 0.85);
+  /* Hero field stops (CSS + SVG) — a luminous white-to-mist sky the tree
+     stands against, with a low teal horizon glow. */
+  --field-0: oklch(100% 0 0);
+  --field-1: oklch(98% 0.01 198);
+  --field-2: oklch(95.5% 0.02 194);
+  --beam: oklch(82% 0.06 192 / 0.5); /* the teal light the leaves catch */
 
-  /* Fonts wired from next/font on the layout wrapper */
-  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter-tight), system-ui, -apple-system, sans-serif;
+  /* Glass tokens — light, premium frosted surface (nav, chips). */
+  --glass-bg: oklch(100% 0 0 / 0.62);
+  --glass-bg-strong: oklch(100% 0 0 / 0.86);
+  --glass-border: oklch(58% 0.05 200 / 0.16);
+  --glass-shadow: 0 22px 60px -28px oklch(46% 0.06 205 / 0.32);
+
+  /* Fonts wired from next/font on the layout wrapper. Cormorant = the
+     refined, established serif (the "dermatology" script feel); Inter =
+     clean clinical sans for body + UI. */
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 
   /* Fluid type tokens (clamp) for hero rhythm */
-  --fluid-hero: clamp(2.6rem, 1.2rem + 6.6vw, 6.75rem);
-  --fluid-h2: clamp(1.9rem, 1.05rem + 3.7vw, 3.6rem);
+  --fluid-hero: clamp(2.7rem, 1.1rem + 7.2vw, 7rem);
+  --fluid-h2: clamp(1.95rem, 1.05rem + 3.9vw, 3.7rem);
   --fluid-h3: clamp(1.35rem, 1rem + 1.5vw, 2rem);
-  --fluid-lead: clamp(1.05rem, 0.95rem + 0.7vw, 1.35rem);
+  --fluid-lead: clamp(1.05rem, 0.95rem + 0.7vw, 1.32rem);
 
   background-color: var(--color-bg);
   color: var(--color-fg);
@@ -84,16 +102,21 @@
 [data-brand="encore"] .font-display {
   font-family: var(--font-display);
   font-optical-sizing: auto;
-  letter-spacing: -0.018em;
-  font-weight: 400;
-  /* Crisper serif edges on the dark theme */
+  letter-spacing: -0.012em;
+  font-weight: 500;
   text-rendering: optimizeLegibility;
 }
 
 /* Hero/large display gets slightly tighter optical tracking */
 [data-brand="encore"] .display-tight {
-  letter-spacing: -0.026em;
-  font-weight: 380;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+/* Refined italic emphasis — the script "dermatology" character */
+[data-brand="encore"] .display-em {
+  font-style: italic;
+  font-weight: 500;
 }
 
 /* Precise grotesque for eyebrows / UI labels */
@@ -101,91 +124,139 @@
   font-family: var(--font-sans);
 }
 
-/* Reusable glass surfaces (dark, premium) */
+/* Reusable glass surfaces (light, premium) */
 [data-brand="encore"] .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--glass-border);
 }
 
 [data-brand="encore"] .glass-strong {
   background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  backdrop-filter: blur(22px) saturate(1.3);
   border: 1px solid var(--glass-border);
 }
 
-/* Static crystal/void gradient — SSR + reduced-motion + mobile hero fallback.
-   A dark cinematic void raked by a warm and a cool light shaft, with a faint
-   refractive prism glow center — mirrors the WebGL scene so there's no CLS. */
-[data-brand="encore"] .crystal-fallback {
+/* Static hero field — SSR + reduced-motion + mobile fallback for the tree
+   scene. A luminous white sky with a low teal horizon glow and the faintest
+   warm paper grain, so there's never a blank frame and zero CLS. */
+[data-brand="encore"] .field-fallback {
   background:
     radial-gradient(
-      42% 70% at 50% 42%,
+      80% 50% at 50% 100%,
       var(--beam) 0%,
-      oklch(90% 0.06 90 / 0.18) 22%,
-      transparent 60%
+      oklch(88% 0.04 192 / 0.18) 32%,
+      transparent 64%
     ),
     radial-gradient(
-      30% 90% at 64% 30%,
-      var(--beam-cool) 0%,
-      transparent 55%
+      60% 70% at 78% 8%,
+      oklch(96% 0.02 192 / 0.7) 0%,
+      transparent 60%
     ),
-    conic-gradient(
-      from 210deg at 50% 40%,
-      transparent 0deg,
-      oklch(88% 0.05 90 / 0.1) 24deg,
-      transparent 60deg,
-      oklch(82% 0.06 220 / 0.08) 180deg,
-      transparent 220deg
-    ),
-    linear-gradient(180deg, var(--void-1) 0%, var(--void-0) 60%, var(--color-bg-deep) 100%);
+    linear-gradient(180deg, var(--field-0) 0%, var(--field-1) 56%, var(--field-2) 100%);
 }
 
-/* Fine gold underline used on eyebrow labels */
+/* ============================================================
+   HERO ENTRANCE — deterministic CSS reveal (mirrors the-luxe's working
+   `.luxe-rise`). Pure CSS keyframes fire on mount with NO dependency on
+   rAF / IntersectionObserver / foreground focus / JS hydration timing, so the
+   signature hero copy can never stick at opacity:0 (the Framer-Motion stagger
+   regression). A forced-visible fallback (`.no-js` / reduced-motion) lands on
+   the finished state, and the animation `fill: both` holds the end frame.
+   ============================================================ */
+[data-brand="encore"] .en-rise {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  animation: en-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--en-rise-delay, 0.1s);
+  will-change: transform, opacity;
+}
+@keyframes en-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* Staggered cascade — one tier per copy element, ~0.09s apart (matches the
+   original stagger rhythm). */
+[data-brand="encore"] .en-rise-1 { --en-rise-delay: 0.10s; }
+[data-brand="encore"] .en-rise-2 { --en-rise-delay: 0.19s; }
+[data-brand="encore"] .en-rise-3 { --en-rise-delay: 0.28s; }
+[data-brand="encore"] .en-rise-4 { --en-rise-delay: 0.37s; }
+[data-brand="encore"] .en-rise-5 { --en-rise-delay: 0.46s; }
+
+/* Belt-and-suspenders: if CSS animations don't run for any reason, the copy
+   is still visible (never a blank hero). The keyframe `forwards` fill already
+   holds the end frame once it starts; this guarantees the resting state. */
+@supports not (animation: en-rise 1s) {
+  [data-brand="encore"] .en-rise {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scroll-cue fade-in — also pure CSS so the decorative cue can never stick
+   invisible on load. */
+[data-brand="encore"] .en-cue {
+  opacity: 0;
+  animation: en-cue-in 0.8s ease 1.2s forwards;
+}
+@keyframes en-cue-in {
+  to { opacity: 1; }
+}
+@supports not (animation: en-cue-in 1s) {
+  [data-brand="encore"] .en-cue { opacity: 1; }
+}
+
+/* Fine teal underline used on eyebrow labels */
 [data-brand="encore"] .rule-gold::after {
   content: "";
   display: block;
   width: 2.5rem;
   height: 2px;
   margin-top: 0.55rem;
-  background: linear-gradient(90deg, var(--gold), transparent);
+  background: linear-gradient(90deg, var(--clinical), transparent);
 }
 
-/* Gold-foil gradient text for fine emphasis */
-[data-brand="encore"] .text-gold {
-  color: var(--gold);
-}
+/* Teal-accent text helpers */
+[data-brand="encore"] .text-gold,
 [data-brand="encore"] .text-clinical {
   color: var(--clinical);
 }
 [data-brand="encore"] .text-spa {
-  color: var(--spa);
+  color: var(--spa-deep);
 }
+
+/* "Foil" remapped to a refined teal-ink gradient for fine emphasis (no gold) */
 [data-brand="encore"] .foil {
   background: linear-gradient(
     100deg,
-    var(--gold-deep) 0%,
-    var(--gold-soft) 38%,
-    var(--gold) 62%,
-    var(--gold-deep) 100%
+    var(--clinical-deep) 0%,
+    var(--clinical) 46%,
+    var(--clinical-bright) 64%,
+    var(--clinical-deep) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Animated gold-foil sheen — a slow light rake across emphasized words,
-   echoing the hero's "renewal light." Pauses under reduced motion. */
+/* Animated teal sheen — a slow light rake across emphasized words, echoing the
+   hero's leaves catching teal light. Pauses under reduced motion. */
 [data-brand="encore"] .foil-sheen {
   background: linear-gradient(
     100deg,
-    var(--gold-deep) 0%,
-    var(--gold-soft) 30%,
-    oklch(96% 0.04 92) 46%,
-    var(--gold) 62%,
-    var(--gold-deep) 100%
+    var(--clinical-deep) 0%,
+    var(--clinical) 28%,
+    var(--clinical-bright) 48%,
+    var(--clinical) 66%,
+    var(--clinical-deep) 100%
   );
   background-size: 220% 100%;
   -webkit-background-clip: text;
@@ -198,27 +269,25 @@
   50% { background-position: 100% 0; }
 }
 
-/* Refined crest ornament — a gold node flanked by tapering rules. Used as a
-   section ornament that nods to an academic/medical crest without a literal
-   logo. */
+/* Refined crest ornament — a teal node flanked by tapering rules. */
 [data-brand="encore"] .crest {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: var(--gold);
+  color: var(--clinical);
 }
 [data-brand="encore"] .crest::before,
 [data-brand="encore"] .crest::after {
   content: "";
   height: 1px;
   width: clamp(1.5rem, 6vw, 3rem);
-  background: linear-gradient(90deg, transparent, var(--gold-deep));
+  background: linear-gradient(90deg, transparent, var(--clinical-deep));
 }
 [data-brand="encore"] .crest::after {
-  background: linear-gradient(90deg, var(--gold-deep), transparent);
+  background: linear-gradient(90deg, var(--clinical-deep), transparent);
 }
 
-/* Thin hairline divider with a centered gold node */
+/* Thin hairline divider with a centered teal node */
 [data-brand="encore"] .hairline {
   height: 1px;
   background: linear-gradient(
@@ -231,63 +300,55 @@
 }
 
 /* ============================================================
-   Brand photography treatment — the single, consistent grade so all
-   six AI photos read as ONE cinematic shoot (aqua-teal + champagne).
-   Mirrors the blue-sky `.bs-photo` system but tuned for Encore's dark,
-   clinical-luxe theme: lifted blacks toward ink-navy, a cool clinical
-   cast warmed by a champagne low-light, gentle contrast for depth.
+   Brand photography treatment — one consistent grade so all imagery reads as
+   ONE bright, clinical-spa shoot (cool teal cast, airy highs). Tuned for the
+   LIGHT theme: clean whites, a faint teal cool, gentle contrast for depth.
    ============================================================ */
 [data-brand="encore"] .en-photo {
-  /* paints the brand surface before the image loads → no white flash, no CLS */
   background-color: var(--color-bg-subtle);
-  filter: saturate(1.05) contrast(1.03) brightness(0.99);
+  filter: saturate(1.03) contrast(1.02) brightness(1.01);
 }
-/* Stronger ambiance grade for wide room/lounge/authority shots — pushes the
-   cool clinical cast slightly toward Encore's aqua-teal anchor. */
 [data-brand="encore"] .en-photo--graded {
-  filter: saturate(1.08) contrast(1.045) brightness(0.985)
-    hue-rotate(-3deg);
+  filter: saturate(1.06) contrast(1.03) brightness(1.0) hue-rotate(-2deg);
 }
 
-/* Aqua-teal ↔ champagne duotone wash — a blended overlay that unifies the set
-   on-brand without crushing photographic detail (soft-light keeps midtones). */
+/* Teal ↔ clean-white duotone wash — unifies the set on-brand without crushing
+   detail (soft-light keeps midtones). */
 [data-brand="encore"] .en-photo-tone {
   position: absolute;
   inset: 0;
   pointer-events: none;
   mix-blend-mode: soft-light;
-  opacity: 0.42;
+  opacity: 0.36;
   background: linear-gradient(
     152deg,
-    var(--gold) 0%,
-    transparent 40%,
+    oklch(100% 0 0) 0%,
+    transparent 42%,
     transparent 58%,
-    var(--clinical-deep) 100%
+    var(--clinical) 100%
   );
 }
 
-/* Cinematic top vignette so photos seat into the dark theme (no hard top seam). */
+/* Soft edge vignette so photos seat into the bright theme without a hard seam. */
 [data-brand="encore"] .en-photo-vignette {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 50% 0%, transparent 55%, oklch(15% 0.02 248 / 0.32) 100%),
-    radial-gradient(120% 90% at 50% 100%, transparent 60%, oklch(15% 0.02 248 / 0.28) 100%);
+    radial-gradient(120% 80% at 50% 0%, transparent 60%, oklch(96% 0.02 200 / 0.5) 100%),
+    radial-gradient(120% 90% at 50% 100%, transparent 62%, oklch(94% 0.03 200 / 0.45) 100%);
 }
 
 /* ============================================================
-   ATMOSPHERE MOTIF — "Renewal Light" god-rays / light-shaft section seams.
-   Encore's analog to Blue Sky's cloud motif: tasteful champagne-on-aqua
-   light shafts that melt one dark band into the next. Restrained, premium.
+   ATMOSPHERE MOTIF — "Renewal Light" + drifting leaves on section seams.
+   Encore's analog to the gold references' atmosphere: a restrained teal light
+   shaft + a faint canopy dapple that melts one band into the next.
    ============================================================ */
 [data-brand="encore"] .en-lightshaft {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
-/* The shaft layer — two raked beams (warm champagne + cool clinical) that
-   breathe slowly, echoing the WebGL hero's renewal light. */
 [data-brand="encore"] .en-lightshaft::before {
   content: "";
   position: absolute;
@@ -298,25 +359,103 @@
     linear-gradient(
       102deg,
       transparent 38%,
-      oklch(93% 0.058 90 / 0.06) 47%,
-      oklch(93% 0.058 90 / 0.11) 50%,
-      oklch(93% 0.058 90 / 0.06) 53%,
+      oklch(82% 0.06 192 / 0.08) 47%,
+      oklch(82% 0.06 192 / 0.14) 50%,
+      oklch(82% 0.06 192 / 0.08) 53%,
       transparent 62%
-    ),
-    linear-gradient(
-      96deg,
-      transparent 60%,
-      oklch(87% 0.072 210 / 0.05) 70%,
-      oklch(87% 0.072 210 / 0.09) 73%,
-      transparent 82%
     );
   background-size: 200% 100%;
   animation: encore-shaft 18s ease-in-out infinite;
   transform-origin: center;
 }
 @keyframes encore-shaft {
-  0%, 100% { background-position: 0% 0, 100% 0; opacity: 0.85; }
-  50% { background-position: 18% 0, 78% 0; opacity: 1; }
+  0%, 100% { background-position: 0% 0; opacity: 0.85; }
+  50% { background-position: 18% 0; opacity: 1; }
+}
+
+/* ============================================================
+   REVIEWS MARQUEE — continuous full-text review rail (mirrors happy-clinic's
+   .hc-marquee mechanic, scoped to encore). Track holds the set twice and
+   translates -50% in a seamless loop; pauses on hover/focus; reduced-motion
+   becomes a swipeable snapping strip with the duplicate removed.
+   ============================================================ */
+[data-brand="encore"] .en-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+[data-brand="encore"] .en-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: en-marquee-scroll 64s linear infinite;
+  will-change: transform;
+}
+[data-brand="encore"] .en-marquee:hover .en-marquee__track,
+[data-brand="encore"] .en-marquee:focus-within .en-marquee__track {
+  animation-play-state: paused;
+}
+@keyframes en-marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+[data-brand="encore"] .en-review-card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 18px 46px -34px oklch(46% 0.06 205 / 0.5);
+}
+
+/* ============================================================
+   BEFORE / AFTER drag-slider — the divider line + handle (mirrors
+   happy-clinic's .hc-ba primitives, scoped + retoned to teal).
+   ============================================================ */
+[data-brand="encore"] .en-ba-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 2px;
+  margin-left: -1px;
+  pointer-events: none;
+  background: oklch(100% 0 0 / 0.92);
+  box-shadow: 0 0 0 1px oklch(46% 0.09 200 / 0.25), 0 0 18px oklch(70% 0.1 192 / 0.55);
+}
+[data-brand="encore"] .en-ba-handle {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-left: -1.375rem;
+  transform: translateY(-50%);
+  color: var(--clinical-deep);
+  background: oklch(100% 0 0 / 0.92);
+  border: 1px solid oklch(58% 0.09 200 / 0.5);
+  border-radius: 9999px;
+  cursor: ew-resize;
+  box-shadow: 0 10px 28px -10px oklch(40% 0.08 205 / 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: transform 0.18s ease;
+}
+[data-brand="encore"] .en-ba-handle:hover {
+  transform: translateY(-50%) scale(1.06);
+}
+[data-brand="encore"] .en-ba-handle:focus-visible {
+  outline: 2px solid var(--clinical);
+  outline-offset: 3px;
+}
+
+/* concierge typing dots */
+[data-brand="encore"] .en-cc-dot {
+  animation: en-cc-bounce 1.1s ease-in-out infinite;
+}
+@keyframes en-cc-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
+  40% { transform: translateY(-3px); opacity: 1; }
 }
 
 /* Respect reduced motion: freeze decorative transforms + CSS animations */
@@ -324,12 +463,37 @@
   [data-brand="encore"] * {
     scroll-behavior: auto !important;
   }
+  /* Reveal lands instantly fully-visible — no fade, no slide. */
+  [data-brand="encore"] .en-rise,
+  [data-brand="encore"] .en-cue {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
   [data-brand="encore"] .foil-sheen {
     animation: none;
     background-position: 50% 0;
   }
   [data-brand="encore"] .en-lightshaft::before {
     animation: none;
-    background-position: 9% 0, 89% 0;
+    background-position: 9% 0;
+  }
+  [data-brand="encore"] .en-marquee__track {
+    animation: none;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  [data-brand="encore"] .en-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  [data-brand="encore"] .en-marquee__dup {
+    display: none !important;
+  }
+  [data-brand="encore"] .en-cc-dot {
+    animation: none;
+    opacity: 0.7;
   }
 }

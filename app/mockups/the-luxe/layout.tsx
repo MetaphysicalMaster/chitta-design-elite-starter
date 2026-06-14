@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
-import { Italiana, Jost } from "next/font/google";
+import { Cormorant_Garamond, Pinyon_Script, Jost } from "next/font/google";
 import "./brand.css";
 
-/* High-fashion couture display — a single elegant weight, all glamour. */
-const italiana = Italiana({
-  variable: "--font-italiana",
+/* Editorial luxe serif — warm, elegant display (echoes the live gold script). */
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+/* The gold SCRIPT face — recreates "The Luxe" signature wordmark. */
+const pinyon = Pinyon_Script({
+  variable: "--font-pinyon",
   subsets: ["latin"],
   display: "swap",
   weight: "400",
@@ -20,9 +29,9 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title:
-    "The Luxe MedSpa — Physician-Led Aesthetics & Bodycare in Upper Arlington, Columbus",
+    "The Luxe MedSpa — Turn Back Time | Top-Rated Medical Spa in Upper Arlington, Columbus",
   description:
-    "Opulent, physician-led medical spa in Upper Arlington, Columbus. Botox, Dysport, Daxxify, dermal fillers, Morpheus8, BBL HERO, MOXI, body contouring, medical weight loss, IV therapy & BHRT — delivered with a 4.9★ white-glove standard. Book in 30 seconds.",
+    "The Luxe MedSpa blends advanced aesthetic treatments with thoughtful, individualized care in Upper Arlington, Columbus. Botox, Dysport, Daxxify, dermal fillers, Morpheus8, BBL HERO, MOXI, EvolveX body contouring, medical weight loss & IV therapy — delivered with a 4.9★ standard. CareCredit & Cherry financing.",
   robots: { index: false, follow: false },
 };
 
@@ -32,7 +41,7 @@ export default function TheLuxeLayout({
   return (
     <div
       data-brand="the-luxe"
-      className={`${italiana.variable} ${jost.variable} min-h-screen`}
+      className={`${cormorant.variable} ${pinyon.variable} ${jost.variable} min-h-screen`}
     >
       {children}
     </div>

@@ -10,10 +10,10 @@ import { Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
 const HOURS = [
-  { d: "Mon – Thu", h: "9:00 AM – 6:00 PM" },
-  { d: "Friday", h: "9:00 AM – 4:00 PM" },
-  { d: "Saturday", h: "By appointment" },
-  { d: "Sunday", h: "Closed" },
+  { d: "Tuesday", h: "9:00 AM – 4:00 PM" },
+  { d: "Wednesday", h: "9:00 AM – 6:00 PM" },
+  { d: "Thu – Fri", h: "9:00 AM – 5:00 PM" },
+  { d: "Weekends", h: "By appointment" },
 ];
 
 const NAV = [
@@ -34,7 +34,7 @@ export function SiteFooter() {
           className="pointer-events-none absolute inset-0 opacity-70"
           style={{
             background:
-              "radial-gradient(60% 80% at 50% 0%, var(--glow-bronze), transparent 60%)",
+              "radial-gradient(60% 80% at 50% 0%, var(--glow-mauve), transparent 60%)",
           }}
         />
         <div className="relative mx-auto max-w-4xl px-6 py-20 text-center sm:px-8 sm:py-28">
@@ -43,8 +43,8 @@ export function SiteFooter() {
               className="font-display text-balance"
               style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.05 }}
             >
-              Ready to go{" "}
-              <span className="text-molten italic">beyond the surface?</span>
+              Ready to begin your{" "}
+              <span className="text-molten font-em">journey to wellness?</span>
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
@@ -97,8 +97,8 @@ export function SiteFooter() {
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--color-bg)]/65">
-            Editorial-luxury aesthetics in Gahanna, Ohio. Dual board-certified,
-            results-driven, and bold since 2017.
+            The joy of beauty &amp; wellness in Gahanna, Ohio — a warm,
+            judgment-free home for aesthetics &amp; wellness since 2017.
           </p>
           <address className="mt-6 space-y-1 text-sm not-italic text-[var(--color-bg)]/75">
             <p>540 Officenter Pl, Ste 120</p>
@@ -106,16 +106,24 @@ export function SiteFooter() {
             <p>
               <a
                 href="tel:+16145326423"
-                className="underline-offset-4 transition-colors hover:text-[var(--glow-gold)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-gold)]"
+                className="underline-offset-4 transition-colors hover:text-[var(--glow-blush)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-blush)]"
               >
-                (614) 532-6423
+                Call (614) 532-6423
+              </a>
+            </p>
+            <p>
+              <a
+                href="sms:+16147454177"
+                className="underline-offset-4 transition-colors hover:text-[var(--glow-blush)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-blush)]"
+              >
+                Text (614) 745-4177
               </a>
             </p>
           </address>
         </div>
 
         <nav aria-label="Footer" className="md:col-span-3">
-          <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--glow-gold)]">
+          <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--glow-blush)]">
             Explore
           </h3>
           <ul className="mt-4 space-y-2.5 text-sm">
@@ -123,7 +131,7 @@ export function SiteFooter() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className="text-[var(--color-bg)]/70 underline-offset-4 transition-colors hover:text-[var(--color-bg)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-gold)]"
+                  className="text-[var(--color-bg)]/70 underline-offset-4 transition-colors hover:text-[var(--color-bg)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-blush)]"
                 >
                   {l.label}
                 </Link>
@@ -133,7 +141,7 @@ export function SiteFooter() {
         </nav>
 
         <div className="md:col-span-4">
-          <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--glow-gold)]">
+          <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--glow-blush)]">
             Hours
           </h3>
           <dl className="mt-4 space-y-2 text-sm">
@@ -145,8 +153,8 @@ export function SiteFooter() {
             ))}
           </dl>
           <p className="mt-5 text-xs text-[var(--color-bg)]/45">
-            Providers: Dr. Matia Mulumba · Dr. Thomas McCartney · Alicia
-            Alvarado, FNP-BC · co-founders Katie &amp; Kim.
+            Led by Dr. Matia Mulumba &amp; the Beyond Skin team — warm,
+            inclusive, and judgment-free.
           </p>
         </div>
       </div>
@@ -155,6 +163,37 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-xs text-[var(--color-bg)]/45 sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} Beyond Skin Aesthetics. All rights reserved.</p>
           <p>Concept mockup · design pitch · not the live site.</p>
+        </div>
+      </div>
+
+      {/* MetaMarketer attribution + audit CTA — the demo site closing for US.
+          Deliberately the quietest line on the page: a hairline-separated
+          editorial credit beneath the client's own legal row, so it never
+          competes with the Beyond Skin illusion above it. */}
+      <div className="relative border-t border-[oklch(100%_0_0_/_0.06)]">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6 py-7 text-center sm:flex-row sm:justify-between sm:px-8 sm:text-left">
+          <p className="text-[0.7rem] leading-relaxed text-[var(--color-bg)]/40">
+            Site &amp; Growth&nbsp;OS by{" "}
+            <span className="font-semibold tracking-tight text-[var(--color-bg)]/65">
+              The MetaMarketer
+            </span>{" "}
+            — the front-office engine behind the concierge, reviews &amp; booking
+            you just used.
+          </p>
+          <a
+            href="https://themetamarketer.com/start"
+            target="_blank"
+            rel="noopener"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[oklch(100%_0_0_/_0.15)] px-4 py-2 text-[0.72rem] font-semibold text-[var(--color-bg)]/75 transition-colors hover:border-[oklch(100%_0_0_/_0.3)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--glow-blush)]"
+          >
+            Book a free Reactivation Audit
+            <span
+              aria-hidden
+              className="transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </a>
         </div>
       </div>
     </footer>

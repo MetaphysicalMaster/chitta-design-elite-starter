@@ -2,7 +2,7 @@
 
 /**
  * TrustBar — slim proof band beneath the hero. 4.9★ / reviews / physician-led
- * / location / est. Marquee-free, calm, gold-hairline framed.
+ * / location / est. Calm, gold-hairline framed, warm cream ground.
  */
 
 import { RevealGroup, RevealItem } from "./primitives";
@@ -10,16 +10,16 @@ import { RevealGroup, RevealItem } from "./primitives";
 const STATS = [
   { v: "4.9★", k: "Google rating" },
   { v: "≈122", k: "Five-star reviews" },
-  { v: "MD", k: "Physician-led care" },
+  { v: "Physician-Led", k: "Individualized care" },
   { v: "Upper Arlington", k: "3025 Northwest Blvd" },
-  { v: "Est. 2023", k: "Columbus, Ohio" },
+  { v: "Columbus, OH", k: "Proudly serving" },
 ];
 
 export function TrustBar() {
   return (
     <section
       aria-label="Reputation and credentials"
-      className="relative border-y border-[var(--color-border-subtle)] bg-[var(--emerald-abyss)]"
+      className="relative border-y border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]"
     >
       <div className="hairline-gold absolute inset-x-0 top-0" aria-hidden />
       <RevealGroup
@@ -33,7 +33,7 @@ export function TrustBar() {
             as="li"
             className="flex flex-col items-center text-center md:border-r md:border-[var(--color-border-subtle)] md:last:border-r-0"
           >
-            <span className="font-display text-2xl leading-none text-[var(--gold)] sm:text-3xl">
+            <span className="font-display text-2xl leading-none text-[var(--gold-deep)] sm:text-3xl">
               {s.v}
             </span>
             <span className="mt-2 text-[0.7rem] uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">

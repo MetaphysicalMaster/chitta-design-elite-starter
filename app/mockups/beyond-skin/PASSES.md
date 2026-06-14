@@ -1,7 +1,47 @@
 # Beyond Skin Aesthetics — Refinement Pass Log
 
-Route: `/mockups/beyond-skin`. "AFTER" pitch mockup. Aspirational, not corrective
-("you've outgrown your website"). Each pass = one concrete improvement.
+Route: `/mockups/beyond-skin`. "AFTER" pitch mockup. Aspirational, not corrective.
+Each pass = one concrete improvement.
+
+## REBRAND PASS — faithful to the real practice (national-7 standard)
+Grounded on the live site (beyondskinaesthetics.com): "The Joy of Beauty &
+Wellness" / "Unveil your inner beauty, as you discover joyful wellness." —
+feminine, warm, judgment-free wellness journey.
+- Palette retuned in `brand.css` (token VALUES, names kept): dusty MAUVE/PLUM
+  accents · warm CREAM canvas · plum ink · champagne taupe. Replaced the prior
+  espresso/rose-bronze "editorial luxury" direction. Back-compat aliases map the
+  old glow-bronze/glow-gold/ink-* tokens onto the new palette.
+- Fonts (layout.tsx): Cormorant Garamond (light editorial serif display) + Inter
+  (sans). Logo recreated in CSS/SVG — mauve lotus/petal mark + serif wordmark.
+- SIGNATURE "Journey to Wellness": (1) a WebGL silk light-field hero — a lit
+  mauve/plum silk surface with a left→right "current" + pointer bloom + scroll
+  deepening (surface-shaders.ts viewport-scaled plane, ortho camera, R3F; static
+  CSS silk fallback for SSR/mobile/reduced-motion/no-WebGL); (2) JourneyThread —
+  a fixed luminous mauve thread that traces itself down the page spine via native
+  scroll progress (Lenis-driven), with a glowing light bead riding the head.
+  Reduced-motion → fully drawn, static.
+- NEW Concierge.tsx — AI front-desk: canned, brand-voiced text-back→book flow,
+  books/qualifies/routes only (no medical advice), "Preview" tag, mobile bottom
+  sheet, focus trap, real text line (614) 745-4177.
+- NEW ReviewsMarquee.tsx — continuous full-text 5-star sliding wall (pause on
+  hover/focus, reduced-motion swipe strip, Google aggregate band, sample-labeled).
+- BeforeAfter.tsx rebuilt to the REAL aligned photo pair (ba-after base +
+  ba-before clipped overlay) — pointer + keyboard ARIA slider, "Illustrative"
+  tag, static-export-safe plain <img>.
+- SiteFooter.tsx — real NAP + hours + text line; added "Book a free Reactivation
+  Audit" CTA → themetamarketer.com/start (MetaMarketer attribution).
+- All section copy re-voiced to the real brand (services = real categories;
+  wellness-journey tone; judgment-free/inclusive trust signals).
+- Motion fix: standardized all reveals on variant-label form
+  (initial="hidden"/whileInView="show") — inline-object whileInView/animate did
+  not reliably fire here; RevealGroup distributes a per-item stagger delay.
+- Gates: `npx tsc --noEmit` clean (0 beyond-skin errors). Chrome-verified:
+  hero + silk fallback + journey thread draw, concierge full flow, reviews
+  marquee animating, before/after drag (aria-valuenow updates), footer audit CTA.
+  Console clean (only benign THREE.Clock deprecation warning).
+
+---
+## (Prior sandbox-build log — superseded by the rebrand above)
 
 ## Foundations
 1. Scoped OKLch brand palette in `brand.css` under `[data-brand="beyond-skin"]` — warm porcelain-ivory canvas, espresso ink fg, molten rose-bronze accent. Distinct from blue-sky (airy blue) and encore (dark crystal).

@@ -42,9 +42,9 @@ export function Testimonials() {
     <Section labelledBy="testimonials-heading">
       <SectionHeading
         id="testimonials-heading"
-        eyebrow="4.81★ · 404 reviews"
-        title={<>Columbus <span className="italic">trusts</span> Encore.</>}
-        lede="Representative of the reviews behind our 4.81-star reputation. Quotes shown are illustrative samples for this mockup."
+        eyebrow="4.8★ · 400+ reviews"
+        title={<>Columbus <span className="display-em">trusts</span> Encore.</>}
+        lede="Representative of the reviews behind our reputation. Quotes shown are illustrative samples for this mockup."
       />
       <div className="mt-12 columns-1 gap-5 sm:columns-2">
         {QUOTES.map((q, i) => (

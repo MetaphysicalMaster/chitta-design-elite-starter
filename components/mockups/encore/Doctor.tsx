@@ -30,30 +30,30 @@ export function Doctor() {
       <div className="grid items-center gap-12 md:grid-cols-[0.85fr_1fr]">
         {/* Portrait monogram */}
         <Reveal className="order-2 md:order-1">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-deep)]">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_50%_at_50%_18%,oklch(82%_0.1_84_/_0.18),transparent_60%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_22%,var(--color-accent-subtle),transparent_62%)]"
             />
             <motion.div
               aria-hidden
               animate={prefersReduced ? {} : { rotate: 360 }}
               transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[var(--gold)]/30"
+              className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[var(--clinical)]/30"
             />
             <motion.div
               aria-hidden
               animate={prefersReduced ? {} : { rotate: -360 }}
               transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--clinical)]/20"
+              className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--leaf)]/30"
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <span className="font-display text-7xl text-[var(--gold)]">GL</span>
+              <span className="font-display text-7xl text-[var(--clinical-deep)]">GL</span>
               <span className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg-subtle)]">
                 Portrait · sample
               </span>
             </div>
-            <div className="absolute inset-x-0 bottom-0 border-t border-[var(--glass-border)] bg-[var(--glass-bg-strong)] px-6 py-4 backdrop-blur-md">
+            <div className="absolute inset-x-0 bottom-0 border-t border-[var(--color-border)] bg-[var(--glass-bg-strong)] px-6 py-4 backdrop-blur-md">
               <p className="font-display text-lg text-[var(--color-fg)]">
                 Dr. Gwyn Londeree, MD
               </p>

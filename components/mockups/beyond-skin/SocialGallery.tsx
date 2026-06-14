@@ -21,15 +21,15 @@ const TILES: Tile[] = [
   {
     id: 1,
     bg: "linear-gradient(150deg, var(--glow-rose), var(--glow-plum))",
-    caption: "Lip artistry, our signature",
+    caption: "The journey to wellness",
     span: "sm:col-span-2 sm:row-span-2",
   },
-  { id: 2, bg: "linear-gradient(150deg, var(--glow-bronze), var(--glow-rose))", caption: "Glo2Facial glow" },
-  { id: 3, bg: "linear-gradient(150deg, var(--glow-gold), var(--glow-bronze))", caption: "The new suite" },
-  { id: 4, bg: "linear-gradient(150deg, var(--ink-warm), var(--glow-plum))", caption: "Behind the results" },
-  { id: 5, bg: "linear-gradient(150deg, var(--glow-rose), var(--glow-gold))", caption: "Member event night" },
-  { id: 6, bg: "linear-gradient(150deg, var(--glow-plum), var(--glow-bronze))", caption: "Tox day, done right" },
-  { id: 7, bg: "linear-gradient(150deg, var(--glow-bronze), var(--ink-deep))", caption: "Skincare shelf picks" },
+  { id: 2, bg: "linear-gradient(150deg, var(--glow-taupe), var(--glow-rose))", caption: "Signature facial glow" },
+  { id: 3, bg: "linear-gradient(150deg, var(--glow-blush), var(--glow-taupe))", caption: "Inside the studio" },
+  { id: 4, bg: "linear-gradient(150deg, var(--plum-warm), var(--glow-plum))", caption: "Behind the results" },
+  { id: 5, bg: "linear-gradient(150deg, var(--glow-rose), var(--glow-blush))", caption: "Member event night" },
+  { id: 6, bg: "linear-gradient(150deg, var(--glow-plum), var(--glow-mauve))", caption: "Naturally refreshed" },
+  { id: 7, bg: "linear-gradient(150deg, var(--glow-taupe), var(--plum-deep))", caption: "Skincare shelf picks" },
 ];
 
 export function SocialGallery() {

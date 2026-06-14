@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./brand.css";
 
-/* Editorial display — modern high-fashion character, optical sizing */
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+/* Editorial light serif — feminine high-fashion wellness character. The real
+   Beyond Skin brand pairs a light serif display with a clean sans. */
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 /* Clean, neutral sans for body + UI */
@@ -20,9 +22,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "Beyond Skin Aesthetics — Editorial Luxury Med Spa in Gahanna · Columbus, OH",
+    "Beyond Skin Aesthetics — The Joy of Beauty & Wellness · Gahanna, Columbus OH",
   description:
-    "Beyond the surface. Dual board-certified, results-driven aesthetics in Gahanna, Ohio — injectables, RF microneedling, IPL/laser, Glo2Facial, skin tightening and medical weight loss. One brand for treatments, shop and membership. Book in 30 seconds.",
+    "Unveil your inner beauty as you discover joyful wellness. Beyond Skin Aesthetics in Gahanna, Ohio — injectables, lasers & devices, body contouring, esthetician services and wellness, in a warm, judgment-free home. Book in 30 seconds.",
   robots: { index: false, follow: false },
 };
 
@@ -32,7 +34,7 @@ export default function BeyondSkinLayout({
   return (
     <div
       data-brand="beyond-skin"
-      className={`${bricolage.variable} ${inter.variable} min-h-screen`}
+      className={`${cormorant.variable} ${inter.variable} min-h-screen`}
     >
       {children}
     </div>

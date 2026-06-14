@@ -1,53 +1,36 @@
 "use client";
 
 /**
- * BeforeAfter — interactive drag slider, the asset their real site lacks.
- * Pointer + full keyboard support (arrow keys on the handle, role="slider").
- * Uses brand-tinted placeholder gradient "images" clearly marked "sample".
+ * BeforeAfter — "See the difference." An INTERACTIVE before/after drag-reveal
+ * slider on The Luxe's aligned photo pair (ba-after.jpg = refreshed base layer,
+ * ba-before.jpg = tired, clipped overlay) so dragging the gold handle sweeps
+ * from BEFORE → AFTER seamlessly. The pair is pixel-registered (same woman,
+ * identical pose / warm-greige backdrop) so the reveal never "jumps".
+ *
+ * Mirrors the gold-reference pattern (happy-clinic/BeforeAfter): AFTER base +
+ * BEFORE clipped overlay, a real ARIA slider (role="slider", valuemin/now/max,
+ * aria-valuetext) with pointer + full keyboard support (arrows / Home / End),
+ * static track (reduced-motion safe by construction), plain <img> tags
+ * (static-export-safe; basePath handled by the build), and an honest
+ * "Illustrative · representative result" tag.
+ *
+ * Brand: warm marble field, gold handle + rule, espresso ink.
  */
 
 import { useCallback, useRef, useState } from "react";
 import { SectionHeading, Reveal } from "./primitives";
-import { cn } from "@/lib/utils";
 
-type Case = {
-  id: string;
-  treatment: string;
-  detail: string;
-  before: string;
-  after: string;
-};
+/* Both source photos are intrinsic 928 × 1152 (≈ 4 / 5 portrait). Locking the
+   aspect-ratio to the real pixels keeps the reveal pixel-perfect + zero CLS. */
+const BA = {
+  before: "/clients/the-luxe/ba-before.jpg",
+  after: "/clients/the-luxe/ba-after.jpg",
+  w: 928,
+  h: 1152,
+} as const;
 
-const CASES: Case[] = [
-  {
-    id: "tox",
-    treatment: "Botox — Forehead & Glabella",
-    detail: "34 units · 14 days post",
-    before: "linear-gradient(160deg, oklch(58% 0.03 150), oklch(46% 0.04 160))",
-    after: "linear-gradient(160deg, oklch(74% 0.09 88), oklch(60% 0.1 80))",
-  },
-  {
-    id: "morpheus",
-    treatment: "Morpheus8 — Jawline",
-    detail: "3 sessions · firmness & texture",
-    before:
-      "radial-gradient(130% 100% at 60% 40%, oklch(56% 0.035 158), oklch(44% 0.045 162))",
-    after:
-      "radial-gradient(130% 100% at 60% 40%, oklch(78% 0.1 86), oklch(64% 0.12 78))",
-  },
-  {
-    id: "bbl",
-    treatment: "BBL HERO — Tone & Redness",
-    detail: "2 sessions · 6-week follow-up",
-    before:
-      "radial-gradient(120% 120% at 40% 35%, oklch(58% 0.05 40), oklch(46% 0.05 30))",
-    after:
-      "radial-gradient(120% 120% at 40% 35%, oklch(80% 0.08 90), oklch(66% 0.11 84))",
-  },
-];
-
-function Slider({ data }: { data: Case }) {
-  const [pos, setPos] = useState(50);
+function useReveal() {
+  const [pos, setPos] = useState(50); // % of BEFORE shown from the left edge
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
 
@@ -71,7 +54,6 @@ function Slider({ data }: { data: Case }) {
   const onPointerUp = () => {
     dragging.current = false;
   };
-
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
       e.preventDefault();
@@ -80,85 +62,106 @@ function Slider({ data }: { data: Case }) {
       e.preventDefault();
       setPos((p) => Math.min(100, p + 4));
     } else if (e.key === "Home") {
+      e.preventDefault();
       setPos(0);
     } else if (e.key === "End") {
+      e.preventDefault();
       setPos(100);
     }
   };
 
+  return { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown };
+}
+
+function RevealSlider() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } =
+    useReveal();
+  const shown = Math.round(pos);
+
   return (
-    <figure className="overflow-hidden rounded-3xl border border-[var(--glass-border)] bg-[var(--emerald-deep)] shadow-[0_30px_70px_-34px_oklch(8%_0.02_168_/_0.9)]">
+    <figure className="mx-auto max-w-md">
       <div
         ref={ref}
-        className="relative aspect-[4/5] w-full cursor-ew-resize touch-none select-none"
+        className="relative w-full touch-none overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--marble)] shadow-[0_36px_90px_-44px_oklch(50%_0.04_70_/_0.6)]"
+        style={{ aspectRatio: `${BA.w} / ${BA.h}` }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        {/* AFTER (full) */}
-        <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
-          <span className="absolute right-3 top-3 rounded-full bg-[oklch(20%_0.03_165_/_0.85)] px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-wider text-[var(--gold-bright)] backdrop-blur-sm">
-            After
-          </span>
-        </div>
+        {/* BASE LAYER — AFTER (refreshed / glowing). Plain <img>, static-export
+            safe; basePath is handled by the build. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BA.after}
+          alt="After — the same Luxe MedSpa client with refreshed, more even, naturally radiant skin."
+          width={BA.w}
+          height={BA.h}
+          draggable={false}
+          className="absolute inset-0 h-full w-full select-none object-cover"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-3 top-3 z-[2] rounded-full bg-[var(--gold)]/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-fg)] backdrop-blur-sm"
+        >
+          After
+        </span>
 
-        {/* BEFORE (clipped left of the handle) */}
+        {/* OVERLAY — BEFORE, clipped from the left so dragging right reveals the
+            after beneath. */}
         <div
           className="absolute inset-0"
-          style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <span className="absolute left-3 top-3 rounded-full bg-[oklch(14%_0.02_168_/_0.85)] px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={BA.before}
+            alt=""
+            width={BA.w}
+            height={BA.h}
+            draggable={false}
+            className="absolute inset-0 h-full w-full select-none object-cover"
+          />
+          <span className="pointer-events-none absolute left-3 top-3 z-[2] rounded-full bg-[oklch(30%_0.02_60_/_0.6)] px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream)] backdrop-blur-sm">
             Before
           </span>
         </div>
 
-        {/* sample watermark */}
-        <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-[0.58rem] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
-          Sample · illustrative
+        {/* Honest tag — illustrative / representative result. */}
+        <span className="pointer-events-none absolute bottom-3 left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap rounded-full bg-[oklch(28%_0.02_60_/_0.55)] px-3 py-1 text-[0.54rem] font-medium uppercase tracking-[0.2em] text-[var(--cream)] backdrop-blur-sm">
+          Illustrative · representative result
         </span>
 
-        {/* Handle line */}
-        <div
-          className="pointer-events-none absolute inset-y-0"
-          style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
-        >
-          <div className="h-full w-0.5 bg-[var(--gold-pale)] shadow-[0_0_0_1px_oklch(20%_0.03_168_/_0.4)]" />
-        </div>
+        {/* Divider line + the ARIA slider handle. */}
+        <span className="luxe-ba-line" style={{ left: `${pos}%` }} aria-hidden />
         <button
           type="button"
           role="slider"
-          aria-label={`Reveal ${data.treatment} before and after. Use arrow keys to compare.`}
+          aria-label="Drag to reveal before and after. Use arrow keys to compare."
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={Math.round(pos)}
-          aria-valuetext={`${Math.round(pos)}% before`}
+          aria-valuenow={shown}
+          aria-valuetext={`Showing ${shown}% before, ${100 - shown}% after`}
           onKeyDown={onKeyDown}
-          className={cn(
-            "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
-            "border border-[var(--gold-bright)] bg-[oklch(20%_0.03_165_/_0.8)] text-[var(--gold)] shadow-lg backdrop-blur",
-            "transition-transform duration-200 hover:scale-105",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-bright)]",
-          )}
+          className="luxe-ba-handle"
           style={{ left: `${pos}%` }}
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
             <path
               d="M9 6 4 12l5 6M15 6l5 6-5 6"
               stroke="currentColor"
-              strokeWidth="1.8"
+              strokeWidth="1.7"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         </button>
       </div>
-      <figcaption className="flex items-center justify-between gap-3 px-5 py-4">
-        <span className="font-display text-lg text-[var(--color-fg)]">
-          {data.treatment}
-        </span>
-        <span className="text-xs text-[var(--color-fg-subtle)]">{data.detail}</span>
+
+      <figcaption className="mt-4 text-center text-sm text-[var(--color-fg-muted)]">
+        Drag the handle — or use your arrow keys — to compare. Skin texture &amp;
+        tone, naturally refreshed.
       </figcaption>
     </figure>
   );
@@ -168,26 +171,43 @@ export function BeforeAfter() {
   return (
     <section
       id="results"
-      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--color-bg)] py-24 sm:py-32"
+      aria-labelledby="results-title"
+      className="relative scroll-mt-20 overflow-hidden bg-[var(--cream-deep)] py-24 sm:py-28"
     >
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-8">
+      {/* soft peach + gold aura on the warm field */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-50"
+        style={{
+          background:
+            "radial-gradient(50% 46% at 88% 4%, var(--peach), transparent 70%), radial-gradient(46% 44% at 6% 100%, var(--gold-pale), transparent 72%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-3xl px-6 sm:px-8">
         <SectionHeading
-          eyebrow="Real Results"
+          align="center"
+          eyebrow="Real results"
           title={
-            <>
-              See the difference. <span className="gold-leaf italic">Drag to reveal.</span>
-            </>
+            <span id="results-title">
+              The difference is obvious.{" "}
+              <span className="gold-leaf italic">The work never is.</span>
+            </span>
           }
-          lead="The before/after gallery their current template doesn't have. Slide the handle — or use your keyboard — to compare outcomes."
+          lead="Subtle, natural, undeniably you. Drag the slider and look closely — refreshed skin texture and tone, with the same face you've always loved."
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {CASES.map((c, i) => (
-            <Reveal key={c.id} delay={i * 0.08}>
-              <Slider data={c} />
-            </Reveal>
-          ))}
-        </div>
+        {/* THE CENTERPIECE — interactive before/after drag-reveal on the real
+            aligned photo pair. */}
+        <Reveal className="mt-12">
+          <RevealSlider />
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <p className="mx-auto mt-10 max-w-xl text-center text-xs leading-relaxed text-[var(--color-fg-subtle)]">
+            Illustrative before/after pair shown for this concept. Individual
+            results vary; The Luxe MedSpa does not guarantee any specific outcome.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

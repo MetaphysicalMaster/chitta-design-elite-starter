@@ -2,8 +2,9 @@
 
 /**
  * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
- * Also wires anchor (#hash) clicks to glide instead of jump, offset for the
- * sticky glass nav.
+ * Lenis updates native window scroll, which the signature JourneyThread reads
+ * directly to trace itself in lock-step. Anchor (#hash) clicks glide instead of
+ * jump, offset for the sticky glass nav.
  */
 
 import { useEffect } from "react";

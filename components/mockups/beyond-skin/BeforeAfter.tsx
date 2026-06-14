@@ -1,48 +1,35 @@
 "use client";
 
 /**
- * BeforeAfter — interactive drag slider, the asset their real site lacks.
- * Pointer + full keyboard support (arrow keys on the handle role="slider").
- * Uses brand-tinted placeholder gradient "images" clearly marked "sample".
+ * BeforeAfter — "Real Results." An INTERACTIVE before/after drag-reveal slider
+ * built on the practice's aligned photo pair (ba-after.jpg as the base layer,
+ * ba-before.jpg as the clipped overlay) so dragging the handle sweeps from
+ * BEFORE → AFTER seamlessly. The pair is pixel-registered (same woman, identical
+ * pose / lighting / backdrop — refreshed vs tired) so the reveal never "jumps".
+ *
+ * Accessibility:
+ *  - a real ARIA slider (role="slider", valuemin/now/max, aria-valuetext) with
+ *    pointer + full keyboard support (arrows / Home / End);
+ *  - the track is static (no transform animation) → reduced-motion safe by
+ *    construction;
+ *  - an honest "Illustrative · representative result" tag stays on the image.
+ *
+ * Plain <img> (basePath handled by the build) → static-export safe.
  */
 
 import { useCallback, useRef, useState } from "react";
 import { SectionHeading, Reveal } from "./primitives";
-import { cn } from "@/lib/utils";
 
-type Case = {
-  id: string;
-  treatment: string;
-  detail: string;
-  before: string;
-  after: string;
-};
+/* Both source photos are intrinsic ~928 × 1152 (≈ 4 / 5 portrait). Locking the
+   aspect-ratio to the real pixels keeps the reveal pixel-perfect + zero CLS. */
+const BA = {
+  before: "/clients/beyond-skin/ba-before.jpg",
+  after: "/clients/beyond-skin/ba-after.jpg",
+  w: 928,
+  h: 1152,
+} as const;
 
-const CASES: Case[] = [
-  {
-    id: "tox",
-    treatment: "Botox — Forehead & Glabella",
-    detail: "32 units · 14 days post",
-    before: "linear-gradient(160deg, oklch(80% 0.025 50), oklch(72% 0.035 45))",
-    after: "linear-gradient(160deg, oklch(89% 0.03 60), oklch(82% 0.045 55))",
-  },
-  {
-    id: "rf",
-    treatment: "RF Microneedling",
-    detail: "3 sessions · texture & firmness",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(80% 0.03 40), oklch(70% 0.05 35))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(90% 0.035 55), oklch(83% 0.05 50))",
-  },
-  {
-    id: "lips",
-    treatment: "Lip Filler",
-    detail: "0.7ml · 2-week follow-up",
-    before: "radial-gradient(120% 120% at 40% 35%, oklch(84% 0.04 30), oklch(74% 0.06 22))",
-    after: "radial-gradient(120% 120% at 40% 35%, oklch(86% 0.07 18), oklch(78% 0.1 14))",
-  },
-];
-
-function Slider({ data }: { data: Case }) {
+function useReveal() {
   const [pos, setPos] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -67,7 +54,6 @@ function Slider({ data }: { data: Case }) {
   const onPointerUp = () => {
     dragging.current = false;
   };
-
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
       e.preventDefault();
@@ -76,86 +62,106 @@ function Slider({ data }: { data: Case }) {
       e.preventDefault();
       setPos((p) => Math.min(100, p + 4));
     } else if (e.key === "Home") {
+      e.preventDefault();
       setPos(0);
     } else if (e.key === "End") {
+      e.preventDefault();
       setPos(100);
     }
   };
 
+  return { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown };
+}
+
+function RevealSlider() {
+  const { pos, ref, onPointerDown, onPointerMove, onPointerUp, onKeyDown } =
+    useReveal();
+  const shown = Math.round(pos);
+
   return (
-    <figure className="overflow-hidden rounded-3xl border border-[var(--glass-dark-border)] bg-[var(--ink-warm)] shadow-[0_24px_60px_-30px_oklch(10%_0.02_30_/_0.7)]">
+    <figure className="mx-auto max-w-md">
       <div
         ref={ref}
-        className="relative aspect-[4/5] w-full cursor-ew-resize touch-none select-none"
+        className="bs-ba relative w-full overflow-hidden rounded-3xl border border-[var(--glass-dark-border)] bg-[var(--plum-deep)] shadow-[0_36px_90px_-44px_oklch(18%_0.05_340_/_0.95)]"
+        style={{ aspectRatio: `${BA.w} / ${BA.h}` }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        {/* AFTER (full) */}
-        <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
-          <span className="absolute right-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--ink-deep)]">
-            After
-          </span>
-        </div>
+        {/* BASE LAYER — AFTER (refreshed, even, glowing). Plain <img>. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BA.after}
+          alt="After — refreshed, more even and naturally glowing skin."
+          width={BA.w}
+          height={BA.h}
+          draggable={false}
+          className="absolute inset-0 h-full w-full select-none object-cover"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-3 top-3 z-[2] rounded-full bg-[var(--color-accent)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-fg)] backdrop-blur-sm"
+        >
+          After
+        </span>
 
-        {/* BEFORE (clipped left of the handle) */}
+        {/* OVERLAY — BEFORE, clipped from the left so dragging right reveals the
+            after beneath. */}
         <div
           className="absolute inset-0"
-          style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <span className="absolute left-3 top-3 rounded-full bg-[var(--ink-deep)]/80 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={BA.before}
+            alt=""
+            width={BA.w}
+            height={BA.h}
+            draggable={false}
+            className="absolute inset-0 h-full w-full select-none object-cover"
+          />
+          <span className="pointer-events-none absolute left-3 top-3 z-[2] rounded-full bg-[var(--plum-deep)]/80 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
             Before
           </span>
         </div>
 
-        {/* sample watermark */}
-        <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/35 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
-          Sample · illustrative
+        {/* Honest tag — illustrative / representative result. */}
+        <span className="pointer-events-none absolute bottom-3 left-1/2 z-[2] -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[0.54rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
+          Illustrative · representative result
         </span>
 
-        {/* Handle line */}
-        <div
-          className="pointer-events-none absolute inset-y-0"
-          style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
-        >
-          <div className="h-full w-0.5 bg-white/90 shadow-[0_0_0_1px_oklch(40%_0.06_30_/_0.3)]" />
-        </div>
+        {/* Divider line + the ARIA slider handle. */}
+        <span className="bs-ba-line" style={{ left: `${pos}%` }} aria-hidden />
         <button
           type="button"
           role="slider"
-          aria-label={`Reveal ${data.treatment} before and after. Use arrow keys to compare.`}
+          aria-label="Drag to reveal before and after. Use arrow keys to compare."
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={Math.round(pos)}
-          aria-valuetext={`${Math.round(pos)}% before`}
+          aria-valuenow={shown}
+          aria-valuetext={`Showing ${shown}% before, ${100 - shown}% after`}
           onKeyDown={onKeyDown}
-          className={cn(
-            "absolute top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full",
-            "border border-white bg-white/90 text-[var(--color-accent)] shadow-lg backdrop-blur",
-            "transition-transform duration-200 hover:scale-105",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
-          )}
+          className="bs-ba-handle"
           style={{ left: `${pos}%` }}
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
             <path
               d="M9 6 4 12l5 6M15 6l5 6-5 6"
               stroke="currentColor"
-              strokeWidth="1.8"
+              strokeWidth="1.7"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         </button>
       </div>
-      <figcaption className="flex items-center justify-between gap-3 px-5 py-4">
-        <span className="font-display text-lg text-[var(--color-bg)]">
-          {data.treatment}
-        </span>
-        <span className="text-xs text-[var(--color-bg)]/60">{data.detail}</span>
-      </figcaption>
+
+      <p className="mt-4 text-center text-xs text-[var(--color-bg)]/65">
+        Drag the handle — or use your arrow keys — to reveal the difference. Skin
+        texture &amp; tone, naturally refreshed.
+      </p>
     </figure>
   );
 }
@@ -164,35 +170,43 @@ export function BeforeAfter() {
   return (
     <section
       id="results"
-      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--ink-deep)] py-24 sm:py-32"
+      className="grain relative scroll-mt-24 overflow-hidden bg-[var(--plum-deep)] py-24 text-[var(--color-bg)] sm:py-32"
     >
+      {/* mauve aura echoing the hero on the dark plum field */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-55"
         style={{
           background:
-            "radial-gradient(55% 45% at 85% 0%, var(--glow-rose), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--glow-bronze), transparent 72%)",
+            "radial-gradient(55% 50% at 85% 0%, var(--glow-mauve), transparent 70%), radial-gradient(50% 50% at 0% 100%, var(--glow-plum), transparent 72%)",
         }}
       />
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8">
         <SectionHeading
           invert
-          eyebrow="Real Results"
+          align="center"
+          eyebrow="Real results"
           title={
             <>
-              See the difference. <span className="italic">Drag to reveal.</span>
+              See the difference.{" "}
+              <span className="font-em text-[var(--glow-blush)]">Drag to reveal.</span>
             </>
           }
-          lead="The before/after gallery their current template doesn't have. Slide the handle — or use your keyboard — to compare outcomes."
+          lead="The before/after comparison their current site doesn't have. Drag the slider and look closely — refreshed, even, and unmistakably you."
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {CASES.map((c, i) => (
-            <Reveal key={c.id} delay={i * 0.08}>
-              <Slider data={c} />
-            </Reveal>
-          ))}
-        </div>
+        {/* THE CENTERPIECE — interactive drag-reveal on the real aligned pair. */}
+        <Reveal className="mt-12">
+          <RevealSlider />
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-[var(--color-bg)]/55">
+            Representative result shown for this mockup — an illustrative aligned
+            pair. Individual results vary; live galleries would feature real,
+            consented patient photos.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

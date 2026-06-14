@@ -22,6 +22,7 @@ export const skyFragmentShader = /* glsl */ `
   uniform vec2  u_resolution;
   uniform vec2  u_pointer;     // -1..1 parallax target (smoothed on CPU)
   uniform float u_intensity;   // 0..1 master fade-in
+  uniform float u_rise;        // 0..1 SIGNATURE day-arc: scroll raises the sun
   uniform vec3  u_dawn;        // warm low band
   uniform vec3  u_mid;         // daylight blue
   uniform vec3  u_high;        // azure
@@ -78,6 +79,12 @@ export const skyFragmentShader = /* glsl */ `
     vec2 p = (uv - 0.5);
     p.x *= aspect;
 
+    // SIGNATURE DAY-ARC: scroll raises the sun + brightens the sky ("elevate").
+    // rise 0 = low dawn sun, warm + soft; rise 1 = high, luminous clear day.
+    float rise = clamp(u_rise, 0.0, 1.0);
+    // eased so the climb feels weighted then airy
+    float riseE = rise * rise * (3.0 - 2.0 * rise);
+
     // Gentle parallax: clouds drift toward the cursor (eased on CPU)
     vec2 par = u_pointer * 0.055;
 
@@ -96,42 +103,66 @@ export const skyFragmentShader = /* glsl */ `
     float clouds = fbm(p * 1.25 + 1.7 * r);
     clouds = clouds * 0.5 + 0.5; // 0..1
 
-    // Vertical clear-sky gradient (luminous crown, soft horizon).
+    // Vertical clear-sky gradient (luminous crown, soft horizon). As the sun
+    // climbs the whole field lifts toward clear daylight blue.
     float v = uv.y;
-    vec3 grad = mix(u_deep, u_high, smoothstep(0.0, 0.55, v));
+    vec3 baseDeep = mix(u_deep, u_high, riseE * 0.5);
+    vec3 grad = mix(baseDeep, u_high, smoothstep(0.0, 0.55, v));
     grad = mix(grad, u_mid, smoothstep(0.4, 0.92, v));
+    // crown brightens with the day
+    grad = mix(grad, mix(u_mid, vec3(1.0), 0.35),
+               smoothstep(0.55, 1.0, v) * riseE * 0.4);
 
-    // Soft sun/dawn bloom low-left — the warm "first light" that defines their
-    // clear-sky brand. Two-radius falloff: a tight warm core + a wide glow.
-    vec2 sun = vec2(0.16, 0.14);
-    float sunDist = distance(uv * vec2(aspect, 1.0), sun * vec2(aspect, 1.0));
-    float sunCore = smoothstep(0.32, 0.0, sunDist);
-    float sunGlow = smoothstep(0.7, 0.05, sunDist);
+    // THE SUN — the brand's rising-sun mark made dimensional. It travels in a
+    // gentle arc from low-left (dawn) up toward center-high (clear day), with
+    // a slow live bob so it reads as a living light, not a sticker.
+    float bob = 0.006 * sin(u_time * 0.18);
+    vec2 sun = vec2(
+      mix(0.17, 0.40, riseE),
+      mix(0.13, 0.74, riseE) + bob
+    );
+    vec2 ad = vec2(aspect, 1.0);
+    float sunDist = distance(uv * ad, sun * ad);
+
+    // disc + halo: a crisp warm-white core, a tight gold ring, a wide bloom
+    float disc   = smoothstep(0.085, 0.045, sunDist);
+    float ring   = smoothstep(0.135, 0.085, sunDist) - smoothstep(0.085, 0.045, sunDist);
+    float sunCore = smoothstep(0.30, 0.0, sunDist);
+    float sunGlow = smoothstep(0.78, 0.04, sunDist);
+
+    // dawn warmth eases to luminous daylight white as it climbs
+    vec3 sunHue = mix(u_dawn, mix(u_dawn, vec3(1.0), 0.55), riseE);
     float palShift = 0.5 + 0.5 * sin(u_time * 0.045);
-    grad = mix(grad, u_dawn, sunGlow * (0.40 + 0.16 * palShift));
-    grad = mix(grad, mix(u_dawn, vec3(1.0), 0.5), sunCore * 0.55);
+    grad = mix(grad, sunHue, sunGlow * (0.40 + 0.16 * palShift) * (0.7 + 0.3 * riseE));
+    grad = mix(grad, mix(sunHue, vec3(1.0), 0.55), sunCore * 0.5);
+    // the gold ring (the logo "rising sun" arc) stays present through the climb
+    grad = mix(grad, mix(u_dawn, vec3(1.0), 0.35), ring * (0.55 + 0.25 * (1.0 - riseE)));
+    // the bright disc itself
+    grad = mix(grad, mix(vec3(1.0), u_dawn, 0.18), disc * (0.78 + 0.18 * riseE));
 
-    // Faint warm rose blush upper-right for atmospheric depth
+    // Faint warm rose blush upper-right for atmospheric depth (fades by day)
     float blush = smoothstep(0.62, 0.0, distance(uv, vec2(0.86, 0.9)));
-    grad = mix(grad, u_blush, blush * 0.2);
+    grad = mix(grad, u_blush, blush * 0.2 * (1.0 - riseE * 0.6));
 
     // Layer soft volumetric clouds — luminous, low-contrast; warmed near the sun
     float cloudBand = smoothstep(0.44, 0.96, clouds);
-    vec3 cloudColor = mix(u_high, vec3(1.0), 0.68);
+    vec3 cloudColor = mix(u_high, vec3(1.0), 0.68 + 0.12 * riseE);
     cloudColor = mix(cloudColor, mix(cloudColor, u_dawn, 0.6), sunGlow * 0.5);
-    vec3 col = mix(grad, cloudColor, cloudBand * 0.5);
+    vec3 col = mix(grad, cloudColor, cloudBand * (0.5 + 0.1 * riseE));
 
     // A second, higher wisp layer for depth
     float wisp = smoothstep(0.6, 1.0, fbm(p * 2.35 + par * 1.4 + vec2(t * 1.35, -t)));
-    col = mix(col, vec3(1.0), wisp * 0.11);
+    col = mix(col, vec3(1.0), wisp * (0.11 + 0.05 * riseE));
 
     // "Breath": gentle global luminance pulse — the living, serene signature
     float breath = 0.975 + 0.025 * sin(u_time * 0.11);
     col *= breath;
+    // overall lift toward bright daylight as the sun reaches its height
+    col *= mix(0.94, 1.06, riseE);
 
-    // Subtle vignette to seat the headline
+    // Subtle vignette to seat the headline (relaxes as the sky opens up)
     float vig = smoothstep(1.25, 0.35, length(p));
-    col *= mix(0.88, 1.0, vig);
+    col *= mix(mix(0.88, 0.94, riseE), 1.0, vig);
 
     // Very light atmospheric grain to kill banding on the smooth gradient
     float grain = fract(sin(dot(uv * u_resolution, vec2(12.9898, 78.233))) * 43758.5453);

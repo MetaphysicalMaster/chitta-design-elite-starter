@@ -21,10 +21,10 @@ export function RenewalSeam({
   className,
   from = "var(--color-bg)",
   to = "var(--color-bg)",
-  /** warm champagne glow from above */
-  glow = "oklch(93% 0.058 90 / 0.14)",
+  /** cool teal renewal-light glow from above */
+  glow = "oklch(82% 0.06 192 / 0.16)",
   /** cool clinical underglow from below */
-  underglow = "oklch(72% 0.09 210 / 0.08)",
+  underglow = "oklch(72% 0.07 196 / 0.1)",
   heightClass = "h-24 sm:h-32",
 }: {
   className?: string;

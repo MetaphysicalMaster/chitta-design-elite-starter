@@ -2,13 +2,31 @@
 
 /**
  * SmoothScroll — Lenis smooth scroll, disabled under prefers-reduced-motion.
- * Also wires anchor (#hash) clicks to glide instead of jump, offset for the
- * sticky nav.
+ * Wires anchor (#hash) clicks to glide instead of jump (offset for the sticky
+ * nav), and publishes scroll velocity to the shared windBus so the signature
+ * tree's leaves drift on the reader's own motion.
+ *
+ * CRITICAL integration: the page's signature experience is GSAP-ScrollTrigger
+ * choreography (the self-drawing / leafing tree scrub). Lenis + ScrollTrigger
+ * MUST share one clock or every trigger fires at a stale scroll position:
+ *   1. lenis.on("scroll") → ScrollTrigger.update (+ publish velocity to windBus),
+ *   2. gsap.ticker drives lenis.raf (ONE rAF loop owns both libraries),
+ *   3. gsap.ticker.lagSmoothing(0) so Lenis never gets doctored timestamps.
+ *
+ * Under prefers-reduced-motion Lenis never mounts and the page scrolls
+ * natively; ScrollTrigger still tracks native scroll on its own.
  */
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "motion/react";
+import { windBus } from "./wind";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const prefersReduced = useReducedMotion();
@@ -22,12 +40,17 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // Keep ScrollTrigger in lockstep with the smoothed scroll position, and
+    // publish the signed velocity for the tree's leaf-breeze.
+    lenis.on("scroll", (e: { velocity: number }) => {
+      ScrollTrigger.update();
+      windBus.velocity = e.velocity;
+    });
+
+    // One clock: gsap's ticker drives Lenis (ticker time is in seconds).
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     const onClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest(
@@ -39,13 +62,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       const el = document.querySelector(id);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: -84 });
+      lenis.scrollTo(el as HTMLElement, { offset: -88 });
     };
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
       document.removeEventListener("click", onClick);
+      gsap.ticker.remove(tick);
       lenis.destroy();
     };
   }, [prefersReduced]);

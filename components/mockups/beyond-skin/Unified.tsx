@@ -16,7 +16,7 @@ const PILLARS = [
     key: "treat",
     label: "Treat",
     title: "Book any treatment",
-    desc: "Injectables, lasers, facials & more — scheduled natively in seconds. No clunky redirect, no $25 deposit handoff.",
+    desc: "Injectables, lasers, facials & wellness — scheduled in seconds, in a calm, judgment-free studio built around you.",
     cta: "Book a visit",
     href: "#book",
   },
@@ -24,7 +24,7 @@ const PILLARS = [
     key: "shop",
     label: "Shop",
     title: "Shop your routine",
-    desc: "Medical-grade skincare in the same place you book — your cart, your records, one login. No separate storefront.",
+    desc: "Medical-grade skincare in the same place you book — your cart, your records, one gentle login.",
     cta: "Browse the shelf",
     href: "#book",
   },
@@ -66,7 +66,7 @@ export function Unified() {
               style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.04 }}
             >
               Treatments, shop and membership —{" "}
-              <span className="text-molten italic">finally under one roof.</span>
+              <span className="text-molten font-em">all in one warm place.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
@@ -74,9 +74,9 @@ export function Unified() {
               className="mt-5 text-pretty font-light text-[var(--color-bg)]/75"
               style={{ fontSize: "var(--fluid-lead)", lineHeight: 1.55 }}
             >
-              Today your brand is split across a marketing site, a separate
-              Shopify shop, and a third-party booking page. Here, the whole
-              experience lives as a single, seamless identity.
+              Book a treatment, shop your routine, and grow your membership credit
+              — all under one beautiful, seamless brand. One login, one cart, one
+              relationship built around your wellness journey.
             </p>
           </Reveal>
         </div>

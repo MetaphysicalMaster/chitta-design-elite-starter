@@ -23,24 +23,28 @@ export function BookingCTA() {
   return (
     <Section id="book" labelledBy="book-heading">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-deep)] p-8 sm:p-12">
+        <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-deep)] p-8 text-white sm:p-12">
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[var(--clinical-deep)] opacity-25 blur-3xl"
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[var(--clinical)] opacity-25 blur-3xl"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[var(--leaf-deep)] opacity-20 blur-3xl"
           />
           <div className="relative grid gap-10 md:grid-cols-[1fr_1.15fr] md:items-center">
             <div>
-              <span className="rule-gold text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg-subtle)]">
-                No Zocdoc detour
+              <span className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--leaf-bright)]">
+                Book directly — no detour
               </span>
               <h2
                 id="book-heading"
-                className="mt-4 font-display text-balance text-[var(--color-fg)]"
+                className="mt-4 font-display text-balance text-white"
                 style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.06 }}
               >
-                Book in <span className="italic">30 seconds.</span>
+                Reserve in <span className="display-em text-[var(--leaf-bright)]">30 seconds.</span>
               </h2>
-              <p className="mt-5 max-w-[40ch] font-light leading-relaxed text-[var(--color-fg-muted)]">
+              <p className="mt-5 max-w-[40ch] font-light leading-relaxed text-white/75">
                 Reserve directly with us — no third-party redirect. Pick a path
                 and a time; we&rsquo;ll confirm by text within the hour.
               </p>
@@ -49,28 +53,28 @@ export function BookingCTA() {
                   (t) => (
                     <li
                       key={t}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)]/50 px-3 py-1 text-xs text-[var(--color-fg-muted)]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-xs text-white/80"
                     >
-                      <span aria-hidden className="text-[var(--gold)]">✦</span>
+                      <span aria-hidden className="text-[var(--leaf-bright)]">✦</span>
                       {t}
                     </li>
                   ),
                 )}
               </ul>
-              <p className="mt-6 flex items-center gap-2 text-sm text-[var(--color-fg-subtle)]">
+              <p className="mt-6 flex items-center gap-2 text-sm text-white/60">
                 <span aria-hidden>☎</span>
                 Prefer to talk?{" "}
                 <a
                   href="tel:+16144421012"
-                  className="font-semibold text-[var(--color-fg)] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+                  className="font-semibold text-white underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--leaf-bright)]"
                 >
                   (614) 442-1012
                 </a>
               </p>
             </div>
 
-            {/* Mock scheduler */}
-            <div className="rounded-3xl border border-[var(--glass-border)] bg-[var(--glass-bg-strong)] p-6 backdrop-blur-md sm:p-7">
+            {/* Mock scheduler — a bright card seated on the deep panel */}
+            <div className="rounded-3xl border border-white/15 bg-white/[0.96] p-6 shadow-[0_30px_70px_-30px_oklch(10%_0.03_210_/_0.7)] sm:p-7">
               <fieldset>
                 <legend className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
                   1 · Choose your care
@@ -125,7 +129,7 @@ export function BookingCTA() {
                 className={cn(
                   "mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]",
                   ready
-                    ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_16px_40px_-14px_oklch(82%_0.1_84_/_0.6)] hover:-translate-y-0.5"
+                    ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_16px_40px_-14px_oklch(58%_0.094_197_/_0.7)] hover:-translate-y-0.5"
                     : "cursor-not-allowed bg-[var(--color-bg-subtle)] text-[var(--color-fg-subtle)]",
                 )}
               >

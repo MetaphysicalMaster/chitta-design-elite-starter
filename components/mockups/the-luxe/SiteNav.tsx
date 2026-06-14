@@ -1,21 +1,22 @@
 "use client";
 
 /**
- * SiteNav — sticky smoked-glass nav. Gold wordmark + section links + a
- * prominent NATIVE "Book Now" CTA (NOT a Fresha redirect). Condenses on
- * scroll; accessible mobile drawer for small screens.
+ * SiteNav — sticky frosted-ivory nav. Recreated GOLD SCRIPT "The Luxe" + small
+ * uppercase "MEDSPA" lockup (the live wordmark), section links + a prominent
+ * NATIVE "Book Now" CTA. Condenses on scroll; accessible mobile drawer.
  */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { Wordmark } from "./Wordmark";
 
 const LINKS = [
-  { href: "#story", label: "The House" },
+  { href: "#story", label: "The Spa" },
   { href: "#services", label: "Treatments" },
   { href: "#results", label: "Results" },
-  { href: "#team", label: "Dr. Sanchez" },
+  { href: "#team", label: "Our Team" },
   { href: "#book", label: "Book" },
 ];
 
@@ -42,7 +43,7 @@ export function SiteNav() {
       >
         <div
           className={cn(
-            "flex w-full items-center justify-between gap-4 rounded-full px-4 py-2.5 transition-all duration-300 sm:px-5",
+            "flex w-full items-center justify-between gap-4 rounded-full px-4 py-2 transition-all duration-300 sm:px-5",
             scrolled
               ? "glass-strong shadow-[var(--glass-shadow)]"
               : "border border-transparent",
@@ -51,18 +52,10 @@ export function SiteNav() {
           {/* Wordmark */}
           <Link
             href="#top"
-            className="group flex shrink-0 items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]"
+            className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold-deep)]"
             aria-label="The Luxe MedSpa — home"
           >
-            <span
-              aria-hidden
-              className="grid h-8 w-8 place-items-center rounded-full border border-[var(--glass-border)] bg-[var(--emerald-deep)] text-[0.7rem] font-semibold text-[var(--gold)]"
-            >
-              L
-            </span>
-            <span className="font-display text-[1.15rem] leading-none tracking-wide text-[var(--color-fg)]">
-              The&nbsp;<span className="gold-leaf">Luxe</span>
-            </span>
+            <Wordmark className="h-9 w-auto sm:h-10" />
           </Link>
 
           {/* Desktop links */}
@@ -71,7 +64,7 @@ export function SiteNav() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className="rounded-full px-3.5 py-2 text-sm font-medium text-[var(--color-fg-muted)] transition-colors duration-200 hover:text-[var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+                  className="rounded-full px-3.5 py-2 text-sm font-medium text-[var(--color-fg-muted)] transition-colors duration-200 hover:text-[var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)]"
                 >
                   {l.label}
                 </Link>
@@ -83,7 +76,7 @@ export function SiteNav() {
           <div className="flex items-center gap-2">
             <a
               href="tel:+16144532056"
-              className="hidden rounded-full px-3.5 py-2 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)] sm:inline-flex"
+              className="hidden rounded-full px-3.5 py-2 text-sm font-medium tnum text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)] sm:inline-flex"
             >
               (614)&nbsp;453-2056
             </a>
@@ -92,7 +85,7 @@ export function SiteNav() {
               className={cn(
                 "group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold",
                 "bg-[var(--color-accent)] text-[var(--color-accent-fg)]",
-                "shadow-[0_10px_30px_-12px_oklch(80%_0.13_86_/_0.6)]",
+                "shadow-[0_10px_26px_-12px_oklch(70%_0.12_78_/_0.65)]",
                 "transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-fg)]",
               )}
@@ -113,7 +106,7 @@ export function SiteNav() {
               aria-expanded={open}
               aria-controls="luxe-mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="grid h-10 w-10 place-items-center rounded-full text-[var(--color-fg)] transition-colors hover:bg-[var(--color-bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)] lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full text-[var(--color-fg)] transition-colors hover:bg-[var(--color-bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-deep)] lg:hidden"
             >
               <span className="relative block h-4 w-5">
                 <span
@@ -169,7 +162,7 @@ export function SiteNav() {
               <li className="px-1 pt-1">
                 <a
                   href="tel:+16144532056"
-                  className="block rounded-2xl px-4 py-3 text-sm font-medium text-[var(--color-fg-muted)]"
+                  className="block rounded-2xl px-4 py-3 text-sm font-medium tnum text-[var(--color-fg-muted)]"
                 >
                   Call (614) 453-2056
                 </a>

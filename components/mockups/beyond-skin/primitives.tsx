@@ -15,10 +15,19 @@ import {
   type Variants,
 } from "motion/react";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import {
+  Children,
+  createContext,
+  isValidElement,
+  useContext,
+  useRef,
+} from "react";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/* Passes a per-item stagger delay from RevealGroup down to each RevealItem. */
+const RevealIndexContext = createContext<{ delay: number }>({ delay: 0 });
 
 export function Reveal({
   children,
@@ -62,6 +71,11 @@ export function Reveal({
   );
 }
 
+/* RevealGroup is a plain layout wrapper that distributes a per-child index so
+   each RevealItem can self-reveal on scroll with a staggered delay. Parent
+   variant-label orchestration (staggerChildren) does not reliably drive nested
+   children in this setup, so each item animates independently via whileInView —
+   which keeps the cascade while guaranteeing every item becomes visible. */
 export function RevealGroup({
   children,
   className,
@@ -73,21 +87,23 @@ export function RevealGroup({
   stagger?: number;
   as?: "div" | "ul" | "section";
 }) {
-  const prefersReduced = useReducedMotion();
-  const MotionTag = motion[as];
+  const Tag = as;
+  const items = Children.toArray(children);
   return (
-    <MotionTag
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-      variants={{
-        hidden: {},
-        show: { transition: { staggerChildren: prefersReduced ? 0 : stagger } },
-      }}
-    >
-      {children}
-    </MotionTag>
+    <Tag className={className}>
+      {items.map((child, i) =>
+        isValidElement(child) ? (
+          <RevealIndexContext.Provider
+            key={child.key ?? i}
+            value={{ delay: i * stagger }}
+          >
+            {child}
+          </RevealIndexContext.Provider>
+        ) : (
+          child
+        ),
+      )}
+    </Tag>
   );
 }
 
@@ -103,14 +119,27 @@ export function RevealItem({
   as?: "div" | "li" | "article" | "figure";
 }) {
   const prefersReduced = useReducedMotion();
+  const { delay } = useContext(RevealIndexContext);
   const MotionTag = motion[as];
+  const variants: Variants = {
+    hidden: { opacity: 0, y: prefersReduced ? 0 : y },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.62,
+        ease: EASE,
+        delay: prefersReduced ? 0 : delay,
+      },
+    },
+  };
   return (
     <MotionTag
       className={className}
-      variants={{
-        hidden: { opacity: 0, y: prefersReduced ? 0 : y },
-        show: { opacity: 1, y: 0, transition: { duration: 0.62, ease: EASE } },
-      }}
+      variants={variants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
     >
       {children}
     </MotionTag>

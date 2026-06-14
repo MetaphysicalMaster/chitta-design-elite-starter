@@ -10,6 +10,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { SunMark } from "./SunMark";
 
 const LINKS = [
   { href: "#services", label: "Treatments" },
@@ -37,23 +38,7 @@ function Logo({ onDark }: { onDark: boolean }) {
         )}
       >
         {/* Brand-faithful mark: champagne sun rising over a clear-sky horizon */}
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
-          <circle cx="12" cy="10.5" r="3.6" fill="var(--gold)" />
-          <circle cx="12" cy="10.5" r="5.4" stroke="var(--gold)" strokeWidth="0.9" opacity="0.45" />
-          <path
-            d="M3.5 16.5c2.4-1.5 4.2-1.9 6.1-1.9 2 0 3.9.7 6 2 1.4-.9 2.7-1.2 4.4-1.2"
-            stroke={onDark ? "white" : "var(--color-accent)"}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M5.5 19.5c2-1.1 3.6-1.4 5.3-1.4 1.8 0 3.4.6 5.2 1.6"
-            stroke={onDark ? "white" : "var(--color-accent)"}
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            opacity="0.55"
-          />
-        </svg>
+        <SunMark className="h-5 w-5" tone={onDark ? "onDark" : "onLight"} />
       </span>
       <span
         className={cn(
@@ -61,8 +46,8 @@ function Logo({ onDark }: { onDark: boolean }) {
           onDark ? "text-white" : "text-[var(--color-fg)]",
         )}
       >
-        Blue&nbsp;Sky
-        <span className="ml-1 text-[0.62rem] font-sans font-semibold uppercase tracking-[0.2em] align-middle opacity-70">
+        BlueSky
+        <span className="ml-1.5 text-[0.62rem] font-sans font-semibold uppercase tracking-[0.22em] align-middle opacity-70">
           Med Spa
         </span>
       </span>
@@ -125,13 +110,13 @@ export function SiteNav() {
 
           <div className="flex items-center gap-2">
             <a
-              href="tel:+16145129665"
+              href="tel:+17043745285"
               className={cn(
                 "hidden text-sm font-medium transition-colors lg:inline",
                 onDark ? "text-white/90 hover:text-white" : "text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]",
               )}
             >
-              (614) 512-9665
+              (704) 374-5285
             </a>
             <Link
               href="#book"
@@ -201,10 +186,10 @@ export function SiteNav() {
                   Book Now
                 </Link>
                 <a
-                  href="tel:+16145129665"
+                  href="tel:+17043745285"
                   className="rounded-full border border-[var(--color-border)] px-5 py-3 text-center text-sm font-medium text-[var(--color-fg)]"
                 >
-                  Call (614) 512-9665
+                  Call (704) 374-5285
                 </a>
               </li>
             </ul>

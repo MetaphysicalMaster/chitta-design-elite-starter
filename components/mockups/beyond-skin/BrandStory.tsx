@@ -30,23 +30,23 @@ export function BrandStory() {
         {/* Copy */}
         <div className="lg:col-span-7">
           <SectionHeading
-            eyebrow="The Growth Story"
+            eyebrow="Our Story"
             title={
               <>
-                We quadrupled our space.
+                More than a med spa —
                 <br />
-                <span className="text-molten italic">Your brand should grow too.</span>
+                <span className="text-molten font-em">a journey to wellness.</span>
               </>
             }
-            lead="Since 2017, Beyond Skin has become one of Columbus' most-loved aesthetics studios — and in 2023 we expanded into a space four times the size. The work, the team, and the results have outgrown an off-the-shelf template. This is what a brand that matches the room looks like."
+            lead="Since 2017, Beyond Skin has grown into one of Columbus' most-loved homes for aesthetics & wellness — warm, inclusive, and judgment-free. Led by Dr. Matia Mulumba and our team, every visit is built around you: your goals, your comfort, your best self, unveiled at your own pace."
           />
 
           <Reveal delay={0.16}>
             <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-[var(--color-border)] pt-8">
               {[
                 { v: "2017", k: "Founded" },
-                { v: "2023", k: "4× expansion" },
-                { v: "7", k: "Expert providers" },
+                { v: "Judgment-free", k: "Every visit" },
+                { v: "Inclusive", k: "By design" },
               ].map((s) => (
                 <div key={s.k}>
                   <dt className="font-display text-3xl text-[var(--color-fg)] sm:text-4xl">
@@ -68,26 +68,45 @@ export function BrandStory() {
               {/* Back frame (the "old, smaller" room) */}
               <motion.div
                 aria-hidden
-                initial={{ opacity: 0, scale: 0.92, rotate: -4 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: -5 }}
+                initial="hidden"
+                whileInView="show"
                 viewport={{ once: true, margin: "-15%" }}
-                transition={{ duration: prefersReduced ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.92, rotate: -4 },
+                  show: {
+                    opacity: 1,
+                    scale: 1,
+                    rotate: -5,
+                    transition: {
+                      duration: prefersReduced ? 0 : 0.9,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  },
+                }}
                 className="absolute left-2 top-6 h-[78%] w-[64%] rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-subtle)] shadow-[var(--glass-shadow)]"
               >
                 <span className="absolute left-4 top-4 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-fg-subtle)]">
-                  2017 · The start
+                  Where you are
                 </span>
               </motion.div>
 
               {/* Front frame (the "new, 4× larger" suite) */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.96, rotate: 4 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: 3 }}
+                initial="hidden"
+                whileInView="show"
                 viewport={{ once: true, margin: "-15%" }}
-                transition={{
-                  duration: prefersReduced ? 0 : 1,
-                  delay: prefersReduced ? 0 : 0.12,
-                  ease: [0.16, 1, 0.3, 1],
+                variants={{
+                  hidden: { opacity: 0, scale: 0.96, rotate: 4 },
+                  show: {
+                    opacity: 1,
+                    scale: 1,
+                    rotate: 3,
+                    transition: {
+                      duration: prefersReduced ? 0 : 1,
+                      delay: prefersReduced ? 0 : 0.12,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  },
                 }}
                 className="absolute bottom-0 right-0 grid h-[88%] w-[80%] place-items-center overflow-hidden rounded-[1.75rem] border border-[var(--glass-border)] shadow-[0_30px_70px_-24px_oklch(40%_0.08_40_/_0.5)]"
                 style={{
@@ -97,11 +116,11 @@ export function BrandStory() {
               >
                 <div className="absolute inset-0 grain" aria-hidden />
                 <div className="relative px-6 text-center">
-                  <p className="font-display text-6xl font-bold leading-none text-[oklch(99%_0.01_80)] drop-shadow-[0_2px_18px_oklch(20%_0.04_30_/_0.5)] sm:text-7xl">
-                    4×
+                  <p className="font-display text-5xl font-medium italic leading-none text-[oklch(99%_0.008_350)] drop-shadow-[0_2px_18px_oklch(24%_0.06_340_/_0.5)] sm:text-6xl">
+                    your best self
                   </p>
-                  <p className="mt-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[oklch(98%_0.01_80_/_0.88)]">
-                    The space · 2023
+                  <p className="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[oklch(98%_0.008_350_/_0.88)]">
+                    Unveiled
                   </p>
                 </div>
               </motion.div>

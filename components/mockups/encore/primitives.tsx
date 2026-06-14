@@ -2,8 +2,8 @@
 
 /**
  * Shared motion + layout primitives for the Encore mockup.
- * Centralizes easing, scroll-reveal choreography and the eyebrow/heading
- * rhythm so every section shares one refined cadence.
+ * Centralizes easing, scroll-reveal choreography, the eyebrow/heading rhythm,
+ * and the recreated brand TREE logo so every section shares one refined cadence.
  */
 
 import { motion, useReducedMotion, type Variants } from "motion/react";
@@ -13,53 +13,71 @@ import { cn } from "@/lib/utils";
 export const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
- * EncoreCrest — a brand-faithful, recreated mark (NOT the practice's real
- * logo). A serifed "E" set in a champagne ring over a rising clinical-light
- * arc — nodding to academic crests + the "renewal light" without copying any
- * copyrighted asset. Pure inline SVG (currentColor-aware, crisp at any size).
+ * EncoreMark — a brand-faithful RECREATION of the practice's logo: a stylized
+ * tree (a single rising trunk that forks into a small branch family, crowned
+ * with a cluster of rounded leaves). "Encore" = renewal / a second act / growth
+ * — the tree IS the brand idea. The trunk/branches default to ink (currentColor)
+ * and the leaves catch the brand teal. Pure inline SVG, crisp at any size.
+ *
+ * `leafTone` lets the wordmark tint the canopy (e.g. teal in the nav, white on
+ * the deep CTA wells).
  */
-export function EncoreCrest({ className }: { className?: string }) {
+export function EncoreMark({
+  className,
+  leafTone = "var(--leaf)",
+  inkTone = "currentColor",
+  title = "Encore Dermatology tree mark",
+}: {
+  className?: string;
+  leafTone?: string;
+  inkTone?: string;
+  title?: string;
+}) {
   return (
     <svg
       viewBox="0 0 48 48"
       role="img"
-      aria-label="Encore Dermatology crest"
+      aria-label={title}
       className={className}
       fill="none"
     >
-      <defs>
-        <linearGradient id="encore-crest-ring" x1="6" y1="6" x2="42" y2="42">
-          <stop offset="0" stopColor="var(--gold-deep)" />
-          <stop offset="0.5" stopColor="var(--gold-soft)" />
-          <stop offset="1" stopColor="var(--gold-deep)" />
-        </linearGradient>
-      </defs>
-      {/* Champagne ring */}
-      <circle
-        cx="24"
-        cy="24"
-        r="21"
-        stroke="url(#encore-crest-ring)"
-        strokeWidth="1.4"
-      />
-      {/* Rising clinical-light arc through the lower third */}
-      <path
-        d="M9 31 A19 19 0 0 0 39 31"
-        stroke="var(--clinical)"
-        strokeWidth="1.2"
+      {/* Trunk + branch family — a clean rising stem that forks, drawn as
+          tapered ink strokes (the logo's branch). */}
+      <g
+        stroke={inkTone}
+        strokeWidth="2"
         strokeLinecap="round"
-        opacity="0.85"
-      />
-      {/* Serifed E */}
-      <g fill="var(--gold)">
-        <rect x="19" y="15" width="2.4" height="18" rx="0.6" />
-        <rect x="19" y="15" width="11" height="2.4" rx="0.6" />
-        <rect x="19" y="22.8" width="8.5" height="2.2" rx="0.6" />
-        <rect x="19" y="30.6" width="11" height="2.4" rx="0.6" />
+        strokeLinejoin="round"
+        fill="none"
+      >
+        {/* trunk */}
+        <path d="M24 44 V26" />
+        {/* main fork */}
+        <path d="M24 27 C 24 22, 19.5 19.5, 16 17.5" />
+        <path d="M24 24 C 24 19, 28.5 16.5, 32 14.5" />
+        {/* upper reach */}
+        <path d="M24 20 C 24 15.5, 23 12, 24 8" />
+        {/* small side twigs */}
+        <path d="M20.6 20 C 18.4 19, 16.8 17.5, 15.4 15.6" />
+        <path d="M27.4 18.2 C 29.4 17.4, 31 16, 32.4 14" />
+      </g>
+
+      {/* Canopy — a cluster of rounded leaves catching the teal light. Each is
+          a soft teardrop; sizes vary so the crown reads organic, not stamped. */}
+      <g fill={leafTone}>
+        <ellipse cx="24" cy="7" rx="3.1" ry="4.2" transform="rotate(-4 24 7)" />
+        <ellipse cx="16" cy="14.5" rx="2.7" ry="3.7" transform="rotate(-42 16 14.5)" />
+        <ellipse cx="32.6" cy="12.6" rx="2.7" ry="3.7" transform="rotate(40 32.6 12.6)" />
+        <ellipse cx="19.4" cy="19.6" rx="2.3" ry="3.2" transform="rotate(-30 19.4 19.6)" />
+        <ellipse cx="28.8" cy="17.8" rx="2.3" ry="3.2" transform="rotate(28 28.8 17.8)" />
+        <circle cx="24" cy="13.2" r="2.5" />
       </g>
     </svg>
   );
 }
+
+/** Back-compat alias — older imports referenced EncoreCrest. */
+export const EncoreCrest = EncoreMark;
 
 /** Staggered container — children use `revealItem`. */
 export function useStagger(stagger = 0.08, delay = 0.04): Variants {
@@ -126,7 +144,7 @@ export function SectionHeading({
     >
       <span
         className={cn(
-          "rule-gold text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg-subtle)]",
+          "rule-gold text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--clinical-deep)]",
           align === "center" && "[&::after]:mx-auto",
         )}
       >

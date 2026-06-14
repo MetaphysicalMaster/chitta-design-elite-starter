@@ -6,11 +6,13 @@ import { CarePaths } from "@/components/mockups/encore/CarePaths";
 import { WhyEncore } from "@/components/mockups/encore/WhyEncore";
 import { MedicalServices, SpaServices } from "@/components/mockups/encore/Services";
 import { BeforeAfter } from "@/components/mockups/encore/BeforeAfter";
+import { ReviewsMarquee } from "@/components/mockups/encore/ReviewsMarquee";
 import { Doctor } from "@/components/mockups/encore/Doctor";
 import { Financing } from "@/components/mockups/encore/Financing";
 import { Testimonials } from "@/components/mockups/encore/Testimonials";
 import { BookingCTA } from "@/components/mockups/encore/BookingCTA";
 import { SiteFooter } from "@/components/mockups/encore/SiteFooter";
+import { Concierge } from "@/components/mockups/encore/Concierge";
 import { RenewalSeam } from "@/components/mockups/encore/LightShaftDivider";
 
 export default function EncoreMockupPage() {
@@ -32,10 +34,11 @@ export default function EncoreMockupPage() {
         <RenewalSeam from="var(--color-bg)" to="var(--color-bg)" />
         <WhyEncore />
         <MedicalServices />
-        {/* Cool clinical → warm spa: the seam shifts the underglow toward rose */}
-        <RenewalSeam underglow="oklch(70% 0.09 22 / 0.08)" />
+        {/* Cool clinical → warm sage spa: the seam shifts the underglow toward sage */}
+        <RenewalSeam underglow="oklch(70% 0.07 158 / 0.1)" />
         <SpaServices />
         <BeforeAfter />
+        <ReviewsMarquee />
         <RenewalSeam />
         <Doctor />
         <Financing />
@@ -43,6 +46,7 @@ export default function EncoreMockupPage() {
         <BookingCTA />
       </main>
       <SiteFooter />
+      <Concierge />
     </SmoothScroll>
   );
 }

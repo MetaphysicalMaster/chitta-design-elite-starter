@@ -48,7 +48,8 @@ export function SiteNav() {
               : "border border-transparent",
           )}
         >
-          {/* Wordmark */}
+          {/* Wordmark — recreated logo: a soft mauve lotus/petal mark beside a
+              light editorial-serif wordmark (the real brand's feminine read). */}
           <Link
             href="#top"
             className="group flex shrink-0 items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
@@ -56,12 +57,36 @@ export function SiteNav() {
           >
             <span
               aria-hidden
-              className="grid h-8 w-8 place-items-center rounded-full bg-[var(--color-fg)] text-[0.62rem] font-bold tracking-tight text-[var(--color-bg)]"
+              className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-fg)] shadow-[0_6px_18px_-8px_oklch(55%_0.09_350_/_0.8)]"
             >
-              BS
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+                <path
+                  d="M12 4c1.6 2 1.6 4.8 0 7.5-1.6-2.7-1.6-5.5 0-7.5Z"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 11.5c-1.9-1.4-4.4-1.6-6.8-.6 1 2.4 3.2 3.9 6.8 4M12 11.5c1.9-1.4 4.4-1.6 6.8-.6-1 2.4-3.2 3.9-6.8 4"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M5 16c2.2 2.2 4.6 3.3 7 3.3s4.8-1.1 7-3.3"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+              </svg>
             </span>
-            <span className="font-display text-[1.05rem] font-semibold leading-none tracking-tight text-[var(--color-fg)]">
-              Beyond&nbsp;Skin
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-[1.15rem] font-medium tracking-tight text-[var(--color-fg)]">
+                Beyond&nbsp;Skin
+              </span>
+              <span className="mt-0.5 text-[0.52rem] font-semibold uppercase tracking-[0.3em] text-[var(--color-fg-subtle)]">
+                Aesthetics
+              </span>
             </span>
           </Link>
 
@@ -92,7 +117,7 @@ export function SiteNav() {
               className={cn(
                 "group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold",
                 "bg-[var(--color-accent)] text-[var(--color-accent-fg)]",
-                "shadow-[0_10px_30px_-12px_oklch(58%_0.13_38_/_0.7)]",
+                "shadow-[0_10px_30px_-12px_oklch(55%_0.085_350_/_0.7)]",
                 "transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-fg)]",
               )}

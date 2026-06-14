@@ -9,10 +9,10 @@ import { RevealGroup, RevealItem } from "./primitives";
 
 const ITEMS = [
   { v: "4.9★", k: "Google rating" },
-  { v: "281", k: "5-star reviews" },
-  { v: "Dual", k: "Board-certified" },
+  { v: "280+", k: "5-star reviews" },
+  { v: "Judgment-free", k: "Every visit" },
   { v: "2017", k: "Established" },
-  { v: "4×", k: "Larger since 2023" },
+  { v: "Inclusive", k: "By design" },
 ];
 
 export function TrustBar() {

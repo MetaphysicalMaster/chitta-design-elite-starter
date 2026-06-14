@@ -1,4 +1,5 @@
 import { SmoothScroll } from "@/components/mockups/beyond-skin/SmoothScroll";
+import { JourneyThread } from "@/components/mockups/beyond-skin/JourneyThread";
 import { SiteNav } from "@/components/mockups/beyond-skin/SiteNav";
 import { SurfaceHero } from "@/components/mockups/beyond-skin/SurfaceHero";
 import { TrustBar } from "@/components/mockups/beyond-skin/TrustBar";
@@ -9,7 +10,8 @@ import { Membership } from "@/components/mockups/beyond-skin/Membership";
 import { BeforeAfter } from "@/components/mockups/beyond-skin/BeforeAfter";
 import { SocialGallery } from "@/components/mockups/beyond-skin/SocialGallery";
 import { Booking } from "@/components/mockups/beyond-skin/Booking";
-import { Testimonials } from "@/components/mockups/beyond-skin/Testimonials";
+import { ReviewsMarquee } from "@/components/mockups/beyond-skin/ReviewsMarquee";
+import { Concierge } from "@/components/mockups/beyond-skin/Concierge";
 import { SiteFooter } from "@/components/mockups/beyond-skin/SiteFooter";
 
 export default function BeyondSkinMockupPage() {
@@ -21,6 +23,9 @@ export default function BeyondSkinMockupPage() {
       >
         Skip to content
       </a>
+      {/* The signature: a luminous thread tracing the journey to wellness down
+          the page spine as you scroll (fixed overlay, desktop, motion-aware). */}
+      <JourneyThread />
       <SiteNav />
       <main id="main">
         <div id="top" />
@@ -33,9 +38,11 @@ export default function BeyondSkinMockupPage() {
         <BeforeAfter />
         <SocialGallery />
         <Booking />
-        <Testimonials />
+        <ReviewsMarquee />
       </main>
       <SiteFooter />
+      {/* AI front-desk concierge — fixed launcher, canned book/route-only flow. */}
+      <Concierge />
     </SmoothScroll>
   );
 }

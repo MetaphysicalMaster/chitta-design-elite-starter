@@ -14,7 +14,7 @@
  */
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Float, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { skyFragmentShader, skyVertexShader } from "./sky-shaders";
@@ -30,11 +30,19 @@ const PALETTE = {
   blush: "#f7d6d4", // faint warm rose
 };
 
-function SkyPlane({ pointer }: { pointer: React.RefObject<{ x: number; y: number }> }) {
+function SkyPlane({
+  pointer,
+  rise,
+}: {
+  pointer: React.RefObject<{ x: number; y: number }>;
+  rise: React.RefObject<number>;
+}) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const { size, viewport } = useThree();
   // Smoothed pointer so parallax glides rather than snaps.
   const smooth = useRef({ x: 0, y: 0 });
+  // Smoothed sun-rise so the day-arc glides even when scroll jumps.
+  const smoothRise = useRef(0);
 
   const uniforms = useMemo(
     () => ({
@@ -42,6 +50,7 @@ function SkyPlane({ pointer }: { pointer: React.RefObject<{ x: number; y: number
       u_resolution: { value: new THREE.Vector2(size.width, size.height) },
       u_pointer: { value: new THREE.Vector2(0, 0) },
       u_intensity: { value: 0 },
+      u_rise: { value: 0 },
       u_dawn: { value: new THREE.Color(PALETTE.dawn) },
       u_mid: { value: new THREE.Color(PALETTE.mid) },
       u_high: { value: new THREE.Color(PALETTE.high) },
@@ -66,6 +75,12 @@ function SkyPlane({ pointer }: { pointer: React.RefObject<{ x: number; y: number
     smooth.current.y += (target.y - smooth.current.y) * k;
     m.uniforms.u_pointer.value.set(smooth.current.x, smooth.current.y);
 
+    // Glide the sun-rise toward the scroll-scrubbed target.
+    const rTarget = rise.current ?? 0;
+    const rk = 1 - Math.pow(0.004, delta);
+    smoothRise.current += (rTarget - smoothRise.current) * rk;
+    m.uniforms.u_rise.value = smoothRise.current;
+
     // Ease intensity up to 1 for a graceful reveal
     const cur = m.uniforms.u_intensity.value as number;
     m.uniforms.u_intensity.value = cur + (1 - cur) * Math.min(1, delta * 1.6);
@@ -86,63 +101,79 @@ function SkyPlane({ pointer }: { pointer: React.RefObject<{ x: number; y: number
   );
 }
 
-/* Refractive glass orb on a perspective layer — drifts with light parallax. */
-function GlassOrb({ pointer }: { pointer: React.RefObject<{ x: number; y: number }> }) {
+/* Luminous dewy "light-bead" accent on a transparent layer. A real refractive
+   transmission orb needs a scene BEHIND it to sample — on an alpha canvas it
+   samples nothing and renders as a dark disc, fighting the rising-sun signature.
+   So this is an additive, soft-edged glow sphere (basic material + additive
+   blend) that reads as a tasteful floating bead of light, never an eclipse. It
+   drifts with the pointer and lifts gently with the day-arc. */
+function LightBead({
+  pointer,
+  rise,
+}: {
+  pointer: React.RefObject<{ x: number; y: number }>;
+  rise: React.RefObject<number>;
+}) {
   const group = useRef<THREE.Group>(null);
+  // soft radial-falloff sprite texture (built once, GPU-cheap)
+  const tex = useMemo(() => {
+    const s = 128;
+    const c = document.createElement("canvas");
+    c.width = c.height = s;
+    const ctx = c.getContext("2d")!;
+    const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    g.addColorStop(0, "rgba(255,253,247,0.95)");
+    g.addColorStop(0.35, "rgba(238,245,255,0.55)");
+    g.addColorStop(0.7, "rgba(210,228,248,0.16)");
+    g.addColorStop(1, "rgba(210,228,248,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, s, s);
+    const t = new THREE.CanvasTexture(c);
+    return t;
+  }, []);
 
   useFrame((_, delta) => {
     const g = group.current;
     if (!g) return;
     const target = pointer.current ?? { x: 0, y: 0 };
+    const r = rise.current ?? 0;
     const k = 1 - Math.pow(0.0015, delta);
-    g.position.x += (target.x * 0.6 - g.position.x) * k;
-    g.position.y += (0.15 + target.y * 0.35 - g.position.y) * k;
+    g.position.x += (target.x * 0.5 - g.position.x) * k;
+    // a low-right luxe accent that lifts gently with the day-arc
+    const baseY = -0.25 + r * 0.45;
+    g.position.y += (baseY + target.y * 0.3 - g.position.y) * k;
   });
 
   return (
-    <group ref={group} position={[0.9, 0.2, 1.5]}>
-      <Float speed={1.1} rotationIntensity={0.35} floatIntensity={0.9}>
-        <mesh>
-          <sphereGeometry args={[0.62, 64, 64]} />
-          <MeshTransmissionMaterial
-            samples={8}
-            resolution={320}
-            thickness={0.55}
-            roughness={0.07}
-            chromaticAberration={0.2}
-            anisotropy={0.22}
-            distortion={0.24}
-            distortionScale={0.3}
-            temporalDistortion={0.08}
-            ior={1.2}
-            color="#eef5ff"
-            attenuationColor="#d6e6f8"
-            attenuationDistance={1.6}
+    <group ref={group} position={[1.25, -0.25, 1.0]}>
+      <Float speed={1.0} rotationIntensity={0} floatIntensity={0.5}>
+        <sprite scale={[1.1, 1.1, 1]}>
+          <spriteMaterial
+            map={tex}
+            transparent
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+            opacity={0.85}
           />
-        </mesh>
+        </sprite>
       </Float>
     </group>
   );
 }
 
-function PerspectiveLights() {
-  return (
-    <>
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[3, 4, 5]} intensity={1.1} color="#fff4e0" />
-      <directionalLight position={[-4, -2, 2]} intensity={0.4} color="#bcd4ec" />
-    </>
-  );
-}
-
 export interface BreathOfSkySceneProps {
-  /** When false, the orb is skipped (perf tier for smaller screens). */
+  /** When false, the light-bead accent is skipped (perf tier for small screens). */
   showOrb?: boolean;
+  /** Scroll-scrubbed day-arc, 0 (dawn) → 1 (high clear day). Owned by SkyHero. */
+  rise?: React.RefObject<number>;
 }
 
-export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkySceneProps) {
+export default function BreathOfSkyScene({ showOrb = true, rise }: BreathOfSkySceneProps) {
   // Shared pointer ref; updated by a DOM listener for low overhead.
   const pointer = useRef({ x: 0, y: 0 });
+  // Local fallback if the parent doesn't supply a rise ref.
+  const localRise = useRef(0);
+  const riseRef = rise ?? localRise;
   const wrapRef = useRef<HTMLDivElement>(null);
   // Pause the render loop entirely when the hero scrolls offscreen (battery/GPU).
   const [visible, setVisible] = useState(true);
@@ -185,10 +216,10 @@ export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkyScenePro
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
         style={{ position: "absolute", inset: 0 }}
       >
-        <SkyPlane pointer={pointer} />
+        <SkyPlane pointer={pointer} rise={riseRef} />
       </Canvas>
 
-      {/* Perspective orb layer (transparent canvas over the sky) */}
+      {/* Luminous light-bead accent layer (transparent canvas over the sky) */}
       {showOrb && (
         <Canvas
           frameloop={frameloop}
@@ -197,8 +228,7 @@ export default function BreathOfSkyScene({ showOrb = true }: BreathOfSkyScenePro
           gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
         >
-          <PerspectiveLights />
-          <GlassOrb pointer={pointer} />
+          <LightBead pointer={pointer} rise={riseRef} />
         </Canvas>
       )}
     </div>

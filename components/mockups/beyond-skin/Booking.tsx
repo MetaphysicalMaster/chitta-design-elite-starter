@@ -13,10 +13,10 @@ import { Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
 const TREATMENTS = [
-  "Injectables consult",
-  "RF Microneedling",
-  "Glo2Facial",
-  "IPL / Laser",
+  "Complimentary consult",
+  "Injectables",
+  "Laser & Devices",
+  "Signature facial",
   "Membership tour",
 ];
 
@@ -79,14 +79,13 @@ export function Booking() {
               style={{ fontSize: "var(--fluid-h2)", lineHeight: 1.04 }}
             >
               Book in 30 seconds.{" "}
-              <span className="text-molten italic">No redirect.</span>
+              <span className="text-molten font-em">Right here.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mt-5 max-w-md text-pretty font-light text-[var(--color-fg-muted)]">
-              Today, booking bounces clients to WellnessLiving and a $25 deposit
-              handoff. Here it&rsquo;s native, branded and instant — fewer
-              drop-offs, more booked chairs.
+              Begin your journey without leaving the page — native, branded and
+              instant. Choose your treatment, pick a time, and you&rsquo;re set.
             </p>
           </Reveal>
           <Reveal delay={0.16}>
@@ -94,7 +93,7 @@ export function Booking() {
               {[
                 "Stays on your domain — no jarring third-party page",
                 "Real-time availability, instant confirmation",
-                "Deposit handled in-brand, optional & transparent",
+                "Warm, judgment-free welcome from the first tap",
               ].map((li) => (
                 <li key={li} className="flex items-start gap-3">
                   <span
