@@ -68,8 +68,21 @@ const TREATMENTS: Treatment[] = [
     src: "/clients/darst/gen/tox.webp",
     imgAlt: "A refined injectable treatment for natural-looking volume",
   },
-  { label: "Laser resurfacing", blurb: "Tone & texture", glyph: "laser", warm: true },
-  { label: "Medical skin care", blurb: "Acne · eczema · peels", glyph: "leaf" },
+  {
+    label: "Laser resurfacing",
+    blurb: "Tone & texture",
+    glyph: "laser",
+    warm: true,
+    src: "/clients/darst/gen/laser.webp",
+    imgAlt: "A laser resurfacing treatment for tone and texture",
+  },
+  {
+    label: "Medical skin care",
+    blurb: "Acne · eczema · peels",
+    glyph: "leaf",
+    src: "/clients/darst/gen/facial.webp",
+    imgAlt: "A medical-grade skin-care facial treatment",
+  },
 ];
 
 /* Compact line-icon set — single-stroke, inherits currentColor. */

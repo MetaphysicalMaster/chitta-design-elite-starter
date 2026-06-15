@@ -23,6 +23,8 @@ type Service = {
   /** Quiet, consult-first investment note — secondary, never the headline. */
   invest: string;
   icon: ReactNode;
+  /** Treatment photo infused into the card head (gradient-faded into the body). */
+  photo: string;
   featured?: boolean;
 };
 
@@ -73,6 +75,7 @@ const SERVICES: Service[] = [
     outcome: "Smooth the lines that age you — and keep every expression.",
     invest: "From $180 / area · personalized at consult",
     icon: ICON.tox,
+    photo: "/clients/timeless/gen/tox.webp",
     featured: true,
   },
   {
@@ -83,6 +86,7 @@ const SERVICES: Service[] = [
     outcome: "Restore the soft, lifted contours you remember.",
     invest: "Personalized at consult",
     icon: ICON.filler,
+    photo: "/clients/timeless/gen/filler.webp",
   },
   {
     id: "secretrf",
@@ -92,6 +96,7 @@ const SERVICES: Service[] = [
     outcome: "Firmer, smoother skin that tightens from within.",
     invest: "Personalized at consult",
     icon: ICON.secretrf,
+    photo: "/clients/timeless/gen/microneedling.webp",
   },
   {
     id: "laser",
@@ -101,6 +106,7 @@ const SERVICES: Service[] = [
     outcome: "Even out tone, texture and clarity for lit-from-within skin.",
     invest: "Personalized at consult",
     icon: ICON.laser,
+    photo: "/clients/timeless/gen/laser.webp",
   },
   {
     id: "skin",
@@ -110,6 +116,7 @@ const SERVICES: Service[] = [
     outcome: "Keep that glow going between visits.",
     invest: "From $185",
     icon: ICON.skin,
+    photo: "/clients/timeless/gen/facial.webp",
   },
   {
     id: "consult",
@@ -119,6 +126,7 @@ const SERVICES: Service[] = [
     outcome: "Start with a real conversation about your face — no pressure.",
     invest: "Complimentary",
     icon: ICON.consult,
+    photo: "/clients/timeless/gen/consult.webp",
   },
 ];
 
@@ -126,7 +134,7 @@ function ServiceCard({ s }: { s: Service }) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-[1.5rem] border p-6 transition-[transform,box-shadow,border-color] duration-300 sm:p-7",
+        "group relative flex flex-col overflow-hidden rounded-[1.5rem] border transition-[transform,box-shadow,border-color] duration-300",
         "hover:-translate-y-0.5",
         s.featured
           ? "border-[var(--color-accent)]/35 bg-[var(--color-bg-elevated)] shadow-[0_26px_74px_-40px_oklch(60%_0.15_52_/_0.5)] hover:shadow-[0_32px_84px_-36px_oklch(60%_0.15_52_/_0.58)]"
@@ -147,6 +155,36 @@ function ServiceCard({ s }: { s: Service }) {
           style={{ background: "radial-gradient(closest-side, oklch(86% 0.08 58 / 0.7), transparent)" }}
         />
       )}
+      {/* Infused treatment photo: image flush to the card head, gradient-faded
+          into the body so it reads as one surface, not a pasted thumbnail. */}
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
+        <img
+          src={s.photo}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+        />
+        {/* warm-peach brand duotone so every card photo reads as one shoot */}
+        <span
+          aria-hidden
+          className="absolute inset-0 mix-blend-soft-light"
+          style={{ background: "linear-gradient(150deg, oklch(80% 0.12 54 / 0.45), oklch(70% 0.1 40 / 0.2))" }}
+        />
+        {/* fade the image into the card body color — seamless infusion */}
+        <span
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-2/3"
+          style={{ background: "linear-gradient(to bottom, transparent, var(--color-bg-elevated))" }}
+        />
+        {s.featured && (
+          <span className="absolute right-3 top-3 z-[2] rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-bg-elevated)]/90 px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)] backdrop-blur-sm">
+            Most requested
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
       <div className="flex items-start justify-between gap-3">
         <span
           aria-hidden
@@ -163,11 +201,6 @@ function ServiceCard({ s }: { s: Service }) {
             {s.icon}
           </svg>
         </span>
-        {s.featured && (
-          <span className="rounded-full border border-[var(--color-accent-subtle)] bg-[var(--color-accent-subtle)] px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-deep)]">
-            Most requested
-          </span>
-        )}
       </div>
       <h3 className="font-display mt-5 text-2xl text-[var(--color-fg)]">{s.name}</h3>
       <p className="mt-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent-deep)]">
@@ -186,6 +219,7 @@ function ServiceCard({ s }: { s: Service }) {
           Consult
           <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
         </Link>
+      </div>
       </div>
     </article>
   );

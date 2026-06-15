@@ -222,22 +222,22 @@ const STUDIES: Study[] = [
     id: "tox",
     treatment: "Neuromodulator",
     detail: "Forehead & glabella · 14 days",
-    before: "linear-gradient(155deg, oklch(72% 0.018 56), oklch(64% 0.022 50))",
-    after: "linear-gradient(155deg, oklch(93% 0.035 60), oklch(86% 0.055 58))",
+    before: "url('/clients/timeless/ba/tox-before.webp') center/cover",
+    after: "url('/clients/timeless/ba/tox-after.webp') center/cover",
   },
   {
     id: "secretrf",
     treatment: "Secret RF",
     detail: "Texture & tightening · 8 weeks",
-    before: "radial-gradient(120% 120% at 40% 30%, oklch(70% 0.016 54), oklch(61% 0.02 50))",
-    after: "radial-gradient(120% 120% at 40% 30%, oklch(92% 0.04 60), oklch(85% 0.06 56))",
+    before: "url('/clients/timeless/ba/micro-before.webp') center/cover",
+    after: "url('/clients/timeless/ba/micro-after.webp') center/cover",
   },
   {
     id: "glow",
     treatment: "Medical Facial Glow",
     detail: "Tone & radiance · single session",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(71% 0.018 52), oklch(62% 0.022 48))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(92% 0.05 60), oklch(85% 0.07 56))",
+    before: "url('/clients/timeless/ba/glow-before.webp') center/cover",
+    after: "url('/clients/timeless/ba/glow-after.webp') center/cover",
   },
 ];
 
@@ -256,13 +256,6 @@ function StudySlider({ data }: { data: Study }) {
         onPointerLeave={onPointerUp}
       >
         <div className="absolute inset-0" style={{ background: data.after }} aria-hidden>
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(60% 50% at 50% 28%, oklch(99% 0.01 64 / 0.5), transparent 64%)",
-            }}
-          />
           <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-[var(--color-fg)]">
             After
           </span>
@@ -272,13 +265,6 @@ function StudySlider({ data }: { data: Study }) {
           style={{ background: data.before, clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <div
-            className="absolute inset-0 opacity-50 mix-blend-soft-light"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(48deg, oklch(40% 0.01 50 / 0.5) 0 1px, transparent 1px 3px), repeating-linear-gradient(-42deg, oklch(40% 0.01 50 / 0.4) 0 1px, transparent 1px 4px)",
-            }}
-          />
           <span className="absolute left-3 top-3 rounded-full bg-[var(--color-fg)]/85 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white">
             Before
           </span>

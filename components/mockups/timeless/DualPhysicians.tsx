@@ -9,10 +9,9 @@
  * named physicians: Dr. Sonja Heuker, MD & Dr. Timothy McCarren, MD. A center
  * orange seam binds the two into a single, friendly practice.
  *
- * IMPORTANT: no real headshots exist on the client's site, so we do NOT
- * fabricate faces. Each physician gets a tasteful MONOGRAM avatar (their
- * initials in an on-brand orange circle) plus a small "Headshot to be supplied"
- * note — honest, elegant, and trivially swapped for a real photo later.
+ * Each physician shows their real, named headshot (Dr. Heuker, Dr. McCarren)
+ * in a matching warm-brass plate so the pair reads as equals, with a soft
+ * bottom-scrim name caption. The center orange seam binds them into one practice.
  */
 
 import { Reveal, SectionHeading } from "./primitives";
@@ -25,12 +24,15 @@ type Doc = {
   focus: string;
   blurb: string;
   creds: string[];
+  /** Real physician headshot (object-cover, framed center-top). */
+  photo: string;
 };
 
 const DOCS: Doc[] = [
   {
     name: "Dr. Sonja Heuker, MD",
     initials: "SH",
+    photo: "/clients/timeless/real/heuker.jpg",
     role: "Family Medicine & Skin Care Specialist",
     focus: "Laser, Secret RF & medical skin",
     blurb:
@@ -44,6 +46,7 @@ const DOCS: Doc[] = [
   {
     name: "Dr. Timothy McCarren, MD",
     initials: "TM",
+    photo: "/clients/timeless/real/mccarren.jpg",
     role: "Family Medicine",
     focus: "Injectables & facial balance",
     blurb:
@@ -56,53 +59,42 @@ const DOCS: Doc[] = [
   },
 ];
 
-function MonogramAvatar({ d }: { d: Doc }) {
-  // A tasteful placeholder portrait: a soft peach-bokeh panel holding a large
-  // on-brand orange monogram circle with the physician's initials, plus an
-  // honest "Headshot to be supplied" note. No fabricated faces.
+function PhysicianPortrait({ d }: { d: Doc }) {
+  // The real, named physician headshot — full-bleed in a warm-brass plate so the
+  // pair reads as equals. A soft bottom scrim seats the name caption over the
+  // photo; a faint brand sheen keeps both portraits in one cohesive grade.
   return (
     <div
-      role="img"
-      aria-label={`${d.name} — monogram placeholder; headshot to be supplied`}
       className={cn(
-        // Both physicians get the same rich peach-orange plate so the pair reads
-        // as equals (no washed-out card); per-disc light direction keeps them
-        // distinct.
-        "relative isolate flex flex-col items-center justify-center overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] px-6 py-12 shadow-[var(--glass-shadow)]",
-        "tl-plate tl-plate--brass",
+        "relative isolate overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] shadow-[var(--glass-shadow)]",
       )}
       style={{ aspectRatio: "5 / 6" }}
     >
-      {/* the monogram disc — equal richness for both physicians (they read as
-          equals); only the light DIRECTION differs per card so the pair still
-          feels distinct, not a stamped template. */}
+      <img
+        src={d.photo}
+        alt={`${d.name} — ${d.role}`}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: "center 22%" }}
+      />
+      {/* warm-orange brand sheen so both portraits share one grade */}
       <span
         aria-hidden
-        className="relative grid h-32 w-32 place-items-center rounded-full text-[2.6rem] font-semibold text-[var(--color-accent-fg)] shadow-[0_18px_44px_-16px_oklch(60%_0.15_52_/_0.7)] sm:h-40 sm:w-40 sm:text-[3.2rem]"
+        className="pointer-events-none absolute inset-0 mix-blend-soft-light"
         style={{
           background:
-            d.initials === "SH"
-              ? "radial-gradient(130% 130% at 28% 20%, oklch(73% 0.15 58), oklch(56% 0.145 47))"
-              : "radial-gradient(130% 130% at 72% 24%, oklch(73% 0.15 54), oklch(56% 0.145 45))",
+            "radial-gradient(80% 60% at 50% 18%, oklch(80% 0.13 54 / 0.18), transparent 68%)",
         }}
-      >
-        <span className="font-display tracking-wide">{d.initials}</span>
-        {/* a faint inner ring for polish */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-1.5 rounded-full border border-white/30"
-        />
-      </span>
-
-      <p className="mt-7 text-center font-display text-xl text-[var(--color-fg)]">
+      />
+      {/* bottom scrim + name caption */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[oklch(22%_0.04_52_/_0.78)] to-transparent"
+      />
+      <p className="absolute inset-x-0 bottom-0 px-5 pb-4 font-display text-xl text-white drop-shadow-[0_1px_10px_oklch(20%_0.03_52_/_0.7)]">
         {d.name}
-      </p>
-      <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[var(--color-bg-elevated)]/80 px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.16em] text-[var(--color-fg-subtle)] backdrop-blur-sm">
-        <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden>
-          <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-        Headshot to be supplied
       </p>
     </div>
   );
@@ -111,7 +103,7 @@ function MonogramAvatar({ d }: { d: Doc }) {
 function DocCard({ d, side }: { d: Doc; side: "left" | "right" }) {
   return (
     <article className="relative flex flex-col">
-      <MonogramAvatar d={d} />
+      <PhysicianPortrait d={d} />
       <div className="mt-7">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-deep)]">
           {d.role}
