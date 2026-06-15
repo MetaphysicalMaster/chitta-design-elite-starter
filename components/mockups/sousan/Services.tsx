@@ -20,6 +20,8 @@ type Service = {
   body: string;
   points: string[];
   tone: "marble" | "emerald" | "gold";
+  /** real treatment photograph, graded into the monochrome + pink system. */
+  img: string;
 };
 
 const SERVICES: Service[] = [
@@ -30,6 +32,7 @@ const SERVICES: Service[] = [
     body: "Intense pulsed light to clear sun damage, redness and uneven tone — Houston sun, undone.",
     points: ["Sunspot clearing", "Rosacea calming", "Collagen lift"],
     tone: "gold",
+    img: "/clients/sousan/gen/laser.webp",
   },
   {
     name: "HydraFacial MD",
@@ -38,6 +41,7 @@ const SERVICES: Service[] = [
     body: "Cleanse, extract and hydrate in one ritual — the resurfacing facial clients return for, month after month.",
     points: ["Vortex extraction", "Booster serums", "Zero downtime"],
     tone: "marble",
+    img: "/clients/sousan/gen/facial.webp",
   },
   {
     name: "Deluxe Facial",
@@ -46,6 +50,7 @@ const SERVICES: Service[] = [
     body: "A bespoke, deeply restorative facial tailored to your skin — the full Sousan glow, start to finish.",
     points: ["Custom analysis", "Deep hydration", "Lasting radiance"],
     tone: "marble",
+    img: "/clients/sousan/gen/microneedling.webp",
   },
   {
     name: "Injectables & Skin",
@@ -54,6 +59,7 @@ const SERVICES: Service[] = [
     body: "Tox, filler and medical-grade skin treatments placed with an artist's eye — refreshed, never overdone.",
     points: ["Neuromodulators", "Dermal filler", "Medical-grade"],
     tone: "emerald",
+    img: "/clients/sousan/gen/tox.webp",
   },
 ];
 
@@ -86,6 +92,8 @@ export function Services() {
               <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[0_1px_0_oklch(100%_0_0/0.6)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[var(--glass-shadow)]">
                 <BrandImage
                   alt={`${s.name} treatment at Sousan Med Spa`}
+                  src={s.img}
+                  sample={false}
                   aspect="16:9"
                   tone={s.tone}
                   radius="lg"

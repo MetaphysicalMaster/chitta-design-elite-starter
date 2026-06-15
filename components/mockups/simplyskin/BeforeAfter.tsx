@@ -37,6 +37,10 @@ type Case = {
     /** Alt for the BEFORE (clipped) frame. */
     altBefore: string;
   };
+  /** Force the honest "Sample · illustrative" tag even when a real `photo`
+      pair is wired — used for the supporting study cases whose pairs are
+      representative rather than a specific named client's result. */
+  sampleTag?: boolean;
 };
 
 // The LEAD case is grounded in a REAL aligned before/after pair (two distinct
@@ -68,11 +72,31 @@ const CASES: Case[] = [
     id: "tox",
     treatment: "BOTOX® — Glabella & Forehead",
     detail: "Conservative placement · 14 days post",
+    photo: {
+      before: "/clients/simplyskin/ba/tox-before.webp",
+      after: "/clients/simplyskin/ba/tox-after.webp",
+      position: "50% 30%",
+      altAfter:
+        "Smoother, softened glabella and forehead after conservative BOTOX® — natural movement preserved.",
+      altBefore:
+        "The same face before treatment, with visible glabellar and forehead lines.",
+    },
+    sampleTag: true,
   },
   {
     id: "filler",
     treatment: "JUVÉDERM® — Lip & Chin",
     detail: "1.0ml · two-week follow-up",
+    photo: {
+      before: "/clients/simplyskin/ba/filler-before.webp",
+      after: "/clients/simplyskin/ba/filler-after.webp",
+      position: "50% 40%",
+      altAfter:
+        "Balanced, natural lip and chin proportion two weeks after a conservative JUVÉDERM® plan.",
+      altBefore:
+        "The same face before treatment, with less defined lip and chin proportion.",
+    },
+    sampleTag: true,
   },
 ];
 
@@ -231,7 +255,9 @@ function Slider({ data, ratio = "4/5" }: { data: Case; ratio?: string }) {
           </span>
         </div>
         <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/30 px-3 py-1 text-[0.56rem] font-medium uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
-          {data.photo ? "Illustrative · representative result" : "Sample · illustrative"}
+          {data.photo && !data.sampleTag
+            ? "Illustrative · representative result"
+            : "Sample · illustrative"}
         </span>
         <SliderHandle pos={pos} label={data.treatment} onKeyDown={onKeyDown} />
       </div>
@@ -266,15 +292,21 @@ export function BeforeAfter() {
           lead="Natural, undetectable change — never overdone. Drag the handle (or use your keyboard) to compare representative outcomes from our care."
         />
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {CASES.map((c, i) => (
-            <Reveal
-              key={c.id}
-              delay={i * 0.08}
-              className={cn(c.photo && "lg:col-span-2")}
-            >
-              <Slider data={c} ratio={c.photo ? "16 / 11" : "4/5"} />
-            </Reveal>
-          ))}
+          {CASES.map((c, i) => {
+            // The LEAD case (a representative single result) spans full width in
+            // a wide 16:11 frame; the two supporting studies stay a two-up 4:5
+            // pair even though they now carry real before/after photographs.
+            const lead = Boolean(c.photo && !c.sampleTag);
+            return (
+              <Reveal
+                key={c.id}
+                delay={i * 0.08}
+                className={cn(lead && "lg:col-span-2")}
+              >
+                <Slider data={c} ratio={lead ? "16 / 11" : "4/5"} />
+              </Reveal>
+            );
+          })}
         </div>
         <p className="mt-8 text-center text-xs text-[var(--color-fg-subtle)]">
           Illustrative, representative results shown for layout. Real client

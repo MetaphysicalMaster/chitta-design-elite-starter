@@ -21,6 +21,7 @@
  */
 
 import { SectionHeading, Reveal } from "./primitives";
+import { cn } from "@/lib/utils";
 
 type Glyph = "screen" | "scalpel" | "slide" | "drop" | "laser" | "leaf";
 
@@ -30,14 +31,43 @@ type Treatment = {
   glyph: Glyph;
   /** aesthetic cards carry the warm coral note; clinical cards stay teal. */
   warm?: boolean;
+  /** Real graded photo backdrop for the card; the glyph badge rides on top. */
+  src?: string;
+  /** Accessible description of the photo (when src is set). */
+  imgAlt?: string;
 };
 
 /* Six treatments — the medical core and the aesthetic register, balanced. */
 const TREATMENTS: Treatment[] = [
-  { label: "Skin cancer screening", blurb: "Full-body exams", glyph: "screen" },
-  { label: "Mohs & excision", blurb: "Precise surgery", glyph: "scalpel" },
-  { label: "Dermatopathology", blurb: "In-house slide reads", glyph: "slide" },
-  { label: "Injectables", blurb: "Natural volume", glyph: "drop", warm: true },
+  {
+    label: "Skin cancer screening",
+    blurb: "Full-body exams",
+    glyph: "screen",
+    src: "/clients/darst/gen/microneedling.webp",
+    imgAlt: "A clinician performing a close clinical face examination",
+  },
+  {
+    label: "Mohs & excision",
+    blurb: "Precise surgery",
+    glyph: "scalpel",
+    src: "/clients/darst/gen/surgical.webp",
+    imgAlt: "A precise dermatologic surgical procedure",
+  },
+  {
+    label: "Dermatopathology",
+    blurb: "In-house slide reads",
+    glyph: "slide",
+    src: "/clients/darst/gen/path.webp",
+    imgAlt: "A microscope slide read in the in-house pathology lab",
+  },
+  {
+    label: "Injectables",
+    blurb: "Natural volume",
+    glyph: "drop",
+    warm: true,
+    src: "/clients/darst/gen/tox.webp",
+    imgAlt: "A refined injectable treatment for natural-looking volume",
+  },
   { label: "Laser resurfacing", blurb: "Tone & texture", glyph: "laser", warm: true },
   { label: "Medical skin care", blurb: "Acne · eczema · peels", glyph: "leaf" },
 ];
@@ -103,16 +133,36 @@ function Icon({ glyph }: { glyph: Glyph }) {
 }
 
 function Card({ t }: { t: Treatment }) {
+  const photo = t.src;
+  const hasPhoto = Boolean(photo);
   return (
     <article className="w-[13.5rem] shrink-0 sm:w-[15rem]">
       <div
-        className="flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-[1.25rem] border border-[var(--color-border)] p-5"
+        className="relative isolate flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-[1.25rem] border border-[var(--color-border)] p-5"
         style={{
           background: t.warm
             ? "radial-gradient(120% 120% at 22% 12%, var(--color-coral-subtle), transparent 60%), linear-gradient(158deg, var(--color-bg-elevated), var(--color-bg-subtle))"
             : "radial-gradient(120% 120% at 22% 12%, var(--color-accent-subtle), transparent 60%), linear-gradient(158deg, var(--color-bg-elevated), var(--color-bg-subtle))",
         }}
       >
+        {/* real graded photo backdrop — fills the locked-ratio card (zero CLS)
+            with a bottom scrim so the glyph badge + label keep AA contrast. */}
+        {photo && (
+          <>
+            <img
+              src={photo}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 -z-10 h-full w-full object-cover"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(18%_0.03_54_/_0.82)] via-[oklch(20%_0.035_56_/_0.32)] to-[oklch(22%_0.04_57_/_0.18)]"
+            />
+          </>
+        )}
+
         <span
           aria-hidden
           className={
@@ -124,15 +174,24 @@ function Card({ t }: { t: Treatment }) {
           <Icon glyph={t.glyph} />
         </span>
         <div>
-          <p className="font-display text-[1.15rem] leading-tight text-[var(--color-fg)]">
+          <p
+            className={
+              hasPhoto
+                ? "font-display text-[1.15rem] leading-tight text-[oklch(98%_0.012_72)] drop-shadow-[0_1px_8px_oklch(18%_0.03_54_/_0.7)]"
+                : "font-display text-[1.15rem] leading-tight text-[var(--color-fg)]"
+            }
+          >
             {t.label}
           </p>
           <p
-            className={
-              t.warm
-                ? "mt-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-coral-deep)]"
-                : "mt-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-accent-deep)]"
-            }
+            className={cn(
+              "mt-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em]",
+              hasPhoto
+                ? "text-[oklch(94%_0.014_72_/_0.92)]"
+                : t.warm
+                  ? "text-[var(--color-coral-deep)]"
+                  : "text-[var(--color-accent-deep)]",
+            )}
           >
             {t.blurb}
           </p>

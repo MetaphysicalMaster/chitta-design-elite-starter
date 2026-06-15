@@ -26,17 +26,23 @@ function aspectToCss(aspect: string): string {
 }
 
 export type BrandImageProps = {
-  /** alt text describing the intended photograph (for the sample caption). */
+  /** alt text describing the photograph (also feeds the sample-plate caption). */
   alt: string;
   aspect: string;
-  /** plate tone — the cohesive candy grade. */
+  /**
+   * Real, root-absolute image src (e.g. "/clients/beautox-bar/gen/x.webp").
+   * When set, a graded photo fills the aspect-locked bed (lazy/async, zero CLS)
+   * instead of the CSS gradient plate, and the "Sample" chip is auto-suppressed.
+   */
+  src?: string;
+  /** plate tone — the cohesive candy grade (used when there's no real src). */
   tone?: "cream" | "magenta" | "lilac" | "night";
   radius?: "lg" | "xl" | "2xl" | "3xl" | "full";
   /** bottom scrim strength for legibility of overlaid copy. */
   scrim?: "none" | "soft" | "strong";
   /** gentle scroll parallax on the plate layer. */
   parallax?: boolean;
-  /** show the "sample" chip (default true). */
+  /** show the "sample" chip (default true; force-off once a real src is set). */
   sample?: boolean;
   className?: string;
   children?: React.ReactNode;
@@ -60,6 +66,7 @@ const TONE: Record<NonNullable<BrandImageProps["tone"]>, string> = {
 export function BrandImage({
   alt,
   aspect,
+  src,
   tone = "cream",
   radius = "3xl",
   scrim = "none",
@@ -70,6 +77,9 @@ export function BrandImage({
 }: BrandImageProps) {
   const prefersReduced = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
+  /* a real graded photo replaces the placeholder plate — and is never a "sample". */
+  const hasPhoto = Boolean(src);
+  const showSample = sample && !hasPhoto;
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
@@ -85,7 +95,7 @@ export function BrandImage({
     <div
       ref={wrapRef}
       role="img"
-      aria-label={`${alt} (sample placeholder)`}
+      aria-label={hasPhoto ? alt : `${alt} (sample placeholder)`}
       className={cn(
         "relative isolate overflow-hidden",
         RADIUS[radius],
@@ -94,26 +104,48 @@ export function BrandImage({
       )}
       style={{ aspectRatio: aspectToCss(aspect) }}
     >
-      <motion.span
-        aria-hidden
-        style={{
-          y,
-          /* position MUST be inline: the `.bx-plate` brand.css rule declares
-             `position: relative` (it owns the ::after glint layer), and that
-             scoped `[data-brand]` selector out-specifies the Tailwind `absolute`
-             utility — leaving this fill span `position: relative` + `display:
-             inline`, which collapses it to 0×0 so the gradient paints nothing and
-             the plate reads as an empty (white) box. Forcing position here (inline
-             styles beat the selector) makes the plate actually fill the slot. */
-          position: "absolute",
-          left: 0,
-          right: 0,
-          ...(parallax && !prefersReduced
-            ? { height: "110%", top: "-5%" }
-            : { height: "100%", top: 0 }),
-        }}
-        className={cn("absolute inset-0 w-full", TONE[tone])}
-      />
+      {hasPhoto ? (
+        /* Real graded photo — fills the aspect-locked bed (object-cover → zero
+           CLS), lazy/async, and rides the same gentle parallax as the plate. */
+        <motion.img
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          style={{
+            y,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            ...(parallax && !prefersReduced
+              ? { height: "110%", top: "-5%" }
+              : { height: "100%", top: 0 }),
+          }}
+          className="absolute inset-0 w-full object-cover"
+        />
+      ) : (
+        <motion.span
+          aria-hidden
+          style={{
+            y,
+            /* position MUST be inline: the `.bx-plate` brand.css rule declares
+               `position: relative` (it owns the ::after glint layer), and that
+               scoped `[data-brand]` selector out-specifies the Tailwind `absolute`
+               utility — leaving this fill span `position: relative` + `display:
+               inline`, which collapses it to 0×0 so the gradient paints nothing and
+               the plate reads as an empty (white) box. Forcing position here (inline
+               styles beat the selector) makes the plate actually fill the slot. */
+            position: "absolute",
+            left: 0,
+            right: 0,
+            ...(parallax && !prefersReduced
+              ? { height: "110%", top: "-5%" }
+              : { height: "100%", top: 0 }),
+          }}
+          className={cn("absolute inset-0 w-full", TONE[tone])}
+        />
+      )}
 
       {/* legibility scrim for overlaid copy */}
       {scrim !== "none" && (
@@ -128,8 +160,8 @@ export function BrandImage({
         />
       )}
 
-      {/* "sample" chip — honest placeholder marker */}
-      {sample && (
+      {/* "sample" chip — honest placeholder marker (gone once a real photo lands) */}
+      {showSample && (
         <span className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-[oklch(100%_0_0_/_0.4)] bg-[oklch(16%_0.01_350_/_0.55)] px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-[oklch(98%_0.01_350)] backdrop-blur-sm">
           Sample
         </span>

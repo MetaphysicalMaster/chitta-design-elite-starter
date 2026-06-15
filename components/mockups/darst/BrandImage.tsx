@@ -47,6 +47,7 @@ export function BrandImage({
   scrim = "none",
   label,
   showSample = true,
+  src,
   className,
   children,
 }: {
@@ -60,13 +61,22 @@ export function BrandImage({
   /** Caption rendered over the plate (e.g. a procedure name). */
   label?: string;
   showSample?: boolean;
+  /**
+   * Real graded photo (root-absolute, e.g. "/clients/darst/gen/x.webp"). When
+   * present, a real <img> fills the slot over the brand plate, and the "Sample"
+   * tag is suppressed by default — the gradient plate stays as the zero-CLS
+   * backdrop while the photo loads.
+   */
+  src?: string;
   className?: string;
   children?: React.ReactNode;
 }) {
+  // a real photo is not a "sample" — suppress the tag unless explicitly forced.
+  const sample = src ? false : showSample;
   return (
     <div
       role="img"
-      aria-label={`${alt} (sample image)`}
+      aria-label={src ? alt : `${alt} (sample image)`}
       className={cn(
         "relative isolate overflow-hidden border border-[var(--color-border)]",
         RADIUS[radius],
@@ -75,6 +85,18 @@ export function BrandImage({
       )}
       style={{ aspectRatio: aspect }}
     >
+      {/* real graded photo — fills the locked aspect-ratio container over the
+          brand plate (zero CLS); lazy + async per the page's img discipline. */}
+      {src && (
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+        />
+      )}
+
       {/* legibility scrim for overlaid copy */}
       {scrim !== "none" && (
         <span
@@ -88,8 +110,8 @@ export function BrandImage({
         />
       )}
 
-      {/* "sample" tag — honest about the placeholder */}
-      {showSample && (
+      {/* "sample" tag — honest about the placeholder (auto-hidden for real src) */}
+      {sample && (
         <span className="pointer-events-none absolute right-2.5 top-2.5 z-10 rounded-full bg-[oklch(20%_0.035_56_/_0.62)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[oklch(96%_0.012_72)] backdrop-blur-sm">
           Sample
         </span>

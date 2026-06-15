@@ -234,6 +234,7 @@ export function Aesthetics() {
                 variant="skin"
                 radius="3xl"
                 scrim="soft"
+                src="/clients/darst/gen/facial.webp"
                 className="!rounded-[1.35rem]"
               >
                 {/* soft editorial caption riding the lower scrim — speaks HER

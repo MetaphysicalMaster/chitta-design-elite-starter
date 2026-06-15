@@ -21,11 +21,10 @@ const CREDS = [
 
 /* The practitioner IS the product for a medical-authority brand. A named,
    credentialed "Guided by" moment turns anonymous authority into trust. The
-   headshot, name and details are a clearly-labelled SAMPLE provider until the
-   client supplies the real clinician's photo and credentials. */
+   headshot, name and details are the real medical director. */
 const PROVIDER = {
-  name: "Dr. [Name] · [Surname], NP-C",
-  credential: "Medical Director · Allergan-trained · 12+ years in aesthetics",
+  name: "Dr. Richard Biggerstaff, MD",
+  credential: "Medical Director",
   signature:
     "I treat faces the way I'd want mine treated — conservatively, and only when it serves you. We start with a conversation, never a quota.",
 };
@@ -120,20 +119,20 @@ export function Authority() {
               single most trust-building beat on a medical-authority page, so the
               page carries exactly one (the earlier duplicate pull-quote was
               collapsed; its line is now the section headline). The headshot,
-              name and credentials are a clearly-labelled SAMPLE until the client
-              supplies the real clinician. */}
+              name and credentials are the real medical director. */}
           <Reveal delay={0.16}>
             <figure className="mt-10 flex items-center gap-5 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 shadow-[var(--glass-shadow)] sm:p-6">
-              {/* Sample placeholder avatar — the in-circle "sample" pill is
-                  suppressed (it crowds an 80px circle); the honesty is carried
-                  instead by the role=img aria-label and the visible "Sample
-                  provider · real photo & name at launch" note in the caption. */}
+              {/* Real medical-director headshot — the in-circle "sample" pill is
+                  suppressed (it crowds an 80px circle), and the photo is real so
+                  no Sample tag is shown. */}
               <BrandImage
                 aspect="1 / 1"
                 variant="nude"
                 radius="full"
                 sample={false}
                 reveal={false}
+                src="/clients/simplyskin/real/dr-biggerstaff.webp"
+                alt="Dr. Richard Biggerstaff, MD — Medical Director at SimplySkin MedSpa."
                 className="h-20 w-20 shrink-0 sm:h-24 sm:w-24"
               />
               <figcaption className="min-w-0">
@@ -148,9 +147,6 @@ export function Authority() {
                 </p>
                 <p className="mt-3 text-sm font-light italic leading-relaxed text-[var(--color-fg-muted)]">
                   &ldquo;{PROVIDER.signature}&rdquo;
-                </p>
-                <p className="mt-2 text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-fg-subtle)]">
-                  Sample provider · real photo &amp; name at launch
                 </p>
               </figcaption>
             </figure>

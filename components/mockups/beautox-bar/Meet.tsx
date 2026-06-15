@@ -8,10 +8,11 @@
  * partner/affiliation trust strip carrying the brand's GOLD note onto a light
  * surface (deepening the female-LUXURY register, not just the playful one).
  *
- * Portraits use the same BrandImage SAMPLE-plate honesty pattern as the B&A
- * slider — clearly marked "Client to supply real team headshots", so it slots a
- * real photo straight in. No invented people are presented as real: names read
- * as placeholder roles and the section is captioned as a sample.
+ * Portraits are tasteful REPRESENTATIVE images for this concept (graded via
+ * BrandImage's real-photo path), captioned "Representative · for this concept"
+ * so they never read as claims about specific named staff. Real headshots,
+ * names & credentials drop straight into the same cards on launch; the role
+ * titles stay as honest placeholders until then.
  */
 
 import { RevealGroup, RevealItem, SectionHeading, Reveal } from "./primitives";
@@ -24,6 +25,8 @@ type Provider = {
   /** "her pour" — the injector's signature specialty, in bar voice */
   pour: string;
   years: string;
+  /** representative portrait for this concept — a real face replaces it on launch */
+  photo: string;
 };
 
 const TEAM: Provider[] = [
@@ -32,18 +35,21 @@ const TEAM: Provider[] = [
     credential: "RN · Master Injector",
     pour: "Natural-result tox & full-face balancing",
     years: "10+ yrs",
+    photo: "/clients/beautox-bar/gen/team-1.webp",
   },
   {
     name: "Your Nurse Injector",
     credential: "RN, BSN · Aesthetics",
     pour: "Lip artistry & soft, kissable filler",
     years: "6+ yrs",
+    photo: "/clients/beautox-bar/gen/team-2.webp",
   },
   {
     name: "Your Aesthetician",
     credential: "Licensed Master Esthetician",
     pour: "Medical-grade glow facials & skin",
     years: "8+ yrs",
+    photo: "/clients/beautox-bar/gen/team-3.webp",
   },
 ];
 
@@ -139,7 +145,8 @@ export function Meet() {
             <RevealItem key={p.name} as="article">
               <article className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--glass-shadow)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5">
                 <BrandImage
-                  alt={`Beautox Bar provider portrait — ${p.credential}`}
+                  alt={`Beautox Bar provider portrait — ${p.credential} (representative, for this concept)`}
+                  src={p.photo}
                   aspect="4:5"
                   tone="magenta"
                   radius="lg"
@@ -176,12 +183,15 @@ export function Meet() {
           ))}
         </RevealGroup>
 
-        {/* Honest sample note — same pattern as the B&A slider. */}
+        {/* Honest representative note — these are tasteful stand-in portraits for
+            the concept, NOT claims about specific named staff. Real headshots,
+            names & credentials drop straight into the same cards on launch. */}
         <p className="mt-7 text-center text-xs text-[var(--color-fg-subtle)]">
           <span className="font-semibold text-[var(--color-accent-deep)]">
-            Client to supply real team headshots, names &amp; credentials
+            Representative · for this concept
           </span>{" "}
-          — cards are ready. Sample roles shown for illustration.
+          — portraits &amp; roles are illustrative. Client supplies real team
+          headshots, names &amp; credentials on launch.
         </p>
 
         {/* Partner / affiliation trust strip — brand-black band with the gold

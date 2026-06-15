@@ -9,6 +9,7 @@
  */
 
 import { Reveal, RevealGroup, RevealItem, SectionHeading } from "./primitives";
+import { BrandImage } from "./BrandImage";
 import { cn } from "@/lib/utils";
 
 type Service = {
@@ -18,6 +19,10 @@ type Service = {
   featured?: boolean;
   /** The cosmetic/aesthetic card — carries the warm coral note + chip. */
   aesthetic?: boolean;
+  /** Real graded photo for the card media slot. */
+  src: string;
+  /** Accessible description of the card photo. */
+  imgAlt: string;
 };
 
 const SERVICES: Service[] = [
@@ -33,6 +38,8 @@ const SERVICES: Service[] = [
       "Rash & lesion diagnosis",
     ],
     featured: true,
+    src: "/clients/darst/gen/procedure.webp",
+    imgAlt: "A dermatologist performing an in-office clinical procedure",
   },
   {
     title: "Cosmetic dermatology",
@@ -40,18 +47,24 @@ const SERVICES: Service[] = [
       "Results that look like you — evidence-led aesthetic care from a physician who reads skin as an organ first, then refines how it looks and feels.",
     items: ["Medical-grade facials", "Chemical peels", "Skin rejuvenation"],
     aesthetic: true,
+    src: "/clients/darst/gen/filler.webp",
+    imgAlt: "A patient receiving a refined cosmetic dermatology treatment",
   },
   {
     title: "Laser & injectables",
     blurb:
       "Precise, restrained results — lasers and injectables selected for your skin, not a menu.",
     items: ["Laser resurfacing", "Neuromodulators", "Dermal fillers"],
+    src: "/clients/darst/gen/laser.webp",
+    imgAlt: "A precision laser resurfacing treatment in progress",
   },
   {
     title: "Vein treatment",
     blurb:
       "Spider and varicose vein care with the same diagnostic rigor as the rest of the practice.",
     items: ["Sclerotherapy", "Vascular laser", "Vein evaluation"],
+    src: "/clients/darst/gen/body.webp",
+    imgAlt: "A clinical vein and vascular evaluation",
   },
 ];
 
@@ -103,6 +116,17 @@ export function Services() {
                     ? "linear-gradient(180deg, var(--color-coral-subtle), var(--color-coral), var(--color-coral-deep))"
                     : "linear-gradient(180deg, var(--strata-corneum), var(--strata-dermis), var(--strata-vessel))",
                 }}
+              />
+
+              {/* card media — the real graded treatment photo, locked to a wide
+                  aspect-ratio (zero CLS); the aesthetic card warms to a coral
+                  scrim register, the clinical cards stay neutral. */}
+              <BrandImage
+                alt={s.imgAlt}
+                src={s.src}
+                aspect={s.featured ? "16 / 7" : "16 / 9"}
+                radius="xl"
+                className="mb-6"
               />
 
               <h3 className="font-display text-2xl text-[var(--color-fg)]">

@@ -23,6 +23,10 @@ type Location = {
   phoneTel: string;
   note: string;
   launch?: boolean;
+  /** Real interior photograph behind the place-name flourish. */
+  img: string;
+  /** Accessible description of the interior photo. */
+  imgAlt: string;
 };
 
 const LOCATIONS: Location[] = [
@@ -35,6 +39,8 @@ const LOCATIONS: Location[] = [
     phoneDisplay: "(317) 348-1313",
     phoneTel: "+13173481313",
     note: "Our Fishers home — quiet, medical-grade care for body and skin.",
+    img: "/clients/simplyskin/gen/interior-1.webp",
+    imgAlt: "The serene, light-filled treatment interior at SimplySkin MedSpa in Fishers.",
   },
   {
     id: "carmel",
@@ -46,6 +52,8 @@ const LOCATIONS: Location[] = [
     phoneTel: "+13173481313",
     note: "Our newest location on the north side — the same expertise, closer to you.",
     launch: true,
+    img: "/clients/simplyskin/gen/interior-2.webp",
+    imgAlt: "The calm, modern treatment interior at SimplySkin MedSpa's Carmel · Zionsville location.",
   },
 ];
 
@@ -102,19 +110,23 @@ function LocationCard({ loc }: { loc: Location }) {
           aspect="16 / 10"
           variant={loc.launch ? "default" : "nude"}
           radius="lg"
+          src={loc.img}
+          alt={loc.imgAlt}
           className="rounded-none border-0"
         >
-          {/* Both location cards carry a matched, art-directed editorial plate
-              (a place-name flourish) so they read as a considered pair rather
-              than "real photo + placeholder" — and the single real hero
-              photograph is reserved for its strongest moments (hero, Authority
-              portrait, and the results lead) instead of being reused here. */}
-          <div className="absolute inset-0 z-[1] grid place-items-center text-center">
+          {/* Each location card carries the real interior photograph with a
+              matched, art-directed place-name flourish over a soft scrim so the
+              two read as a considered pair. */}
+          <div
+            aria-hidden
+            className="absolute inset-0 z-[1] bg-gradient-to-t from-black/45 via-black/10 to-black/20"
+          />
+          <div className="absolute inset-0 z-[2] grid place-items-center text-center">
             <div>
-              <p className="font-display text-[2.6rem] leading-none text-[var(--color-fg)]/85">
+              <p className="font-display text-[2.6rem] leading-none text-white drop-shadow-[0_2px_12px_oklch(20%_0.01_66_/_0.55)]">
                 {loc.name === "Carmel · Zionsville" ? "Carmel" : loc.name}
               </p>
-              <p className="mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-accent-deep)]">
+              <p className="mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/90 drop-shadow-[0_1px_8px_oklch(20%_0.01_66_/_0.5)]">
                 {loc.launch ? "Now Welcoming · Zionsville" : "Our Fishers home"}
               </p>
             </div>

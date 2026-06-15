@@ -180,22 +180,22 @@ const CASES: Case[] = [
     id: "lips",
     treatment: "Lip Filler",
     detail: "0.7ml · 2-week follow-up",
-    before: "radial-gradient(120% 120% at 40% 30%, oklch(86% 0.03 40), oklch(74% 0.04 30))",
-    after: "radial-gradient(120% 120% at 40% 30%, oklch(88% 0.05 18), oklch(78% 0.07 12))",
+    before: "url('/clients/blue-sky/ba/lips-before.webp') center/cover",
+    after: "url('/clients/blue-sky/ba/lips-after.webp') center/cover",
   },
   {
     id: "tox",
     treatment: "Botox — Forehead & Glabella",
     detail: "34 units · 14 days post",
-    before: "linear-gradient(160deg, oklch(85% 0.02 250), oklch(78% 0.03 250))",
-    after: "linear-gradient(160deg, oklch(90% 0.03 235), oklch(83% 0.04 235))",
+    before: "url('/clients/blue-sky/ba/tox-before.webp') center/cover",
+    after: "url('/clients/blue-sky/ba/tox-after.webp') center/cover",
   },
   {
     id: "micro",
     treatment: "Microneedling + PRP",
     detail: "3 sessions · texture & tone",
-    before: "radial-gradient(130% 100% at 60% 40%, oklch(82% 0.03 60), oklch(72% 0.05 50))",
-    after: "radial-gradient(130% 100% at 60% 40%, oklch(89% 0.03 70), oklch(82% 0.04 65))",
+    before: "url('/clients/blue-sky/ba/micro-before.webp') center/cover",
+    after: "url('/clients/blue-sky/ba/micro-after.webp') center/cover",
   },
 ];
 

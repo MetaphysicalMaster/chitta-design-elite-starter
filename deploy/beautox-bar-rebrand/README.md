@@ -1,3 +1,2 @@
-# Beautox Bar
-Proposed homepage rebuild by The MetaMarketer.
-- Live: https://metaphysicalmaster.github.io/beautox-bar-rebrand/
+# Beautox Bar — Owner Preview
+Live: https://metaphysicalmaster.github.io/beautox-bar-rebrand/

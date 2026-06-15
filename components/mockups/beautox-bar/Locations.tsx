@@ -27,6 +27,7 @@ function LocationCard({ loc, index }: { loc: Location; index: number }) {
       >
         <BrandImage
           alt={`Beautox Bar ${loc.city} treatment bar interior`}
+          src={loc.interior}
           aspect="16:10"
           tone={loc.flagship ? "magenta" : "lilac"}
           radius="lg"

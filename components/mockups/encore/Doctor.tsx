@@ -2,11 +2,10 @@
 
 /**
  * Doctor — the "Meet Dr. Londeree" credibility section. Leads hard on the
- * brand's crown jewel: academic authority + OSU faculty role. A refined
- * portrait MONOGRAM (initials, clearly not a stock photo — we never fabricate a
- * real person's face) keeps the layout honest while reading as premium. Beneath
- * it, a real clinical AMBIANCE photo (explicitly labelled "Inside the practice")
- * adds warmth + credibility without ever implying it is the doctor.
+ * brand's crown jewel: academic authority + OSU faculty role. The real,
+ * enhanced portrait of Dr. Gwyn Londeree anchors the layout — the founding
+ * physician now has a face. Beneath it, a real clinical AMBIANCE photo
+ * (explicitly labelled "Inside the practice") adds warmth + credibility.
  */
 
 import { Section, Reveal } from "./primitives";
@@ -42,31 +41,35 @@ export function Doctor() {
       style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}
     >
       <div className="grid items-center gap-12 md:grid-cols-[0.85fr_1fr]">
-        {/* Portrait monogram + supporting ambiance photo */}
+        {/* Real portrait of Dr. Londeree + supporting ambiance photo */}
         <Reveal className="order-2 flex flex-col gap-4 md:order-1">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_22%,var(--color-accent-subtle),transparent_62%)]"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/clients/encore/real/dr-londeree.webp"
+              alt="Dr. Gwyn Londeree, MD — founder of Encore Dermatology and OSU Associate Professor of Dermatology."
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+              className="en-photo absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 30%" }}
             />
+            {/* brand duotone wash for on-brand cohesion */}
+            <span aria-hidden className="en-photo-tone" />
+            {/* slow concentric rings, layered above the photo as a refined accent
+                frame — echoes the clinical/leaf brand marks without obscuring her */}
             <motion.div
               aria-hidden
               animate={prefersReduced ? {} : { rotate: 360 }}
               transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[var(--clinical)]/30"
+              className="pointer-events-none absolute left-1/2 top-[38%] h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[var(--clinical)]/20"
             />
             <motion.div
               aria-hidden
               animate={prefersReduced ? {} : { rotate: -360 }}
               transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--leaf)]/30"
+              className="pointer-events-none absolute left-1/2 top-[38%] h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--leaf)]/20"
             />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <span className="font-display text-7xl text-[var(--clinical-deep)]">GL</span>
-              <span className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-fg-subtle)]">
-                Portrait · sample
-              </span>
-            </div>
             <div className="absolute inset-x-0 bottom-0 border-t border-[var(--color-border)] bg-[var(--glass-bg-strong)] px-6 py-4 backdrop-blur-md">
               <p className="font-display text-lg text-[var(--color-fg)]">
                 Dr. Gwyn Londeree, MD

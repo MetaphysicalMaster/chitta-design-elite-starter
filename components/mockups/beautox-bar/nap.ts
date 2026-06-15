@@ -31,6 +31,8 @@ export type Location = {
   /** opening status — both bars are open; kept for the card/badge system. */
   status: "open" | "coming-soon";
   flagship?: boolean;
+  /** on-brand pink/black bar-interior photo (root-absolute, graded). */
+  interior: string;
 };
 
 export const LOCATIONS: Location[] = [
@@ -48,6 +50,7 @@ export const LOCATIONS: Location[] = [
     blurb: "Our Northwest-metro bar — the full injectables menu, tox to glow.",
     status: "open",
     flagship: true,
+    interior: "/clients/beautox-bar/gen/loc-1.webp",
   },
   {
     id: "white-bear-lake",
@@ -62,6 +65,7 @@ export const LOCATIONS: Location[] = [
     happyHour: "Happy Hour 11AM–2PM · Mon–Fri",
     blurb: "Our East-metro bar — same playful pour, same natural-looking results.",
     status: "open",
+    interior: "/clients/beautox-bar/gen/loc-2.webp",
   },
 ];
 
