@@ -22,18 +22,15 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Chitta Design Elite Starter",
+  title: "metamarker — results that compound",
   description:
-    "Elite UI/UX Engineer baseline — Next.js 16 + Tailwind v4 + Framer Motion + shadcn/ui + Aceternity UI + Magic UI. $10K-quality bar enforced via DesignGod skill.",
-  metadataBase: new URL("https://chitta-design-elite-starter.vercel.app"),
+    "Everyone else moves the needle a little. Metamarketing bends the curve — and you'll see the exact day it happens, and exactly why. We don't redesign websites. We build the machine.",
+  metadataBase: new URL("https://metamarker.com"),
   openGraph: {
-    title: "Chitta Design Elite Starter",
-    description: "Elite UI/UX Engineer baseline for $10K-quality client websites.",
+    title: "metamarker — results that compound",
+    description:
+      "Most marketing adds. Metamarketing multiplies. See the exact day your business transforms — and why.",
     type: "website",
-  },
-  robots: {
-    index: false, // starter template — not indexed
-    follow: false,
   },
 };
 
