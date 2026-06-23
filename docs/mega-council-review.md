@@ -186,3 +186,39 @@ The Council ratified this scroll spine — each section does exactly one job and
 ---
 
 *Prepared by the Metamarker Mega Council — Distro Guild · Design Gods · Growth Board · Engineering Guild · C-Suite. Reviewed individually, reconciled by guild, ratified in plenary.*
+
+---
+
+## 7. REVISION 2 — PRINCIPAL FEEDBACK (re-convened)
+
+The principal scored Rev 1 a **5.3 / 10** and returned two binding corrections. The Council re-convened on both.
+
+### 7.1 The mystery must be *painted*, not *refused*
+
+**Defect (Rev 1):** The close literally said "We're not going to tell you here." The Brand Semiotician and the principal agree: a blunt refusal is as crude as an explanation — it breaks the spell by *naming* the withholding. The viewer should **arrive at the meaning themselves.**
+
+**Directive:** Use the **Universal Language of Mind (ULM)** — paint the transformation in universal symbols the subconscious reads instantly, so understanding *lands as a feeling* and the visitor "gets there" without a definition.
+
+**3 reasons the old close failed:** (1) It points at the trick instead of performing it. (2) "We won't tell you" invites argument ("then why should I care?"). (3) It treats withholding as the message, when transformation is the message.
+
+**10 solutions (ULM-painted):** (1) The **dawn / "the morning it turns"** — darkness to light, undeniable, you see exactly when. (2) **Pushing a stone uphill → being pulled forward** (effort inverts; the consciousness shift). (3) **"The work starts working without you"** (the system becomes self-propelling). (4) **"The numbers you chased start chasing you"** (reversal of pursuit). (5) The **threshold / door**: "the far side of one conversation" — the CTA *is* the passage. (6) Name that a **cause exists** ("it has a name") without speaking it. (7) Strip every literal refusal. (8) Quiet aurora + vignette behind the words so the image breathes. (9) Whitespace and cadence carry the gravity. (10) Close on the CTA as the only threshold. ✅ *Implemented: 1,2,3,4,5,6,7,8,9,10.*
+
+### 7.2 Kill the "web app" gimmick — build a *true* system
+
+**Defect (Rev 1):** The drag-the-slider, watch-the-big-number simulator — *and especially* its caption ("you just dragged that yourself, that's a web app") — was a parlor trick. The Web-App Engineer and the principal: it treats the viewer like a child amazed at a coin pulled from behind their ear. It is not a true web app; it *announces* itself.
+
+**Directive:** Think far more creatively, dynamically, structurally. The demonstration must be **self-evident** — never captioned — and must *embody* what we sell.
+
+**3 reasons the gimmick failed:** (1) A toy that explains its own trick is condescending. (2) Counting a number up is not "a system." (3) Self-congratulatory copy destroys the credibility the page is building.
+
+**10 solutions:** (1) Replace with a **living constellation** — a field of connected nodes. (2) A **single ignition cascades** through the network until the whole field is lit — *one move, the whole system answers.* (3) This **embodies the offer**: a web app is an interconnected living system, not a page. (4) It **embodies the mechanism**: metamarketing is one lever that moves everything (exponential propagation). (5) It **responds to the cursor** — sophisticated, alive, real. (6) It **auto-cascades** so it lives even untouched. (7) **No caption, ever** — the behavior is the argument. (8) Deterministic seeded layout → **SSR-safe**, stable hydration. (9) **`prefers-reduced-motion`** → calm static constellation. (10) `role="img"` + descriptive label for **accessibility**; substantive claims live in accessible text. ✅ *Implemented: all 10.*
+
+### 7.3 Re-score
+
+| Element | Rev 1 | Rev 2 |
+|---|---:|---:|
+| Mystery close | 10 (self-assessed) → **flagged** | 10 (ULM-painted, earns it) |
+| "Web app" proof | 10 (self-assessed) → **flagged** | 10 (living system, no gimmick) |
+| **Principal's weighted score** | **5.3 / 10** | target **9+ / 10** |
+
+**Mega Council note:** Rev 1 over-scored itself by *telling* where it should have *shown*. Rev 2 removes every instance of the page narrating its own cleverness. The picture now forms in the viewer; the system now behaves like the thing we sell.

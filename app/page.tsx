@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { AuroraGradient } from "@/components/effects/aurora-gradient";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -29,8 +29,8 @@ const itemVariants = {
 
 /* ------------------------------------------------------------------ */
 /*  Exponential proof chart                                            */
-/*  Builds two SVG paths — additive (flat-ish) vs exponential —        */
-/*  and marks the inflection point where the gap becomes undeniable.   */
+/*  Two SVG paths — additive (flat-ish) vs exponential — with the      */
+/*  inflection point where the gap becomes undeniable.                 */
 /* ------------------------------------------------------------------ */
 
 const CHART_W = 760;
@@ -42,27 +42,19 @@ function buildPaths() {
   const additive: string[] = [];
   const exponential: string[] = [];
   for (let i = 0; i <= steps; i++) {
-    const t = i / steps; // 0..1
+    const t = i / steps;
     const x = PAD + t * (CHART_W - PAD * 2);
-
-    // Additive: a gentle straight climb.
     const yAdd = CHART_H - PAD - t * (CHART_H * 0.18);
-
-    // Exponential: hockey-stick. Normalised e-curve.
     const k = 4.1;
     const norm = (Math.exp(k * t) - 1) / (Math.exp(k) - 1);
     const yExp = CHART_H - PAD - norm * (CHART_H - PAD * 2);
-
     additive.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)},${yAdd.toFixed(1)}`);
     exponential.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)},${yExp.toFixed(1)}`);
   }
-
-  // Inflection marker — where exponential visibly tears away (~72%).
   const it = 0.72;
   const kx = PAD + it * (CHART_W - PAD * 2);
   const knorm = (Math.exp(4.1 * it) - 1) / (Math.exp(4.1) - 1);
   const ky = CHART_H - PAD - knorm * (CHART_H - PAD * 2);
-
   return {
     additive: additive.join(" "),
     exponential: exponential.join(" "),
@@ -78,11 +70,10 @@ function ExponentialChart() {
     <div className="relative w-full overflow-hidden rounded-3xl border border-border bg-bg-elevated p-4 sm:p-8">
       <svg
         viewBox={`0 0 ${CHART_W} ${CHART_H}`}
-        className="w-full h-auto"
+        className="h-auto w-full"
         role="img"
-        aria-label="A chart comparing additive marketing, which climbs gently in a near-straight line, against metamarketing, which curves exponentially upward and tears away at the inflection point."
+        aria-label="Two lines from the same origin. One climbs gently, almost straight. The other curves upward and tears away — and a marked point shows the moment the difference becomes impossible to miss."
       >
-        {/* baseline grid */}
         {[0.25, 0.5, 0.75].map((g) => (
           <line
             key={g}
@@ -96,7 +87,6 @@ function ExponentialChart() {
           />
         ))}
 
-        {/* additive line */}
         <motion.path
           d={additive}
           fill="none"
@@ -109,7 +99,6 @@ function ExponentialChart() {
           transition={{ duration: 1.1, ease: "easeOut" }}
         />
 
-        {/* exponential gradient stroke */}
         <defs>
           <linearGradient id="expgrad" x1="0" y1="1" x2="1" y2="0">
             <stop offset="0%" stopColor="var(--color-info)" />
@@ -129,7 +118,6 @@ function ExponentialChart() {
           style={{ filter: "drop-shadow(0 0 10px var(--color-accent-subtle))" }}
         />
 
-        {/* inflection marker */}
         <motion.g
           initial={reduce ? false : { opacity: 0, scale: 0.6 }}
           whileInView={reduce ? undefined : { opacity: 1, scale: 1 }}
@@ -138,118 +126,249 @@ function ExponentialChart() {
           style={{ transformOrigin: `${inflection.x}px ${inflection.y}px` }}
         >
           <circle cx={inflection.x} cy={inflection.y} r={7} className="fill-accent" />
-          <circle cx={inflection.x} cy={inflection.y} r={13} className="fill-none stroke-accent" strokeWidth={1.5} opacity={0.5} />
+          <circle
+            cx={inflection.x}
+            cy={inflection.y}
+            r={13}
+            className="fill-none stroke-accent"
+            strokeWidth={1.5}
+            opacity={0.5}
+          />
         </motion.g>
       </svg>
 
-      {/* legend */}
       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
         <div className="flex items-center gap-2 text-sm text-fg-muted">
           <span className="h-0.5 w-6 rounded bg-fg-subtle" />
-          Everyone else — marketing that <em className="not-italic text-fg">adds</em>
+          Everyone else — the line that <em className="not-italic text-fg">adds</em>
         </div>
         <div className="flex items-center gap-2 text-sm text-fg">
           <span className="h-1 w-6 rounded bg-gradient-to-r from-info to-accent" />
-          Metamarketing — results that <span className="bg-gradient-to-r from-info to-accent bg-clip-text font-semibold text-transparent">compound</span>
+          Metamarketing — the line that{" "}
+          <span className="bg-gradient-to-r from-info to-accent bg-clip-text font-semibold text-transparent">
+            compounds
+          </span>
         </div>
       </div>
 
       <p className="mt-4 text-sm text-fg-muted">
-        <span className="font-medium text-accent">The marked point</span> is the inflection —
-        the day the difference stops being a theory and becomes your bank balance. You won&apos;t
-        have to guess when it arrives. You&apos;ll watch it happen.
+        You will never have to be told which line is yours. The day the curve bends, you feel it in
+        the bank, in the calendar, in the room.
       </p>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Live growth simulator                                              */
-/*  Visitor-driven. This widget is itself the proof that we build      */
-/*  working web apps — not static pages.                               */
+/*  Living system — constellation                                      */
+/*  A single ignition cascades through the connected field until the   */
+/*  whole network is lit. One move; the whole system answers. The      */
+/*  layout is deterministic (seeded), so it is SSR-safe and stable.    */
 /* ------------------------------------------------------------------ */
 
-function fmt(n: number) {
-  return Math.round(n).toLocaleString("en-US");
+const FIELD_W = 760;
+const FIELD_H = 420;
+
+function mulberry32(seed: number) {
+  let a = seed;
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
-function GrowthSimulator() {
-  const [months, setMonths] = useState(8);
+interface Node {
+  x: number;
+  y: number;
+}
 
-  const base = 100;
-  const additive = base + months * 14; // linear
-  const exponential = base * Math.pow(1.46, months); // compounding
-  const multiple = exponential / additive;
+const COLS = 8;
+const ROWS = 5;
 
-  // bar widths (relative to exponential at 12mo as ceiling)
-  const ceiling = base * Math.pow(1.46, 12);
-  const addPct = Math.max(2, (additive / ceiling) * 100);
-  const expPct = Math.max(2, (exponential / ceiling) * 100);
+const NODES: Node[] = (() => {
+  const rand = mulberry32(20240617);
+  const out: Node[] = [];
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const jx = (rand() - 0.5) * 0.62;
+      const jy = (rand() - 0.5) * 0.62;
+      out.push({
+        x: (c + 0.5 + jx) * (FIELD_W / COLS),
+        y: (r + 0.5 + jy) * (FIELD_H / ROWS),
+      });
+    }
+  }
+  return out;
+})();
+
+const EDGES: { a: number; b: number }[] = (() => {
+  const out: { a: number; b: number }[] = [];
+  const seen = new Set<string>();
+  NODES.forEach((n, i) => {
+    const nearest = NODES.map((m, j) => ({ j, d: (m.x - n.x) ** 2 + (m.y - n.y) ** 2 }))
+      .filter((o) => o.j !== i)
+      .sort((p, q) => p.d - q.d)
+      .slice(0, 3);
+    nearest.forEach((o) => {
+      const a = Math.min(i, o.j);
+      const b = Math.max(i, o.j);
+      const key = `${a}-${b}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        out.push({ a, b });
+      }
+    });
+  });
+  return out;
+})();
+
+const HOPS: number[][] = (() => {
+  const adj: number[][] = NODES.map(() => []);
+  EDGES.forEach(({ a, b }) => {
+    adj[a].push(b);
+    adj[b].push(a);
+  });
+  return NODES.map((_, src) => {
+    const dist = NODES.map(() => Infinity);
+    dist[src] = 0;
+    const queue = [src];
+    while (queue.length) {
+      const u = queue.shift()!;
+      for (const v of adj[u]) {
+        if (dist[v] === Infinity) {
+          dist[v] = dist[u] + 1;
+          queue.push(v);
+        }
+      }
+    }
+    return dist.map((d) => (Number.isFinite(d) ? d : 6));
+  });
+})();
+
+function NodeCircle({
+  node,
+  delay,
+  igniteId,
+  reduce,
+}: {
+  node: Node;
+  delay: number;
+  igniteId: number;
+  reduce: boolean | null;
+}) {
+  const [lit, setLit] = useState(false);
+
+  useEffect(() => {
+    if (reduce || igniteId === 0) return;
+    const on = setTimeout(() => setLit(true), delay);
+    const off = setTimeout(() => setLit(false), delay + 520);
+    return () => {
+      clearTimeout(on);
+      clearTimeout(off);
+    };
+  }, [igniteId, delay, reduce]);
 
   return (
-    <div className="rounded-3xl border border-border bg-bg-elevated p-6 sm:p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <label htmlFor="months" className="text-sm font-medium text-fg">
-          Run the clock forward
-        </label>
-        <span className="font-mono text-sm text-fg-muted">
-          month <span className="text-fg">{months}</span> / 12
-        </span>
-      </div>
+    <motion.circle
+      cx={node.x}
+      cy={node.y}
+      r={3.2}
+      className={lit ? "fill-accent" : "fill-fg-subtle"}
+      animate={{ scale: lit ? 2.2 : 1, opacity: lit ? 1 : 0.42 }}
+      transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        transformBox: "fill-box",
+        transformOrigin: "center",
+        filter: lit ? "drop-shadow(0 0 9px var(--color-accent))" : "none",
+      }}
+    />
+  );
+}
 
-      <input
-        id="months"
-        type="range"
-        min={0}
-        max={12}
-        step={1}
-        value={months}
-        onChange={(e) => setMonths(Number(e.target.value))}
-        className="mt-4 w-full accent-[var(--color-accent)]"
-        aria-describedby="sim-output"
-      />
+function Constellation() {
+  const reduce = useReducedMotion();
+  const svgRef = useRef<SVGSVGElement>(null);
+  const throttle = useRef(0);
+  const [wave, setWave] = useState({ id: 0, origin: 0 });
 
-      <div id="sim-output" className="mt-8 grid gap-6 sm:grid-cols-2">
-        {/* additive */}
-        <div>
-          <p className="text-sm text-fg-muted">Everyone else (additive)</p>
-          <p className="mt-1 font-mono text-3xl font-semibold text-fg-subtle tabular-nums">
-            {fmt(additive)}
-          </p>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-bg-subtle">
-            <motion.div
-              className="h-full rounded-full bg-fg-subtle"
-              animate={{ width: `${addPct}%` }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </div>
-        </div>
+  const ignite = useCallback((origin: number) => {
+    setWave((w) => ({ id: w.id + 1, origin }));
+  }, []);
 
-        {/* exponential */}
-        <div>
-          <p className="text-sm text-fg">Metamarketing (exponential)</p>
-          <p className="mt-1 bg-gradient-to-r from-info to-accent bg-clip-text font-mono text-3xl font-semibold tabular-nums text-transparent">
-            {fmt(exponential)}
-          </p>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-bg-subtle">
-            <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-info to-accent"
-              animate={{ width: `${expPct}%` }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </div>
-        </div>
-      </div>
+  useEffect(() => {
+    if (reduce) return;
+    const first = setTimeout(() => ignite(Math.floor(Math.random() * NODES.length)), 700);
+    const loop = setInterval(() => ignite(Math.floor(Math.random() * NODES.length)), 3600);
+    return () => {
+      clearTimeout(first);
+      clearInterval(loop);
+    };
+  }, [reduce, ignite]);
 
-      <p className="mt-8 text-base text-fg-muted">
-        At month <span className="text-fg">{months}</span>, metamarketing is already{" "}
-        <span className="font-semibold text-accent">{multiple.toFixed(1)}×</span> ahead — and the
-        gap widens every month you wait.{" "}
-        <span className="text-fg">
-          You just dragged that yourself. That&apos;s a web app — not a brochure. It&apos;s also
-          exactly what we build for you.
-        </span>
-      </p>
+  const handlePointer = useCallback(
+    (e: React.PointerEvent<SVGSVGElement>) => {
+      if (reduce) return;
+      const now = performance.now();
+      if (now - throttle.current < 150) return;
+      throttle.current = now;
+      const svg = svgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      const px = ((e.clientX - rect.left) / rect.width) * FIELD_W;
+      const py = ((e.clientY - rect.top) / rect.height) * FIELD_H;
+      let best = 0;
+      let bd = Infinity;
+      NODES.forEach((n, i) => {
+        const d = (n.x - px) ** 2 + (n.y - py) ** 2;
+        if (d < bd) {
+          bd = d;
+          best = i;
+        }
+      });
+      ignite(best);
+    },
+    [reduce, ignite]
+  );
+
+  const hops = HOPS[wave.origin];
+
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-elevated">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,var(--color-accent-subtle),transparent_70%)] opacity-50" />
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${FIELD_W} ${FIELD_H}`}
+        onPointerMove={handlePointer}
+        onPointerDown={handlePointer}
+        className="relative h-auto w-full touch-none"
+        role="img"
+        aria-label="A field of connected points. A single spark ignites one point, then races outward across every connection until the entire system is alight."
+      >
+        {EDGES.map(({ a, b }, i) => (
+          <line
+            key={i}
+            x1={NODES[a].x}
+            y1={NODES[a].y}
+            x2={NODES[b].x}
+            y2={NODES[b].y}
+            className="stroke-border"
+            strokeWidth={1}
+            opacity={0.6}
+          />
+        ))}
+        {NODES.map((n, i) => (
+          <NodeCircle
+            key={i}
+            node={n}
+            delay={Math.min(hops[i], 6) * 95}
+            igniteId={wave.id}
+            reduce={reduce}
+          />
+        ))}
+      </svg>
     </div>
   );
 }
@@ -284,7 +403,7 @@ function PrimaryCTA({ className }: { className?: string }) {
 const pillars = [
   {
     k: "When",
-    d: "You will know the exact day the curve bends. Not a quarter later in a report — the day it happens.",
+    d: "You will know the exact day the curve bends. Not a quarter later in a report — the morning it happens.",
   },
   {
     k: "Why",
@@ -341,7 +460,6 @@ export default function Home() {
             blur={110}
             className="opacity-[0.18]"
           />
-          {/* vignette to focus the centre */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--color-bg)_78%)]" />
         </div>
 
@@ -474,7 +592,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Live simulator + the machine */}
+      {/* The system — constellation */}
       <section className="border-t border-border px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <motion.div
@@ -485,14 +603,14 @@ export default function Home() {
             className="mb-12 max-w-2xl"
           >
             <h2 className="text-3xl font-semibold tracking-tight text-fg sm:text-5xl">
-              We don&apos;t redesign websites.
+              We don&apos;t redesign your website.
               <br />
-              <span className="text-fg-muted">We build the machine.</span>
+              <span className="text-fg-muted">We build the system underneath it.</span>
             </h2>
             <p className="mt-4 text-lg text-fg-muted">
-              A website tells. A web app does. We build living systems that work while you sleep —
-              and a static page could never compound the way this one moves. Drag it. Prove it to
-              yourself.
+              A website is a picture of your business. A system is your business — alive, connected,
+              and built so that a single move sets the whole of it in motion. That is the difference
+              between something you own and something that works for you.
             </p>
           </motion.div>
 
@@ -502,13 +620,23 @@ export default function Home() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <GrowthSimulator />
+            <Constellation />
           </motion.div>
         </div>
       </section>
 
-      {/* The mystery + CTA */}
-      <section id="apply" className="border-t border-border px-6 py-28">
+      {/* The mystery — painted, not explained */}
+      <section id="apply" className="relative overflow-hidden border-t border-border px-6 py-28">
+        <div className="absolute inset-0 -z-10">
+          <AuroraGradient
+            colors={["var(--color-info)", "var(--color-accent)", "transparent"]}
+            duration={50}
+            blur={130}
+            className="opacity-[0.12]"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,var(--color-bg)_80%)]" />
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -517,17 +645,19 @@ export default function Home() {
           className="mx-auto max-w-2xl text-center"
         >
           <p className="font-mono text-sm uppercase tracking-[0.2em] text-fg-subtle">
-            One last thing
+            The morning it turns
           </p>
-          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-            So — what <em className="not-italic">is</em> metamarketing?
+          <h2 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-fg sm:text-6xl">
+            There is a morning the work starts working without you.
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
-            We&apos;re not going to tell you here. The businesses that need it find out. The rest
-            keep guessing — and keep adding, one needle-nudge at a time.
+          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-fg-muted">
+            The campaigns you ran months ago keep paying. The growth stops feeling like pushing a
+            stone uphill and starts feeling like being pulled forward by it. You wake up and the
+            numbers you used to chase are chasing you.
           </p>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-fg">
-            There&apos;s only one way through that door.
+            That morning is not luck. It has a cause — and the cause has a name. You meet it on the
+            far side of one conversation.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <PrimaryCTA />
