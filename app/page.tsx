@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { AuroraGradient } from "@/components/effects/aurora-gradient";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -377,13 +377,24 @@ function Constellation() {
 /*  Reusable CTA                                                       */
 /* ------------------------------------------------------------------ */
 
-function PrimaryCTA({ className }: { className?: string }) {
+/** The free MetaMarketing Audit lives here. Every road on this page leads to it. */
+const BRIDGE_URL = "https://whatisthebridge.com";
+
+function PrimaryCTA({
+  className,
+  label = "Take the audit",
+}: {
+  className?: string;
+  label?: string;
+}) {
   return (
     <motion.a
       whileHover={{ scale: 1.02, boxShadow: "var(--shadow-lg)" }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-      href="#apply"
+      href={BRIDGE_URL}
+      target="_blank"
+      rel="noopener"
       className={cn(
         "inline-flex h-12 items-center justify-center rounded-xl px-7",
         "bg-fg text-bg font-medium text-sm",
@@ -391,8 +402,75 @@ function PrimaryCTA({ className }: { className?: string }) {
         className
       )}
     >
-      Request the audit
+      {label}
     </motion.a>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  The mirror — a taste of the experience, then the crossing          */
+/*  Reflective prompts cycle in the frame. Beginning here, the visitor */
+/*  crosses over to live it. We never say what it is. They feel it.    */
+/* ------------------------------------------------------------------ */
+
+const mirrorPrompts = [
+  "Is your growth something you push — or something that pulls you forward?",
+  "When did you last change your mind about your own business?",
+  "What would have to be true for next year to dwarf this one?",
+  "Where are you adding, when you could be compounding?",
+  "What do you already know, but keep refusing to act on?",
+];
+
+function Mirror() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (reduce) return;
+    const t = setInterval(() => setI((n) => (n + 1) % mirrorPrompts.length), 4200);
+    return () => clearInterval(t);
+  }, [reduce]);
+
+  return (
+    <div className="relative mx-auto max-w-2xl">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-elevated px-6 py-12 text-center sm:px-12">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-60" />
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-fg-subtle">
+          Question 1 of 10
+        </p>
+
+        <div className="mt-6 flex min-h-[6rem] items-center justify-center sm:min-h-[7rem]">
+          {reduce ? (
+            <p className="text-2xl font-medium leading-snug tracking-tight text-fg sm:text-3xl">
+              {mirrorPrompts[0]}
+            </p>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="text-2xl font-medium leading-snug tracking-tight text-fg sm:text-3xl"
+              >
+                {mirrorPrompts[i]}
+              </motion.p>
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* the crossing */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-info to-transparent opacity-60" />
+      </div>
+
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <PrimaryCTA label="Look in the mirror" className="px-8" />
+        <p className="text-sm text-fg-muted">
+          Ten questions. Five minutes. Free, nothing to buy — just the truth about where you stand.
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -622,6 +700,25 @@ export default function Home() {
           >
             <Constellation />
           </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-6 text-center text-sm text-fg-muted"
+          >
+            This one only answers your cursor.{" "}
+            <a
+              href={BRIDGE_URL}
+              target="_blank"
+              rel="noopener"
+              className="font-medium text-fg underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
+            >
+              Cross the bridge
+            </a>{" "}
+            and meet one that answers you.
+          </motion.p>
         </div>
       </section>
 
@@ -642,7 +739,7 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-2xl text-center"
+          className="mx-auto mb-16 max-w-2xl text-center"
         >
           <p className="font-mono text-sm uppercase tracking-[0.2em] text-fg-subtle">
             The morning it turns
@@ -656,15 +753,18 @@ export default function Home() {
             numbers you used to chase are chasing you.
           </p>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-fg">
-            That morning is not luck. It has a cause — and the cause has a name. You meet it on the
-            far side of one conversation.
+            You can&apos;t be argued into that morning. But you can see exactly where you stand right
+            now — and what&apos;s between you and it.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <PrimaryCTA />
-            <span className="font-mono text-xs text-fg-subtle">
-              By application. We take on a limited number.
-            </span>
-          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Mirror />
         </motion.div>
       </section>
 

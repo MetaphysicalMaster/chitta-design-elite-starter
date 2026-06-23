@@ -222,3 +222,18 @@ The principal scored Rev 1 a **5.3 / 10** and returned two binding corrections. 
 | **Principal's weighted score** | **5.3 / 10** | target **9+ / 10** |
 
 **Mega Council note:** Rev 1 over-scored itself by *telling* where it should have *shown*. Rev 2 removes every instance of the page narrating its own cleverness. The picture now forms in the viewer; the system now behaves like the thing we sell.
+
+---
+
+## 8. REVISION 3 — THE BRIDGE FUNNEL (metamarketing applied to ourselves)
+
+**Principal directive:** whatisthebridge.com is the best live showcase of capability. Make it more dynamic, drive traffic to it, and let people *experience* it — without telling them that experiencing it is the point.
+
+**Grounding (from the locked offer stack, `CHITTA/scripts/fire-linkedin-now.ts`):**
+whatisthebridge.com is the **PRIMARY free offer — the MetaMarketing Audit**: *"10 questions. 5 minutes. A mirror you have never looked into."* Free, no credit card. Brand law: **soft CTAs, and never use countdown/urgency/scarcity language.**
+
+**3 reasons this reframes the whole page:** (1) Our invented "Request the audit" CTA maps *exactly* onto the real primary offer — the funnel was already pointed at the bridge, we just hadn't connected the pipe. (2) The audit is itself a crafted live experience — crossing it *is* the capability demonstration, no portfolio framing required. (3) "Mirror" + "bridge" are ULM threshold symbols — experiential persuasion, the core metamarketing principle.
+
+**10 solutions:** (1) Point every primary CTA at `whatisthebridge.com` (new tab, `rel="noopener"` so referral attribution survives). (2) Relabel to soft, honest invitations ("Take the audit", "Look in the mirror") — no commands. (3) **Remove the scarcity line** "We take on a limited number" — it broke the brand's own no-scarcity law. (4) Build a **Mirror module**: reflective prompts cycle in a framed "Question 1 of 10," beginning the experience on our page. (5) Hand the visitor across mid-thought — they finish the reflection on the bridge. (6) Verbatim teaser: *"Ten questions. Five minutes…"* with the honest "Free, nothing to buy." (7) Add a soft second touchpoint under the living-system: *"Cross the bridge and meet one that answers you."* (8) Never say "this is a demo of our work" — the craft is felt, not claimed. (9) Honor `prefers-reduced-motion` (static first prompt). (10) Keep the emotional "morning" beat as the lead-in, flowing straight into the mirror. ✅ *Implemented: all 10.*
+
+**Metamarketing principles now applied throughout:** no urgency/scarcity anywhere · soft invitational CTAs · experience over explanation · the mystery preserved · mirror + bridge as the conversion path. The page no longer just *describes* metamarketing — it *runs* on it.
